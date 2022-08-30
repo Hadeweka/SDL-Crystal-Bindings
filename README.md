@@ -30,3 +30,10 @@ files in the `additions` directory to add specific bindings manually.
 If you encounter any problems while generating the bindings, please open an issue.
 
 ## Roadmap
+
+### Version 0.0.1
+
+#### Features
+
+* [X] Binding generator
+* [ ] Working bindings
