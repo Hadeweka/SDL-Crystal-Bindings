@@ -12,10 +12,10 @@ You need to have SDL installed or the SDL library files accessible by Crystal fo
 
 ## Usage
 
-Simply add this shard to your `shard.yml`.
+Simply add this shard (`sdl-crystal-bindings`) to your `shard.yml`.
 This repository comes with pre-generated binding files.
 
-Then, use `require "bind-sdl-crystal"`.
+Then, use `require "sdl-crystal-bindings"`.
 
 ## Generating new bindings
 
