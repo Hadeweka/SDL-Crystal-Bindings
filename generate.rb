@@ -4,6 +4,8 @@ def compact_header(name)
   style = "{ColumnLimit: 999999, PointerAlignment: Left, SpacesBeforeTrailingComments: 2, AlignTrailingComments: false, AllowShortFunctionsOnASingleLine: None, ContinuationIndentWidth: 2, AlignOperands: DontAlign, AlignAfterOpenBracket: DontAlign}"
   
   puts "Processing #{name}..."
+  # Thanks to oprypin (https://gist.github.com/oprypin/62c1d428453e21952d31ca59560507c9) for the formatting commands! 
+  # Source: https://gist.github.com/oprypin/62c1d428453e21952d31ca59560507c9
   system("mkdir -p output")
   system("wget -nc https://raw.githubusercontent.com/libsdl-org/SDL/main/include/#{name}.h -O output/#{name}.h")
   system("gcc -fpreprocessed -dD -E -P output/#{name}.h > output/#{name}1.h")
