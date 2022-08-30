@@ -1,4 +1,4 @@
-@[Link("sdl")]
+@[Link("SDL2")]
 lib LibSDL
   # SDL
 
