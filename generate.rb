@@ -327,7 +327,7 @@ headers = [
 
 headers.each {|header| compact_header(header)}
 
-File.open("bindings.cr", "w") do |f|
+File.open("src/sdl-crystal-bindings.cr", "w") do |f|
   f.puts "@[Link(\"sdl\")]"
   f.puts "lib LibSDL"
   headers.each do |header|

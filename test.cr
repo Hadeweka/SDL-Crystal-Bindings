@@ -1,4 +1,4 @@
-require "./bindings.cr"
+require "./src/sdl-crystal-bindings.cr"
 
 LibSDL.init(LibSDL::INIT_VIDEO)
 
