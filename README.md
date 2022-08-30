@@ -37,5 +37,12 @@ If you encounter any problems while generating the bindings, please open an issu
 
 * [X] Binding generator
 * [X] Working bindings
-* [ ] Macro mimic methods
-* [ ] Examples
+
+#### Todo list
+
+* [ ] Add sdl_mixer 
+* [ ] Add sdl_image
+* [ ] Link SDL as submodule
+* [ ] Add relevant macro mimic methods
+* [ ] Add more examples
+* [ ] Add CI
