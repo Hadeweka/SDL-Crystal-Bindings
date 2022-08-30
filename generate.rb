@@ -103,7 +103,7 @@ def should_constant_be_excluded?(name)
 end
 
 def process_constant(constant)
-  constant.gsub(/(\d+)[uU]/, "\\1").gsub("\\x1B", "\\e").gsub("\\x7F", "\\u007F").gsub("SDL_", "")
+  constant.gsub(/(\d+)[uU]/, "\\1").gsub(/([\d\.]+)[fF]/, "\\1").gsub("\\x1B", "\\e").gsub("\\x7F", "\\u007F").gsub("SDL_", "")
 end
 
 $constant_cache = {}
@@ -296,11 +296,14 @@ headers = [
   "additions/helper_event.cr_",
   "SDL_events",
   "SDL_filesystem",
+  "additions/helper_gamecontroller.cr_",
   "SDL_gamecontroller",
   "SDL_gesture",
   "SDL_guid",
   "SDL_haptic",
+  "additions/helper_haptic.cr_",
   "SDL_joystick",
+  "additions/helper_joystick.cr_",
   "SDL_keyboard",
   "SDL_keycode",
   "SDL_mouse",
@@ -309,6 +312,7 @@ headers = [
   "SDL_render",
   "additions/helper_rwops.cr_",
   "SDL_rwops",
+  "SDL_sensor",
   "SDL_shape",
   "SDL_surface",
   "SDL_touch",
@@ -317,7 +321,7 @@ headers = [
 
 headers.each {|header| compact_header(header)}
 
-File.open("output/bindings.cr", "w") do |f|
+File.open("bindings.cr", "w") do |f|
   f.puts "@Link[\"sdl\"]"
   f.puts "lib LibSDL"
   headers.each do |header|

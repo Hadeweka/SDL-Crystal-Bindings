@@ -32,3 +32,6 @@
     drop : DropEvent
     padding : UInt8[56] # NOTE: This might become difficult on certain architectures
   end
+
+  # (void* userdata, SDL_Event* event)
+  alias EventFilter = (Void*, Event*) -> LibC::Int

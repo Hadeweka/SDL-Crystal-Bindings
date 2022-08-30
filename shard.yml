@@ -1,0 +1,17 @@
+name: bind-sdl-crystal
+version: 0.0.1
+
+authors:
+  - Hadeweka
+
+description: |
+  Raw bindings to SDL function, mostly recommended for writing wrappers.
+
+license: MIT
+
+crystal: '>= 1.0.0'
+
+libraries:
+  libSDL2: ~> 2.0.0
+  libSDL2_image: ~> 2.0.0
+  libSDL2_mixer: ~> 2.0.0
