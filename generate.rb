@@ -49,7 +49,7 @@ def type_filter(name)
     ["void", "Void"],
     ["float", "LibC::Float"],
     ["double", "LibC::Double"],
-    ["unsigned int", "UInt"],
+    ["unsigned int", "LibC::UInt"],
     ["size_t", "LibC::SizeT"],
     ["Uint64", "UInt64"],
     ["Uint32", "UInt32"],
@@ -66,6 +66,7 @@ def type_filter(name)
     ["int", "LibC::Int"],
     ["char", "Char"],
     ["SDL_bool", "SBool"],
+    ["FILE", "Void"], # It is a bit of cheating, but you should rarely use this anyway
 
     ["§1", "Point"] # Now we can demask it again
   ]
@@ -88,6 +89,7 @@ def should_struct_be_excluded?(name)
     "mem",
     "hidden",
     "androidio",
+    "SDL_WindowShapeMode",
     "WindowShapeMode"
   ]
 
@@ -313,16 +315,18 @@ headers = [
   "additions/helper_rwops.cr_",
   "SDL_rwops",
   "SDL_sensor",
+  "additions/helper_shape.cr_",
   "SDL_shape",
   "SDL_surface",
   "SDL_touch",
+  "additions/helper_video.cr_",
   "SDL_video"
 ]
 
 headers.each {|header| compact_header(header)}
 
 File.open("bindings.cr", "w") do |f|
-  f.puts "@Link[\"sdl\"]"
+  f.puts "@[Link(\"sdl\")]"
   f.puts "lib LibSDL"
   headers.each do |header|
     f.puts "  # #{header}\n"

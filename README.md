@@ -36,4 +36,6 @@ If you encounter any problems while generating the bindings, please open an issu
 #### Features
 
 * [X] Binding generator
-* [ ] Working bindings
+* [X] Working bindings
+* [ ] Macro mimic methods
+* [ ] Examples

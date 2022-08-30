@@ -1,4 +1,4 @@
-@Link["sdl"]
+@[Link("SDL2")]
 lib LibSDL
   # SDL
 
@@ -1968,7 +1968,7 @@ lib LibSDL
   RW_SEEK_END = 2
 
   fun rwfrom_file = SDL_RWFromFile(file : LibC::Char*, mode : LibC::Char*) : RWops*
-  fun rwfrom_fp = SDL_RWFromFP(fp : FILE*, autoclose : SBool) : RWops*
+  fun rwfrom_fp = SDL_RWFromFP(fp : Void*, autoclose : SBool) : RWops*
   fun rwfrom_fp = SDL_RWFromFP(fp : Void*, autoclose : SBool) : RWops*
   fun rwfrom_mem = SDL_RWFromMem(mem : Void*, size : LibC::Int) : RWops*
   fun rwfrom_const_mem = SDL_RWFromConstMem(mem : Void*, size : LibC::Int) : RWops*
@@ -2028,18 +2028,32 @@ lib LibSDL
   fun sensor_close = SDL_SensorClose(sensor : Sensor*) : Void
   fun sensor_update = SDL_SensorUpdate() : Void
 
+  # additions/helper_shape.cr_
+
+  union WindowShapeParams
+    binarization_cutoff : UInt8
+    color_key : Color
+  end
+
+  enum ShapeMode
+    ShapeModeDefault
+    ShapeModeBinarizeAlpha
+    ShapeModeReverseBinarizeAlpha
+    ShapeModeColorKey
+  end
+
+  struct WindowShapeMode
+    mode : ShapeMode
+    parameters : WindowShapeParams
+  end
+
   # SDL_shape
 
   NONSHAPEABLE_WINDOW = -1
   INVALID_SHAPE_ARGUMENT = -2
   WINDOW_LACKS_SHAPE = -3
 
-  struct WindowShapeMode
-    mode : WindowShapeMode
-    parameters : WindowShapeParams
-  end
-
-  fun create_shaped_window = SDL_CreateShapedWindow(title : LibC::Char*, x : UInt, y : UInt, w : UInt, h : UInt, flags : UInt32) : Window*
+  fun create_shaped_window = SDL_CreateShapedWindow(title : LibC::Char*, x : LibC::UInt, y : LibC::UInt, w : LibC::UInt, h : LibC::UInt, flags : UInt32) : Window*
   fun is_shaped_window = SDL_IsShapedWindow(window : Window*) : SBool
   fun set_window_shape = SDL_SetWindowShape(window : Window*, shape : Surface*, shape_mode : WindowShapeMode*) : LibC::Int
   fun get_shaped_window_mode = SDL_GetShapedWindowMode(window : Window*, shape_mode : WindowShapeMode*) : LibC::Int
@@ -2146,6 +2160,11 @@ lib LibSDL
   fun get_touch_device_type = SDL_GetTouchDeviceType(touch_id : TouchID) : TouchDeviceType
   fun get_num_touch_fingers = SDL_GetNumTouchFingers(touch_id : TouchID) : LibC::Int
   fun get_touch_finger = SDL_GetTouchFinger(touch_id : TouchID, index : LibC::Int) : Finger*
+
+  # additions/helper_video.cr_
+
+  # (SDL_Window* win, const SDL_Point* area, void* data)
+  alias HitTest = (Window*, Point*, Void*) -> HitTestResult
 
   # SDL_video
 
