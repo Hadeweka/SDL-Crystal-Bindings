@@ -18,10 +18,9 @@ g_x_out = LibSDL.load_bmp_rw(LibSDL.rwfrom_file("examples/x.bmp", "rb"), 1)  # T
 raise "Unable to load image hello_world.bmp! Error: #{String.new(LibSDL.get_error)}" if !g_x_out
 
 quit = false
-e = uninitialized LibSDL::Event
 
 while(!quit)
-  while LibSDL.poll_event(pointerof(e)) != 0
+  while LibSDL.poll_event(out e) != 0
     puts LibSDL::EventType::QUIT
     if e.type == LibSDL::EventType::QUIT.to_i # TODO: This is not ideal, is there a better solution?
       quit = true
