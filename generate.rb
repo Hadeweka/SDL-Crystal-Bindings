@@ -123,7 +123,7 @@ def get_all_functions(filename)
   lines.each do |line|
     function_matches = line.match(/extern DECLSPEC ([^;]*);/)
     if function_matches
-      function_part = function_matches[1]
+      function_part = function_matches[1].gsub("SDL_PRINTF_FORMAT_STRING", "").gsub(/SDL_PRINTF_VARARG_FUNC\([\d]+\)/, "")
 
       function_part_pieces = function_part.match(/([\S]+) [\S]* ([\S]*)\(([\S ]+)\)/)
 
@@ -212,7 +212,7 @@ def transform_functions(functions)
   transformed_functions = []
 
   functions.each do |func|
-    arg_str = func[2].map{|par| par[0] == "void" ? "" : "#{underscore_string(par[-1])} : #{type_filter(par[0..-2].join(" "))}"}.join(", ").strip
+    arg_str = func[2].map{|par| par[0] == "void" ? "" : "#{underscore_string(par[-1])}#{par[0] == "..." ? "" : " : "}#{type_filter(par[0..-2].join(" "))}"}.join(", ").strip
     transformed_functions.push "  fun #{filter_sdl(underscore_string(func[1]))} = #{func[1]}(#{arg_str}) : #{type_filter(func[0])}"
   end
 
@@ -297,6 +297,7 @@ headers = [
   "additions/helper_audio.cr_",
   "SDL_blendmode",
   "SDL_clipboard",
+  "SDL_error",
   "additions/helper_event.cr_",
   "SDL_events",
   "SDL_filesystem",

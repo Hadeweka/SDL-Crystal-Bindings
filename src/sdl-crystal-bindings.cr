@@ -436,6 +436,23 @@ lib LibSDL
   fun get_clipboard_text = SDL_GetClipboardText() : LibC::Char*
   fun has_clipboard_text = SDL_HasClipboardText() : SBool
 
+  # SDL_error
+
+  enum Errorcode
+    ENOMEM
+    EFREAD
+    EFWRITE
+    EFSEEK
+    UNSUPPORTED
+    LASTERROR
+  end
+
+  fun set_error = SDL_SetError(fmt : LibC::Char*, ...) : LibC::Int
+  fun get_error = SDL_GetError() : LibC::Char*
+  fun get_error_msg = SDL_GetErrorMsg(errstr : LibC::Char*, maxlen : LibC::Int) : LibC::Char*
+  fun clear_error = SDL_ClearError() : Void
+  fun error = SDL_Error(code : Errorcode) : LibC::Int
+
   # additions/helper_event.cr_
 
   union Event
