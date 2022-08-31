@@ -1690,7 +1690,6 @@ lib LibSDL
 
   ALPHA_OPAQUE = 255
   ALPHA_TRANSPARENT = 0
-  Colour = Color
 
   enum PixelType
     PIXELTYPE_UNKNOWN
@@ -1797,6 +1796,10 @@ lib LibSDL
   fun get_rgb = SDL_GetRGB(pixel : UInt32, format : PixelFormat*, r : UInt8*, g : UInt8*, b : UInt8*) : Void
   fun get_rgba = SDL_GetRGBA(pixel : UInt32, format : PixelFormat*, r : UInt8*, g : UInt8*, b : UInt8*, a : UInt8*) : Void
   fun calculate_gamma_ramp = SDL_CalculateGammaRamp(gamma : LibC::Float, ramp : UInt16*) : Void
+
+  # additions/helper_pixels.cr_
+
+  alias Colour = Color
 
   # SDL_rect
 
@@ -2082,8 +2085,6 @@ lib LibSDL
   RLEACCEL = 0x00000002
   DONTFREE = 0x00000004
   SIMD_ALIGNED = 0x00000008
-  BlitSurface = UpperBlit
-  BlitScaled = UpperBlitScaled
 
   type BlitMap = Void
 
@@ -2434,4 +2435,46 @@ lib LibSDL
   fun gl_swap_window = SDL_GL_SwapWindow(window : Window*) : Void
   fun gl_delete_context = SDL_GL_DeleteContext(context : GLContext) : Void
 
+end
+
+module LibSDLMacro
+  # SDL_audio
+
+  def self.audio_bitsize(x)
+    x & LibSDL::AUDIO_MASK_BITSIZE
+  end
+
+  def self.audio_is_float(x)
+    x & LibSDL::AUDIO_MASK_DATATYPE
+  end
+
+  def self.is_big_endian(x)
+    x & LibSDL::AUDIO_MASK_ENDIAN
+  end
+
+  def self.is_signed(x)
+    x & LibSDL::MASK_SIGNED
+  end
+
+  def self.is_int(x)
+    !self.audio_is_float(x)
+  end
+
+  def self.is_little_endian(x)
+    !self.is_big_endian(x)
+  end
+
+  def self.is_unsigned(x)
+    !self.is_signed(x)
+  end
+
+  def self.load_wav(file, spec, audio_buf, audio_len)
+    LibSDL.load_wav_rw(LibSDL.rwfrom_file(file, "rb"), 1, spec, audio_buf, audio_len)
+  end
+
+  # TODO
+
+  def self.load_bmp(file)
+    LibSDL.load_bmp_rw(LibSDL.rwfrom_file(file, "rb"), 1)
+  end
 end

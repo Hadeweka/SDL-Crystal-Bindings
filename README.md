@@ -46,3 +46,4 @@ If you encounter any problems while generating the bindings, please open an issu
 * [ ] Add relevant macro mimic methods
 * [ ] Add more examples
 * [ ] Add CI
+* [ ] Put examples in separate submodule

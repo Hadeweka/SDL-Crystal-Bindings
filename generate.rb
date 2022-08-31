@@ -197,8 +197,15 @@ def get_all_constants(filename)
   constant_matches = total_str.scan(/#define ([\w_\d]+)(\([\S \,]*\))?[ ]*(.*)[^\\]\n/)
 
   constant_matches.each do |match|
+    if match[1]
+      puts "> Skipping macro function: #{match[0]}"
+      next
+    end
     next if match[2].empty?
-    next if match[1]
+    if match[0].match(/[a-z]/)
+      puts "> Skipping macro function: #{match[0]}"
+      next
+    end
     next if should_constant_be_excluded?(match[0])
     next if $constant_cache[match[0]]
     $constant_cache[match[0]] = true
@@ -313,6 +320,7 @@ headers = [
   "SDL_keycode",
   "SDL_mouse",
   "SDL_pixels",
+  "additions/helper_pixels.cr_",
   "SDL_rect",
   "SDL_render",
   "additions/helper_rwops.cr_",
@@ -367,4 +375,13 @@ File.open("src/sdl-crystal-bindings.cr", "w") do |f|
     end
   end
   f.puts "end"
+
+  macros = nil
+  
+  File.open("additions/macros.cr", "r") do |f|
+    macros = f.readlines
+  end
+
+  f.puts "\n"
+  macros.each {|macros| f.puts macros}
 end

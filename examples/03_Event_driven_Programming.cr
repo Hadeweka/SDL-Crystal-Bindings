@@ -14,15 +14,14 @@ raise "Window could not be created! Error: #{String.new(LibSDL.get_error)}" if !
 
 g_screen_surface = LibSDL.get_window_surface(g_window)
 
-g_x_out = LibSDL.load_bmp_rw(LibSDL.rwfrom_file("examples/x.bmp", "rb"), 1)  # TODO: The SDL macro functions would simplify this
+g_x_out = LibSDLMacro.load_bmp("examples/x.bmp")
 raise "Unable to load image hello_world.bmp! Error: #{String.new(LibSDL.get_error)}" if !g_x_out
 
 quit = false
 
 while(!quit)
   while LibSDL.poll_event(out e) != 0
-    puts LibSDL::EventType::QUIT
-    if e.type == LibSDL::EventType::QUIT.to_i # TODO: This is not ideal, is there a better solution?
+    if e.type == LibSDL::EventType::QUIT.to_i
       quit = true
     end
   end
