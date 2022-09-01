@@ -5,8 +5,12 @@ require "../../src/sdl-crystal-bindings.cr"
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
 
-if !LibSDL.init(LibSDL::INIT_VIDEO)
+if LibSDL.init(LibSDL::INIT_VIDEO) != 0
   raise "SDL could not initialize! Error: #{String.new(LibSDL.get_error)}"
+end
+
+if (LibSDL.img_init(LibSDL::IMGInitFlags::IMG_INIT_PNG) | LibSDL::IMGInitFlags::IMG_INIT_PNG.to_i) == 0
+  raise "SDL_image could not initialize! Error: #{String.new(LibSDLMacro.img_get_error)}"
 end
 
 g_window = LibSDL.create_window("SDL Tutorial", LibSDL::WINDOWPOS_UNDEFINED, LibSDL::WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, LibSDL::WindowFlags::WINDOW_SHOWN)

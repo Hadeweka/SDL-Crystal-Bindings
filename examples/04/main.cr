@@ -20,7 +20,7 @@ def load_surface(path : String)
   loaded_surface
 end
 
-if !LibSDL.init(LibSDL::INIT_VIDEO)
+if LibSDL.init(LibSDL::INIT_VIDEO) != 0
   raise "SDL could not initialize! Error: #{String.new(LibSDL.get_error)}"
 end
 
