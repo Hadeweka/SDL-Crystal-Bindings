@@ -9,7 +9,7 @@ if !LibSDL.init(LibSDL::INIT_VIDEO)
   raise "SDL could not initialize! Error: #{String.new(LibSDL.get_error)}"
 end
 
-window = LibSDL.create_window("SDL Tutorial", LibSDL::WINDOWPOS_UNDEFINED_MASK, LibSDL::WINDOWPOS_UNDEFINED_MASK, SCREEN_WIDTH, SCREEN_HEIGHT, LibSDL::WindowFlags::WINDOW_SHOWN)
+window = LibSDL.create_window("SDL Tutorial", LibSDL::WINDOWPOS_UNDEFINED, LibSDL::WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, LibSDL::WindowFlags::WINDOW_SHOWN)
 raise "Window could not be created! Error: #{String.new(LibSDL.get_error)}" if !window
 
 surface = LibSDL.get_window_surface(window)

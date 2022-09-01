@@ -19,7 +19,7 @@ lib LibSDL
   fun was_init = SDL_WasInit(flags : UInt32) : UInt32
   fun quit = SDL_Quit() : Void
 
-  # additions/helper_types.cr_
+  # additions/helper_types.cr
 
   enum SBool
     SDL_FALSE = 0
@@ -372,7 +372,7 @@ lib LibSDL
   fun close_audio = SDL_CloseAudio() : Void
   fun close_audio_device = SDL_CloseAudioDevice(dev : AudioDeviceID) : Void
 
-  # additions/helper_audio.cr_
+  # additions/helper_audio.cr
 
   # (void* userdata, Uint8* stream, int len)
   alias AudioCallback = (Void*, UInt8*, LibC::Int) -> Void
@@ -453,7 +453,7 @@ lib LibSDL
   fun clear_error = SDL_ClearError() : Void
   fun error = SDL_Error(code : Errorcode) : LibC::Int
 
-  # additions/helper_event.cr_
+  # additions/helper_event.cr
 
   union Event
     type : UInt32
@@ -887,7 +887,7 @@ lib LibSDL
   fun get_base_path = SDL_GetBasePath() : LibC::Char*
   fun get_pref_path = SDL_GetPrefPath(org : LibC::Char*, app : LibC::Char*) : LibC::Char*
 
-  # additions/helper_gamecontroller.cr_
+  # additions/helper_gamecontroller.cr
 
   struct GameControllerButtonBindUnionHat
     hat : LibC::Int
@@ -1192,7 +1192,7 @@ lib LibSDL
   fun haptic_rumble_play = SDL_HapticRumblePlay(haptic : Haptic*, strength : LibC::Float, length : UInt32) : LibC::Int
   fun haptic_rumble_stop = SDL_HapticRumbleStop(haptic : Haptic*) : LibC::Int
 
-  # additions/helper_haptic.cr_
+  # additions/helper_haptic.cr
 
   union HapticEffect
     type : UInt16
@@ -1306,7 +1306,7 @@ lib LibSDL
   fun joystick_close = SDL_JoystickClose(joystick : Joystick*) : Void
   fun joystick_current_power_level = SDL_JoystickCurrentPowerLevel(joystick : Joystick*) : JoystickPowerLevel
 
-  # additions/helper_joystick.cr_
+  # additions/helper_joystick.cr
 
   struct VirtualJoystickDesc
     version : UInt16
@@ -1360,7 +1360,7 @@ lib LibSDL
 
   # SDL_keycode
 
-  SDLK_SCANCODE_MASK = (1 << 30)
+  K_SCANCODE_MASK = (1 << 30)
 
   type Keycode = Int32
 
@@ -1797,7 +1797,7 @@ lib LibSDL
   fun get_rgba = SDL_GetRGBA(pixel : UInt32, format : PixelFormat*, r : UInt8*, g : UInt8*, b : UInt8*, a : UInt8*) : Void
   fun calculate_gamma_ramp = SDL_CalculateGammaRamp(gamma : LibC::Float, ramp : UInt16*) : Void
 
-  # additions/helper_pixels.cr_
+  # additions/helper_pixels.cr
 
   alias Colour = Color
 
@@ -1971,7 +1971,7 @@ lib LibSDL
   fun render_get_metal_command_encoder = SDL_RenderGetMetalCommandEncoder(renderer : Renderer*) : Void*
   fun render_set_vsync = SDL_RenderSetVSync(renderer : Renderer*, vsync : LibC::Int) : LibC::Int
 
-  # additions/helper_rwops.cr_
+  # additions/helper_rwops.cr
 
   type RWops = Void # This works as long as we're dealing with pointers only
 
@@ -2048,7 +2048,7 @@ lib LibSDL
   fun sensor_close = SDL_SensorClose(sensor : Sensor*) : Void
   fun sensor_update = SDL_SensorUpdate() : Void
 
-  # additions/helper_shape.cr_
+  # additions/helper_shape.cr
 
   union WindowShapeParams
     binarization_cutoff : UInt8
@@ -2179,7 +2179,7 @@ lib LibSDL
   fun get_num_touch_fingers = SDL_GetNumTouchFingers(touch_id : TouchID) : LibC::Int
   fun get_touch_finger = SDL_GetTouchFinger(touch_id : TouchID, index : LibC::Int) : Finger*
 
-  # additions/helper_video.cr_
+  # additions/helper_video.cr
 
   # (SDL_Window* win, const SDL_Point* area, void* data)
   alias HitTest = (Window*, Point*, Void*) -> HitTestResult
@@ -2187,9 +2187,9 @@ lib LibSDL
   # SDL_video
 
   WINDOWPOS_UNDEFINED_MASK = 0x1FF0000
-  WINDOWPOS_UNDEFINED = WINDOWPOS_UNDEFINED_DISPLAY(0)
+  WINDOWPOS_UNDEFINED = (LibSDL::WINDOWPOS_CENTERED_MASK | 0)
   WINDOWPOS_CENTERED_MASK = 0x2FF0000
-  WINDOWPOS_CENTERED = WINDOWPOS_CENTERED_DISPLAY(0)
+  WINDOWPOS_CENTERED = (LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)
 
   type Window = Void
   type GLContext = Void*
@@ -2438,6 +2438,12 @@ lib LibSDL
 end
 
 module LibSDLMacro
+  # Other helper macros
+
+  def self.fourcc(a, b, c, d)
+    (a.to_u8 << 0).to_u32 | (b.to_u8 << 8).to_u32 | (c.to_u8 << 16).to_u32 | (d.to_u8 << 24).to_u32
+  end
+
   # SDL_audio
 
   def self.audio_bitsize(x)
@@ -2472,9 +2478,141 @@ module LibSDLMacro
     LibSDL.load_wav_rw(LibSDL.rwfrom_file(file, "rb"), 1, spec, audio_buf, audio_len)
   end
 
-  # TODO
+  # SDL_error
+
+  def self.out_of_memory
+    LibSDL.error(LibSDL::Errorcode::ENOMEM)
+  end
+
+  def self.unsupported
+    LibSDL.error(LibSDL::Errorcode::UNSUPPORTED)
+  end
+
+  def self.invalid_param_error(param)
+    LibSDL.set_error("Parameter '%s' is invalid", (param))
+  end
+
+  # SDL_events
+
+  def self.get_event_state(type)
+    LibSDL.event_state(type, LibSDL::QUERY)
+  end
+
+  # SDL_gamecontroller
+
+  def self.game_controller_add_mappings_from_file(file)
+    LibSDL.game_controller_add_mappings_from_rw(LibSDL.rwfrom_file(file, "rb"), 1)
+  end
+
+  # SDL_keycode
+
+  def self.scancode_to_keycode(x)
+    x | LibSDL::K_SCANCODE_MASK
+  end
+
+  # SDL_mouse
+
+  def self.button(x)
+    (1 << ((x)-1))
+  end
+
+  # SDL_pixels
+
+  def self.define_pixel_fourcc(a, b, c, d)
+    self.fourcc(a, b, c, d) # TODO: Implement fourcc
+  end
+
+  def self.define_pixel_format(type, order, layout, bits, bytes)
+    ((1 << 28) | ((type) << 24) | ((order) << 20) | ((layout) << 16) | ((bits) << 8) | ((bytes) << 0))
+  end
+
+  def self.pixel_flag(x)
+     (((x) >> 28) & 0x0F)
+  end
+
+  def self.pixel_type(x)
+    (((x) >> 24) & 0x0F)
+  end
+
+  def self.pixel_order(x)
+    (((x) >> 20) & 0x0F)
+  end
+
+  def self.pixel_layout(x)
+    (((x) >> 16) & 0x0F)
+  end
+
+  def self.bits_per_pixel(x)
+    (((x) >> 8) & 0xFF)
+  end
+
+  def self.bytes_per_pixel(x)
+    (self.is_pixel_format_fourcc(x) ? ((((x) == LibSDL::PIXELFORMAT_YUY2) || ((x) == LibSDL::PIXELFORMAT_UYVY) || ((x) == LibSDL::PIXELFORMAT_YVYU)) ? 2 : 1) : (((x) >> 0) & 0xFF))
+  end
+
+  def self.is_pixel_format_indexed(format)
+    (!self.is_pixel_format_fourcc(format) && ((self.pixel_type(format) == LibSDL::PIXELTYPE_INDEX1) || (self.pixel_type(format) == LibSDL::PIXELTYPE_INDEX4) || (self.pixel_type(format) == LibSDL::PIXELTYPE_INDEX8)))
+  end
+
+  def self.is_pixel_format_packed(format)
+     (!self.is_pixel_format_fourcc(format) && ((self.pixel_type(format) == LibSDL::PIXELTYPE_PACKED8) || (self.pixel_type(format) == LibSDL::PIXELTYPE_PACKED16) || (self.pixel_type(format) == LibSDL::PIXELTYPE_PACKED32)))
+  end
+
+  def self.is_pixel_format_array(format)
+    (!self.is_pixel_format_fourcc(format) && ((self.pixel_type(format) == LibSDL::PIXELTYPE_ARRAYU8) || (self.pixel_type(format) == LibSDL::PIXELTYPE_ARRAYU16) || (self.pixel_type(format) == LibSDL::PIXELTYPE_ARRAYU32) || (self.pixel_type(format) == LibSDL::PIXELTYPE_ARRAYF16) || (self.pixel_type(format) == LibSDL::PIXELTYPE_ARRAYF32)))
+  end
+
+  def self.is_pixel_format_alpha(format)
+    ((self.is_pixel_format_fourcc(format) && ((self.pixel_order(format) == LibSDL::PACKEDORDER_ARGB) || (self.pixel_order(format) == LibSDL::PACKEDORDER_RGBA) || (self.pixel_order(format) == LibSDL::PACKEDORDER_ABGR) || (self.pixel_order(format) == LibSDL::PACKEDORDER_BGRA))) || (self.is_pixel_format_array(format) && ((self.pixel_order(format) == LibSDL::ARRAYORDER_ARGB) || (self.pixel_order(format) == LibSDL::ARRAYORDER_RGBA) || (self.pixel_order(format) == LibSDL::ARRAYORDER_ABGR) || (self.pixel_order(format) == LibSDL::ARRAYORDER_BGRA))))
+  end
+
+  def self.is_pixel_format_fourcc(format)
+    ((format) && (self.pixel_flag(format) != 1))
+  end
+
+  # SDL_shape
+
+  def self.shape_mode_alpha(mode)
+    (mode == LibSDL::ShapeMode::ShapeModeDefault || mode == LibSDL::ShapeMode::ShapeModeBinarizeAlpha || mode == LibSDL::ShapeMode::ShapeModeReverseBinarizeAlpha)
+  end
+
+  # SDL_surface
+
+  def self.must_lock(s)
+    (((s).value.flags & LibSDL::RLEACCEL) != 0)
+  end
 
   def self.load_bmp(file)
     LibSDL.load_bmp_rw(LibSDL.rwfrom_file(file, "rb"), 1)
+  end
+
+  def self.save_bmp(surface, file)
+    LibSDL.save_bmp_rw(surface, LibSDL.rwfrom_file(file, "wb"), 1)
+  end
+
+  def self.blit_surface(*args)
+    LibSDL.upper_blit(*args)
+  end
+
+  def self.blit_scaled(*args)
+    LibSDL.upper_blit_scaled(*args)
+  end
+
+  # SDL_video
+
+  def self.window_pos_undefined_display(x)
+    (LibSDL::WINDOWPOS_UNDEFINED_MASK | (x))
+  end
+
+  def self.window_pos_is_undefined(x)
+    (((x)&0xFFFF0000) == LibSDL::WINDOWPOS_UNDEFINED_MASK)
+  end
+
+  def self.window_pos_centered_display(x)
+    (LibSDL::WINDOWPOS_CENTERED_MASK | (x))
+  end
+
+  def self.window_pos_is_centered(x)
+    (((x)&0xFFFF0000) == LibSDL::WINDOWPOS_CENTERED_MASK)
   end
 end

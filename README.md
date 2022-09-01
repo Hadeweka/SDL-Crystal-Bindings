@@ -43,7 +43,6 @@ If you encounter any problems while generating the bindings, please open an issu
 * [ ] Add sdl_mixer 
 * [ ] Add sdl_image
 * [ ] Link SDL as submodule
-* [ ] Add relevant macro mimic methods
 * [ ] Add more examples
 * [ ] Add CI
 * [ ] Put examples in separate submodule

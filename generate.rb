@@ -39,7 +39,13 @@ def filter_sdl(str)
 end
 
 def filter_sdl_const(str)
-  str.gsub("SDL_", "")
+  if str[0..3] == "SDL_"
+    str[4..-1]
+  elsif str[0..2] == "SDL"
+    str[3..-1]
+  else
+    str
+  end
 end
 
 def type_filter(name)
@@ -107,7 +113,7 @@ def should_constant_be_excluded?(name)
 end
 
 def process_constant(constant)
-  constant.gsub(/(\d+)[uU]/, "\\1").gsub(/([\d\.]+)[fF]/, "\\1").gsub("\\x1B", "\\e").gsub("\\x7F", "\\u007F").gsub("SDL_", "")
+  constant.gsub(/(\d+)[uU]/, "\\1").gsub(/([\d\.]+)[fF]/, "\\1").gsub("\\x1B", "\\e").gsub("\\x7F", "\\u007F").gsub("SDL_", "").gsub("WINDOWPOS_UNDEFINED_DISPLAY(0)", "(LibSDL::WINDOWPOS_CENTERED_MASK | 0)").gsub("WINDOWPOS_CENTERED_DISPLAY(0)", "(LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)")
 end
 
 $constant_cache = {}
@@ -298,39 +304,39 @@ end
 
 headers = [
   "SDL",
-  "additions/helper_types.cr_",
+  "additions/helper_types.cr",
   "SDL_scancode",
   "SDL_audio",
-  "additions/helper_audio.cr_",
+  "additions/helper_audio.cr",
   "SDL_blendmode",
   "SDL_clipboard",
   "SDL_error",
-  "additions/helper_event.cr_",
+  "additions/helper_event.cr",
   "SDL_events",
   "SDL_filesystem",
-  "additions/helper_gamecontroller.cr_",
+  "additions/helper_gamecontroller.cr",
   "SDL_gamecontroller",
   "SDL_gesture",
   "SDL_guid",
   "SDL_haptic",
-  "additions/helper_haptic.cr_",
+  "additions/helper_haptic.cr",
   "SDL_joystick",
-  "additions/helper_joystick.cr_",
+  "additions/helper_joystick.cr",
   "SDL_keyboard",
   "SDL_keycode",
   "SDL_mouse",
   "SDL_pixels",
-  "additions/helper_pixels.cr_",
+  "additions/helper_pixels.cr",
   "SDL_rect",
   "SDL_render",
-  "additions/helper_rwops.cr_",
+  "additions/helper_rwops.cr",
   "SDL_rwops",
   "SDL_sensor",
-  "additions/helper_shape.cr_",
+  "additions/helper_shape.cr",
   "SDL_shape",
   "SDL_surface",
   "SDL_touch",
-  "additions/helper_video.cr_",
+  "additions/helper_video.cr",
   "SDL_video"
 ]
 

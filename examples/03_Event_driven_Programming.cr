@@ -9,7 +9,7 @@ if !LibSDL.init(LibSDL::INIT_VIDEO)
   raise "SDL could not initialize! Error: #{String.new(LibSDL.get_error)}"
 end
 
-g_window = LibSDL.create_window("SDL Tutorial", LibSDL::WINDOWPOS_UNDEFINED_MASK, LibSDL::WINDOWPOS_UNDEFINED_MASK, SCREEN_WIDTH, SCREEN_HEIGHT, LibSDL::WindowFlags::WINDOW_SHOWN)
+g_window = LibSDL.create_window("SDL Tutorial", LibSDL::WINDOWPOS_UNDEFINED, LibSDL::WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, LibSDL::WindowFlags::WINDOW_SHOWN)
 raise "Window could not be created! Error: #{String.new(LibSDL.get_error)}" if !g_window
 
 g_screen_surface = LibSDL.get_window_surface(g_window)
@@ -26,7 +26,7 @@ while(!quit)
     end
   end
 
-  LibSDL.upper_blit(g_x_out, nil, g_screen_surface, nil)
+  LibSDLMacro.blit_surface(g_x_out, nil, g_screen_surface, nil)
   LibSDL.update_window_surface(g_window)
 end
 
