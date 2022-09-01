@@ -1,6 +1,6 @@
 # Based on https://lazyfoo.net/tutorials/SDL/02_getting_an_image_on_the_screen/index.php
 
-require "../src/sdl-crystal-bindings.cr"
+require "../../src/sdl-crystal-bindings.cr"
 
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
@@ -14,7 +14,7 @@ raise "Window could not be created! Error: #{String.new(LibSDL.get_error)}" if !
 
 g_screen_surface = LibSDL.get_window_surface(g_window)
 
-g_hello_world = LibSDL.load_bmp_rw(LibSDL.rwfrom_file("examples/hello_world.bmp", "rb"), 1)  # TODO: The SDL macro functions would simplify this
+g_hello_world = LibSDLMacro.load_bmp("examples/02_Getting_an_Image_on_the_Screen/hello_world.bmp")
 raise "Unable to load image hello_world.bmp! Error: #{String.new(LibSDL.get_error)}" if !g_hello_world
 
 LibSDLMacro.blit_surface(g_hello_world, nil, g_screen_surface, nil)

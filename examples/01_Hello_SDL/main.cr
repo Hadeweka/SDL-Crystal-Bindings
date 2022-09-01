@@ -1,6 +1,6 @@
 # Based on https://lazyfoo.net/tutorials/SDL/01_hello_SDL/index.php
 
-require "../src/sdl-crystal-bindings.cr"
+require "../../src/sdl-crystal-bindings.cr"
 
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480

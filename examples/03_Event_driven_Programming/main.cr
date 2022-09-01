@@ -1,6 +1,6 @@
 # Based on https://lazyfoo.net/tutorials/SDL/03_event_driven_programming/index.php
 
-require "../src/sdl-crystal-bindings.cr"
+require "../../src/sdl-crystal-bindings.cr"
 
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
@@ -14,7 +14,7 @@ raise "Window could not be created! Error: #{String.new(LibSDL.get_error)}" if !
 
 g_screen_surface = LibSDL.get_window_surface(g_window)
 
-g_x_out = LibSDLMacro.load_bmp("examples/x.bmp")
+g_x_out = LibSDLMacro.load_bmp("examples/03_Event_driven_Programming/x.bmp")
 raise "Unable to load image hello_world.bmp! Error: #{String.new(LibSDL.get_error)}" if !g_x_out
 
 quit = false
