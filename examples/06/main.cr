@@ -14,11 +14,11 @@ raise "Window could not be created! Error: #{String.new(LibSDL.get_error)}" if !
 
 g_screen_surface = LibSDL.get_window_surface(g_window)
 
-loaded_surface = LibSDLMacro.load_bmp("examples/05/stretch.bmp")
-raise "Unable to load image stretch.bmp! Error: #{String.new(LibSDL.get_error)}" unless loaded_surface
+loaded_surface = LibSDL.img_load("examples/06/loaded.png")
+raise "Unable to load image loaded.png! Error: #{String.new(LibSDL.get_error)}" unless loaded_surface
 
-g_stretched_surface = LibSDL.convert_surface(loaded_surface, g_screen_surface.value.format, 0)
-raise "Unable to optimize image stretch.bmp! Error: #{String.new(LibSDL.get_error)}" unless g_stretched_surface
+g_png_surface = LibSDL.convert_surface(loaded_surface, g_screen_surface.value.format, 0)
+raise "Unable to optimize image loaded.png! Error: #{String.new(LibSDL.get_error)}" unless g_png_surface
 
 LibSDL.free_surface(loaded_surface)
 
@@ -31,17 +31,12 @@ while(!quit)
     end
   end
 
-  stretch_rect = LibSDL::Rect.new
-  stretch_rect.x = 0
-  stretch_rect.y = 0
-  stretch_rect.w = SCREEN_WIDTH
-  stretch_rect.h = SCREEN_HEIGHT
-  LibSDLMacro.blit_scaled(g_stretched_surface, nil, g_screen_surface, pointerof(stretch_rect))
+  LibSDLMacro.blit_surface(g_png_surface, nil, g_screen_surface, nil)
 
   LibSDL.update_window_surface(g_window)
 end
 
-LibSDL.free_surface(g_stretched_surface)
+LibSDL.free_surface(g_png_surface)
 LibSDL.destroy_window(g_window)
 
 LibSDL.quit

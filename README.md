@@ -55,3 +55,4 @@ If you encounter any problems while generating the bindings, please open an issu
 * [ ] Add CI
 * [ ] Put examples in separate submodule
 * [ ] Fix weird formatting in some header files
+* [ ] Maybe separate the different SDL libraries?
