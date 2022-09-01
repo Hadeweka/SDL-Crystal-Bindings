@@ -1,13 +1,18 @@
-def compact_header(name)
+def compact_header(header)
+  name = header[0]
   return if name.start_with? "additions/"
 
-  style = "{ColumnLimit: 999999, PointerAlignment: Left, SpacesBeforeTrailingComments: 2, AlignTrailingComments: false, AllowShortFunctionsOnASingleLine: None, ContinuationIndentWidth: 2, AlignOperands: DontAlign, AlignAfterOpenBracket: DontAlign}"
+  external_path = header[1] ? header[1] : "SDL/main/include"
+
+  puts "EX = #{external_path}"
+
+  style = "{ColumnLimit: 100000, PointerAlignment: Left, SpacesBeforeTrailingComments: 2, AlignTrailingComments: false, AllowShortFunctionsOnASingleLine: None, ContinuationIndentWidth: 2, AlignOperands: DontAlign, AlignAfterOpenBracket: DontAlign}"
   
   puts "Processing #{name}..."
-  # Thanks to oprypin (https://gist.github.com/oprypin/62c1d428453e21952d31ca59560507c9) for the formatting commands! 
+  # Thanks to oprypin for the formatting commands! 
   # Source: https://gist.github.com/oprypin/62c1d428453e21952d31ca59560507c9
   system("mkdir -p output")
-  system("wget -nc https://raw.githubusercontent.com/libsdl-org/SDL/main/include/#{name}.h -O output/#{name}.h")
+  system("wget -nc https://raw.githubusercontent.com/libsdl-org/#{external_path}/#{name}.h -O output/#{name}.h")
   system("gcc -fpreprocessed -dD -E -P output/#{name}.h > output/#{name}1.h")
   system("clang-format output/#{name}1.h -style=\"#{style}\" > output/#{name}2.h")
 end
@@ -113,7 +118,7 @@ def should_constant_be_excluded?(name)
 end
 
 def process_constant(constant)
-  constant.gsub(/(\d+)[uU]/, "\\1").gsub(/([\d\.]+)[fF]/, "\\1").gsub("\\x1B", "\\e").gsub("\\x7F", "\\u007F").gsub("SDL_", "").gsub("WINDOWPOS_UNDEFINED_DISPLAY(0)", "(LibSDL::WINDOWPOS_CENTERED_MASK | 0)").gsub("WINDOWPOS_CENTERED_DISPLAY(0)", "(LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)")
+  constant.gsub(/(\d+)[uU]/, "\\1").gsub(/([\d\.]+)[fF]/, "\\1").gsub("\\x1B", "\\e").gsub("\\x7F", "\\u007F").gsub("SDL_", "").gsub("WINDOWPOS_UNDEFINED_DISPLAY(0)", "(LibSDL::WINDOWPOS_CENTERED_MASK | 0)").gsub("WINDOWPOS_CENTERED_DISPLAY(0)", "(LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)").gsub(/VERSIONNUM(([\S]+), ([\S]+), ([\S]+))/, "((\\2)*1000 + (\\3)*100 + (\\4))")
 end
 
 $constant_cache = {}
@@ -303,54 +308,57 @@ def transform_constants(constants)
 end
 
 headers = [
-  "SDL",
-  "additions/helper_types.cr",
-  "SDL_scancode",
-  "SDL_audio",
-  "additions/helper_audio.cr",
-  "SDL_blendmode",
-  "SDL_clipboard",
-  "SDL_error",
-  "additions/helper_event.cr",
-  "SDL_events",
-  "SDL_filesystem",
-  "additions/helper_gamecontroller.cr",
-  "SDL_gamecontroller",
-  "SDL_gesture",
-  "SDL_guid",
-  "SDL_haptic",
-  "additions/helper_haptic.cr",
-  "SDL_joystick",
-  "additions/helper_joystick.cr",
-  "SDL_keyboard",
-  "SDL_keycode",
-  "SDL_mouse",
-  "SDL_pixels",
-  "additions/helper_pixels.cr",
-  "SDL_rect",
-  "SDL_render",
-  "additions/helper_rwops.cr",
-  "SDL_rwops",
-  "SDL_sensor",
-  "additions/helper_shape.cr",
-  "SDL_shape",
-  "SDL_surface",
-  "SDL_touch",
-  "additions/helper_video.cr",
-  "SDL_video"
+  ["SDL"],
+  ["SDL_version"],
+  ["additions/helper_types.cr"],
+  ["SDL_scancode"],
+  ["SDL_audio"],
+  ["additions/helper_audio.cr"],
+  ["SDL_blendmode"],
+  ["SDL_clipboard"],
+  ["SDL_error"],
+  ["additions/helper_event.cr"],
+  ["SDL_events"],
+  ["SDL_filesystem"],
+  ["additions/helper_gamecontroller.cr"],
+  ["SDL_gamecontroller"],
+  ["SDL_gesture"],
+  ["SDL_guid"],
+  ["SDL_haptic"],
+  ["additions/helper_haptic.cr"],
+  ["SDL_joystick"],
+  ["additions/helper_joystick.cr"],
+  ["SDL_keyboard"],
+  ["SDL_keycode"],
+  ["SDL_mouse"],
+  ["SDL_pixels"],
+  ["additions/helper_pixels.cr"],
+  ["SDL_rect"],
+  ["SDL_render"],
+  ["additions/helper_rwops.cr"],
+  ["SDL_rwops"],
+  ["SDL_sensor"],
+  ["additions/helper_shape.cr"],
+  ["SDL_shape"],
+  ["SDL_surface"],
+  ["SDL_touch"],
+  ["additions/helper_video.cr"],
+  ["SDL_video"],
+  ["SDL_image", "SDL_image/main"]
 ]
 
 headers.each {|header| compact_header(header)}
 
 File.open("src/sdl-crystal-bindings.cr", "w") do |f|
   f.puts "@[Link(\"SDL2\")]"
+  f.puts "@[Link(\"SDL2_image\")]"
   f.puts "lib LibSDL"
   headers.each do |header|
-    f.puts "  # #{header}\n"
-    if header.start_with? "additions/"
+    f.puts "  # #{header[0]}\n"
+    if header[0].start_with? "additions/"
       additions = nil
 
-      File.open(header, "r") do |f|
+      File.open(header[0], "r") do |f|
         additions = f.readlines
       end
 
@@ -361,23 +369,23 @@ File.open("src/sdl-crystal-bindings.cr", "w") do |f|
       cc = 0
       cs = 0
       cf = 0
-      transform_constants(get_all_constants("output/#{header}2.h")).each do |transformed_constant|
+      transform_constants(get_all_constants("output/#{header[0]}2.h")).each do |transformed_constant|
         next if !transformed_constant
         f.puts "#{transformed_constant}" 
         cc += 1
       end
-      transform_structs(get_all_structs("output/#{header}2.h")).each do |transformed_struct|
+      transform_structs(get_all_structs("output/#{header[0]}2.h")).each do |transformed_struct|
         next if !transformed_struct
         f.puts "#{transformed_struct}"
         cs += 1
       end
-      transform_functions(get_all_functions("output/#{header}2.h")).each do |transformed_function|
+      transform_functions(get_all_functions("output/#{header[0]}2.h")).each do |transformed_function|
         next if !transformed_function
         f.puts "#{transformed_function}"
         cf += 1
       end
       f.puts "\n" if cf > 0
-      puts "A total of #{cc} constants, #{cs} structs and #{cf} functions were converted from #{header}."
+      puts "A total of #{cc} constants, #{cs} structs and #{cf} functions were converted from #{header[0]}."
     end
   end
   f.puts "end"

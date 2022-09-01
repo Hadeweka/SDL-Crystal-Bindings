@@ -45,12 +45,13 @@ If you encounter any problems while generating the bindings, please open an issu
 
 * [X] Binding generator
 * [X] Working bindings
+* [X] Support for sdl_image
 
 #### Todo list
 
 * [ ] Add sdl_mixer 
-* [ ] Add sdl_image
 * [ ] Link SDL as submodule
 * [ ] Add more examples
 * [ ] Add CI
 * [ ] Put examples in separate submodule
+* [ ] Fix weird formatting in some header files

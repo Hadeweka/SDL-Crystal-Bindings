@@ -5,6 +5,22 @@ module LibSDLMacro
     (a.to_u8 << 0).to_u32 | (b.to_u8 << 8).to_u32 | (c.to_u8 << 16).to_u32 | (d.to_u8 << 24).to_u32
   end
 
+  # SDL_version
+
+  def self.version(x)
+    (x).value.major = LibSDL::MAJOR_VERSION
+    (x).value.minor = LibSDL::MINOR_VERSION
+    (x).value.patch = LibSDL::PATCHLEVEL
+  end
+
+  def self.versionnum(x, y, z)
+    ((x)*1000 + (y)*100 + (z))
+  end
+
+  def self.version_atleast(x, y, z)
+    ((LibSDL::MAJOR_VERSION >= x) && (LibSDL::MAJOR_VERSION > x || LibSDL::MINOR_VERSION >= y) && (LibSDL::MAJOR_VERSION > x || LibSDL::MINOR_VERSION > y || LibSDL::PATCHLEVEL >= z))
+  end
+
   # SDL_audio
 
   def self.audio_bitsize(x)
@@ -175,5 +191,25 @@ module LibSDLMacro
 
   def self.window_pos_is_centered(x)
     (((x)&0xFFFF0000) == LibSDL::WINDOWPOS_CENTERED_MASK)
+  end
+
+  # SDL_image
+
+  def self.image_version(x)
+    (x).value.major = LibSDL::IMAGE_MAJOR_VERSION
+    (x).value.minor = LibSDL::IMAGE_MINOR_VERSION
+    (x).value.patch = LibSDL::IMAGE_PATCHLEVEL
+  end
+
+  def self.image_version_atleast
+    ((LibSDL::IMAGE_MAJOR_VERSION >= x) && (LibSDL::IMAGE_MAJOR_VERSION > x || LibSDL::IMAGE_MINOR_VERSION >= y) && (LibSDL::IMAGE_MAJOR_VERSION > x || LibSDL::IMAGE_MINOR_VERSION > y || LibSDL::IMAGE_PATCHLEVEL >= z))
+  end
+
+  def self.img_set_error(*args)
+    LibSDL.set_error(*args)
+  end
+
+  def self.img_get_error(*args)
+    LibSDL.get_error(*args)
   end
 end
