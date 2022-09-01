@@ -1,4 +1,4 @@
-# Based on https://lazyfoo.net/tutorials/SDL/02_getting_an_image_on_the_screen/index.php
+# Based on https://lazyfoo.net/tutorials/SDL/03_event_driven_programming/index.php
 
 require "../../src/sdl-crystal-bindings.cr"
 
@@ -14,15 +14,23 @@ raise "Window could not be created! Error: #{String.new(LibSDL.get_error)}" if !
 
 g_screen_surface = LibSDL.get_window_surface(g_window)
 
-g_hello_world = LibSDLMacro.load_bmp("examples/02_Getting_an_Image_on_the_Screen/hello_world.bmp")
-raise "Unable to load image hello_world.bmp! Error: #{String.new(LibSDL.get_error)}" if !g_hello_world
+g_x_out = LibSDLMacro.load_bmp("examples/03/x.bmp")
+raise "Unable to load image hello_world.bmp! Error: #{String.new(LibSDL.get_error)}" if !g_x_out
 
-LibSDLMacro.blit_surface(g_hello_world, nil, g_screen_surface, nil)
-LibSDL.update_window_surface(g_window)
+quit = false
 
-sleep(2.0)
+while(!quit)
+  while LibSDL.poll_event(out e) != 0
+    if e.type == LibSDL::EventType::QUIT.to_i
+      quit = true
+    end
+  end
 
-LibSDL.free_surface(g_hello_world)
+  LibSDLMacro.blit_surface(g_x_out, nil, g_screen_surface, nil)
+  LibSDL.update_window_surface(g_window)
+end
+
+LibSDL.free_surface(g_x_out)
 LibSDL.destroy_window(g_window)
 
 LibSDL.quit

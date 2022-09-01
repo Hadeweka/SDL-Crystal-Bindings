@@ -1,4 +1,4 @@
-# Based on https://lazyfoo.net/tutorials/SDL/03_event_driven_programming/index.php
+# Based on https://lazyfoo.net/tutorials/SDL/05_optimized_surface_loading_and_soft_stretching/index.php
 
 require "../../src/sdl-crystal-bindings.cr"
 
@@ -14,8 +14,11 @@ raise "Window could not be created! Error: #{String.new(LibSDL.get_error)}" if !
 
 g_screen_surface = LibSDL.get_window_surface(g_window)
 
-g_x_out = LibSDLMacro.load_bmp("examples/03_Event_driven_Programming/x.bmp")
-raise "Unable to load image hello_world.bmp! Error: #{String.new(LibSDL.get_error)}" if !g_x_out
+loaded_surface = LibSDLMacro.load_bmp("examples/05/stretch.bmp")
+raise "Unable to load image stretch.bmp! Error: #{String.new(LibSDL.get_error)}" unless loaded_surface
+
+g_stretched_surface = LibSDL.convert_surface(loaded_surface, g_screen_surface.value.format, 0)
+raise "Unable to optimize image stretch.bmp! Error: #{String.new(LibSDL.get_error)}" unless g_stretched_surface
 
 quit = false
 
@@ -26,11 +29,17 @@ while(!quit)
     end
   end
 
-  LibSDLMacro.blit_surface(g_x_out, nil, g_screen_surface, nil)
+  stretch_rect = LibSDL::Rect.new
+  stretch_rect.x = 0
+  stretch_rect.y = 0
+  stretch_rect.w = SCREEN_WIDTH
+  stretch_rect.h = SCREEN_HEIGHT
+  LibSDLMacro.blit_scaled(g_stretched_surface, nil, g_screen_surface, pointerof(stretch_rect))
+
   LibSDL.update_window_surface(g_window)
 end
 
-LibSDL.free_surface(g_x_out)
+LibSDL.free_surface(g_stretched_surface)
 LibSDL.destroy_window(g_window)
 
 LibSDL.quit

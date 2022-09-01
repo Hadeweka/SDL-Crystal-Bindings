@@ -30,7 +30,7 @@ raise "Window could not be created! Error: #{String.new(LibSDL.get_error)}" if !
 g_screen_surface = LibSDL.get_window_surface(g_window)
 
 g_key_press_surfaces = {"press", "up", "down", "left", "right"}.map do |surface|
-  load_surface("examples/04_Key_Presses/#{surface}.bmp")
+  load_surface("examples/04/#{surface}.bmp")
 end
 
 quit = false
