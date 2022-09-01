@@ -17,6 +17,14 @@ This repository comes with pre-generated binding files.
 
 Then, use `require "sdl-crystal-bindings"`.
 
+Regular SDL functions, structs, enums, unions and constants are accessible using the `LibSDL` namespace, while
+preprocessor macro functions are accessible using the `LibSDLMacro` module. This separation is due to the fact
+that no functions can be added to the Crystal `lib` modules, which do not already exist in C. Since these are
+simple macro expressions, they have no real analogon and thus need to be implemented separately.
+
+Note that also the syntax differs from regular SDL in many aspects and is more oriented to Crystal (for example,
+functions are in snake_case, while structs are in CamelCase).
+
 ## Generating new bindings
 
 To update the bindings, you need to have Ruby, gcc and clang installed on your system (ideally Linux or might not work).
