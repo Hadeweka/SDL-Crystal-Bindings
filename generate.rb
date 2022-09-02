@@ -117,6 +117,18 @@ def should_constant_be_excluded?(name)
   filters.index(name)
 end
 
+def should_function_be_excluded?(name)
+  filters = [
+    "Mix_SetPostMix",
+    "Mix_HookMusic",
+    "Mix_HookMusicFinished",
+    "Mix_ChannelFinished",
+    "Mix_EachSoundFont"
+  ]
+
+  filters.index(name)
+end
+
 def process_constant(constant)
   constant.gsub(/(\d+)[uU]/, "\\1").gsub(/([\d\.]+)[fF]/, "\\1").gsub("\\x1B", "\\e").gsub("\\x7F", "\\u007F").gsub("SDL_", "").gsub("WINDOWPOS_UNDEFINED_DISPLAY(0)", "(LibSDL::WINDOWPOS_CENTERED_MASK | 0)").gsub("WINDOWPOS_CENTERED_DISPLAY(0)", "(LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)").gsub(/VERSIONNUM(([\S]+), ([\S]+), ([\S]+))/, "((\\2)*1000 + (\\3)*100 + (\\4))")
 end
@@ -141,6 +153,8 @@ def get_all_functions(filename)
       function_return_type = function_part_pieces[1]
       function_name = function_part_pieces[2]
       function_args = function_part_pieces[3].split(",").map{|arg| arg.strip.split}
+
+      next if should_function_be_excluded?(function_name.gsub(/\([\S]*/, "")) # The filtering ensures that no weird parentheses are checked (especially for callbacks)
 
       final_functions.push [function_return_type, function_name, function_args]
     end
@@ -344,7 +358,9 @@ headers = [
   ["SDL_touch"],
   ["additions/helper_video.cr"],
   ["SDL_video"],
-  ["SDL_image", "SDL_image/main"]
+  ["SDL_image", "SDL_image/main"],
+  ["additions/helper_mixer.cr"],
+  ["SDL_mixer", "SDL_mixer/main/include"]
 ]
 
 headers.each {|header| compact_header(header)}
@@ -352,6 +368,7 @@ headers.each {|header| compact_header(header)}
 File.open("src/sdl-crystal-bindings.cr", "w") do |f|
   f.puts "@[Link(\"SDL2\")]"
   f.puts "@[Link(\"SDL2_image\")]"
+  f.puts "@[Link(\"SDL2_mixer\")]"
   f.puts "lib LibSDL"
   headers.each do |header|
     f.puts "  # #{header[0]}\n"
