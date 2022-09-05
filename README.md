@@ -45,15 +45,23 @@ If you encounter any problems while generating the bindings, please open an issu
 
 #### Features
 
-* [X] Binding generator
-* [X] Working bindings
-* [X] Bindings for sdl_image, sdl_mixer and sdl_ttf
+* Binding generator
+* Working bindings
+* Bindings for sdl_image, sdl_mixer and sdl_ttf
+* Basic set of examples
 
-#### Todo list
+### Version 0.1.0
 
-* [ ] Link SDL as submodule
-* [ ] Add more examples
-* [ ] Add CI
-* [ ] Put examples in separate submodule
+#### Features
+
+* [ ] More examples
+* [ ] Continuous integration
+
+#### Breaking changes
+
+* [ ] Examples in separate submodule
+* [ ] Decoupling of the different libraries
+
+#### Usability
+
 * [ ] Fix weird formatting in some header files
-* [ ] Maybe separate the different SDL libraries?

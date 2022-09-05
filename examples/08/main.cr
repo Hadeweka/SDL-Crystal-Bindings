@@ -21,7 +21,8 @@ raise "Renderer could not be created! SDL Error: #{String.new(LibSDL.get_error)}
 
 LibSDL.set_render_draw_color(g_renderer, 0xFF, 0xFF, 0xFF, 0xFF)
 
-if (LibSDL.img_init(LibSDL::IMGInitFlags::IMG_INIT_PNG) | LibSDL::IMGInitFlags::IMG_INIT_PNG.to_i) == 0
+img_flags = LibSDL::IMGInitFlags::IMG_INIT_PNG
+if (LibSDL.img_init(img_flags) | img_flags.to_i) == 0
   raise "SDL_image could not initialize! SDL_image Error: #{String.new(LibSDLMacro.img_get_error)}"
 end
 

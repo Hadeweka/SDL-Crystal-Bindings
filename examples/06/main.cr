@@ -13,7 +13,6 @@ g_window = LibSDL.create_window("SDL Tutorial", LibSDL::WINDOWPOS_UNDEFINED, Lib
 raise "Window could not be created! Error: #{String.new(LibSDL.get_error)}" if !g_window
 
 img_flags = LibSDL::IMGInitFlags::IMG_INIT_PNG
-
 if (LibSDL.img_init(img_flags) | img_flags.to_i) == 0
   raise "SDL_image could not initialize! SDL_image Error: #{String.new(LibSDLMacro.img_get_error)}"
 end
