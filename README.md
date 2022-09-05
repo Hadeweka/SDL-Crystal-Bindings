@@ -10,6 +10,8 @@ The bindings here are unsafe and are therefore able to crash your program.
 
 You need to have SDL installed or the SDL library files accessible by Crystal for linking and running.
 
+Currently, you also need to have SDL_image, SDL_mixer and SDL_ttf available.
+
 ## Usage
 
 Simply add this shard (`sdl-crystal-bindings`) to your `shard.yml`.
@@ -45,12 +47,10 @@ If you encounter any problems while generating the bindings, please open an issu
 
 * [X] Binding generator
 * [X] Working bindings
-* [X] Support for sdl_image and sdl_mixer
+* [X] Bindings for sdl_image, sdl_mixer and sdl_ttf
 
 #### Todo list
 
-* [ ] Add sdl_ttf
-* [ ] Add sdl_gfx 
 * [ ] Link SDL as submodule
 * [ ] Add more examples
 * [ ] Add CI

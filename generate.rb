@@ -64,6 +64,7 @@ def type_filter(name)
     ["double", "LibC::Double"],
     ["unsigned int", "LibC::UInt"],
     ["size_t", "LibC::SizeT"],
+    ["long", "LibC::Long"],
     ["Uint64", "UInt64"],
     ["Uint32", "UInt32"],
     ["Uint16", "UInt16"],
@@ -111,7 +112,10 @@ end
 
 def should_constant_be_excluded?(name)
   filters = [
-    "SDL_AUDIOCVT_PACKED"
+    "SDL_AUDIOCVT_PACKED",
+    "TTF_MAJOR_VERSION",
+    "TTF_MINOR_VERSION",
+    "TTF_PATCHLEVEL"
   ]
 
   filters.index(name)
@@ -148,7 +152,7 @@ def get_all_functions(filename)
     if function_matches
       function_part = function_matches[1].gsub("SDL_PRINTF_FORMAT_STRING", "").gsub(/SDL_PRINTF_VARARG_FUNC\([\d]+\)/, "")
 
-      function_part_pieces = function_part.match(/([\S]+) [\S]* ([\S]*)\(([\S ]+)\)/)
+      function_part_pieces = function_part.match(/([\S]+) (?:SDLCALL )*([\S]*)\(([\S ]+)\)/)
 
       function_return_type = function_part_pieces[1]
       function_name = function_part_pieces[2]
@@ -360,7 +364,8 @@ headers = [
   ["SDL_video"],
   ["SDL_image", "SDL_image/main"],
   ["additions/helper_mixer.cr"],
-  ["SDL_mixer", "SDL_mixer/main/include"]
+  ["SDL_mixer", "SDL_mixer/main/include"],
+  ["SDL_ttf", "SDL_ttf/main"]
 ]
 
 headers.each {|header| compact_header(header)}
@@ -369,6 +374,7 @@ File.open("src/sdl-crystal-bindings.cr", "w") do |f|
   f.puts "@[Link(\"SDL2\")]"
   f.puts "@[Link(\"SDL2_image\")]"
   f.puts "@[Link(\"SDL2_mixer\")]"
+  f.puts "@[Link(\"SDL2_ttf\")]"
   f.puts "lib LibSDL"
   headers.each do |header|
     f.puts "  # #{header[0]}\n"

@@ -15,3 +15,4 @@ libraries:
   libSDL2: ~> 2.0.0
   libSDL2_image: ~> 2.0.0
   libSDL2_mixer: ~> 2.0.0
+  libSDL2_ttf: ~> 2.0.0
