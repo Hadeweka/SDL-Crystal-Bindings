@@ -1,4 +1,4 @@
-# Based on https://lazyfoo.net/tutorials/SDL/08_geometry_rendering/index.php
+# Based on https://lazyfoo.net/tutorials/SDL/09_the_viewport/index.php
 
 require "../../src/sdl-crystal-bindings.cr"
 
@@ -26,6 +26,12 @@ if (LibSDL.img_init(img_flags) | img_flags.to_i) == 0
   raise "SDL_image could not initialize! SDL_image Error: #{String.new(LibSDLMacro.img_get_error)}"
 end
 
+loaded_surface = LibSDL.img_load("examples/09/viewport.png")
+raise "Unable to load image viewport.png! SDL_image Error: #{String.new(LibSDL.get_error)}" unless loaded_surface
+
+g_texture = LibSDL.create_texture_from_surface(g_renderer, loaded_surface)
+raise "Unable to create texture from viewport.png! SDL Error: #{String.new(LibSDL.get_error)}" unless g_texture
+
 quit = false
 
 while(!quit)
@@ -38,25 +44,22 @@ while(!quit)
   LibSDL.set_render_draw_color(g_renderer, 0xFF, 0xFF, 0xFF, 0xFF)
   LibSDL.render_clear(g_renderer)
 
-  fill_rect = LibSDL::Rect.new(x: SCREEN_WIDTH / 4, y: SCREEN_HEIGHT / 4, w: SCREEN_WIDTH / 2, h: SCREEN_HEIGHT / 2)
-  LibSDL.set_render_draw_color(g_renderer, 0xFF, 0x00, 0x00, 0xFF)
-  LibSDL.render_fill_rect(g_renderer, pointerof(fill_rect))
+  top_left_viewport = LibSDL::Rect.new(x: 0, y: 0, w: SCREEN_WIDTH / 2, h: SCREEN_HEIGHT / 2)
+  LibSDL.render_set_viewport(g_renderer, pointerof(top_left_viewport))
+  LibSDL.render_copy(g_renderer, g_texture, nil, nil)
 
-  outline_rect = LibSDL::Rect.new(x: SCREEN_WIDTH / 6, y: SCREEN_HEIGHT / 6, w: SCREEN_WIDTH*2 / 3, h: SCREEN_HEIGHT*2 / 3)
-  LibSDL.set_render_draw_color(g_renderer, 0x00, 0xFF, 0x00, 0xFF)
-  LibSDL.render_draw_rect(g_renderer, pointerof(outline_rect))
+  top_right_viewport = LibSDL::Rect.new(x: SCREEN_WIDTH / 2, y: 0, w: SCREEN_WIDTH / 2, h: SCREEN_HEIGHT / 2)
+  LibSDL.render_set_viewport(g_renderer, pointerof(top_right_viewport))
+  LibSDL.render_copy(g_renderer, g_texture, nil, nil)
 
-  LibSDL.set_render_draw_color(g_renderer, 0x00, 0x00, 0xFF, 0xFF)
-  LibSDL.render_draw_line(g_renderer, 0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2)
-
-  LibSDL.set_render_draw_color(g_renderer, 0xFF, 0xFF, 0x00, 0xFF)
-  0.step(to: SCREEN_HEIGHT, by: 4) do |i|
-    LibSDL.render_draw_point(g_renderer, SCREEN_WIDTH / 2, i)
-  end
+  bottom_viewport = LibSDL::Rect.new(x: 0, y: SCREEN_HEIGHT / 2, w: SCREEN_WIDTH, h: SCREEN_HEIGHT / 2)
+  LibSDL.render_set_viewport(g_renderer, pointerof(bottom_viewport))
+  LibSDL.render_copy(g_renderer, g_texture, nil, nil)
 
   LibSDL.render_present(g_renderer)
 end
 
+LibSDL.destroy_texture(g_texture)
 LibSDL.destroy_renderer(g_renderer)
 LibSDL.destroy_window(g_window)
 

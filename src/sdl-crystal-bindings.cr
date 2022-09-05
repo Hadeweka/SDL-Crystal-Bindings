@@ -41,8 +41,8 @@ lib LibSDL
   # additions/helper_types.cr
 
   enum SBool
-    SDL_FALSE = 0
-    SDL_TRUE = 1
+    FALSE = 0
+    TRUE = 1
   end
 
   # SDL_scancode
