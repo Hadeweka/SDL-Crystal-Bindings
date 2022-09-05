@@ -56,6 +56,7 @@ end
 def type_filter(name)
   filters = [
     ["Point", "§1"],  # The 'int' in 'Point' would be parsed, so we want to mask it for now
+    ["Hint", "§2"],
 
     ["const ", ""],
     ["char*", "LibC::Char*"],
@@ -82,7 +83,8 @@ def type_filter(name)
     ["SDL_bool", "SBool"],
     ["FILE", "Void"], # It is a bit of cheating, but you should rarely use this anyway
 
-    ["§1", "Point"] # Now we can demask it again
+    ["§1", "Point"], # Now we can demask it again
+    ["§2", "Hint"]
   ]
 
   soft_filter(filters.inject(name) {|text, filter| text.gsub(filter[0], filter[1])})
@@ -344,6 +346,8 @@ headers = [
   ["SDL_guid"],
   ["SDL_haptic"],
   ["additions/helper_haptic.cr"],
+  ["SDL_hints"],
+  ["additions/helper_hints.cr"],
   ["SDL_joystick"],
   ["additions/helper_joystick.cr"],
   ["SDL_keyboard"],
