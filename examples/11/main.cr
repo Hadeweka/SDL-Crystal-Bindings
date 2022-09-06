@@ -1,4 +1,4 @@
-# Based on https://lazyfoo.net/tutorials/SDL/10_color_keying/index.php
+# Based on https://lazyfoo.net/tutorials/SDL/11_clip_rendering_and_sprite_sheets/index.php
 
 require "../../src/sdl-crystal-bindings.cr"
 
@@ -12,7 +12,6 @@ class LTexture
   @texture = Pointer(LibSDL::Texture).null
   @renderer = Pointer(LibSDL::Renderer).null
 
-  # NOTE: In the example above, the renderer is a global variable, but Crystal doesn't have these
   def initialize(@renderer : LibSDL::Renderer*)
   end
 
@@ -46,9 +45,15 @@ class LTexture
     LibSDL.free_surface(loaded_surface)
   end
 
-  def render(x : Int, y : Int)
+  def render(x : Int, y : Int, clip : LibSDL::Rect* = Pointer.null)
     render_quad = LibSDL::Rect.new(x: x, y: y, w: @width, h: @height)
-    LibSDL.render_copy(@renderer, @texture, nil, pointerof(render_quad))
+
+    if clip
+      render_quad.w = clip.value.w
+      render_quad.h = clip.value.h
+    end
+
+    LibSDL.render_copy(@renderer, @texture, clip, pointerof(render_quad))
   end
 end
 
@@ -73,11 +78,13 @@ if (LibSDL.img_init(img_flags) | img_flags.to_i) == 0
   raise "SDL_image could not initialize! SDL_image Error: #{String.new(LibSDLMacro.img_get_error)}"
 end
 
-g_foo_texture = LTexture.new(g_renderer)
-g_foo_texture.load_from_file("examples/10/foo.png")
+g_sprite_sheet_texture = LTexture.new(g_renderer)
+g_sprite_sheet_texture.load_from_file("examples/11/dots.png")
 
-g_background_texture = LTexture.new(g_renderer)
-g_background_texture.load_from_file("examples/10/background.png")
+g_sprite_clip_0 = LibSDL::Rect.new(x: 0, y: 0, w: 100, h: 100)
+g_sprite_clip_1 = LibSDL::Rect.new(x: 100, y: 0, w: 100, h: 100)
+g_sprite_clip_2 = LibSDL::Rect.new(x: 0, y: 100, w: 100, h: 100)
+g_sprite_clip_3 = LibSDL::Rect.new(x: 100, y: 100, w: 100, h: 100)
 
 quit = false
 
@@ -91,14 +98,15 @@ while(!quit)
   LibSDL.set_render_draw_color(g_renderer, 0xFF, 0xFF, 0xFF, 0xFF)
   LibSDL.render_clear(g_renderer)
 
-  g_background_texture.render(0, 0)
-  g_foo_texture.render(240, 190)
+  g_sprite_sheet_texture.render(0, 0, pointerof(g_sprite_clip_0))
+  g_sprite_sheet_texture.render(SCREEN_WIDTH - g_sprite_clip_1.w, 0, pointerof(g_sprite_clip_1))
+  g_sprite_sheet_texture.render(0, SCREEN_HEIGHT - g_sprite_clip_2.h, pointerof(g_sprite_clip_2))
+  g_sprite_sheet_texture.render(SCREEN_WIDTH - g_sprite_clip_3.w, SCREEN_HEIGHT - g_sprite_clip_3.h, pointerof(g_sprite_clip_3))
 
   LibSDL.render_present(g_renderer)
 end
 
-g_foo_texture.free
-g_background_texture.free
+g_sprite_sheet_texture.free
 
 LibSDL.destroy_renderer(g_renderer)
 LibSDL.destroy_window(g_window)
