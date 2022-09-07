@@ -278,7 +278,10 @@ def transform_structs(structs)
     
     enum_values = enum[1].split(", ")
     enum_values.each do |enum_value|
-      ord_val = filter_sdl(process_constant(enum_value.strip)).gsub("' '", ' '.ord.to_s).gsub(/'(\S)+'/) {|val| val[1..-2].gsub("\\r", "\r").gsub("\\e", "\e").gsub("\\b", "\b").gsub("\\t", "\t").gsub("\\u007F", "\u007F").gsub("\\'", "\'").ord}
+      fixed_enum_values = enum_value.split("=")
+      fixed_enum_values[0].upcase!
+      fixed_enum_value = fixed_enum_values.join("=")
+      ord_val = filter_sdl(process_constant(fixed_enum_value.strip)).gsub("' '", ' '.ord.to_s).gsub(/'(\S)+'/) {|val| val[1..-2].gsub("\\r", "\r").gsub("\\e", "\e").gsub("\\b", "\b").gsub("\\t", "\t").gsub("\\u007F", "\u007F").gsub("\\'", "\'").ord}
       processed_ord_val = ord_val.gsub(/SCANCODE_TO_KEYCODE\((\S+)\)/) { "Scancode::#{filter_sdl_const(Regexp.last_match[1])} | K_SCANCODE_MASK" }
       struct_str += "    #{processed_ord_val}\n"
     end

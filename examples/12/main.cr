@@ -1,4 +1,4 @@
-# Based on https://lazyfoo.net/tutorials/SDL/11_clip_rendering_and_sprite_sheets/index.php
+# Based on https://lazyfoo.net/tutorials/SDL/12_color_modulation/index.php
 
 require "../../src/sdl-crystal-bindings.cr"
 
@@ -27,6 +27,10 @@ class LTexture
       @width = 0
       @height = 0
     end
+  end
+
+  def set_color(red : UInt8, green : UInt8, blue : UInt8)
+    LibSDL.set_texture_color_mod(@texture, red, green, blue)
   end
 
   def load_from_file(path : String)
@@ -78,35 +82,42 @@ if (LibSDL.img_init(img_flags) | img_flags.to_i) == 0
   raise "SDL_image could not initialize! SDL_image Error: #{String.new(LibSDLMacro.img_get_error)}"
 end
 
-g_sprite_sheet_texture = LTexture.new(g_renderer)
-g_sprite_sheet_texture.load_from_file("examples/11/dots.png")
-
-g_sprite_clip_0 = LibSDL::Rect.new(x: 0, y: 0, w: 100, h: 100)
-g_sprite_clip_1 = LibSDL::Rect.new(x: 100, y: 0, w: 100, h: 100)
-g_sprite_clip_2 = LibSDL::Rect.new(x: 0, y: 100, w: 100, h: 100)
-g_sprite_clip_3 = LibSDL::Rect.new(x: 100, y: 100, w: 100, h: 100)
+g_modulated_texture = LTexture.new(g_renderer)
+g_modulated_texture.load_from_file("examples/12/colors.png")
 
 quit = false
+
+r : UInt8 = 255
+g : UInt8 = 255
+b : UInt8 = 255
 
 while(!quit)
   while LibSDL.poll_event(out e) != 0
     if e.type == LibSDL::EventType::QUIT.to_i
       quit = true
+    elsif e.type == LibSDL::EventType::KEYDOWN.to_i
+      case e.key.keysym.sym
+        # NOTE: We allow an overflow here to match the functionality of the example
+        when LibSDL::KeyCode::K_Q.to_i then r &+= 32
+        when LibSDL::KeyCode::K_W.to_i then g &+= 32
+        when LibSDL::KeyCode::K_E.to_i then b &+= 32
+        when LibSDL::KeyCode::K_A.to_i then r &-= 32
+        when LibSDL::KeyCode::K_S.to_i then g &-= 32
+        when LibSDL::KeyCode::K_D.to_i then b &-= 32
+      end
     end
   end
 
   LibSDL.set_render_draw_color(g_renderer, 0xFF, 0xFF, 0xFF, 0xFF)
   LibSDL.render_clear(g_renderer)
 
-  g_sprite_sheet_texture.render(0, 0, pointerof(g_sprite_clip_0))
-  g_sprite_sheet_texture.render(SCREEN_WIDTH - g_sprite_clip_1.w, 0, pointerof(g_sprite_clip_1))
-  g_sprite_sheet_texture.render(0, SCREEN_HEIGHT - g_sprite_clip_2.h, pointerof(g_sprite_clip_2))
-  g_sprite_sheet_texture.render(SCREEN_WIDTH - g_sprite_clip_3.w, SCREEN_HEIGHT - g_sprite_clip_3.h, pointerof(g_sprite_clip_3))
+  g_modulated_texture.set_color(r, g, b)
+  g_modulated_texture.render(0, 0)
 
   LibSDL.render_present(g_renderer)
 end
 
-g_sprite_sheet_texture.free
+g_modulated_texture.free
 
 LibSDL.destroy_renderer(g_renderer)
 LibSDL.destroy_window(g_window)

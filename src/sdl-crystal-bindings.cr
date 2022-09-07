@@ -1619,32 +1619,32 @@ lib LibSDL
     K_CARET = 94
     K_UNDERSCORE = 95
     K_BACKQUOTE = 96
-    K_a = 97
-    K_b = 98
-    K_c = 99
-    K_d = 100
-    K_e = 101
-    K_f = 102
-    K_g = 103
-    K_h = 104
-    K_i = 105
-    K_j = 106
-    K_k = 107
-    K_l = 108
-    K_m = 109
-    K_n = 110
-    K_o = 111
-    K_p = 112
-    K_q = 113
-    K_r = 114
-    K_s = 115
-    K_t = 116
-    K_u = 117
-    K_v = 118
-    K_w = 119
-    K_x = 120
-    K_y = 121
-    K_z = 122
+    K_A = 97
+    K_B = 98
+    K_C = 99
+    K_D = 100
+    K_E = 101
+    K_F = 102
+    K_G = 103
+    K_H = 104
+    K_I = 105
+    K_J = 106
+    K_K = 107
+    K_L = 108
+    K_M = 109
+    K_N = 110
+    K_O = 111
+    K_P = 112
+    K_Q = 113
+    K_R = 114
+    K_S = 115
+    K_T = 116
+    K_U = 117
+    K_V = 118
+    K_W = 119
+    K_X = 120
+    K_Y = 121
+    K_Z = 122
     K_CAPSLOCK = Scancode::SCANCODE_CAPSLOCK | K_SCANCODE_MASK
     K_F1 = Scancode::SCANCODE_F1 | K_SCANCODE_MASK
     K_F2 = Scancode::SCANCODE_F2 | K_SCANCODE_MASK
@@ -2061,9 +2061,9 @@ lib LibSDL
   end
 
   enum ScaleMode
-    ScaleModeNearest
-    ScaleModeLinear
-    ScaleModeBest
+    SCALEMODENEAREST
+    SCALEMODELINEAR
+    SCALEMODEBEST
   end
 
   enum TextureAccess
