@@ -39,7 +39,7 @@ files in the `additions` directory to add specific bindings manually.
 
 If you encounter any problems while generating the bindings, please open an issue.
 
-## Roadmap
+## Changelog
 
 ### Version 0.0.1
 
@@ -49,6 +49,13 @@ If you encounter any problems while generating the bindings, please open an issu
 * Working bindings
 * Bindings for sdl_image, sdl_mixer and sdl_ttf
 * Basic set of examples
+
+## Roadmap
+
+### Version 0.0.2
+
+* [X] Fixed some binding inconsistencies
+* [ ] More examples
 
 ### Version 0.1.0
 
