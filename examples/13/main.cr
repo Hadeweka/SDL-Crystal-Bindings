@@ -57,7 +57,7 @@ class LTexture
     LibSDL.free_surface(loaded_surface)
   end
 
-  def render(x : Int, y : Int, clip : LibSDL::Rect* = Pointer(LibSDL::Rect).null)
+  def render(x : Int, y : Int, clip : LibSDL::Rect*? = nil)
     render_quad = LibSDL::Rect.new(x: x, y: y, w: @width, h: @height)
 
     if clip

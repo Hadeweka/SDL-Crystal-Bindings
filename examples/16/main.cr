@@ -1,4 +1,4 @@
-# Based on https://lazyfoo.net/tutorials/SDL/12_color_modulation/index.php
+# Based on https://lazyfoo.net/tutorials/SDL/16_true_type_fonts/index.php
 
 require "../../src/sdl-crystal-bindings.cr"
 
@@ -33,6 +33,14 @@ class LTexture
     LibSDL.set_texture_color_mod(@texture, red, green, blue)
   end
 
+  def set_blend_mode(blending : LibSDL::BlendMode)
+    LibSDL.set_texture_blend_mode(@texture, blending)
+  end
+
+  def set_alpha(alpha : UInt8)
+    LibSDL.set_texture_alpha_mod(@texture, alpha)
+  end
+
   def load_from_file(path : String)
     free
 
@@ -49,7 +57,22 @@ class LTexture
     LibSDL.free_surface(loaded_surface)
   end
 
-  def render(x : Int, y : Int, clip : LibSDL::Rect*? = nil)
+  def load_from_rendered_text(texture_text : String, text_color : LibSDL::Color, font : LibSDL::TTFFont*)
+    free
+
+    text_surface = LibSDL.ttf_render_text_solid(font, texture_text, text_color)
+    raise "Unable to create texture from rendered text! SDL Error: #{String.new(LibSDL.get_error)}" unless text_surface
+
+    @texture = LibSDL.create_texture_from_surface(@renderer, text_surface)
+    raise "Unable to create texture from rendered text! SDL Error: #{String.new(LibSDL.get_error)}" unless @texture
+
+    @width = text_surface.value.w
+    @height = text_surface.value.h
+
+    LibSDL.free_surface(text_surface)
+  end
+
+  def render(x : Int, y : Int, clip : LibSDL::Rect*? = nil, angle : Float = 0.0, center : LibSDL::Point*? = nil, flip : LibSDL::RendererFlip = LibSDL::RendererFlip::FLIP_NONE)
     render_quad = LibSDL::Rect.new(x: x, y: y, w: @width, h: @height)
 
     if clip
@@ -57,7 +80,7 @@ class LTexture
       render_quad.h = clip.value.h
     end
 
-    LibSDL.render_copy(@renderer, @texture, clip, pointerof(render_quad))
+    LibSDL.render_copy_ex(@renderer, @texture, clip, pointerof(render_quad), angle, center, flip)
   end
 end
 
@@ -72,7 +95,8 @@ end
 g_window = LibSDL.create_window("SDL Tutorial", LibSDL::WINDOWPOS_UNDEFINED, LibSDL::WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, LibSDL::WindowFlags::WINDOW_SHOWN)
 raise "Window could not be created! SDL Error: #{String.new(LibSDL.get_error)}" unless g_window
 
-g_renderer = LibSDL.create_renderer(g_window, -1, LibSDL::RendererFlags::RENDERER_ACCELERATED)
+renderer_flags = LibSDL::RendererFlags::RENDERER_ACCELERATED | LibSDL::RendererFlags::RENDERER_PRESENTVSYNC
+g_renderer = LibSDL.create_renderer(g_window, -1, renderer_flags)
 raise "Renderer could not be created! SDL Error: #{String.new(LibSDL.get_error)}" unless g_renderer
 
 LibSDL.set_render_draw_color(g_renderer, 0xFF, 0xFF, 0xFF, 0xFF)
@@ -82,14 +106,21 @@ if (LibSDL.img_init(img_flags) | img_flags.to_i) == 0
   raise "SDL_image could not initialize! SDL_image Error: #{String.new(LibSDLMacro.img_get_error)}"
 end
 
-g_modulated_texture = LTexture.new(g_renderer)
-g_modulated_texture.load_from_file("examples/12/colors.png")
+if LibSDL.ttf_init == -1
+  raise "SDL_ttf could not initialize! SDL_ttf Error: #{String.new(LibSDLMacro.ttf_get_error)}"
+end
+
+g_font = LibSDL.ttf_open_font("examples/16/lazy.ttf", 28)
+raise "Failed to load lazy font! SDL_ttf Error: #{String.new(LibSDLMacro.ttf_get_error)}" unless g_font
+
+text_color = LibSDL::Color.new(r: 0, g: 0, b: 0)
+
+g_text_texture = LTexture.new(g_renderer)
+g_text_texture.load_from_rendered_text("The quick brown fox jumps over the lazy dog", text_color, g_font)
 
 quit = false
-
-r : UInt8 = 255
-g : UInt8 = 255
-b : UInt8 = 255
+degrees = 0.0
+flip_type = LibSDL::RendererFlip::FLIP_NONE
 
 while(!quit)
   while LibSDL.poll_event(out e) != 0
@@ -97,13 +128,11 @@ while(!quit)
       quit = true
     elsif e.type == LibSDL::EventType::KEYDOWN.to_i
       case e.key.keysym.sym
-        # NOTE: We allow an overflow here to match the functionality of the example
-        when LibSDL::KeyCode::K_Q.to_i then r &+= 32
-        when LibSDL::KeyCode::K_W.to_i then g &+= 32
-        when LibSDL::KeyCode::K_E.to_i then b &+= 32
-        when LibSDL::KeyCode::K_A.to_i then r &-= 32
-        when LibSDL::KeyCode::K_S.to_i then g &-= 32
-        when LibSDL::KeyCode::K_D.to_i then b &-= 32
+        when LibSDL::KeyCode::K_A.to_i then degrees -= 60
+        when LibSDL::KeyCode::K_D.to_i then degrees += 60
+        when LibSDL::KeyCode::K_Q.to_i then flip_type = LibSDL::RendererFlip::FLIP_HORIZONTAL
+        when LibSDL::KeyCode::K_W.to_i then flip_type = LibSDL::RendererFlip::FLIP_NONE
+        when LibSDL::KeyCode::K_E.to_i then flip_type = LibSDL::RendererFlip::FLIP_VERTICAL
       end
     end
   end
@@ -111,16 +140,17 @@ while(!quit)
   LibSDL.set_render_draw_color(g_renderer, 0xFF, 0xFF, 0xFF, 0xFF)
   LibSDL.render_clear(g_renderer)
 
-  g_modulated_texture.set_color(r, g, b)
-  g_modulated_texture.render(0, 0)
+  g_text_texture.render((SCREEN_WIDTH - g_text_texture.width) // 2, (SCREEN_HEIGHT - g_text_texture.height) // 2)
 
   LibSDL.render_present(g_renderer)
 end
 
-g_modulated_texture.free
+g_text_texture.free
+LibSDL.ttf_close_font(g_font)
 
 LibSDL.destroy_renderer(g_renderer)
 LibSDL.destroy_window(g_window)
 
+LibSDL.ttf_quit
 LibSDL.img_quit
 LibSDL.quit

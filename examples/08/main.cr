@@ -38,20 +38,20 @@ while(!quit)
   LibSDL.set_render_draw_color(g_renderer, 0xFF, 0xFF, 0xFF, 0xFF)
   LibSDL.render_clear(g_renderer)
 
-  fill_rect = LibSDL::Rect.new(x: SCREEN_WIDTH / 4, y: SCREEN_HEIGHT / 4, w: SCREEN_WIDTH / 2, h: SCREEN_HEIGHT / 2)
+  fill_rect = LibSDL::Rect.new(x: SCREEN_WIDTH // 4, y: SCREEN_HEIGHT // 4, w: SCREEN_WIDTH // 2, h: SCREEN_HEIGHT // 2)
   LibSDL.set_render_draw_color(g_renderer, 0xFF, 0x00, 0x00, 0xFF)
   LibSDL.render_fill_rect(g_renderer, pointerof(fill_rect))
 
-  outline_rect = LibSDL::Rect.new(x: SCREEN_WIDTH / 6, y: SCREEN_HEIGHT / 6, w: SCREEN_WIDTH*2 / 3, h: SCREEN_HEIGHT*2 / 3)
+  outline_rect = LibSDL::Rect.new(x: SCREEN_WIDTH // 6, y: SCREEN_HEIGHT // 6, w: SCREEN_WIDTH*2 // 3, h: SCREEN_HEIGHT*2 // 3)
   LibSDL.set_render_draw_color(g_renderer, 0x00, 0xFF, 0x00, 0xFF)
   LibSDL.render_draw_rect(g_renderer, pointerof(outline_rect))
 
   LibSDL.set_render_draw_color(g_renderer, 0x00, 0x00, 0xFF, 0xFF)
-  LibSDL.render_draw_line(g_renderer, 0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2)
+  LibSDL.render_draw_line(g_renderer, 0, SCREEN_HEIGHT // 2, SCREEN_WIDTH, SCREEN_HEIGHT // 2)
 
   LibSDL.set_render_draw_color(g_renderer, 0xFF, 0xFF, 0x00, 0xFF)
   0.step(to: SCREEN_HEIGHT, by: 4) do |i|
-    LibSDL.render_draw_point(g_renderer, SCREEN_WIDTH / 2, i)
+    LibSDL.render_draw_point(g_renderer, SCREEN_WIDTH // 2, i)
   end
 
   LibSDL.render_present(g_renderer)
