@@ -79,7 +79,7 @@ def type_filter(name)
     ["int16", "Int16"],
     ["int8", "Int8"],
     ["int", "LibC::Int"],
-    ["char", "Char"],
+    ["char", "LibC::Char"],
     ["SDL_bool", "SBool"],
     ["FILE", "Void"], # It is a bit of cheating, but you should rarely use this anyway
 

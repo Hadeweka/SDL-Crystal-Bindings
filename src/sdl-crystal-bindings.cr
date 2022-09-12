@@ -636,7 +636,7 @@ lib LibSDL
     type : UInt32
     timestamp : UInt32
     window_id : UInt32
-    text : Char[TEXTEDITINGEVENT_TEXT_SIZE]
+    text : LibC::Char[TEXTEDITINGEVENT_TEXT_SIZE]
     start_point : Int32
     length : Int32
   end
@@ -654,7 +654,7 @@ lib LibSDL
     type : UInt32
     timestamp : UInt32
     window_id : UInt32
-    text : Char[TEXTINPUTEVENT_TEXT_SIZE]
+    text : LibC::Char[TEXTINPUTEVENT_TEXT_SIZE]
   end
 
   struct MouseMotionEvent
