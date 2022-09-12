@@ -136,7 +136,7 @@ def should_function_be_excluded?(name)
 end
 
 def process_constant(constant)
-  constant.gsub(/(\d+)[uU]/, "\\1").gsub(/([\d\.]+)[fF]/, "\\1").gsub("\\x1B", "\\e").gsub("\\x7F", "\\u007F").gsub("SDL_", "").gsub("WINDOWPOS_UNDEFINED_DISPLAY(0)", "(LibSDL::WINDOWPOS_CENTERED_MASK | 0)").gsub("WINDOWPOS_CENTERED_DISPLAY(0)", "(LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)").gsub(/VERSIONNUM(([\S]+), ([\S]+), ([\S]+))/, "((\\2)*1000 + (\\3)*100 + (\\4))")
+  constant.gsub(/(\d+)[uU]/, "\\1").gsub(/^([\d\.]+)[fF]$/, "\\1").gsub("\\x1B", "\\e").gsub("\\x7F", "\\u007F").gsub("SDL_", "").gsub("WINDOWPOS_UNDEFINED_DISPLAY(0)", "(LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)").gsub("WINDOWPOS_CENTERED_DISPLAY(0)", "(LibSDL::WINDOWPOS_CENTERED_MASK | 0)").gsub(/VERSIONNUM(([\S]+), ([\S]+), ([\S]+))/, "((\\2)*1000 + (\\3)*100 + (\\4))")
 end
 
 $constant_cache = {}
@@ -264,7 +264,7 @@ def transform_structs(structs)
   struct_str = ""
 
   structs[1].each do |struct|
-     struct_str += "  type #{soft_filter(struct[0])} = #{type_filter(struct[1])}\n"
+     struct_str += "  alias #{soft_filter(struct[0])} = #{type_filter(struct[1])}\n"
   end
 
   struct_str = "\n#{struct_str}\n" unless struct_str == ""

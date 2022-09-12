@@ -330,9 +330,9 @@ lib LibSDL
   AUDIOCVT_MAX_FILTERS = 9
   MIX_MAXVOLUME = 128
 
-  type AudioStream = Void
-  type AudioFormat = UInt16
-  type AudioDeviceID = UInt32
+  alias AudioStream = Void
+  alias AudioFormat = UInt16
+  alias AudioDeviceID = UInt32
 
   enum AudioStatus
     AUDIO_STOPPED = 0
@@ -423,7 +423,7 @@ lib LibSDL
     BLENDMODE_ADD = 0x00000002
     BLENDMODE_MOD = 0x00000004
     BLENDMODE_MUL = 0x00000008
-    BLENDMODE_INVALID = 0x7FFFFFF
+    BLENDMODE_INVALID = 0x7FFFFFFF
   end
 
   enum BlendOperation
@@ -523,7 +523,7 @@ lib LibSDL
   DISABLE = 0
   ENABLE = 1
 
-  type SysWMmsg = Void
+  alias SysWMmsg = Void
 
   enum EventType
     FIRSTEVENT = 0
@@ -582,7 +582,7 @@ lib LibSDL
     SENSORUPDATE = 0x1200
     RENDER_TARGETS_RESET = 0x2000
     RENDER_DEVICE_RESET
-    POLLSENTINEL = 0x700
+    POLLSENTINEL = 0x7F00
     USEREVENT = 0x8000
     LASTEVENT = 0xFFFF
   end
@@ -926,7 +926,7 @@ lib LibSDL
 
   # SDL_gamecontroller
 
-  type GameController = Void
+  alias GameController = Void
 
   enum GameControllerType
     CONTROLLER_TYPE_UNKNOWN = 0
@@ -1048,7 +1048,7 @@ lib LibSDL
 
   # SDL_gesture
 
-  type GestureID = Int64
+  alias GestureID = Int64
 
   fun record_gesture = SDL_RecordGesture(touch_id : TouchID) : LibC::Int
   fun save_all_dollar_templates = SDL_SaveAllDollarTemplates(dst : RWops*) : LibC::Int
@@ -1088,7 +1088,7 @@ lib LibSDL
   HAPTIC_STEERING_AXIS = 3
   HAPTIC_INFINITY = 4294967295
 
-  type Haptic = Void
+  alias Haptic = Void
 
   struct HapticDirection
     type : UInt8
@@ -1430,9 +1430,9 @@ lib LibSDL
   HAT_LEFTUP = (HAT_LEFT | HAT_UP)
   HAT_LEFTDOWN = (HAT_LEFT | HAT_DOWN)
 
-  type Joystick = Void
-  type JoystickGUID = GUID
-  type JoystickID = Int32
+  alias Joystick = Void
+  alias JoystickGUID = GUID
+  alias JoystickID = Int32
 
   enum JoystickType
     JOYSTICK_TYPE_UNKNOWN
@@ -1572,7 +1572,7 @@ lib LibSDL
 
   K_SCANCODE_MASK = (1 << 30)
 
-  type Keycode = Int32
+  alias Keycode = Int32
 
   enum KeyCode
     K_UNKNOWN = 0
@@ -1664,7 +1664,7 @@ lib LibSDL
     K_INSERT = Scancode::SCANCODE_INSERT | K_SCANCODE_MASK
     K_HOME = Scancode::SCANCODE_HOME | K_SCANCODE_MASK
     K_PAGEUP = Scancode::SCANCODE_PAGEUP | K_SCANCODE_MASK
-    K_DELETE = 92
+    K_DELETE = 127
     K_END = Scancode::SCANCODE_END | K_SCANCODE_MASK
     K_PAGEDOWN = Scancode::SCANCODE_PAGEDOWN | K_SCANCODE_MASK
     K_RIGHT = Scancode::SCANCODE_RIGHT | K_SCANCODE_MASK
@@ -1855,7 +1855,7 @@ lib LibSDL
   BUTTON_X1MASK = BUTTON(BUTTON_X1)
   BUTTON_X2MASK = BUTTON(BUTTON_X2)
 
-  type Cursor = Void
+  alias Cursor = Void
 
   enum SystemCursor
     SYSTEM_CURSOR_ARROW
@@ -2050,8 +2050,8 @@ lib LibSDL
 
   # SDL_render
 
-  type Renderer = Void
-  type Texture = Void
+  alias Renderer = Void
+  alias Texture = Void
 
   enum RendererFlags
     RENDERER_SOFTWARE = 0x00000001
@@ -2231,8 +2231,8 @@ lib LibSDL
 
   STANDARD_GRAVITY = 9.80665
 
-  type Sensor = Void
-  type SensorID = Int32
+  alias Sensor = Void
+  alias SensorID = Int32
 
   enum SensorType
     SENSOR_INVALID = -1
@@ -2296,7 +2296,7 @@ lib LibSDL
   DONTFREE = 0x00000004
   SIMD_ALIGNED = 0x00000008
 
-  type BlitMap = Void
+  alias BlitMap = Void
 
   enum YUVCONVERSIONMODE
     YUV_CONVERSION_JPEG
@@ -2365,8 +2365,8 @@ lib LibSDL
   TOUCH_MOUSEID = ((Uint32)-1)
   MOUSE_TOUCHID = ((Sint64)-1)
 
-  type TouchID = Int64
-  type FingerID = Int64
+  alias TouchID = Int64
+  alias FingerID = Int64
 
   enum TouchDeviceType
     TOUCH_DEVICE_INVALID = -1
@@ -2396,13 +2396,13 @@ lib LibSDL
 
   # SDL_video
 
-  WINDOWPOS_UNDEFINED_MASK = 0x1FF0000
-  WINDOWPOS_UNDEFINED = (LibSDL::WINDOWPOS_CENTERED_MASK | 0)
-  WINDOWPOS_CENTERED_MASK = 0x2FF0000
-  WINDOWPOS_CENTERED = (LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)
+  WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000
+  WINDOWPOS_UNDEFINED = (LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)
+  WINDOWPOS_CENTERED_MASK = 0x2FFF0000
+  WINDOWPOS_CENTERED = (LibSDL::WINDOWPOS_CENTERED_MASK | 0)
 
-  type Window = Void
-  type GLContext = Void*
+  alias Window = Void
+  alias GLContext = Void*
 
   enum WindowFlags
     WINDOW_FULLSCREEN = 0x00000001
@@ -2764,7 +2764,7 @@ lib LibSDL
   MIX_CHANNEL_POST = (-2)
   MIX_EFFECTSMAXSPEED = "MIX_EFFECTSMAXSPEED"
 
-  type MixMusic = Void
+  alias MixMusic = Void
 
   enum MIXInitFlags
     MIX_INIT_FLAC = 0x00000001
@@ -2914,7 +2914,7 @@ lib LibSDL
   TTF_WRAPPED_ALIGN_CENTER = 1
   TTF_WRAPPED_ALIGN_RIGHT = 2
 
-  type TTFFont = Void
+  alias TTFFont = Void
 
   enum TTFDirection
     TTF_DIRECTION_LTR = 0
