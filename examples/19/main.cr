@@ -130,11 +130,12 @@ y_dir = 0
 
 while(!quit)
   # TODO: This does not work with poll_event(out e) for some reason
-  while LibSDL.poll_event(out e) != 0
+  # This might be a Crystal bug
+  e = uninitialized LibSDL::Event
+  while LibSDL.poll_event(pointerof(e)) != 0
     if e.type == LibSDL::EventType::QUIT.to_i
       quit = true
     elsif e.type == LibSDL::EventType::JOYAXISMOTION.to_i
-      puts e.jaxis.inspect
       if e.jaxis.which == 0
         if e.jaxis.axis == 0
           if e.jaxis.value < -JOYSTICK_DEAD_ZONE
