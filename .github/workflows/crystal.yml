@@ -21,7 +21,6 @@ jobs:
       with:
         submodules: recursive
     - name: Install dependencies
-      run: |
-        sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
+      run: sudo apt install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
     - name: Run tests
       run: crystal run examples/01/main.cr
