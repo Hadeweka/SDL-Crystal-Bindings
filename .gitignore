@@ -1,5 +1,7 @@
 output/
 lib/
+*.exe
 *.dll
 *.ll
 *.s
+.vscode/

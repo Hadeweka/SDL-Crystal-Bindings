@@ -129,10 +129,13 @@ x_dir = 0
 y_dir = 0
 
 while(!quit)
-  # TODO: This does not work with poll_event(out e) for some reason
-  # This might be a Crystal bug
-  e = uninitialized LibSDL::Event
-  while LibSDL.poll_event(pointerof(e)) != 0
+  # NOTE: This does not work correctly with Crystal versions <= 1.5.1 due to a bug
+  # To fix this, replace the while loop code line with:
+  #
+  # e = uninitialized LibSDL::Event
+  # while LibSDL.poll_event(pointerof(e)) != 0
+  # 
+  while LibSDL.poll_event(out e) != 0
     if e.type == LibSDL::EventType::QUIT.to_i
       quit = true
     elsif e.type == LibSDL::EventType::JOYAXISMOTION.to_i
