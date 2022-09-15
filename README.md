@@ -30,6 +30,12 @@ simple macro expressions, they have no real analogon and thus need to be impleme
 Note that also the syntax differs from regular SDL in many aspects and is more oriented to Crystal (for example,
 functions are in snake_case, while structs are in CamelCase).
 
+## Examples
+
+To test the examples, you need to add the contents of the `examples` submodule.
+
+Then, run `crystal run examples/XX/main.cr` to start the example with number `XX`.
+
 ## Generating new bindings
 
 To update the bindings, you need to have Ruby, gcc and clang installed on your system (ideally Linux or might not work).
@@ -64,7 +70,7 @@ If you encounter any problems while generating the bindings, please open an issu
 
 #### Breaking changes
 
-* [ ] Examples in separate submodule
+* [X] Examples in separate submodule
 * [X] Decoupling of the different libraries
 
 #### Usability

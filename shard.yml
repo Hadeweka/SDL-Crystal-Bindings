@@ -1,5 +1,5 @@
 name: sdl-crystal-bindings
-version: 0.0.1
+version: 0.1.0
 
 authors:
   - Hadeweka
@@ -12,7 +12,7 @@ license: MIT
 crystal: '>= 1.0.0'
 
 libraries:
-  libSDL2: ~> 2.0.0
-  libSDL2_image: ~> 2.0.0
-  libSDL2_mixer: ~> 2.0.0
-  libSDL2_ttf: ~> 2.0.0
+  libSDL2: ~> 2.0
+  libSDL2_image: ~> 2.0
+  libSDL2_mixer: ~> 2.0
+  libSDL2_ttf: ~> 2.0
