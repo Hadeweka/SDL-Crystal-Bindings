@@ -22,7 +22,9 @@ jobs:
       with:
         crystal: nightly
     - name: Install dependencies
-      run: sudo apt install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
+      run: |
+        sudo apt install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
+        sdl2-config --version
     - name: Run tests
       run: |
         crystal build examples/01/main.cr
