@@ -10,7 +10,7 @@ The bindings here are unsafe and are therefore able to crash your program.
 
 You need to have SDL installed or the SDL library files accessible by Crystal for linking and running.
 
-Currently, you also need to have SDL_image, SDL_mixer and SDL_ttf available.
+For the other SDL library bindings, you also need to have SDL_image, SDL_mixer and SDL_ttf available.
 
 ## Usage
 
@@ -18,6 +18,9 @@ Simply add this shard (`sdl-crystal-bindings`) to your `shard.yml`.
 This repository comes with pre-generated binding files.
 
 Then, use `require "sdl-crystal-bindings"`.
+
+For the other SDL libraries, you can use `require "sdl-crystal-bindings/sdl-image-bindings"`, for example.
+Note that the examples use the relative paths to the respective files.
 
 Regular SDL functions, structs, enums, unions and constants are accessible using the `LibSDL` namespace, while
 preprocessor macro functions are accessible using the `LibSDLMacro` module. This separation is due to the fact
@@ -31,7 +34,7 @@ functions are in snake_case, while structs are in CamelCase).
 
 To update the bindings, you need to have Ruby, gcc and clang installed on your system (ideally Linux or might not work).
 
-Just call `ruby generate.rb` from the main directory of this shard and the `bindings.cr` file will be generated or updated.
+Just call `ruby generate.rb` from the main directory of this shard and the files under `src/` will be generated or updated.
 The script will download the newest SDL headers and generate automated bindings.
 
 If you need to add manual changes, please either use the filters from the script to exclude structs and/or modify the
@@ -52,23 +55,22 @@ If you encounter any problems while generating the bindings, please open an issu
 
 ## Roadmap
 
-### Version 0.0.2
-
-* [X] Fixed some binding inconsistencies
-* [ ] More examples
-
 ### Version 0.1.0
 
 #### Features
 
-* [ ] More examples
+* [X] More examples
 * [ ] Continuous integration
 
 #### Breaking changes
 
 * [ ] Examples in separate submodule
-* [ ] Decoupling of the different libraries
+* [X] Decoupling of the different libraries
 
 #### Usability
 
 * [ ] Fix weird formatting in some header files
+
+#### Bugfixes
+
+* [X] Fixed some binding inconsistencies

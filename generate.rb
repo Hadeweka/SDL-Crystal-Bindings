@@ -368,64 +368,81 @@ headers = [
   ["SDL_surface"],
   ["SDL_touch"],
   ["additions/helper_video.cr"],
-  ["SDL_video"],
-  ["SDL_image", "SDL_image/main"],
+  ["SDL_video"]
+]
+
+img_headers = [
+  ["SDL_image", "SDL_image/main"]
+]
+
+mix_headers = [
   ["additions/helper_mixer.cr"],
-  ["SDL_mixer", "SDL_mixer/main/include"],
+  ["SDL_mixer", "SDL_mixer/main/include"]
+]
+
+ttf_headers = [
   ["SDL_ttf", "SDL_ttf/main"]
 ]
 
-headers.each {|header| compact_header(header)}
+(headers + img_headers + mix_headers + ttf_headers).each {|header| compact_header(header)}
 
-File.open("src/sdl-crystal-bindings.cr", "w") do |f|
-  f.puts "@[Link(\"SDL2\")]"
-  f.puts "@[Link(\"SDL2_image\")]"
-  f.puts "@[Link(\"SDL2_mixer\")]"
-  f.puts "@[Link(\"SDL2_ttf\")]"
-  f.puts "lib LibSDL"
-  headers.each do |header|
-    f.puts "  # #{header[0]}\n"
-    if header[0].start_with? "additions/"
-      additions = nil
+def process_header(f, header)
+  f.puts "  # #{header[0]}\n"
+  if header[0].start_with? "additions/"
+    additions = nil
 
-      File.open(header[0], "r") do |f|
-        additions = f.readlines
-      end
-
-      f.puts "\n"
-      additions.each {|addition| f.puts addition}
-      f.puts "\n"
-    else
-      cc = 0
-      cs = 0
-      cf = 0
-      transform_constants(get_all_constants("output/#{header[0]}2.h")).each do |transformed_constant|
-        next if !transformed_constant
-        f.puts "#{transformed_constant}" 
-        cc += 1
-      end
-      transform_structs(get_all_structs("output/#{header[0]}2.h")).each do |transformed_struct|
-        next if !transformed_struct
-        f.puts "#{transformed_struct}"
-        cs += 1
-      end
-      transform_functions(get_all_functions("output/#{header[0]}2.h")).each do |transformed_function|
-        next if !transformed_function
-        f.puts "#{transformed_function}"
-        cf += 1
-      end
-      f.puts "\n" if cf > 0
-      puts "A total of #{cc} constants, #{cs} structs and #{cf} functions were converted from #{header[0]}."
+    File.open(header[0], "r") do |f|
+      additions = f.readlines
     end
-  end
-  f.puts "end"
 
-  macros = nil
-  
-  File.open("additions/macros.cr", "r") do |f|
-    macros = f.readlines
+    f.puts "\n"
+    additions.each {|addition| f.puts addition}
+    f.puts "\n"
+  else
+    cc = 0
+    cs = 0
+    cf = 0
+    transform_constants(get_all_constants("output/#{header[0]}2.h")).each do |transformed_constant|
+      next if !transformed_constant
+      f.puts "#{transformed_constant}" 
+      cc += 1
+    end
+    transform_structs(get_all_structs("output/#{header[0]}2.h")).each do |transformed_struct|
+      next if !transformed_struct
+      f.puts "#{transformed_struct}"
+      cs += 1
+    end
+    transform_functions(get_all_functions("output/#{header[0]}2.h")).each do |transformed_function|
+      next if !transformed_function
+      f.puts "#{transformed_function}"
+      cf += 1
+    end
+    f.puts "\n" if cf > 0
+    puts "A total of #{cc} constants, #{cs} structs and #{cf} functions were converted from #{header[0]}."
   end
-
-  f.puts "\n"
-  macros.each {|macros| f.puts macros}
 end
+
+def write_bindings_to_file(filename, which_headers, lib_name, macro_file)
+  File.open(filename, "w") do |f|
+    f.puts "@[Link(\"#{lib_name}\")]"
+    f.puts "lib LibSDL"
+    which_headers.each do |header|
+      process_header(f, header)
+    end
+    f.puts "end"
+  
+    macros = nil
+    
+    File.open(macro_file, "r") do |f|
+      macros = f.readlines
+    end
+  
+    f.puts "\n"
+    macros.each {|macros| f.puts macros}
+  end
+end
+
+write_bindings_to_file("src/sdl-crystal-bindings.cr", headers, "SDL2", "additions/macros.cr")
+write_bindings_to_file("src/sdl-image-bindings.cr", img_headers, "SDL2_image", "additions/macros_img.cr")
+write_bindings_to_file("src/sdl-mixer-bindings.cr", mix_headers, "SDL2_mixer", "additions/macros_mix.cr")
+write_bindings_to_file("src/sdl-ttf-bindings.cr", ttf_headers, "SDL2_ttf", "additions/macros_ttf.cr")
