@@ -13,13 +13,14 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    container:
-      image: crystallang/crystal
-
     steps:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
+    - name: Install Crystal
+      uses: oprypin/install-crystal@v1
+      with:
+        crystal: nightly
     - name: Install dependencies
       run: sudo apt install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
     - name: Run tests
