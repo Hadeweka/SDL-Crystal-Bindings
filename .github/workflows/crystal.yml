@@ -44,6 +44,6 @@ jobs:
         crystal build examples/17/main.cr
         crystal build examples/18/main.cr
         crystal build examples/19/main.cr
-        crystal build examples/20/main.cr
+        # crystal build examples/20/main.cr -> The SDL version from Ubuntu is currently too old...
         crystal build examples/21/main.cr
  
