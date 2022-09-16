@@ -59,8 +59,6 @@ If you encounter any problems while generating the bindings, please open an issu
 * Bindings for sdl_image, sdl_mixer and sdl_ttf
 * Basic set of examples
 
-## Roadmap
-
 ### Version 0.1.0
 
 #### Features
@@ -76,6 +74,9 @@ If you encounter any problems while generating the bindings, please open an issu
 #### Bugfixes
 
 * Fixed some binding inconsistencies
+
+
+## Roadmap
 
 ### Future releases
 
