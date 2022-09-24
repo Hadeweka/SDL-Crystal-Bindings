@@ -59,24 +59,31 @@ If you encounter any problems while generating the bindings, please open an issu
 * Bindings for sdl_image, sdl_mixer and sdl_ttf
 * Basic set of examples
 
-## Roadmap
-
 ### Version 0.1.0
 
 #### Features
 
-* [X] More examples
-* [ ] Continuous integration
+* More examples
+* Continuous integration
 
 #### Breaking changes
 
-* [X] Examples in separate submodule
-* [X] Decoupling of the different libraries
+* Examples in separate submodule
+* Decoupling of the different libraries
+
+#### Bugfixes
+
+* Fixed some binding inconsistencies
+
+
+## Roadmap
+
+### Future releases
+
+#### Features
+
+* [ ] Even more examples
 
 #### Usability
 
 * [ ] Fix weird formatting in some header files
-
-#### Bugfixes
-
-* [X] Fixed some binding inconsistencies
