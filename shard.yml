@@ -9,7 +9,7 @@ description: |
 
 license: MIT
 
-crystal: '>= 1.0.0'
+crystal: '>= 1.6.0'
 
 libraries:
   libSDL2: ~> 2.0
