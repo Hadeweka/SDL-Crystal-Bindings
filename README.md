@@ -82,7 +82,9 @@ If you encounter any problems while generating the bindings, please open an issu
 
 #### Features
 
+* [ ] Merging of all functions and macros into one single module
 * [ ] Even more examples
+* [ ] Documentation
 
 #### Usability
 
