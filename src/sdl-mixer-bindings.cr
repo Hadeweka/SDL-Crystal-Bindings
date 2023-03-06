@@ -45,6 +45,7 @@ lib LibSDL
     MIX_INIT_OGG = 0x00000010
     MIX_INIT_MID = 0x00000020
     MIX_INIT_OPUS = 0x00000040
+    MIX_INIT_WAVPACK = 0x00000080
   end
 
   enum MixFading
@@ -65,6 +66,8 @@ lib LibSDL
     MUS_FLAC
     MUS_MODPLUG_UNUSED
     MUS_OPUS
+    MUS_WAVPACK
+    MUS_GME
   end
 
   struct MixChunk
@@ -79,6 +82,7 @@ lib LibSDL
   fun mix_quit = Mix_Quit() : Void
   fun mix_open_audio = Mix_OpenAudio(frequency : LibC::Int, format : UInt16, channels : LibC::Int, chunksize : LibC::Int) : LibC::Int
   fun mix_open_audio_device = Mix_OpenAudioDevice(frequency : LibC::Int, format : UInt16, channels : LibC::Int, chunksize : LibC::Int, device : LibC::Char*, allowed_changes : LibC::Int) : LibC::Int
+  fun mix_pause_audio = Mix_PauseAudio(pause_on : LibC::Int) : Void
   fun mix_query_spec = Mix_QuerySpec(frequency : LibC::Int*, format : UInt16*, channels : LibC::Int*) : LibC::Int
   fun mix_allocate_channels = Mix_AllocateChannels(numchans : LibC::Int) : LibC::Int
   fun mix_load_wav_rw = Mix_LoadWAV_RW(src : RWops*, freesrc : LibC::Int) : MixChunk*
@@ -146,6 +150,8 @@ lib LibSDL
   fun mix_rewind_music = Mix_RewindMusic() : Void
   fun mix_paused_music = Mix_PausedMusic() : LibC::Int
   fun mix_mod_music_jump_to_order = Mix_ModMusicJumpToOrder(order : LibC::Int) : LibC::Int
+  fun mix_start_track = Mix_StartTrack(music : MixMusic*, track : LibC::Int) : LibC::Int
+  fun mix_get_num_tracks = Mix_GetNumTracks(music : MixMusic*) : LibC::Int
   fun mix_set_music_position = Mix_SetMusicPosition(position : LibC::Double) : LibC::Int
   fun mix_get_music_position = Mix_GetMusicPosition(music : MixMusic*) : LibC::Double
   fun mix_music_duration = Mix_MusicDuration(music : MixMusic*) : LibC::Double

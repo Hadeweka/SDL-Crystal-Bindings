@@ -1,8 +1,12 @@
+if ENV['OS'] == 'Windows_NT'
+  raise "This script does not work on Windows."
+end
+
 def compact_header(header)
   name = header[0]
   return if name.start_with? "additions/"
 
-  external_path = header[1] ? header[1] : "SDL/main/include"
+  external_path = header[1] ? header[1] : "SDL/SDL2/include"
 
   puts "EX = #{external_path}"
 
@@ -152,7 +156,7 @@ def get_all_functions(filename)
   lines.each do |line|
     function_matches = line.match(/extern DECLSPEC ([^;]*);/)
     if function_matches
-      function_part = function_matches[1].gsub("SDL_PRINTF_FORMAT_STRING", "").gsub(/SDL_PRINTF_VARARG_FUNC\([\d]+\)/, "")
+      function_part = function_matches[1].gsub("SDL_PRINTF_FORMAT_STRING", "").gsub(" SDL_ACQUIRE(SDL_joystick_lock)", "").gsub(" SDL_RELEASE(SDL_joystick_lock)", "").gsub(/SDL_PRINTF_VARARG_FUNC\([\d]+\)/, "")
 
       function_part_pieces = function_part.match(/([\S]+) (?:SDLCALL )*([\S]*)\(([\S ]+)\)/)
 
@@ -372,16 +376,16 @@ headers = [
 ]
 
 img_headers = [
-  ["SDL_image", "SDL_image/main"]
+  ["SDL_image", "SDL_image/SDL2"]
 ]
 
 mix_headers = [
   ["additions/helper_mixer.cr"],
-  ["SDL_mixer", "SDL_mixer/main/include"]
+  ["SDL_mixer", "SDL_mixer/SDL2/include"]
 ]
 
 ttf_headers = [
-  ["SDL_ttf", "SDL_ttf/main"]
+  ["SDL_ttf", "SDL_ttf/SDL2"]
 ]
 
 (headers + img_headers + mix_headers + ttf_headers).each {|header| compact_header(header)}
@@ -442,6 +446,7 @@ def write_bindings_to_file(filename, which_headers, lib_name, macro_file)
   end
 end
 
+system("mkdir -p src")
 write_bindings_to_file("src/sdl-crystal-bindings.cr", headers, "SDL2", "additions/macros.cr")
 write_bindings_to_file("src/sdl-image-bindings.cr", img_headers, "SDL2_image", "additions/macros_img.cr")
 write_bindings_to_file("src/sdl-mixer-bindings.cr", mix_headers, "SDL2_mixer", "additions/macros_mix.cr")

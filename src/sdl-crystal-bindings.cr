@@ -22,7 +22,7 @@ lib LibSDL
   # SDL_version
 
   MAJOR_VERSION = 2
-  MINOR_VERSION = 25
+  MINOR_VERSION = 27
   PATCHLEVEL = 0
   COMPILEDVERSION = (((MAJOR_VERSION)*1000 + (MINOR_VERSION)*100 + (PATCHLEVEL)))
 
@@ -451,6 +451,9 @@ lib LibSDL
   fun set_clipboard_text = SDL_SetClipboardText(text : LibC::Char*) : LibC::Int
   fun get_clipboard_text = SDL_GetClipboardText() : LibC::Char*
   fun has_clipboard_text = SDL_HasClipboardText() : SBool
+  fun set_primary_selection_text = SDL_SetPrimarySelectionText(text : LibC::Char*) : LibC::Int
+  fun get_primary_selection_text = SDL_GetPrimarySelectionText() : LibC::Char*
+  fun has_primary_selection_text = SDL_HasPrimarySelectionText() : SBool
 
   # SDL_error
 
@@ -689,6 +692,8 @@ lib LibSDL
     direction : UInt32
     precise_x : LibC::Float
     precise_y : LibC::Float
+    mouse_x : Int32
+    mouse_y : Int32
   end
 
   struct JoyAxisEvent
@@ -793,6 +798,7 @@ lib LibSDL
     which : JoystickID
     sensor : Int32
     data : LibC::Float[3]
+    timestamp_us : UInt64
   end
 
   struct AudioDeviceEvent
@@ -853,6 +859,7 @@ lib LibSDL
     timestamp : UInt32
     which : Int32
     data : LibC::Float[6]
+    timestamp_us : UInt64
   end
 
   struct QuitEvent
@@ -1032,6 +1039,7 @@ lib LibSDL
   fun game_controller_is_sensor_enabled = SDL_GameControllerIsSensorEnabled(gamecontroller : GameController*, type : SensorType) : SBool
   fun game_controller_get_sensor_data_rate = SDL_GameControllerGetSensorDataRate(gamecontroller : GameController*, type : SensorType) : LibC::Float
   fun game_controller_get_sensor_data = SDL_GameControllerGetSensorData(gamecontroller : GameController*, type : SensorType, data : LibC::Float*, num_values : LibC::Int) : LibC::Int
+  fun game_controller_get_sensor_data_with_timestamp = SDL_GameControllerGetSensorDataWithTimestamp(gamecontroller : GameController*, type : SensorType, timestamp : UInt64*, data : LibC::Float*, num_values : LibC::Int) : LibC::Int
   fun game_controller_rumble = SDL_GameControllerRumble(gamecontroller : GameController*, low_frequency_rumble : UInt16, high_frequency_rumble : UInt16, duration_ms : UInt32) : LibC::Int
   fun game_controller_rumble_triggers = SDL_GameControllerRumbleTriggers(gamecontroller : GameController*, left_rumble : UInt16, right_rumble : UInt16, duration_ms : UInt32) : LibC::Int
   fun game_controller_has_led = SDL_GameControllerHasLED(gamecontroller : GameController*) : SBool
@@ -1255,6 +1263,7 @@ lib LibSDL
   HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT = "GAMECONTROLLER_IGNORE_DEVICES_EXCEPT"
   HINT_GAMECONTROLLER_USE_BUTTON_LABELS = "GAMECONTROLLER_USE_BUTTON_LABELS"
   HINT_GRAB_KEYBOARD = "GRAB_KEYBOARD"
+  HINT_HIDAPI_IGNORE_DEVICES = "HIDAPI_IGNORE_DEVICES"
   HINT_IDLE_TIMER_DISABLED = "IOS_IDLE_TIMER_DISABLED"
   HINT_IME_INTERNAL_EDITING = "IME_INTERNAL_EDITING"
   HINT_IME_SHOW_UI = "IME_SHOW_UI"
@@ -1266,6 +1275,7 @@ lib LibSDL
   HINT_JOYSTICK_GAMECUBE_RUMBLE_BRAKE = "JOYSTICK_GAMECUBE_RUMBLE_BRAKE"
   HINT_JOYSTICK_HIDAPI_JOY_CONS = "JOYSTICK_HIDAPI_JOY_CONS"
   HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS = "JOYSTICK_HIDAPI_COMBINE_JOY_CONS"
+  HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS = "JOYSTICK_HIDAPI_VERTICAL_JOY_CONS"
   HINT_JOYSTICK_HIDAPI_LUNA = "JOYSTICK_HIDAPI_LUNA"
   HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC = "JOYSTICK_HIDAPI_NINTENDO_CLASSIC"
   HINT_JOYSTICK_HIDAPI_SHIELD = "JOYSTICK_HIDAPI_SHIELD"
@@ -1288,6 +1298,7 @@ lib LibSDL
   HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED = "JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED"
   HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS = "JOYSTICK_HIDAPI_XBOX_360_WIRELESS"
   HINT_JOYSTICK_HIDAPI_XBOX_ONE = "JOYSTICK_HIDAPI_XBOX_ONE"
+  HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED = "JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED"
   HINT_JOYSTICK_RAWINPUT = "JOYSTICK_RAWINPUT"
   HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT = "JOYSTICK_RAWINPUT_CORRELATE_XINPUT"
   HINT_JOYSTICK_ROG_CHAKRAM = "JOYSTICK_ROG_CHAKRAM"
@@ -1350,6 +1361,7 @@ lib LibSDL
   HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR = "VIDEO_WAYLAND_ALLOW_LIBDECOR"
   HINT_VIDEO_WAYLAND_PREFER_LIBDECOR = "VIDEO_WAYLAND_PREFER_LIBDECOR"
   HINT_VIDEO_WAYLAND_MODE_EMULATION = "VIDEO_WAYLAND_MODE_EMULATION"
+  HINT_VIDEO_WAYLAND_EMULATE_MOUSE_WARP = "VIDEO_WAYLAND_EMULATE_MOUSE_WARP"
   HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT = "VIDEO_WINDOW_SHARE_PIXEL_FORMAT"
   HINT_VIDEO_FOREIGN_WINDOW_OPENGL = "VIDEO_FOREIGN_WINDOW_OPENGL"
   HINT_VIDEO_FOREIGN_WINDOW_VULKAN = "VIDEO_FOREIGN_WINDOW_VULKAN"
@@ -1365,6 +1377,7 @@ lib LibSDL
   HINT_WAVE_RIFF_CHUNK_SIZE = "WAVE_RIFF_CHUNK_SIZE"
   HINT_WAVE_TRUNCATION = "WAVE_TRUNCATION"
   HINT_WINDOWS_DISABLE_THREAD_NAMING = "WINDOWS_DISABLE_THREAD_NAMING"
+  HINT_WINDOWS_ENABLE_MENU_MNEMONICS = "WINDOWS_ENABLE_MENU_MNEMONICS"
   HINT_WINDOWS_ENABLE_MESSAGELOOP = "WINDOWS_ENABLE_MESSAGELOOP"
   HINT_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS = "WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS"
   HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL = "WINDOWS_FORCE_SEMAPHORE_KERNEL"
@@ -1400,6 +1413,7 @@ lib LibSDL
   fun set_hint_with_priority = SDL_SetHintWithPriority(name : LibC::Char*, value : LibC::Char*, priority : HintPriority) : SBool
   fun set_hint = SDL_SetHint(name : LibC::Char*, value : LibC::Char*) : SBool
   fun reset_hint = SDL_ResetHint(name : LibC::Char*) : SBool
+  fun reset_hints = SDL_ResetHints() : Void
   fun get_hint = SDL_GetHint(name : LibC::Char*) : LibC::Char*
   fun get_hint_boolean = SDL_GetHintBoolean(name : LibC::Char*, default_value : SBool) : SBool
   fun add_hint_callback = SDL_AddHintCallback(name : LibC::Char*, callback : HintCallback, userdata : Void*) : Void
@@ -2236,6 +2250,10 @@ lib LibSDL
     SENSOR_UNKNOWN
     SENSOR_ACCEL
     SENSOR_GYRO
+    SENSOR_ACCEL_L
+    SENSOR_GYRO_L
+    SENSOR_ACCEL_R
+    SENSOR_GYRO_R
   end
 
   fun lock_sensors = SDL_LockSensors() : Void
@@ -2252,6 +2270,7 @@ lib LibSDL
   fun sensor_get_non_portable_type = SDL_SensorGetNonPortableType(sensor : Sensor*) : LibC::Int
   fun sensor_get_instance_id = SDL_SensorGetInstanceID(sensor : Sensor*) : SensorID
   fun sensor_get_data = SDL_SensorGetData(sensor : Sensor*, data : LibC::Float*, num_values : LibC::Int) : LibC::Int
+  fun sensor_get_data_with_timestamp = SDL_SensorGetDataWithTimestamp(sensor : Sensor*, timestamp : UInt64*, data : LibC::Float*, num_values : LibC::Int) : LibC::Int
   fun sensor_close = SDL_SensorClose(sensor : Sensor*) : Void
   fun sensor_update = SDL_SensorUpdate() : Void
 
@@ -2455,6 +2474,7 @@ lib LibSDL
     DISPLAYEVENT_ORIENTATION
     DISPLAYEVENT_CONNECTED
     DISPLAYEVENT_DISCONNECTED
+    DISPLAYEVENT_MOVED
   end
 
   enum DisplayOrientation

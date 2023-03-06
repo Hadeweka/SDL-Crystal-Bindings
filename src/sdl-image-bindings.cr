@@ -82,6 +82,7 @@ lib LibSDL
   fun img_load_animation_typed_rw = IMG_LoadAnimationTyped_RW(src : RWops*, freesrc : LibC::Int, type : LibC::Char*) : IMGAnimation*
   fun img_free_animation = IMG_FreeAnimation(anim : IMGAnimation*) : Void
   fun img_load_gifanimation_rw = IMG_LoadGIFAnimation_RW(src : RWops*) : IMGAnimation*
+  fun img_load_webpanimation_rw = IMG_LoadWEBPAnimation_RW(src : RWops*) : IMGAnimation*
 
 end
 

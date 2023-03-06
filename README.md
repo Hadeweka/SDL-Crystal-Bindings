@@ -75,6 +75,15 @@ If you encounter any problems while generating the bindings, please open an issu
 
 * Fixed some binding inconsistencies
 
+### Version 0.2.0
+
+#### Features
+
+* Updated to recent SDL2 version
+
+#### Bugfixes
+
+* Build script now correctly raises error on Windows
 
 ## Roadmap
 
@@ -82,9 +91,10 @@ If you encounter any problems while generating the bindings, please open an issu
 
 #### Features
 
-* [ ] Merging of all functions and macros into one single module
+* [ ] Merging of all functions and macros into one single module (if possible and helpful)
 * [ ] Even more examples
 * [ ] Documentation
+* [ ] Support for SDL3
 
 #### Usability
 
