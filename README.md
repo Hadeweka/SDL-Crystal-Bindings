@@ -38,7 +38,7 @@ Then, run `crystal run examples/XX/main.cr` to start the example with number `XX
 
 ## Generating new bindings
 
-To update the bindings, you need to have Ruby, gcc and clang installed on your system (ideally Linux or might not work).
+To update the bindings, you need to have Ruby, gcc and clang installed on your system (ideally Linux or it might not work).
 
 Just call `ruby generate.rb` from the main directory of this shard and the files under `src/` will be generated or updated.
 The script will download the newest SDL headers and generate automated bindings.
