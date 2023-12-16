@@ -2,28 +2,28 @@
 lib LibSDL
   # SDL
 
-  INIT_TIMER = 0x00000001
-  INIT_AUDIO = 0x00000010
-  INIT_VIDEO = 0x00000020
-  INIT_JOYSTICK = 0x00000200
-  INIT_HAPTIC = 0x00001000
+  INIT_TIMER          = 0x00000001
+  INIT_AUDIO          = 0x00000010
+  INIT_VIDEO          = 0x00000020
+  INIT_JOYSTICK       = 0x00000200
+  INIT_HAPTIC         = 0x00001000
   INIT_GAMECONTROLLER = 0x00002000
-  INIT_EVENTS = 0x00004000
-  INIT_SENSOR = 0x00008000
-  INIT_NOPARACHUTE = 0x00100000
-  INIT_EVERYTHING = (INIT_TIMER | INIT_AUDIO | INIT_VIDEO | INIT_EVENTS | INIT_JOYSTICK | INIT_HAPTIC | INIT_GAMECONTROLLER | INIT_SENSOR)
+  INIT_EVENTS         = 0x00004000
+  INIT_SENSOR         = 0x00008000
+  INIT_NOPARACHUTE    = 0x00100000
+  INIT_EVERYTHING     = (INIT_TIMER | INIT_AUDIO | INIT_VIDEO | INIT_EVENTS | INIT_JOYSTICK | INIT_HAPTIC | INIT_GAMECONTROLLER | INIT_SENSOR)
 
   fun init = SDL_Init(flags : UInt32) : LibC::Int
   fun init_sub_system = SDL_InitSubSystem(flags : UInt32) : LibC::Int
   fun quit_sub_system = SDL_QuitSubSystem(flags : UInt32) : Void
   fun was_init = SDL_WasInit(flags : UInt32) : UInt32
-  fun quit = SDL_Quit() : Void
+  fun quit = SDL_Quit : Void
 
   # SDL_version
 
-  MAJOR_VERSION = 2
-  MINOR_VERSION = 27
-  PATCHLEVEL = 0
+  MAJOR_VERSION   =  2
+  MINOR_VERSION   = 27
+  PATCHLEVEL      =  0
   COMPILEDVERSION = (((MAJOR_VERSION)*1000 + (MINOR_VERSION)*100 + (PATCHLEVEL)))
 
   struct Version
@@ -33,299 +33,299 @@ lib LibSDL
   end
 
   fun get_version = SDL_GetVersion(ver : Version*) : Void
-  fun get_revision = SDL_GetRevision() : LibC::Char*
+  fun get_revision = SDL_GetRevision : LibC::Char*
 
   # additions/helper_types.cr
 
   enum SBool
     FALSE = 0
-    TRUE = 1
+    TRUE  = 1
   end
 
   # SDL_scancode
 
   enum Scancode
-    SCANCODE_UNKNOWN = 0
-    SCANCODE_A = 4
-    SCANCODE_B = 5
-    SCANCODE_C = 6
-    SCANCODE_D = 7
-    SCANCODE_E = 8
-    SCANCODE_F = 9
-    SCANCODE_G = 10
-    SCANCODE_H = 11
-    SCANCODE_I = 12
-    SCANCODE_J = 13
-    SCANCODE_K = 14
-    SCANCODE_L = 15
-    SCANCODE_M = 16
-    SCANCODE_N = 17
-    SCANCODE_O = 18
-    SCANCODE_P = 19
-    SCANCODE_Q = 20
-    SCANCODE_R = 21
-    SCANCODE_S = 22
-    SCANCODE_T = 23
-    SCANCODE_U = 24
-    SCANCODE_V = 25
-    SCANCODE_W = 26
-    SCANCODE_X = 27
-    SCANCODE_Y = 28
-    SCANCODE_Z = 29
-    SCANCODE_1 = 30
-    SCANCODE_2 = 31
-    SCANCODE_3 = 32
-    SCANCODE_4 = 33
-    SCANCODE_5 = 34
-    SCANCODE_6 = 35
-    SCANCODE_7 = 36
-    SCANCODE_8 = 37
-    SCANCODE_9 = 38
-    SCANCODE_0 = 39
-    SCANCODE_RETURN = 40
-    SCANCODE_ESCAPE = 41
-    SCANCODE_BACKSPACE = 42
-    SCANCODE_TAB = 43
-    SCANCODE_SPACE = 44
-    SCANCODE_MINUS = 45
-    SCANCODE_EQUALS = 46
-    SCANCODE_LEFTBRACKET = 47
-    SCANCODE_RIGHTBRACKET = 48
-    SCANCODE_BACKSLASH = 49
-    SCANCODE_NONUSHASH = 50
-    SCANCODE_SEMICOLON = 51
-    SCANCODE_APOSTROPHE = 52
-    SCANCODE_GRAVE = 53
-    SCANCODE_COMMA = 54
-    SCANCODE_PERIOD = 55
-    SCANCODE_SLASH = 56
-    SCANCODE_CAPSLOCK = 57
-    SCANCODE_F1 = 58
-    SCANCODE_F2 = 59
-    SCANCODE_F3 = 60
-    SCANCODE_F4 = 61
-    SCANCODE_F5 = 62
-    SCANCODE_F6 = 63
-    SCANCODE_F7 = 64
-    SCANCODE_F8 = 65
-    SCANCODE_F9 = 66
-    SCANCODE_F10 = 67
-    SCANCODE_F11 = 68
-    SCANCODE_F12 = 69
-    SCANCODE_PRINTSCREEN = 70
-    SCANCODE_SCROLLLOCK = 71
-    SCANCODE_PAUSE = 72
-    SCANCODE_INSERT = 73
-    SCANCODE_HOME = 74
-    SCANCODE_PAGEUP = 75
-    SCANCODE_DELETE = 76
-    SCANCODE_END = 77
-    SCANCODE_PAGEDOWN = 78
-    SCANCODE_RIGHT = 79
-    SCANCODE_LEFT = 80
-    SCANCODE_DOWN = 81
-    SCANCODE_UP = 82
-    SCANCODE_NUMLOCKCLEAR = 83
-    SCANCODE_KP_DIVIDE = 84
-    SCANCODE_KP_MULTIPLY = 85
-    SCANCODE_KP_MINUS = 86
-    SCANCODE_KP_PLUS = 87
-    SCANCODE_KP_ENTER = 88
-    SCANCODE_KP_1 = 89
-    SCANCODE_KP_2 = 90
-    SCANCODE_KP_3 = 91
-    SCANCODE_KP_4 = 92
-    SCANCODE_KP_5 = 93
-    SCANCODE_KP_6 = 94
-    SCANCODE_KP_7 = 95
-    SCANCODE_KP_8 = 96
-    SCANCODE_KP_9 = 97
-    SCANCODE_KP_0 = 98
-    SCANCODE_KP_PERIOD = 99
-    SCANCODE_NONUSBACKSLASH = 100
-    SCANCODE_APPLICATION = 101
-    SCANCODE_POWER = 102
-    SCANCODE_KP_EQUALS = 103
-    SCANCODE_F13 = 104
-    SCANCODE_F14 = 105
-    SCANCODE_F15 = 106
-    SCANCODE_F16 = 107
-    SCANCODE_F17 = 108
-    SCANCODE_F18 = 109
-    SCANCODE_F19 = 110
-    SCANCODE_F20 = 111
-    SCANCODE_F21 = 112
-    SCANCODE_F22 = 113
-    SCANCODE_F23 = 114
-    SCANCODE_F24 = 115
-    SCANCODE_EXECUTE = 116
-    SCANCODE_HELP = 117
-    SCANCODE_MENU = 118
-    SCANCODE_SELECT = 119
-    SCANCODE_STOP = 120
-    SCANCODE_AGAIN = 121
-    SCANCODE_UNDO = 122
-    SCANCODE_CUT = 123
-    SCANCODE_COPY = 124
-    SCANCODE_PASTE = 125
-    SCANCODE_FIND = 126
-    SCANCODE_MUTE = 127
-    SCANCODE_VOLUMEUP = 128
-    SCANCODE_VOLUMEDOWN = 129
-    SCANCODE_KP_COMMA = 133
-    SCANCODE_KP_EQUALSAS400 = 134
-    SCANCODE_INTERNATIONAL1 = 135
-    SCANCODE_INTERNATIONAL2 = 136
-    SCANCODE_INTERNATIONAL3 = 137
-    SCANCODE_INTERNATIONAL4 = 138
-    SCANCODE_INTERNATIONAL5 = 139
-    SCANCODE_INTERNATIONAL6 = 140
-    SCANCODE_INTERNATIONAL7 = 141
-    SCANCODE_INTERNATIONAL8 = 142
-    SCANCODE_INTERNATIONAL9 = 143
-    SCANCODE_LANG1 = 144
-    SCANCODE_LANG2 = 145
-    SCANCODE_LANG3 = 146
-    SCANCODE_LANG4 = 147
-    SCANCODE_LANG5 = 148
-    SCANCODE_LANG6 = 149
-    SCANCODE_LANG7 = 150
-    SCANCODE_LANG8 = 151
-    SCANCODE_LANG9 = 152
-    SCANCODE_ALTERASE = 153
-    SCANCODE_SYSREQ = 154
-    SCANCODE_CANCEL = 155
-    SCANCODE_CLEAR = 156
-    SCANCODE_PRIOR = 157
-    SCANCODE_RETURN2 = 158
-    SCANCODE_SEPARATOR = 159
-    SCANCODE_OUT = 160
-    SCANCODE_OPER = 161
-    SCANCODE_CLEARAGAIN = 162
-    SCANCODE_CRSEL = 163
-    SCANCODE_EXSEL = 164
-    SCANCODE_KP_00 = 176
-    SCANCODE_KP_000 = 177
+    SCANCODE_UNKNOWN            =   0
+    SCANCODE_A                  =   4
+    SCANCODE_B                  =   5
+    SCANCODE_C                  =   6
+    SCANCODE_D                  =   7
+    SCANCODE_E                  =   8
+    SCANCODE_F                  =   9
+    SCANCODE_G                  =  10
+    SCANCODE_H                  =  11
+    SCANCODE_I                  =  12
+    SCANCODE_J                  =  13
+    SCANCODE_K                  =  14
+    SCANCODE_L                  =  15
+    SCANCODE_M                  =  16
+    SCANCODE_N                  =  17
+    SCANCODE_O                  =  18
+    SCANCODE_P                  =  19
+    SCANCODE_Q                  =  20
+    SCANCODE_R                  =  21
+    SCANCODE_S                  =  22
+    SCANCODE_T                  =  23
+    SCANCODE_U                  =  24
+    SCANCODE_V                  =  25
+    SCANCODE_W                  =  26
+    SCANCODE_X                  =  27
+    SCANCODE_Y                  =  28
+    SCANCODE_Z                  =  29
+    SCANCODE_1                  =  30
+    SCANCODE_2                  =  31
+    SCANCODE_3                  =  32
+    SCANCODE_4                  =  33
+    SCANCODE_5                  =  34
+    SCANCODE_6                  =  35
+    SCANCODE_7                  =  36
+    SCANCODE_8                  =  37
+    SCANCODE_9                  =  38
+    SCANCODE_0                  =  39
+    SCANCODE_RETURN             =  40
+    SCANCODE_ESCAPE             =  41
+    SCANCODE_BACKSPACE          =  42
+    SCANCODE_TAB                =  43
+    SCANCODE_SPACE              =  44
+    SCANCODE_MINUS              =  45
+    SCANCODE_EQUALS             =  46
+    SCANCODE_LEFTBRACKET        =  47
+    SCANCODE_RIGHTBRACKET       =  48
+    SCANCODE_BACKSLASH          =  49
+    SCANCODE_NONUSHASH          =  50
+    SCANCODE_SEMICOLON          =  51
+    SCANCODE_APOSTROPHE         =  52
+    SCANCODE_GRAVE              =  53
+    SCANCODE_COMMA              =  54
+    SCANCODE_PERIOD             =  55
+    SCANCODE_SLASH              =  56
+    SCANCODE_CAPSLOCK           =  57
+    SCANCODE_F1                 =  58
+    SCANCODE_F2                 =  59
+    SCANCODE_F3                 =  60
+    SCANCODE_F4                 =  61
+    SCANCODE_F5                 =  62
+    SCANCODE_F6                 =  63
+    SCANCODE_F7                 =  64
+    SCANCODE_F8                 =  65
+    SCANCODE_F9                 =  66
+    SCANCODE_F10                =  67
+    SCANCODE_F11                =  68
+    SCANCODE_F12                =  69
+    SCANCODE_PRINTSCREEN        =  70
+    SCANCODE_SCROLLLOCK         =  71
+    SCANCODE_PAUSE              =  72
+    SCANCODE_INSERT             =  73
+    SCANCODE_HOME               =  74
+    SCANCODE_PAGEUP             =  75
+    SCANCODE_DELETE             =  76
+    SCANCODE_END                =  77
+    SCANCODE_PAGEDOWN           =  78
+    SCANCODE_RIGHT              =  79
+    SCANCODE_LEFT               =  80
+    SCANCODE_DOWN               =  81
+    SCANCODE_UP                 =  82
+    SCANCODE_NUMLOCKCLEAR       =  83
+    SCANCODE_KP_DIVIDE          =  84
+    SCANCODE_KP_MULTIPLY        =  85
+    SCANCODE_KP_MINUS           =  86
+    SCANCODE_KP_PLUS            =  87
+    SCANCODE_KP_ENTER           =  88
+    SCANCODE_KP_1               =  89
+    SCANCODE_KP_2               =  90
+    SCANCODE_KP_3               =  91
+    SCANCODE_KP_4               =  92
+    SCANCODE_KP_5               =  93
+    SCANCODE_KP_6               =  94
+    SCANCODE_KP_7               =  95
+    SCANCODE_KP_8               =  96
+    SCANCODE_KP_9               =  97
+    SCANCODE_KP_0               =  98
+    SCANCODE_KP_PERIOD          =  99
+    SCANCODE_NONUSBACKSLASH     = 100
+    SCANCODE_APPLICATION        = 101
+    SCANCODE_POWER              = 102
+    SCANCODE_KP_EQUALS          = 103
+    SCANCODE_F13                = 104
+    SCANCODE_F14                = 105
+    SCANCODE_F15                = 106
+    SCANCODE_F16                = 107
+    SCANCODE_F17                = 108
+    SCANCODE_F18                = 109
+    SCANCODE_F19                = 110
+    SCANCODE_F20                = 111
+    SCANCODE_F21                = 112
+    SCANCODE_F22                = 113
+    SCANCODE_F23                = 114
+    SCANCODE_F24                = 115
+    SCANCODE_EXECUTE            = 116
+    SCANCODE_HELP               = 117
+    SCANCODE_MENU               = 118
+    SCANCODE_SELECT             = 119
+    SCANCODE_STOP               = 120
+    SCANCODE_AGAIN              = 121
+    SCANCODE_UNDO               = 122
+    SCANCODE_CUT                = 123
+    SCANCODE_COPY               = 124
+    SCANCODE_PASTE              = 125
+    SCANCODE_FIND               = 126
+    SCANCODE_MUTE               = 127
+    SCANCODE_VOLUMEUP           = 128
+    SCANCODE_VOLUMEDOWN         = 129
+    SCANCODE_KP_COMMA           = 133
+    SCANCODE_KP_EQUALSAS400     = 134
+    SCANCODE_INTERNATIONAL1     = 135
+    SCANCODE_INTERNATIONAL2     = 136
+    SCANCODE_INTERNATIONAL3     = 137
+    SCANCODE_INTERNATIONAL4     = 138
+    SCANCODE_INTERNATIONAL5     = 139
+    SCANCODE_INTERNATIONAL6     = 140
+    SCANCODE_INTERNATIONAL7     = 141
+    SCANCODE_INTERNATIONAL8     = 142
+    SCANCODE_INTERNATIONAL9     = 143
+    SCANCODE_LANG1              = 144
+    SCANCODE_LANG2              = 145
+    SCANCODE_LANG3              = 146
+    SCANCODE_LANG4              = 147
+    SCANCODE_LANG5              = 148
+    SCANCODE_LANG6              = 149
+    SCANCODE_LANG7              = 150
+    SCANCODE_LANG8              = 151
+    SCANCODE_LANG9              = 152
+    SCANCODE_ALTERASE           = 153
+    SCANCODE_SYSREQ             = 154
+    SCANCODE_CANCEL             = 155
+    SCANCODE_CLEAR              = 156
+    SCANCODE_PRIOR              = 157
+    SCANCODE_RETURN2            = 158
+    SCANCODE_SEPARATOR          = 159
+    SCANCODE_OUT                = 160
+    SCANCODE_OPER               = 161
+    SCANCODE_CLEARAGAIN         = 162
+    SCANCODE_CRSEL              = 163
+    SCANCODE_EXSEL              = 164
+    SCANCODE_KP_00              = 176
+    SCANCODE_KP_000             = 177
     SCANCODE_THOUSANDSSEPARATOR = 178
-    SCANCODE_DECIMALSEPARATOR = 179
-    SCANCODE_CURRENCYUNIT = 180
-    SCANCODE_CURRENCYSUBUNIT = 181
-    SCANCODE_KP_LEFTPAREN = 182
-    SCANCODE_KP_RIGHTPAREN = 183
-    SCANCODE_KP_LEFTBRACE = 184
-    SCANCODE_KP_RIGHTBRACE = 185
-    SCANCODE_KP_TAB = 186
-    SCANCODE_KP_BACKSPACE = 187
-    SCANCODE_KP_A = 188
-    SCANCODE_KP_B = 189
-    SCANCODE_KP_C = 190
-    SCANCODE_KP_D = 191
-    SCANCODE_KP_E = 192
-    SCANCODE_KP_F = 193
-    SCANCODE_KP_XOR = 194
-    SCANCODE_KP_POWER = 195
-    SCANCODE_KP_PERCENT = 196
-    SCANCODE_KP_LESS = 197
-    SCANCODE_KP_GREATER = 198
-    SCANCODE_KP_AMPERSAND = 199
-    SCANCODE_KP_DBLAMPERSAND = 200
-    SCANCODE_KP_VERTICALBAR = 201
-    SCANCODE_KP_DBLVERTICALBAR = 202
-    SCANCODE_KP_COLON = 203
-    SCANCODE_KP_HASH = 204
-    SCANCODE_KP_SPACE = 205
-    SCANCODE_KP_AT = 206
-    SCANCODE_KP_EXCLAM = 207
-    SCANCODE_KP_MEMSTORE = 208
-    SCANCODE_KP_MEMRECALL = 209
-    SCANCODE_KP_MEMCLEAR = 210
-    SCANCODE_KP_MEMADD = 211
-    SCANCODE_KP_MEMSUBTRACT = 212
-    SCANCODE_KP_MEMMULTIPLY = 213
-    SCANCODE_KP_MEMDIVIDE = 214
-    SCANCODE_KP_PLUSMINUS = 215
-    SCANCODE_KP_CLEAR = 216
-    SCANCODE_KP_CLEARENTRY = 217
-    SCANCODE_KP_BINARY = 218
-    SCANCODE_KP_OCTAL = 219
-    SCANCODE_KP_DECIMAL = 220
-    SCANCODE_KP_HEXADECIMAL = 221
-    SCANCODE_LCTRL = 224
-    SCANCODE_LSHIFT = 225
-    SCANCODE_LALT = 226
-    SCANCODE_LGUI = 227
-    SCANCODE_RCTRL = 228
-    SCANCODE_RSHIFT = 229
-    SCANCODE_RALT = 230
-    SCANCODE_RGUI = 231
-    SCANCODE_MODE = 257
-    SCANCODE_AUDIONEXT = 258
-    SCANCODE_AUDIOPREV = 259
-    SCANCODE_AUDIOSTOP = 260
-    SCANCODE_AUDIOPLAY = 261
-    SCANCODE_AUDIOMUTE = 262
-    SCANCODE_MEDIASELECT = 263
-    SCANCODE_WWW = 264
-    SCANCODE_MAIL = 265
-    SCANCODE_CALCULATOR = 266
-    SCANCODE_COMPUTER = 267
-    SCANCODE_AC_SEARCH = 268
-    SCANCODE_AC_HOME = 269
-    SCANCODE_AC_BACK = 270
-    SCANCODE_AC_FORWARD = 271
-    SCANCODE_AC_STOP = 272
-    SCANCODE_AC_REFRESH = 273
-    SCANCODE_AC_BOOKMARKS = 274
-    SCANCODE_BRIGHTNESSDOWN = 275
-    SCANCODE_BRIGHTNESSUP = 276
-    SCANCODE_DISPLAYSWITCH = 277
-    SCANCODE_KBDILLUMTOGGLE = 278
-    SCANCODE_KBDILLUMDOWN = 279
-    SCANCODE_KBDILLUMUP = 280
-    SCANCODE_EJECT = 281
-    SCANCODE_SLEEP = 282
-    SCANCODE_APP1 = 283
-    SCANCODE_APP2 = 284
-    SCANCODE_AUDIOREWIND = 285
-    SCANCODE_AUDIOFASTFORWARD = 286
-    SCANCODE_SOFTLEFT = 287
-    SCANCODE_SOFTRIGHT = 288
-    SCANCODE_CALL = 289
-    SCANCODE_ENDCALL = 290
-    NUM_SCANCODES = 512
+    SCANCODE_DECIMALSEPARATOR   = 179
+    SCANCODE_CURRENCYUNIT       = 180
+    SCANCODE_CURRENCYSUBUNIT    = 181
+    SCANCODE_KP_LEFTPAREN       = 182
+    SCANCODE_KP_RIGHTPAREN      = 183
+    SCANCODE_KP_LEFTBRACE       = 184
+    SCANCODE_KP_RIGHTBRACE      = 185
+    SCANCODE_KP_TAB             = 186
+    SCANCODE_KP_BACKSPACE       = 187
+    SCANCODE_KP_A               = 188
+    SCANCODE_KP_B               = 189
+    SCANCODE_KP_C               = 190
+    SCANCODE_KP_D               = 191
+    SCANCODE_KP_E               = 192
+    SCANCODE_KP_F               = 193
+    SCANCODE_KP_XOR             = 194
+    SCANCODE_KP_POWER           = 195
+    SCANCODE_KP_PERCENT         = 196
+    SCANCODE_KP_LESS            = 197
+    SCANCODE_KP_GREATER         = 198
+    SCANCODE_KP_AMPERSAND       = 199
+    SCANCODE_KP_DBLAMPERSAND    = 200
+    SCANCODE_KP_VERTICALBAR     = 201
+    SCANCODE_KP_DBLVERTICALBAR  = 202
+    SCANCODE_KP_COLON           = 203
+    SCANCODE_KP_HASH            = 204
+    SCANCODE_KP_SPACE           = 205
+    SCANCODE_KP_AT              = 206
+    SCANCODE_KP_EXCLAM          = 207
+    SCANCODE_KP_MEMSTORE        = 208
+    SCANCODE_KP_MEMRECALL       = 209
+    SCANCODE_KP_MEMCLEAR        = 210
+    SCANCODE_KP_MEMADD          = 211
+    SCANCODE_KP_MEMSUBTRACT     = 212
+    SCANCODE_KP_MEMMULTIPLY     = 213
+    SCANCODE_KP_MEMDIVIDE       = 214
+    SCANCODE_KP_PLUSMINUS       = 215
+    SCANCODE_KP_CLEAR           = 216
+    SCANCODE_KP_CLEARENTRY      = 217
+    SCANCODE_KP_BINARY          = 218
+    SCANCODE_KP_OCTAL           = 219
+    SCANCODE_KP_DECIMAL         = 220
+    SCANCODE_KP_HEXADECIMAL     = 221
+    SCANCODE_LCTRL              = 224
+    SCANCODE_LSHIFT             = 225
+    SCANCODE_LALT               = 226
+    SCANCODE_LGUI               = 227
+    SCANCODE_RCTRL              = 228
+    SCANCODE_RSHIFT             = 229
+    SCANCODE_RALT               = 230
+    SCANCODE_RGUI               = 231
+    SCANCODE_MODE               = 257
+    SCANCODE_AUDIONEXT          = 258
+    SCANCODE_AUDIOPREV          = 259
+    SCANCODE_AUDIOSTOP          = 260
+    SCANCODE_AUDIOPLAY          = 261
+    SCANCODE_AUDIOMUTE          = 262
+    SCANCODE_MEDIASELECT        = 263
+    SCANCODE_WWW                = 264
+    SCANCODE_MAIL               = 265
+    SCANCODE_CALCULATOR         = 266
+    SCANCODE_COMPUTER           = 267
+    SCANCODE_AC_SEARCH          = 268
+    SCANCODE_AC_HOME            = 269
+    SCANCODE_AC_BACK            = 270
+    SCANCODE_AC_FORWARD         = 271
+    SCANCODE_AC_STOP            = 272
+    SCANCODE_AC_REFRESH         = 273
+    SCANCODE_AC_BOOKMARKS       = 274
+    SCANCODE_BRIGHTNESSDOWN     = 275
+    SCANCODE_BRIGHTNESSUP       = 276
+    SCANCODE_DISPLAYSWITCH      = 277
+    SCANCODE_KBDILLUMTOGGLE     = 278
+    SCANCODE_KBDILLUMDOWN       = 279
+    SCANCODE_KBDILLUMUP         = 280
+    SCANCODE_EJECT              = 281
+    SCANCODE_SLEEP              = 282
+    SCANCODE_APP1               = 283
+    SCANCODE_APP2               = 284
+    SCANCODE_AUDIOREWIND        = 285
+    SCANCODE_AUDIOFASTFORWARD   = 286
+    SCANCODE_SOFTLEFT           = 287
+    SCANCODE_SOFTRIGHT          = 288
+    SCANCODE_CALL               = 289
+    SCANCODE_ENDCALL            = 290
+    NUM_SCANCODES               = 512
   end
 
   # SDL_audio
 
-  AUDIO_MASK_BITSIZE = (0xFF)
-  AUDIO_MASK_DATATYPE = (1 << 8)
-  AUDIO_MASK_ENDIAN = (1 << 12)
-  AUDIO_MASK_SIGNED = (1 << 15)
-  AUDIO_U8 = 0x0008
-  AUDIO_S8 = 0x8008
-  AUDIO_U16LSB = 0x0010
-  AUDIO_S16LSB = 0x8010
-  AUDIO_U16MSB = 0x1010
-  AUDIO_S16MSB = 0x9010
-  AUDIO_U16 = AUDIO_U16LSB
-  AUDIO_S16 = AUDIO_S16LSB
-  AUDIO_S32LSB = 0x8020
-  AUDIO_S32MSB = 0x9020
-  AUDIO_S32 = AUDIO_S32LSB
-  AUDIO_F32LSB = 0x8120
-  AUDIO_F32MSB = 0x9120
-  AUDIO_F32 = AUDIO_F32LSB
-  AUDIO_U16SYS = AUDIO_U16LSB
-  AUDIO_S16SYS = AUDIO_S16LSB
-  AUDIO_S32SYS = AUDIO_S32LSB
-  AUDIO_F32SYS = AUDIO_F32LSB
+  AUDIO_MASK_BITSIZE           = (0xFF)
+  AUDIO_MASK_DATATYPE          = (1 << 8)
+  AUDIO_MASK_ENDIAN            = (1 << 12)
+  AUDIO_MASK_SIGNED            = (1 << 15)
+  AUDIO_U8                     = 0x0008
+  AUDIO_S8                     = 0x8008
+  AUDIO_U16LSB                 = 0x0010
+  AUDIO_S16LSB                 = 0x8010
+  AUDIO_U16MSB                 = 0x1010
+  AUDIO_S16MSB                 = 0x9010
+  AUDIO_U16                    = AUDIO_U16LSB
+  AUDIO_S16                    = AUDIO_S16LSB
+  AUDIO_S32LSB                 = 0x8020
+  AUDIO_S32MSB                 = 0x9020
+  AUDIO_S32                    = AUDIO_S32LSB
+  AUDIO_F32LSB                 = 0x8120
+  AUDIO_F32MSB                 = 0x9120
+  AUDIO_F32                    = AUDIO_F32LSB
+  AUDIO_U16SYS                 = AUDIO_U16LSB
+  AUDIO_S16SYS                 = AUDIO_S16LSB
+  AUDIO_S32SYS                 = AUDIO_S32LSB
+  AUDIO_F32SYS                 = AUDIO_F32LSB
   AUDIO_ALLOW_FREQUENCY_CHANGE = 0x00000001
-  AUDIO_ALLOW_FORMAT_CHANGE = 0x00000002
-  AUDIO_ALLOW_CHANNELS_CHANGE = 0x00000004
-  AUDIO_ALLOW_SAMPLES_CHANGE = 0x00000008
-  AUDIO_ALLOW_ANY_CHANGE = (AUDIO_ALLOW_FREQUENCY_CHANGE | AUDIO_ALLOW_FORMAT_CHANGE | AUDIO_ALLOW_CHANNELS_CHANGE | AUDIO_ALLOW_SAMPLES_CHANGE)
-  AUDIOCVT_MAX_FILTERS = 9
-  MIX_MAXVOLUME = 128
+  AUDIO_ALLOW_FORMAT_CHANGE    = 0x00000002
+  AUDIO_ALLOW_CHANNELS_CHANGE  = 0x00000004
+  AUDIO_ALLOW_SAMPLES_CHANGE   = 0x00000008
+  AUDIO_ALLOW_ANY_CHANGE       = (AUDIO_ALLOW_FREQUENCY_CHANGE | AUDIO_ALLOW_FORMAT_CHANGE | AUDIO_ALLOW_CHANNELS_CHANGE | AUDIO_ALLOW_SAMPLES_CHANGE)
+  AUDIOCVT_MAX_FILTERS         =   9
+  MIX_MAXVOLUME                = 128
 
   alias AudioStream = Void
   alias AudioFormat = UInt16
@@ -349,18 +349,18 @@ lib LibSDL
     userdata : Void*
   end
 
-  fun get_num_audio_drivers = SDL_GetNumAudioDrivers() : LibC::Int
+  fun get_num_audio_drivers = SDL_GetNumAudioDrivers : LibC::Int
   fun get_audio_driver = SDL_GetAudioDriver(index : LibC::Int) : LibC::Char*
   fun audio_init = SDL_AudioInit(driver_name : LibC::Char*) : LibC::Int
-  fun audio_quit = SDL_AudioQuit() : Void
-  fun get_current_audio_driver = SDL_GetCurrentAudioDriver() : LibC::Char*
+  fun audio_quit = SDL_AudioQuit : Void
+  fun get_current_audio_driver = SDL_GetCurrentAudioDriver : LibC::Char*
   fun open_audio = SDL_OpenAudio(desired : AudioSpec*, obtained : AudioSpec*) : LibC::Int
   fun get_num_audio_devices = SDL_GetNumAudioDevices(iscapture : LibC::Int) : LibC::Int
   fun get_audio_device_name = SDL_GetAudioDeviceName(index : LibC::Int, iscapture : LibC::Int) : LibC::Char*
   fun get_audio_device_spec = SDL_GetAudioDeviceSpec(index : LibC::Int, iscapture : LibC::Int, spec : AudioSpec*) : LibC::Int
   fun get_default_audio_info = SDL_GetDefaultAudioInfo(name : LibC::Char**, spec : AudioSpec*, iscapture : LibC::Int) : LibC::Int
   fun open_audio_device = SDL_OpenAudioDevice(device : LibC::Char*, iscapture : LibC::Int, desired : AudioSpec*, obtained : AudioSpec*, allowed_changes : LibC::Int) : AudioDeviceID
-  fun get_audio_status = SDL_GetAudioStatus() : AudioStatus
+  fun get_audio_status = SDL_GetAudioStatus : AudioStatus
   fun get_audio_device_status = SDL_GetAudioDeviceStatus(dev : AudioDeviceID) : AudioStatus
   fun pause_audio = SDL_PauseAudio(pause_on : LibC::Int) : Void
   fun pause_audio_device = SDL_PauseAudioDevice(dev : AudioDeviceID, pause_on : LibC::Int) : Void
@@ -381,11 +381,11 @@ lib LibSDL
   fun dequeue_audio = SDL_DequeueAudio(dev : AudioDeviceID, data : Void*, len : UInt32) : UInt32
   fun get_queued_audio_size = SDL_GetQueuedAudioSize(dev : AudioDeviceID) : UInt32
   fun clear_queued_audio = SDL_ClearQueuedAudio(dev : AudioDeviceID) : Void
-  fun lock_audio = SDL_LockAudio() : Void
+  fun lock_audio = SDL_LockAudio : Void
   fun lock_audio_device = SDL_LockAudioDevice(dev : AudioDeviceID) : Void
-  fun unlock_audio = SDL_UnlockAudio() : Void
+  fun unlock_audio = SDL_UnlockAudio : Void
   fun unlock_audio_device = SDL_UnlockAudioDevice(dev : AudioDeviceID) : Void
-  fun close_audio = SDL_CloseAudio() : Void
+  fun close_audio = SDL_CloseAudio : Void
   fun close_audio_device = SDL_CloseAudioDevice(dev : AudioDeviceID) : Void
 
   # additions/helper_audio.cr
@@ -415,32 +415,32 @@ lib LibSDL
   # SDL_blendmode
 
   enum BlendMode
-    BLENDMODE_NONE = 0x00000000
-    BLENDMODE_BLEND = 0x00000001
-    BLENDMODE_ADD = 0x00000002
-    BLENDMODE_MOD = 0x00000004
-    BLENDMODE_MUL = 0x00000008
+    BLENDMODE_NONE    = 0x00000000
+    BLENDMODE_BLEND   = 0x00000001
+    BLENDMODE_ADD     = 0x00000002
+    BLENDMODE_MOD     = 0x00000004
+    BLENDMODE_MUL     = 0x00000008
     BLENDMODE_INVALID = 0x7FFFFFFF
   end
 
   enum BlendOperation
-    BLENDOPERATION_ADD = 0x1
-    BLENDOPERATION_SUBTRACT = 0x2
+    BLENDOPERATION_ADD          = 0x1
+    BLENDOPERATION_SUBTRACT     = 0x2
     BLENDOPERATION_REV_SUBTRACT = 0x3
-    BLENDOPERATION_MINIMUM = 0x4
-    BLENDOPERATION_MAXIMUM = 0x5
+    BLENDOPERATION_MINIMUM      = 0x4
+    BLENDOPERATION_MAXIMUM      = 0x5
   end
 
   enum BlendFactor
-    BLENDFACTOR_ZERO = 0x1
-    BLENDFACTOR_ONE = 0x2
-    BLENDFACTOR_SRC_COLOR = 0x3
+    BLENDFACTOR_ZERO                = 0x1
+    BLENDFACTOR_ONE                 = 0x2
+    BLENDFACTOR_SRC_COLOR           = 0x3
     BLENDFACTOR_ONE_MINUS_SRC_COLOR = 0x4
-    BLENDFACTOR_SRC_ALPHA = 0x5
+    BLENDFACTOR_SRC_ALPHA           = 0x5
     BLENDFACTOR_ONE_MINUS_SRC_ALPHA = 0x6
-    BLENDFACTOR_DST_COLOR = 0x7
+    BLENDFACTOR_DST_COLOR           = 0x7
     BLENDFACTOR_ONE_MINUS_DST_COLOR = 0x8
-    BLENDFACTOR_DST_ALPHA = 0x9
+    BLENDFACTOR_DST_ALPHA           = 0x9
     BLENDFACTOR_ONE_MINUS_DST_ALPHA = 0xA
   end
 
@@ -449,11 +449,11 @@ lib LibSDL
   # SDL_clipboard
 
   fun set_clipboard_text = SDL_SetClipboardText(text : LibC::Char*) : LibC::Int
-  fun get_clipboard_text = SDL_GetClipboardText() : LibC::Char*
-  fun has_clipboard_text = SDL_HasClipboardText() : SBool
+  fun get_clipboard_text = SDL_GetClipboardText : LibC::Char*
+  fun has_clipboard_text = SDL_HasClipboardText : SBool
   fun set_primary_selection_text = SDL_SetPrimarySelectionText(text : LibC::Char*) : LibC::Int
-  fun get_primary_selection_text = SDL_GetPrimarySelectionText() : LibC::Char*
-  fun has_primary_selection_text = SDL_HasPrimarySelectionText() : SBool
+  fun get_primary_selection_text = SDL_GetPrimarySelectionText : LibC::Char*
+  fun has_primary_selection_text = SDL_HasPrimarySelectionText : SBool
 
   # SDL_error
 
@@ -467,9 +467,9 @@ lib LibSDL
   end
 
   fun set_error = SDL_SetError(fmt : LibC::Char*, ...) : LibC::Int
-  fun get_error = SDL_GetError() : LibC::Char*
+  fun get_error = SDL_GetError : LibC::Char*
   fun get_error_msg = SDL_GetErrorMsg(errstr : LibC::Char*, maxlen : LibC::Int) : LibC::Char*
-  fun clear_error = SDL_ClearError() : Void
+  fun clear_error = SDL_ClearError : Void
   fun error = SDL_Error(code : Errorcode) : LibC::Int
 
   # additions/helper_event.cr
@@ -514,20 +514,20 @@ lib LibSDL
 
   # SDL_events
 
-  RELEASED = 0
-  PRESSED = 1
+  RELEASED                   = 0
+  PRESSED                    = 1
   TEXTEDITINGEVENT_TEXT_SIZE = (32)
-  TEXTINPUTEVENT_TEXT_SIZE = (32)
-  QUERY = -1
-  IGNORE = 0
-  DISABLE = 0
-  ENABLE = 1
+  TEXTINPUTEVENT_TEXT_SIZE   = (32)
+  QUERY                      = -1
+  IGNORE                     =  0
+  DISABLE                    =  0
+  ENABLE                     =  1
 
   alias SysWMmsg = Void
 
   enum EventType
-    FIRSTEVENT = 0
-    QUIT = 0x100
+    FIRSTEVENT               =     0
+    QUIT                     = 0x100
     APP_TERMINATING
     APP_LOWMEMORY
     APP_WILLENTERBACKGROUND
@@ -535,20 +535,20 @@ lib LibSDL
     APP_WILLENTERFOREGROUND
     APP_DIDENTERFOREGROUND
     LOCALECHANGED
-    DISPLAYEVENT = 0x150
-    WINDOWEVENT = 0x200
+    DISPLAYEVENT             = 0x150
+    WINDOWEVENT              = 0x200
     SYSWMEVENT
-    KEYDOWN = 0x300
+    KEYDOWN                  = 0x300
     KEYUP
     TEXTEDITING
     TEXTINPUT
     KEYMAPCHANGED
     TEXTEDITING_EXT
-    MOUSEMOTION = 0x400
+    MOUSEMOTION              = 0x400
     MOUSEBUTTONDOWN
     MOUSEBUTTONUP
     MOUSEWHEEL
-    JOYAXISMOTION = 0x600
+    JOYAXISMOTION            = 0x600
     JOYBALLMOTION
     JOYHATMOTION
     JOYBUTTONDOWN
@@ -556,7 +556,7 @@ lib LibSDL
     JOYDEVICEADDED
     JOYDEVICEREMOVED
     JOYBATTERYUPDATED
-    CONTROLLERAXISMOTION = 0x650
+    CONTROLLERAXISMOTION     = 0x650
     CONTROLLERBUTTONDOWN
     CONTROLLERBUTTONUP
     CONTROLLERDEVICEADDED
@@ -566,25 +566,25 @@ lib LibSDL
     CONTROLLERTOUCHPADMOTION
     CONTROLLERTOUCHPADUP
     CONTROLLERSENSORUPDATE
-    FINGERDOWN = 0x700
+    FINGERDOWN               = 0x700
     FINGERUP
     FINGERMOTION
-    DOLLARGESTURE = 0x800
+    DOLLARGESTURE            = 0x800
     DOLLARRECORD
     MULTIGESTURE
-    CLIPBOARDUPDATE = 0x900
-    DROPFILE = 0x1000
+    CLIPBOARDUPDATE          =  0x900
+    DROPFILE                 = 0x1000
     DROPTEXT
     DROPBEGIN
     DROPCOMPLETE
-    AUDIODEVICEADDED = 0x1100
+    AUDIODEVICEADDED         = 0x1100
     AUDIODEVICEREMOVED
-    SENSORUPDATE = 0x1200
-    RENDER_TARGETS_RESET = 0x2000
+    SENSORUPDATE             = 0x1200
+    RENDER_TARGETS_RESET     = 0x2000
     RENDER_DEVICE_RESET
-    POLLSENTINEL = 0x7F00
-    USEREVENT = 0x8000
-    LASTEVENT = 0xFFFF
+    POLLSENTINEL             = 0x7F00
+    USEREVENT                = 0x8000
+    LASTEVENT                = 0xFFFF
   end
 
   enum Eventaction
@@ -887,7 +887,7 @@ lib LibSDL
     msg : SysWMmsg*
   end
 
-  fun pump_events = SDL_PumpEvents() : Void
+  fun pump_events = SDL_PumpEvents : Void
   fun peep_events = SDL_PeepEvents(events : Event*, numevents : LibC::Int, action : Eventaction, min_type : UInt32, max_type : UInt32) : LibC::Int
   fun has_event = SDL_HasEvent(type : UInt32) : SBool
   fun has_events = SDL_HasEvents(min_type : UInt32, max_type : UInt32) : SBool
@@ -907,7 +907,7 @@ lib LibSDL
 
   # SDL_filesystem
 
-  fun get_base_path = SDL_GetBasePath() : LibC::Char*
+  fun get_base_path = SDL_GetBasePath : LibC::Char*
   fun get_pref_path = SDL_GetPrefPath(org : LibC::Char*, app : LibC::Char*) : LibC::Char*
 
   # additions/helper_gamecontroller.cr
@@ -933,7 +933,7 @@ lib LibSDL
   alias GameController = Void
 
   enum GameControllerType
-    CONTROLLER_TYPE_UNKNOWN = 0
+    CONTROLLER_TYPE_UNKNOWN                      = 0
     CONTROLLER_TYPE_XBOX360
     CONTROLLER_TYPE_XBOXONE
     CONTROLLER_TYPE_PS3
@@ -950,14 +950,14 @@ lib LibSDL
   end
 
   enum GameControllerBindType
-    CONTROLLER_BINDTYPE_NONE = 0
+    CONTROLLER_BINDTYPE_NONE   = 0
     CONTROLLER_BINDTYPE_BUTTON
     CONTROLLER_BINDTYPE_AXIS
     CONTROLLER_BINDTYPE_HAT
   end
 
   enum GameControllerAxis
-    CONTROLLER_AXIS_INVALID = -1
+    CONTROLLER_AXIS_INVALID      = -1
     CONTROLLER_AXIS_LEFTX
     CONTROLLER_AXIS_LEFTY
     CONTROLLER_AXIS_RIGHTX
@@ -968,7 +968,7 @@ lib LibSDL
   end
 
   enum GameControllerButton
-    CONTROLLER_BUTTON_INVALID = -1
+    CONTROLLER_BUTTON_INVALID       = -1
     CONTROLLER_BUTTON_A
     CONTROLLER_BUTTON_B
     CONTROLLER_BUTTON_X
@@ -995,7 +995,7 @@ lib LibSDL
 
   fun game_controller_add_mappings_from_rw = SDL_GameControllerAddMappingsFromRW(rw : RWops*, freerw : LibC::Int) : LibC::Int
   fun game_controller_add_mapping = SDL_GameControllerAddMapping(mapping_string : LibC::Char*) : LibC::Int
-  fun game_controller_num_mappings = SDL_GameControllerNumMappings() : LibC::Int
+  fun game_controller_num_mappings = SDL_GameControllerNumMappings : LibC::Int
   fun game_controller_mapping_for_index = SDL_GameControllerMappingForIndex(mapping_index : LibC::Int) : LibC::Char*
   fun game_controller_mapping_for_guid = SDL_GameControllerMappingForGUID(guid : JoystickGUID) : LibC::Char*
   fun game_controller_mapping = SDL_GameControllerMapping(gamecontroller : GameController*) : LibC::Char*
@@ -1020,7 +1020,7 @@ lib LibSDL
   fun game_controller_get_attached = SDL_GameControllerGetAttached(gamecontroller : GameController*) : SBool
   fun game_controller_get_joystick = SDL_GameControllerGetJoystick(gamecontroller : GameController*) : Joystick*
   fun game_controller_event_state = SDL_GameControllerEventState(state : LibC::Int) : LibC::Int
-  fun game_controller_update = SDL_GameControllerUpdate() : Void
+  fun game_controller_update = SDL_GameControllerUpdate : Void
   fun game_controller_get_axis_from_string = SDL_GameControllerGetAxisFromString(str : LibC::Char*) : GameControllerAxis
   fun game_controller_get_string_for_axis = SDL_GameControllerGetStringForAxis(axis : GameControllerAxis) : LibC::Char*
   fun game_controller_get_bind_for_axis = SDL_GameControllerGetBindForAxis(gamecontroller : GameController*, axis : GameControllerAxis) : GameControllerButtonBind
@@ -1071,27 +1071,27 @@ lib LibSDL
 
   # SDL_haptic
 
-  HAPTIC_CONSTANT = (1 << 0)
-  HAPTIC_SINE = (1 << 1)
-  HAPTIC_LEFTRIGHT = (1 << 2)
-  HAPTIC_TRIANGLE = (1 << 3)
-  HAPTIC_SAWTOOTHUP = (1 << 4)
-  HAPTIC_SAWTOOTHDOWN = (1 << 5)
-  HAPTIC_RAMP = (1 << 6)
-  HAPTIC_SPRING = (1 << 7)
-  HAPTIC_DAMPER = (1 << 8)
-  HAPTIC_INERTIA = (1 << 9)
-  HAPTIC_FRICTION = (1 << 10)
-  HAPTIC_CUSTOM = (1 << 11)
-  HAPTIC_GAIN = (1 << 12)
-  HAPTIC_AUTOCENTER = (1 << 13)
-  HAPTIC_STATUS = (1 << 14)
-  HAPTIC_PAUSE = (1 << 15)
-  HAPTIC_POLAR = 0
-  HAPTIC_CARTESIAN = 1
-  HAPTIC_SPHERICAL = 2
-  HAPTIC_STEERING_AXIS = 3
-  HAPTIC_INFINITY = 4294967295
+  HAPTIC_CONSTANT      = (1 << 0)
+  HAPTIC_SINE          = (1 << 1)
+  HAPTIC_LEFTRIGHT     = (1 << 2)
+  HAPTIC_TRIANGLE      = (1 << 3)
+  HAPTIC_SAWTOOTHUP    = (1 << 4)
+  HAPTIC_SAWTOOTHDOWN  = (1 << 5)
+  HAPTIC_RAMP          = (1 << 6)
+  HAPTIC_SPRING        = (1 << 7)
+  HAPTIC_DAMPER        = (1 << 8)
+  HAPTIC_INERTIA       = (1 << 9)
+  HAPTIC_FRICTION      = (1 << 10)
+  HAPTIC_CUSTOM        = (1 << 11)
+  HAPTIC_GAIN          = (1 << 12)
+  HAPTIC_AUTOCENTER    = (1 << 13)
+  HAPTIC_STATUS        = (1 << 14)
+  HAPTIC_PAUSE         = (1 << 15)
+  HAPTIC_POLAR         =          0
+  HAPTIC_CARTESIAN     =          1
+  HAPTIC_SPHERICAL     =          2
+  HAPTIC_STEERING_AXIS =          3
+  HAPTIC_INFINITY      = 4294967295
 
   alias Haptic = Void
 
@@ -1185,13 +1185,13 @@ lib LibSDL
     fade_level : UInt16
   end
 
-  fun num_haptics = SDL_NumHaptics() : LibC::Int
+  fun num_haptics = SDL_NumHaptics : LibC::Int
   fun haptic_name = SDL_HapticName(device_index : LibC::Int) : LibC::Char*
   fun haptic_open = SDL_HapticOpen(device_index : LibC::Int) : Haptic*
   fun haptic_opened = SDL_HapticOpened(device_index : LibC::Int) : LibC::Int
   fun haptic_index = SDL_HapticIndex(haptic : Haptic*) : LibC::Int
-  fun mouse_is_haptic = SDL_MouseIsHaptic() : LibC::Int
-  fun haptic_open_from_mouse = SDL_HapticOpenFromMouse() : Haptic*
+  fun mouse_is_haptic = SDL_MouseIsHaptic : LibC::Int
+  fun haptic_open_from_mouse = SDL_HapticOpenFromMouse : Haptic*
   fun joystick_is_haptic = SDL_JoystickIsHaptic(joystick : Joystick*) : LibC::Int
   fun haptic_open_from_joystick = SDL_HapticOpenFromJoystick(joystick : Joystick*) : Haptic*
   fun haptic_close = SDL_HapticClose(haptic : Haptic*) : Void
@@ -1230,179 +1230,179 @@ lib LibSDL
 
   # SDL_hints
 
-  HINT_ACCELEROMETER_AS_JOYSTICK = "ACCELEROMETER_AS_JOYSTICK"
-  HINT_ALLOW_ALT_TAB_WHILE_GRABBED = "ALLOW_ALT_TAB_WHILE_GRABBED"
-  HINT_ALLOW_TOPMOST = "ALLOW_TOPMOST"
-  HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION = "ANDROID_APK_EXPANSION_MAIN_FILE_VERSION"
+  HINT_ACCELEROMETER_AS_JOYSTICK                = "ACCELEROMETER_AS_JOYSTICK"
+  HINT_ALLOW_ALT_TAB_WHILE_GRABBED              = "ALLOW_ALT_TAB_WHILE_GRABBED"
+  HINT_ALLOW_TOPMOST                            = "ALLOW_TOPMOST"
+  HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION  = "ANDROID_APK_EXPANSION_MAIN_FILE_VERSION"
   HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION = "ANDROID_APK_EXPANSION_PATCH_FILE_VERSION"
-  HINT_ANDROID_BLOCK_ON_PAUSE = "ANDROID_BLOCK_ON_PAUSE"
-  HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO = "ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO"
-  HINT_ANDROID_TRAP_BACK_BUTTON = "ANDROID_TRAP_BACK_BUTTON"
-  HINT_APP_NAME = "APP_NAME"
-  HINT_APPLE_TV_CONTROLLER_UI_EVENTS = "APPLE_TV_CONTROLLER_UI_EVENTS"
-  HINT_APPLE_TV_REMOTE_ALLOW_ROTATION = "APPLE_TV_REMOTE_ALLOW_ROTATION"
-  HINT_AUDIO_CATEGORY = "AUDIO_CATEGORY"
-  HINT_AUDIO_DEVICE_APP_NAME = "AUDIO_DEVICE_APP_NAME"
-  HINT_AUDIO_DEVICE_STREAM_NAME = "AUDIO_DEVICE_STREAM_NAME"
-  HINT_AUDIO_DEVICE_STREAM_ROLE = "AUDIO_DEVICE_STREAM_ROLE"
-  HINT_AUDIO_RESAMPLING_MODE = "AUDIO_RESAMPLING_MODE"
-  HINT_AUTO_UPDATE_JOYSTICKS = "AUTO_UPDATE_JOYSTICKS"
-  HINT_AUTO_UPDATE_SENSORS = "AUTO_UPDATE_SENSORS"
-  HINT_BMP_SAVE_LEGACY_FORMAT = "BMP_SAVE_LEGACY_FORMAT"
-  HINT_DISPLAY_USABLE_BOUNDS = "DISPLAY_USABLE_BOUNDS"
-  HINT_EMSCRIPTEN_ASYNCIFY = "EMSCRIPTEN_ASYNCIFY"
-  HINT_EMSCRIPTEN_KEYBOARD_ELEMENT = "EMSCRIPTEN_KEYBOARD_ELEMENT"
-  HINT_ENABLE_STEAM_CONTROLLERS = "ENABLE_STEAM_CONTROLLERS"
-  HINT_EVENT_LOGGING = "EVENT_LOGGING"
-  HINT_FORCE_RAISEWINDOW = "HINT_FORCE_RAISEWINDOW"
-  HINT_FRAMEBUFFER_ACCELERATION = "FRAMEBUFFER_ACCELERATION"
-  HINT_GAMECONTROLLERCONFIG = "GAMECONTROLLERCONFIG"
-  HINT_GAMECONTROLLERCONFIG_FILE = "GAMECONTROLLERCONFIG_FILE"
-  HINT_GAMECONTROLLERTYPE = "GAMECONTROLLERTYPE"
-  HINT_GAMECONTROLLER_IGNORE_DEVICES = "GAMECONTROLLER_IGNORE_DEVICES"
-  HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT = "GAMECONTROLLER_IGNORE_DEVICES_EXCEPT"
-  HINT_GAMECONTROLLER_USE_BUTTON_LABELS = "GAMECONTROLLER_USE_BUTTON_LABELS"
-  HINT_GRAB_KEYBOARD = "GRAB_KEYBOARD"
-  HINT_HIDAPI_IGNORE_DEVICES = "HIDAPI_IGNORE_DEVICES"
-  HINT_IDLE_TIMER_DISABLED = "IOS_IDLE_TIMER_DISABLED"
-  HINT_IME_INTERNAL_EDITING = "IME_INTERNAL_EDITING"
-  HINT_IME_SHOW_UI = "IME_SHOW_UI"
-  HINT_IME_SUPPORT_EXTENDED_TEXT = "IME_SUPPORT_EXTENDED_TEXT"
-  HINT_IOS_HIDE_HOME_INDICATOR = "IOS_HIDE_HOME_INDICATOR"
-  HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS = "JOYSTICK_ALLOW_BACKGROUND_EVENTS"
-  HINT_JOYSTICK_HIDAPI = "JOYSTICK_HIDAPI"
-  HINT_JOYSTICK_HIDAPI_GAMECUBE = "JOYSTICK_HIDAPI_GAMECUBE"
-  HINT_JOYSTICK_GAMECUBE_RUMBLE_BRAKE = "JOYSTICK_GAMECUBE_RUMBLE_BRAKE"
-  HINT_JOYSTICK_HIDAPI_JOY_CONS = "JOYSTICK_HIDAPI_JOY_CONS"
-  HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS = "JOYSTICK_HIDAPI_COMBINE_JOY_CONS"
-  HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS = "JOYSTICK_HIDAPI_VERTICAL_JOY_CONS"
-  HINT_JOYSTICK_HIDAPI_LUNA = "JOYSTICK_HIDAPI_LUNA"
-  HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC = "JOYSTICK_HIDAPI_NINTENDO_CLASSIC"
-  HINT_JOYSTICK_HIDAPI_SHIELD = "JOYSTICK_HIDAPI_SHIELD"
-  HINT_JOYSTICK_HIDAPI_PS3 = "JOYSTICK_HIDAPI_PS3"
-  HINT_JOYSTICK_HIDAPI_PS4 = "JOYSTICK_HIDAPI_PS4"
-  HINT_JOYSTICK_HIDAPI_PS4_RUMBLE = "JOYSTICK_HIDAPI_PS4_RUMBLE"
-  HINT_JOYSTICK_HIDAPI_PS5 = "JOYSTICK_HIDAPI_PS5"
-  HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED = "JOYSTICK_HIDAPI_PS5_PLAYER_LED"
-  HINT_JOYSTICK_HIDAPI_PS5_RUMBLE = "JOYSTICK_HIDAPI_PS5_RUMBLE"
-  HINT_JOYSTICK_HIDAPI_STADIA = "JOYSTICK_HIDAPI_STADIA"
-  HINT_JOYSTICK_HIDAPI_STEAM = "JOYSTICK_HIDAPI_STEAM"
-  HINT_JOYSTICK_HIDAPI_SWITCH = "JOYSTICK_HIDAPI_SWITCH"
-  HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED = "JOYSTICK_HIDAPI_SWITCH_HOME_LED"
-  HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED = "JOYSTICK_HIDAPI_JOYCON_HOME_LED"
-  HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED = "JOYSTICK_HIDAPI_SWITCH_PLAYER_LED"
-  HINT_JOYSTICK_HIDAPI_WII = "JOYSTICK_HIDAPI_WII"
-  HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED = "JOYSTICK_HIDAPI_WII_PLAYER_LED"
-  HINT_JOYSTICK_HIDAPI_XBOX = "JOYSTICK_HIDAPI_XBOX"
-  HINT_JOYSTICK_HIDAPI_XBOX_360 = "JOYSTICK_HIDAPI_XBOX_360"
-  HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED = "JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED"
-  HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS = "JOYSTICK_HIDAPI_XBOX_360_WIRELESS"
-  HINT_JOYSTICK_HIDAPI_XBOX_ONE = "JOYSTICK_HIDAPI_XBOX_ONE"
-  HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED = "JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED"
-  HINT_JOYSTICK_RAWINPUT = "JOYSTICK_RAWINPUT"
-  HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT = "JOYSTICK_RAWINPUT_CORRELATE_XINPUT"
-  HINT_JOYSTICK_ROG_CHAKRAM = "JOYSTICK_ROG_CHAKRAM"
-  HINT_JOYSTICK_THREAD = "JOYSTICK_THREAD"
-  HINT_KMSDRM_REQUIRE_DRM_MASTER = "KMSDRM_REQUIRE_DRM_MASTER"
-  HINT_JOYSTICK_DEVICE = "JOYSTICK_DEVICE"
-  HINT_LINUX_DIGITAL_HATS = "LINUX_DIGITAL_HATS"
-  HINT_LINUX_HAT_DEADZONES = "LINUX_HAT_DEADZONES"
-  HINT_LINUX_JOYSTICK_CLASSIC = "LINUX_JOYSTICK_CLASSIC"
-  HINT_LINUX_JOYSTICK_DEADZONES = "LINUX_JOYSTICK_DEADZONES"
-  HINT_MAC_BACKGROUND_APP = "MAC_BACKGROUND_APP"
-  HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK = "MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK"
-  HINT_MAC_OPENGL_ASYNC_DISPATCH = "MAC_OPENGL_ASYNC_DISPATCH"
-  HINT_MOUSE_DOUBLE_CLICK_RADIUS = "MOUSE_DOUBLE_CLICK_RADIUS"
-  HINT_MOUSE_DOUBLE_CLICK_TIME = "MOUSE_DOUBLE_CLICK_TIME"
-  HINT_MOUSE_FOCUS_CLICKTHROUGH = "MOUSE_FOCUS_CLICKTHROUGH"
-  HINT_MOUSE_NORMAL_SPEED_SCALE = "MOUSE_NORMAL_SPEED_SCALE"
-  HINT_MOUSE_RELATIVE_MODE_CENTER = "MOUSE_RELATIVE_MODE_CENTER"
-  HINT_MOUSE_RELATIVE_MODE_WARP = "MOUSE_RELATIVE_MODE_WARP"
-  HINT_MOUSE_RELATIVE_SCALING = "MOUSE_RELATIVE_SCALING"
-  HINT_MOUSE_RELATIVE_SPEED_SCALE = "MOUSE_RELATIVE_SPEED_SCALE"
-  HINT_MOUSE_RELATIVE_SYSTEM_SCALE = "MOUSE_RELATIVE_SYSTEM_SCALE"
-  HINT_MOUSE_RELATIVE_WARP_MOTION = "MOUSE_RELATIVE_WARP_MOTION"
-  HINT_MOUSE_TOUCH_EVENTS = "MOUSE_TOUCH_EVENTS"
-  HINT_MOUSE_AUTO_CAPTURE = "MOUSE_AUTO_CAPTURE"
-  HINT_NO_SIGNAL_HANDLERS = "NO_SIGNAL_HANDLERS"
-  HINT_OPENGL_ES_DRIVER = "OPENGL_ES_DRIVER"
-  HINT_ORIENTATIONS = "IOS_ORIENTATIONS"
-  HINT_POLL_SENTINEL = "POLL_SENTINEL"
-  HINT_PREFERRED_LOCALES = "PREFERRED_LOCALES"
-  HINT_QTWAYLAND_CONTENT_ORIENTATION = "QTWAYLAND_CONTENT_ORIENTATION"
-  HINT_QTWAYLAND_WINDOW_FLAGS = "QTWAYLAND_WINDOW_FLAGS"
-  HINT_RENDER_BATCHING = "RENDER_BATCHING"
-  HINT_RENDER_LINE_METHOD = "RENDER_LINE_METHOD"
-  HINT_RENDER_DIRECT3D11_DEBUG = "RENDER_DIRECT3D11_DEBUG"
-  HINT_RENDER_DIRECT3D_THREADSAFE = "RENDER_DIRECT3D_THREADSAFE"
-  HINT_RENDER_DRIVER = "RENDER_DRIVER"
-  HINT_RENDER_LOGICAL_SIZE_MODE = "RENDER_LOGICAL_SIZE_MODE"
-  HINT_RENDER_OPENGL_SHADERS = "RENDER_OPENGL_SHADERS"
-  HINT_RENDER_SCALE_QUALITY = "RENDER_SCALE_QUALITY"
-  HINT_RENDER_VSYNC = "RENDER_VSYNC"
-  HINT_PS2_DYNAMIC_VSYNC = "PS2_DYNAMIC_VSYNC"
-  HINT_RETURN_KEY_HIDES_IME = "RETURN_KEY_HIDES_IME"
-  HINT_RPI_VIDEO_LAYER = "RPI_VIDEO_LAYER"
-  HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME = "SCREENSAVER_INHIBIT_ACTIVITY_NAME"
-  HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL = "THREAD_FORCE_REALTIME_TIME_CRITICAL"
-  HINT_THREAD_PRIORITY_POLICY = "THREAD_PRIORITY_POLICY"
-  HINT_THREAD_STACK_SIZE = "THREAD_STACK_SIZE"
-  HINT_TIMER_RESOLUTION = "TIMER_RESOLUTION"
-  HINT_TOUCH_MOUSE_EVENTS = "TOUCH_MOUSE_EVENTS"
-  HINT_VITA_TOUCH_MOUSE_DEVICE = "HINT_VITA_TOUCH_MOUSE_DEVICE"
-  HINT_TV_REMOTE_AS_JOYSTICK = "TV_REMOTE_AS_JOYSTICK"
-  HINT_VIDEO_ALLOW_SCREENSAVER = "VIDEO_ALLOW_SCREENSAVER"
-  HINT_VIDEO_DOUBLE_BUFFER = "VIDEO_DOUBLE_BUFFER"
-  HINT_VIDEO_EGL_ALLOW_TRANSPARENCY = "VIDEO_EGL_ALLOW_TRANSPARENCY"
-  HINT_VIDEO_EXTERNAL_CONTEXT = "VIDEO_EXTERNAL_CONTEXT"
-  HINT_VIDEO_HIGHDPI_DISABLED = "VIDEO_HIGHDPI_DISABLED"
-  HINT_VIDEO_MAC_FULLSCREEN_SPACES = "VIDEO_MAC_FULLSCREEN_SPACES"
-  HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS = "VIDEO_MINIMIZE_ON_FOCUS_LOSS"
-  HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR = "VIDEO_WAYLAND_ALLOW_LIBDECOR"
-  HINT_VIDEO_WAYLAND_PREFER_LIBDECOR = "VIDEO_WAYLAND_PREFER_LIBDECOR"
-  HINT_VIDEO_WAYLAND_MODE_EMULATION = "VIDEO_WAYLAND_MODE_EMULATION"
-  HINT_VIDEO_WAYLAND_EMULATE_MOUSE_WARP = "VIDEO_WAYLAND_EMULATE_MOUSE_WARP"
-  HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT = "VIDEO_WINDOW_SHARE_PIXEL_FORMAT"
-  HINT_VIDEO_FOREIGN_WINDOW_OPENGL = "VIDEO_FOREIGN_WINDOW_OPENGL"
-  HINT_VIDEO_FOREIGN_WINDOW_VULKAN = "VIDEO_FOREIGN_WINDOW_VULKAN"
-  HINT_VIDEO_WIN_D3DCOMPILER = "VIDEO_WIN_D3DCOMPILER"
-  HINT_VIDEO_X11_FORCE_EGL = "VIDEO_X11_FORCE_EGL"
-  HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR = "VIDEO_X11_NET_WM_BYPASS_COMPOSITOR"
-  HINT_VIDEO_X11_NET_WM_PING = "VIDEO_X11_NET_WM_PING"
-  HINT_VIDEO_X11_WINDOW_VISUALID = "VIDEO_X11_WINDOW_VISUALID"
-  HINT_VIDEO_X11_XINERAMA = "VIDEO_X11_XINERAMA"
-  HINT_VIDEO_X11_XRANDR = "VIDEO_X11_XRANDR"
-  HINT_VIDEO_X11_XVIDMODE = "VIDEO_X11_XVIDMODE"
-  HINT_WAVE_FACT_CHUNK = "WAVE_FACT_CHUNK"
-  HINT_WAVE_RIFF_CHUNK_SIZE = "WAVE_RIFF_CHUNK_SIZE"
-  HINT_WAVE_TRUNCATION = "WAVE_TRUNCATION"
-  HINT_WINDOWS_DISABLE_THREAD_NAMING = "WINDOWS_DISABLE_THREAD_NAMING"
-  HINT_WINDOWS_ENABLE_MENU_MNEMONICS = "WINDOWS_ENABLE_MENU_MNEMONICS"
-  HINT_WINDOWS_ENABLE_MESSAGELOOP = "WINDOWS_ENABLE_MESSAGELOOP"
-  HINT_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS = "WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS"
-  HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL = "WINDOWS_FORCE_SEMAPHORE_KERNEL"
-  HINT_WINDOWS_INTRESOURCE_ICON = "WINDOWS_INTRESOURCE_ICON"
-  HINT_WINDOWS_INTRESOURCE_ICON_SMALL = "WINDOWS_INTRESOURCE_ICON_SMALL"
-  HINT_WINDOWS_NO_CLOSE_ON_ALT_F4 = "WINDOWS_NO_CLOSE_ON_ALT_F4"
-  HINT_WINDOWS_USE_D3D9EX = "WINDOWS_USE_D3D9EX"
-  HINT_WINDOWS_DPI_AWARENESS = "WINDOWS_DPI_AWARENESS"
-  HINT_WINDOWS_DPI_SCALING = "WINDOWS_DPI_SCALING"
-  HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN = "WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN"
-  HINT_WINDOW_NO_ACTIVATION_WHEN_SHOWN = "WINDOW_NO_ACTIVATION_WHEN_SHOWN"
-  HINT_WINRT_HANDLE_BACK_BUTTON = "WINRT_HANDLE_BACK_BUTTON"
-  HINT_WINRT_PRIVACY_POLICY_LABEL = "WINRT_PRIVACY_POLICY_LABEL"
-  HINT_WINRT_PRIVACY_POLICY_URL = "WINRT_PRIVACY_POLICY_URL"
-  HINT_X11_FORCE_OVERRIDE_REDIRECT = "X11_FORCE_OVERRIDE_REDIRECT"
-  HINT_XINPUT_ENABLED = "XINPUT_ENABLED"
-  HINT_DIRECTINPUT_ENABLED = "DIRECTINPUT_ENABLED"
-  HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING = "XINPUT_USE_OLD_JOYSTICK_MAPPING"
-  HINT_AUDIO_INCLUDE_MONITORS = "AUDIO_INCLUDE_MONITORS"
-  HINT_X11_WINDOW_TYPE = "X11_WINDOW_TYPE"
-  HINT_QUIT_ON_LAST_WINDOW_CLOSE = "QUIT_ON_LAST_WINDOW_CLOSE"
-  HINT_VIDEODRIVER = "VIDEODRIVER"
-  HINT_AUDIODRIVER = "AUDIODRIVER"
-  HINT_KMSDRM_DEVICE_INDEX = "KMSDRM_DEVICE_INDEX"
-  HINT_TRACKPAD_IS_TOUCH_ONLY = "TRACKPAD_IS_TOUCH_ONLY"
+  HINT_ANDROID_BLOCK_ON_PAUSE                   = "ANDROID_BLOCK_ON_PAUSE"
+  HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO        = "ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO"
+  HINT_ANDROID_TRAP_BACK_BUTTON                 = "ANDROID_TRAP_BACK_BUTTON"
+  HINT_APP_NAME                                 = "APP_NAME"
+  HINT_APPLE_TV_CONTROLLER_UI_EVENTS            = "APPLE_TV_CONTROLLER_UI_EVENTS"
+  HINT_APPLE_TV_REMOTE_ALLOW_ROTATION           = "APPLE_TV_REMOTE_ALLOW_ROTATION"
+  HINT_AUDIO_CATEGORY                           = "AUDIO_CATEGORY"
+  HINT_AUDIO_DEVICE_APP_NAME                    = "AUDIO_DEVICE_APP_NAME"
+  HINT_AUDIO_DEVICE_STREAM_NAME                 = "AUDIO_DEVICE_STREAM_NAME"
+  HINT_AUDIO_DEVICE_STREAM_ROLE                 = "AUDIO_DEVICE_STREAM_ROLE"
+  HINT_AUDIO_RESAMPLING_MODE                    = "AUDIO_RESAMPLING_MODE"
+  HINT_AUTO_UPDATE_JOYSTICKS                    = "AUTO_UPDATE_JOYSTICKS"
+  HINT_AUTO_UPDATE_SENSORS                      = "AUTO_UPDATE_SENSORS"
+  HINT_BMP_SAVE_LEGACY_FORMAT                   = "BMP_SAVE_LEGACY_FORMAT"
+  HINT_DISPLAY_USABLE_BOUNDS                    = "DISPLAY_USABLE_BOUNDS"
+  HINT_EMSCRIPTEN_ASYNCIFY                      = "EMSCRIPTEN_ASYNCIFY"
+  HINT_EMSCRIPTEN_KEYBOARD_ELEMENT              = "EMSCRIPTEN_KEYBOARD_ELEMENT"
+  HINT_ENABLE_STEAM_CONTROLLERS                 = "ENABLE_STEAM_CONTROLLERS"
+  HINT_EVENT_LOGGING                            = "EVENT_LOGGING"
+  HINT_FORCE_RAISEWINDOW                        = "HINT_FORCE_RAISEWINDOW"
+  HINT_FRAMEBUFFER_ACCELERATION                 = "FRAMEBUFFER_ACCELERATION"
+  HINT_GAMECONTROLLERCONFIG                     = "GAMECONTROLLERCONFIG"
+  HINT_GAMECONTROLLERCONFIG_FILE                = "GAMECONTROLLERCONFIG_FILE"
+  HINT_GAMECONTROLLERTYPE                       = "GAMECONTROLLERTYPE"
+  HINT_GAMECONTROLLER_IGNORE_DEVICES            = "GAMECONTROLLER_IGNORE_DEVICES"
+  HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT     = "GAMECONTROLLER_IGNORE_DEVICES_EXCEPT"
+  HINT_GAMECONTROLLER_USE_BUTTON_LABELS         = "GAMECONTROLLER_USE_BUTTON_LABELS"
+  HINT_GRAB_KEYBOARD                            = "GRAB_KEYBOARD"
+  HINT_HIDAPI_IGNORE_DEVICES                    = "HIDAPI_IGNORE_DEVICES"
+  HINT_IDLE_TIMER_DISABLED                      = "IOS_IDLE_TIMER_DISABLED"
+  HINT_IME_INTERNAL_EDITING                     = "IME_INTERNAL_EDITING"
+  HINT_IME_SHOW_UI                              = "IME_SHOW_UI"
+  HINT_IME_SUPPORT_EXTENDED_TEXT                = "IME_SUPPORT_EXTENDED_TEXT"
+  HINT_IOS_HIDE_HOME_INDICATOR                  = "IOS_HIDE_HOME_INDICATOR"
+  HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS         = "JOYSTICK_ALLOW_BACKGROUND_EVENTS"
+  HINT_JOYSTICK_HIDAPI                          = "JOYSTICK_HIDAPI"
+  HINT_JOYSTICK_HIDAPI_GAMECUBE                 = "JOYSTICK_HIDAPI_GAMECUBE"
+  HINT_JOYSTICK_GAMECUBE_RUMBLE_BRAKE           = "JOYSTICK_GAMECUBE_RUMBLE_BRAKE"
+  HINT_JOYSTICK_HIDAPI_JOY_CONS                 = "JOYSTICK_HIDAPI_JOY_CONS"
+  HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS         = "JOYSTICK_HIDAPI_COMBINE_JOY_CONS"
+  HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS        = "JOYSTICK_HIDAPI_VERTICAL_JOY_CONS"
+  HINT_JOYSTICK_HIDAPI_LUNA                     = "JOYSTICK_HIDAPI_LUNA"
+  HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC         = "JOYSTICK_HIDAPI_NINTENDO_CLASSIC"
+  HINT_JOYSTICK_HIDAPI_SHIELD                   = "JOYSTICK_HIDAPI_SHIELD"
+  HINT_JOYSTICK_HIDAPI_PS3                      = "JOYSTICK_HIDAPI_PS3"
+  HINT_JOYSTICK_HIDAPI_PS4                      = "JOYSTICK_HIDAPI_PS4"
+  HINT_JOYSTICK_HIDAPI_PS4_RUMBLE               = "JOYSTICK_HIDAPI_PS4_RUMBLE"
+  HINT_JOYSTICK_HIDAPI_PS5                      = "JOYSTICK_HIDAPI_PS5"
+  HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED           = "JOYSTICK_HIDAPI_PS5_PLAYER_LED"
+  HINT_JOYSTICK_HIDAPI_PS5_RUMBLE               = "JOYSTICK_HIDAPI_PS5_RUMBLE"
+  HINT_JOYSTICK_HIDAPI_STADIA                   = "JOYSTICK_HIDAPI_STADIA"
+  HINT_JOYSTICK_HIDAPI_STEAM                    = "JOYSTICK_HIDAPI_STEAM"
+  HINT_JOYSTICK_HIDAPI_SWITCH                   = "JOYSTICK_HIDAPI_SWITCH"
+  HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED          = "JOYSTICK_HIDAPI_SWITCH_HOME_LED"
+  HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED          = "JOYSTICK_HIDAPI_JOYCON_HOME_LED"
+  HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED        = "JOYSTICK_HIDAPI_SWITCH_PLAYER_LED"
+  HINT_JOYSTICK_HIDAPI_WII                      = "JOYSTICK_HIDAPI_WII"
+  HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED           = "JOYSTICK_HIDAPI_WII_PLAYER_LED"
+  HINT_JOYSTICK_HIDAPI_XBOX                     = "JOYSTICK_HIDAPI_XBOX"
+  HINT_JOYSTICK_HIDAPI_XBOX_360                 = "JOYSTICK_HIDAPI_XBOX_360"
+  HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED      = "JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED"
+  HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS        = "JOYSTICK_HIDAPI_XBOX_360_WIRELESS"
+  HINT_JOYSTICK_HIDAPI_XBOX_ONE                 = "JOYSTICK_HIDAPI_XBOX_ONE"
+  HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED        = "JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED"
+  HINT_JOYSTICK_RAWINPUT                        = "JOYSTICK_RAWINPUT"
+  HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT       = "JOYSTICK_RAWINPUT_CORRELATE_XINPUT"
+  HINT_JOYSTICK_ROG_CHAKRAM                     = "JOYSTICK_ROG_CHAKRAM"
+  HINT_JOYSTICK_THREAD                          = "JOYSTICK_THREAD"
+  HINT_KMSDRM_REQUIRE_DRM_MASTER                = "KMSDRM_REQUIRE_DRM_MASTER"
+  HINT_JOYSTICK_DEVICE                          = "JOYSTICK_DEVICE"
+  HINT_LINUX_DIGITAL_HATS                       = "LINUX_DIGITAL_HATS"
+  HINT_LINUX_HAT_DEADZONES                      = "LINUX_HAT_DEADZONES"
+  HINT_LINUX_JOYSTICK_CLASSIC                   = "LINUX_JOYSTICK_CLASSIC"
+  HINT_LINUX_JOYSTICK_DEADZONES                 = "LINUX_JOYSTICK_DEADZONES"
+  HINT_MAC_BACKGROUND_APP                       = "MAC_BACKGROUND_APP"
+  HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK       = "MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK"
+  HINT_MAC_OPENGL_ASYNC_DISPATCH                = "MAC_OPENGL_ASYNC_DISPATCH"
+  HINT_MOUSE_DOUBLE_CLICK_RADIUS                = "MOUSE_DOUBLE_CLICK_RADIUS"
+  HINT_MOUSE_DOUBLE_CLICK_TIME                  = "MOUSE_DOUBLE_CLICK_TIME"
+  HINT_MOUSE_FOCUS_CLICKTHROUGH                 = "MOUSE_FOCUS_CLICKTHROUGH"
+  HINT_MOUSE_NORMAL_SPEED_SCALE                 = "MOUSE_NORMAL_SPEED_SCALE"
+  HINT_MOUSE_RELATIVE_MODE_CENTER               = "MOUSE_RELATIVE_MODE_CENTER"
+  HINT_MOUSE_RELATIVE_MODE_WARP                 = "MOUSE_RELATIVE_MODE_WARP"
+  HINT_MOUSE_RELATIVE_SCALING                   = "MOUSE_RELATIVE_SCALING"
+  HINT_MOUSE_RELATIVE_SPEED_SCALE               = "MOUSE_RELATIVE_SPEED_SCALE"
+  HINT_MOUSE_RELATIVE_SYSTEM_SCALE              = "MOUSE_RELATIVE_SYSTEM_SCALE"
+  HINT_MOUSE_RELATIVE_WARP_MOTION               = "MOUSE_RELATIVE_WARP_MOTION"
+  HINT_MOUSE_TOUCH_EVENTS                       = "MOUSE_TOUCH_EVENTS"
+  HINT_MOUSE_AUTO_CAPTURE                       = "MOUSE_AUTO_CAPTURE"
+  HINT_NO_SIGNAL_HANDLERS                       = "NO_SIGNAL_HANDLERS"
+  HINT_OPENGL_ES_DRIVER                         = "OPENGL_ES_DRIVER"
+  HINT_ORIENTATIONS                             = "IOS_ORIENTATIONS"
+  HINT_POLL_SENTINEL                            = "POLL_SENTINEL"
+  HINT_PREFERRED_LOCALES                        = "PREFERRED_LOCALES"
+  HINT_QTWAYLAND_CONTENT_ORIENTATION            = "QTWAYLAND_CONTENT_ORIENTATION"
+  HINT_QTWAYLAND_WINDOW_FLAGS                   = "QTWAYLAND_WINDOW_FLAGS"
+  HINT_RENDER_BATCHING                          = "RENDER_BATCHING"
+  HINT_RENDER_LINE_METHOD                       = "RENDER_LINE_METHOD"
+  HINT_RENDER_DIRECT3D11_DEBUG                  = "RENDER_DIRECT3D11_DEBUG"
+  HINT_RENDER_DIRECT3D_THREADSAFE               = "RENDER_DIRECT3D_THREADSAFE"
+  HINT_RENDER_DRIVER                            = "RENDER_DRIVER"
+  HINT_RENDER_LOGICAL_SIZE_MODE                 = "RENDER_LOGICAL_SIZE_MODE"
+  HINT_RENDER_OPENGL_SHADERS                    = "RENDER_OPENGL_SHADERS"
+  HINT_RENDER_SCALE_QUALITY                     = "RENDER_SCALE_QUALITY"
+  HINT_RENDER_VSYNC                             = "RENDER_VSYNC"
+  HINT_PS2_DYNAMIC_VSYNC                        = "PS2_DYNAMIC_VSYNC"
+  HINT_RETURN_KEY_HIDES_IME                     = "RETURN_KEY_HIDES_IME"
+  HINT_RPI_VIDEO_LAYER                          = "RPI_VIDEO_LAYER"
+  HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME        = "SCREENSAVER_INHIBIT_ACTIVITY_NAME"
+  HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL      = "THREAD_FORCE_REALTIME_TIME_CRITICAL"
+  HINT_THREAD_PRIORITY_POLICY                   = "THREAD_PRIORITY_POLICY"
+  HINT_THREAD_STACK_SIZE                        = "THREAD_STACK_SIZE"
+  HINT_TIMER_RESOLUTION                         = "TIMER_RESOLUTION"
+  HINT_TOUCH_MOUSE_EVENTS                       = "TOUCH_MOUSE_EVENTS"
+  HINT_VITA_TOUCH_MOUSE_DEVICE                  = "HINT_VITA_TOUCH_MOUSE_DEVICE"
+  HINT_TV_REMOTE_AS_JOYSTICK                    = "TV_REMOTE_AS_JOYSTICK"
+  HINT_VIDEO_ALLOW_SCREENSAVER                  = "VIDEO_ALLOW_SCREENSAVER"
+  HINT_VIDEO_DOUBLE_BUFFER                      = "VIDEO_DOUBLE_BUFFER"
+  HINT_VIDEO_EGL_ALLOW_TRANSPARENCY             = "VIDEO_EGL_ALLOW_TRANSPARENCY"
+  HINT_VIDEO_EXTERNAL_CONTEXT                   = "VIDEO_EXTERNAL_CONTEXT"
+  HINT_VIDEO_HIGHDPI_DISABLED                   = "VIDEO_HIGHDPI_DISABLED"
+  HINT_VIDEO_MAC_FULLSCREEN_SPACES              = "VIDEO_MAC_FULLSCREEN_SPACES"
+  HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS             = "VIDEO_MINIMIZE_ON_FOCUS_LOSS"
+  HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR             = "VIDEO_WAYLAND_ALLOW_LIBDECOR"
+  HINT_VIDEO_WAYLAND_PREFER_LIBDECOR            = "VIDEO_WAYLAND_PREFER_LIBDECOR"
+  HINT_VIDEO_WAYLAND_MODE_EMULATION             = "VIDEO_WAYLAND_MODE_EMULATION"
+  HINT_VIDEO_WAYLAND_EMULATE_MOUSE_WARP         = "VIDEO_WAYLAND_EMULATE_MOUSE_WARP"
+  HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT          = "VIDEO_WINDOW_SHARE_PIXEL_FORMAT"
+  HINT_VIDEO_FOREIGN_WINDOW_OPENGL              = "VIDEO_FOREIGN_WINDOW_OPENGL"
+  HINT_VIDEO_FOREIGN_WINDOW_VULKAN              = "VIDEO_FOREIGN_WINDOW_VULKAN"
+  HINT_VIDEO_WIN_D3DCOMPILER                    = "VIDEO_WIN_D3DCOMPILER"
+  HINT_VIDEO_X11_FORCE_EGL                      = "VIDEO_X11_FORCE_EGL"
+  HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR       = "VIDEO_X11_NET_WM_BYPASS_COMPOSITOR"
+  HINT_VIDEO_X11_NET_WM_PING                    = "VIDEO_X11_NET_WM_PING"
+  HINT_VIDEO_X11_WINDOW_VISUALID                = "VIDEO_X11_WINDOW_VISUALID"
+  HINT_VIDEO_X11_XINERAMA                       = "VIDEO_X11_XINERAMA"
+  HINT_VIDEO_X11_XRANDR                         = "VIDEO_X11_XRANDR"
+  HINT_VIDEO_X11_XVIDMODE                       = "VIDEO_X11_XVIDMODE"
+  HINT_WAVE_FACT_CHUNK                          = "WAVE_FACT_CHUNK"
+  HINT_WAVE_RIFF_CHUNK_SIZE                     = "WAVE_RIFF_CHUNK_SIZE"
+  HINT_WAVE_TRUNCATION                          = "WAVE_TRUNCATION"
+  HINT_WINDOWS_DISABLE_THREAD_NAMING            = "WINDOWS_DISABLE_THREAD_NAMING"
+  HINT_WINDOWS_ENABLE_MENU_MNEMONICS            = "WINDOWS_ENABLE_MENU_MNEMONICS"
+  HINT_WINDOWS_ENABLE_MESSAGELOOP               = "WINDOWS_ENABLE_MESSAGELOOP"
+  HINT_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS    = "WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS"
+  HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL           = "WINDOWS_FORCE_SEMAPHORE_KERNEL"
+  HINT_WINDOWS_INTRESOURCE_ICON                 = "WINDOWS_INTRESOURCE_ICON"
+  HINT_WINDOWS_INTRESOURCE_ICON_SMALL           = "WINDOWS_INTRESOURCE_ICON_SMALL"
+  HINT_WINDOWS_NO_CLOSE_ON_ALT_F4               = "WINDOWS_NO_CLOSE_ON_ALT_F4"
+  HINT_WINDOWS_USE_D3D9EX                       = "WINDOWS_USE_D3D9EX"
+  HINT_WINDOWS_DPI_AWARENESS                    = "WINDOWS_DPI_AWARENESS"
+  HINT_WINDOWS_DPI_SCALING                      = "WINDOWS_DPI_SCALING"
+  HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN  = "WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN"
+  HINT_WINDOW_NO_ACTIVATION_WHEN_SHOWN          = "WINDOW_NO_ACTIVATION_WHEN_SHOWN"
+  HINT_WINRT_HANDLE_BACK_BUTTON                 = "WINRT_HANDLE_BACK_BUTTON"
+  HINT_WINRT_PRIVACY_POLICY_LABEL               = "WINRT_PRIVACY_POLICY_LABEL"
+  HINT_WINRT_PRIVACY_POLICY_URL                 = "WINRT_PRIVACY_POLICY_URL"
+  HINT_X11_FORCE_OVERRIDE_REDIRECT              = "X11_FORCE_OVERRIDE_REDIRECT"
+  HINT_XINPUT_ENABLED                           = "XINPUT_ENABLED"
+  HINT_DIRECTINPUT_ENABLED                      = "DIRECTINPUT_ENABLED"
+  HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING          = "XINPUT_USE_OLD_JOYSTICK_MAPPING"
+  HINT_AUDIO_INCLUDE_MONITORS                   = "AUDIO_INCLUDE_MONITORS"
+  HINT_X11_WINDOW_TYPE                          = "X11_WINDOW_TYPE"
+  HINT_QUIT_ON_LAST_WINDOW_CLOSE                = "QUIT_ON_LAST_WINDOW_CLOSE"
+  HINT_VIDEODRIVER                              = "VIDEODRIVER"
+  HINT_AUDIODRIVER                              = "AUDIODRIVER"
+  HINT_KMSDRM_DEVICE_INDEX                      = "KMSDRM_DEVICE_INDEX"
+  HINT_TRACKPAD_IS_TOUCH_ONLY                   = "TRACKPAD_IS_TOUCH_ONLY"
 
   enum HintPriority
     HINT_DEFAULT
@@ -1413,12 +1413,12 @@ lib LibSDL
   fun set_hint_with_priority = SDL_SetHintWithPriority(name : LibC::Char*, value : LibC::Char*, priority : HintPriority) : SBool
   fun set_hint = SDL_SetHint(name : LibC::Char*, value : LibC::Char*) : SBool
   fun reset_hint = SDL_ResetHint(name : LibC::Char*) : SBool
-  fun reset_hints = SDL_ResetHints() : Void
+  fun reset_hints = SDL_ResetHints : Void
   fun get_hint = SDL_GetHint(name : LibC::Char*) : LibC::Char*
   fun get_hint_boolean = SDL_GetHintBoolean(name : LibC::Char*, default_value : SBool) : SBool
   fun add_hint_callback = SDL_AddHintCallback(name : LibC::Char*, callback : HintCallback, userdata : Void*) : Void
   fun del_hint_callback = SDL_DelHintCallback(name : LibC::Char*, callback : HintCallback, userdata : Void*) : Void
-  fun clear_hints = SDL_ClearHints() : Void
+  fun clear_hints = SDL_ClearHints : Void
 
   # additions/helper_hints.cr
 
@@ -1427,19 +1427,19 @@ lib LibSDL
 
   # SDL_joystick
 
-  IPHONE_MAX_GFORCE = 5.0
-  VIRTUAL_JOYSTICK_DESC_VERSION = 1
-  JOYSTICK_AXIS_MAX = 32767
-  JOYSTICK_AXIS_MIN = -32768
-  HAT_CENTERED = 0x00
-  HAT_UP = 0x01
-  HAT_RIGHT = 0x02
-  HAT_DOWN = 0x04
-  HAT_LEFT = 0x08
-  HAT_RIGHTUP = (HAT_RIGHT | HAT_UP)
-  HAT_RIGHTDOWN = (HAT_RIGHT | HAT_DOWN)
-  HAT_LEFTUP = (HAT_LEFT | HAT_UP)
-  HAT_LEFTDOWN = (HAT_LEFT | HAT_DOWN)
+  IPHONE_MAX_GFORCE             =    5.0
+  VIRTUAL_JOYSTICK_DESC_VERSION =      1
+  JOYSTICK_AXIS_MAX             =  32767
+  JOYSTICK_AXIS_MIN             = -32768
+  HAT_CENTERED                  =   0x00
+  HAT_UP                        =   0x01
+  HAT_RIGHT                     =   0x02
+  HAT_DOWN                      =   0x04
+  HAT_LEFT                      =   0x08
+  HAT_RIGHTUP                   = (HAT_RIGHT | HAT_UP)
+  HAT_RIGHTDOWN                 = (HAT_RIGHT | HAT_DOWN)
+  HAT_LEFTUP                    = (HAT_LEFT | HAT_UP)
+  HAT_LEFTDOWN                  = (HAT_LEFT | HAT_DOWN)
 
   alias Joystick = Void
   alias JoystickGUID = GUID
@@ -1468,9 +1468,9 @@ lib LibSDL
     JOYSTICK_POWER_MAX
   end
 
-  fun lock_joysticks = SDL_LockJoysticks() : Void
-  fun unlock_joysticks = SDL_UnlockJoysticks() : Void
-  fun num_joysticks = SDL_NumJoysticks() : LibC::Int
+  fun lock_joysticks = SDL_LockJoysticks : Void
+  fun unlock_joysticks = SDL_UnlockJoysticks : Void
+  fun num_joysticks = SDL_NumJoysticks : LibC::Int
   fun joystick_name_for_index = SDL_JoystickNameForIndex(device_index : LibC::Int) : LibC::Char*
   fun joystick_path_for_index = SDL_JoystickPathForIndex(device_index : LibC::Int) : LibC::Char*
   fun joystick_get_device_player_index = SDL_JoystickGetDevicePlayerIndex(device_index : LibC::Int) : LibC::Int
@@ -1510,7 +1510,7 @@ lib LibSDL
   fun joystick_num_balls = SDL_JoystickNumBalls(joystick : Joystick*) : LibC::Int
   fun joystick_num_hats = SDL_JoystickNumHats(joystick : Joystick*) : LibC::Int
   fun joystick_num_buttons = SDL_JoystickNumButtons(joystick : Joystick*) : LibC::Int
-  fun joystick_update = SDL_JoystickUpdate() : Void
+  fun joystick_update = SDL_JoystickUpdate : Void
   fun joystick_event_state = SDL_JoystickEventState(state : LibC::Int) : LibC::Int
   fun joystick_get_axis = SDL_JoystickGetAxis(joystick : Joystick*, axis : LibC::Int) : Int16
   fun joystick_get_axis_initial_state = SDL_JoystickGetAxisInitialState(joystick : Joystick*, axis : LibC::Int, state : Int16*) : SBool
@@ -1542,12 +1542,12 @@ lib LibSDL
     axis_mask : UInt32
     name : LibC::Char*
     userdata : Void*
-    update : (Void*) -> Void  # (void* userdata)
-    set_player_index : (Void*, LibC::Int) -> Void # (void* userdata, int player_index)
-    rumble : (Void*, UInt16, UInt16) -> LibC::Int # (void* userdata, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble)
-    rumble_triggers : (Void*, UInt16, UInt16) -> LibC::Int  # (void* userdata, Uint16 left_rumble, Uint16 right_rumble)
-    set_led : (Void*, UInt8, UInt8, UInt8) -> LibC::Int # (void* userdata, Uint8 red, Uint8 green, Uint8 blue)
-    send_effect : (Void*, Void*, LibC::Int) -> LibC::Int  # (void* userdata, const void* data, int size)
+    update : (Void*) -> Void                               # (void* userdata)
+    set_player_index : (Void*, LibC::Int) -> Void          # (void* userdata, int player_index)
+    rumble : (Void*, UInt16, UInt16) -> LibC::Int          # (void* userdata, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble)
+    rumble_triggers : (Void*, UInt16, UInt16) -> LibC::Int # (void* userdata, Uint16 left_rumble, Uint16 right_rumble)
+    set_led : (Void*, UInt8, UInt8, UInt8) -> LibC::Int    # (void* userdata, Uint8 red, Uint8 green, Uint8 blue)
+    send_effect : (Void*, Void*, LibC::Int) -> LibC::Int   # (void* userdata, const void* data, int size)
   end
 
   # SDL_keyboard
@@ -1559,10 +1559,10 @@ lib LibSDL
     unused : UInt32
   end
 
-  fun get_keyboard_focus = SDL_GetKeyboardFocus() : Window*
+  fun get_keyboard_focus = SDL_GetKeyboardFocus : Window*
   fun get_keyboard_state = SDL_GetKeyboardState(numkeys : LibC::Int*) : UInt8*
-  fun reset_keyboard = SDL_ResetKeyboard() : Void
-  fun get_mod_state = SDL_GetModState() : Keymod
+  fun reset_keyboard = SDL_ResetKeyboard : Void
+  fun get_mod_state = SDL_GetModState : Keymod
   fun set_mod_state = SDL_SetModState(modstate : Keymod) : Void
   fun get_key_from_scancode = SDL_GetKeyFromScancode(scancode : Scancode) : Keycode
   fun get_scancode_from_key = SDL_GetScancodeFromKey(key : Keycode) : Scancode
@@ -1570,13 +1570,13 @@ lib LibSDL
   fun get_scancode_from_name = SDL_GetScancodeFromName(name : LibC::Char*) : Scancode
   fun get_key_name = SDL_GetKeyName(key : Keycode) : LibC::Char*
   fun get_key_from_name = SDL_GetKeyFromName(name : LibC::Char*) : Keycode
-  fun start_text_input = SDL_StartTextInput() : Void
-  fun is_text_input_active = SDL_IsTextInputActive() : SBool
-  fun stop_text_input = SDL_StopTextInput() : Void
-  fun clear_composition = SDL_ClearComposition() : Void
-  fun is_text_input_shown = SDL_IsTextInputShown() : SBool
+  fun start_text_input = SDL_StartTextInput : Void
+  fun is_text_input_active = SDL_IsTextInputActive : SBool
+  fun stop_text_input = SDL_StopTextInput : Void
+  fun clear_composition = SDL_ClearComposition : Void
+  fun is_text_input_shown = SDL_IsTextInputShown : SBool
   fun set_text_input_rect = SDL_SetTextInputRect(rect : Rect*) : Void
-  fun has_screen_keyboard_support = SDL_HasScreenKeyboardSupport() : SBool
+  fun has_screen_keyboard_support = SDL_HasScreenKeyboardSupport : SBool
   fun is_screen_keyboard_shown = SDL_IsScreenKeyboardShown(window : Window*) : SBool
 
   # SDL_keycode
@@ -1586,283 +1586,283 @@ lib LibSDL
   alias Keycode = Int32
 
   enum KeyCode
-    K_UNKNOWN = 0
-    K_RETURN = 13
-    K_ESCAPE = 27
-    K_BACKSPACE = 8
-    K_TAB = 9
-    K_SPACE = 32
-    K_EXCLAIM = 33
-    K_QUOTEDBL = 34
-    K_HASH = 35
-    K_PERCENT = 37
-    K_DOLLAR = 36
-    K_AMPERSAND = 38
-    K_QUOTE = 39
-    K_LEFTPAREN = 40
-    K_RIGHTPAREN = 41
-    K_ASTERISK = 42
-    K_PLUS = 43
-    K_COMMA = 44
-    K_MINUS = 45
-    K_PERIOD = 46
-    K_SLASH = 47
-    K_0 = 48
-    K_1 = 49
-    K_2 = 50
-    K_3 = 51
-    K_4 = 52
-    K_5 = 53
-    K_6 = 54
-    K_7 = 55
-    K_8 = 56
-    K_9 = 57
-    K_COLON = 58
-    K_SEMICOLON = 59
-    K_LESS = 60
-    K_EQUALS = 61
-    K_GREATER = 62
-    K_QUESTION = 63
-    K_AT = 64
-    K_LEFTBRACKET = 91
-    K_BACKSLASH = 92
-    K_RIGHTBRACKET = 93
-    K_CARET = 94
-    K_UNDERSCORE = 95
-    K_BACKQUOTE = 96
-    K_A = 97
-    K_B = 98
-    K_C = 99
-    K_D = 100
-    K_E = 101
-    K_F = 102
-    K_G = 103
-    K_H = 104
-    K_I = 105
-    K_J = 106
-    K_K = 107
-    K_L = 108
-    K_M = 109
-    K_N = 110
-    K_O = 111
-    K_P = 112
-    K_Q = 113
-    K_R = 114
-    K_S = 115
-    K_T = 116
-    K_U = 117
-    K_V = 118
-    K_W = 119
-    K_X = 120
-    K_Y = 121
-    K_Z = 122
-    K_CAPSLOCK = Scancode::SCANCODE_CAPSLOCK | K_SCANCODE_MASK
-    K_F1 = Scancode::SCANCODE_F1 | K_SCANCODE_MASK
-    K_F2 = Scancode::SCANCODE_F2 | K_SCANCODE_MASK
-    K_F3 = Scancode::SCANCODE_F3 | K_SCANCODE_MASK
-    K_F4 = Scancode::SCANCODE_F4 | K_SCANCODE_MASK
-    K_F5 = Scancode::SCANCODE_F5 | K_SCANCODE_MASK
-    K_F6 = Scancode::SCANCODE_F6 | K_SCANCODE_MASK
-    K_F7 = Scancode::SCANCODE_F7 | K_SCANCODE_MASK
-    K_F8 = Scancode::SCANCODE_F8 | K_SCANCODE_MASK
-    K_F9 = Scancode::SCANCODE_F9 | K_SCANCODE_MASK
-    K_F10 = Scancode::SCANCODE_F10 | K_SCANCODE_MASK
-    K_F11 = Scancode::SCANCODE_F11 | K_SCANCODE_MASK
-    K_F12 = Scancode::SCANCODE_F12 | K_SCANCODE_MASK
-    K_PRINTSCREEN = Scancode::SCANCODE_PRINTSCREEN | K_SCANCODE_MASK
-    K_SCROLLLOCK = Scancode::SCANCODE_SCROLLLOCK | K_SCANCODE_MASK
-    K_PAUSE = Scancode::SCANCODE_PAUSE | K_SCANCODE_MASK
-    K_INSERT = Scancode::SCANCODE_INSERT | K_SCANCODE_MASK
-    K_HOME = Scancode::SCANCODE_HOME | K_SCANCODE_MASK
-    K_PAGEUP = Scancode::SCANCODE_PAGEUP | K_SCANCODE_MASK
-    K_DELETE = 127
-    K_END = Scancode::SCANCODE_END | K_SCANCODE_MASK
-    K_PAGEDOWN = Scancode::SCANCODE_PAGEDOWN | K_SCANCODE_MASK
-    K_RIGHT = Scancode::SCANCODE_RIGHT | K_SCANCODE_MASK
-    K_LEFT = Scancode::SCANCODE_LEFT | K_SCANCODE_MASK
-    K_DOWN = Scancode::SCANCODE_DOWN | K_SCANCODE_MASK
-    K_UP = Scancode::SCANCODE_UP | K_SCANCODE_MASK
-    K_NUMLOCKCLEAR = Scancode::SCANCODE_NUMLOCKCLEAR | K_SCANCODE_MASK
-    K_KP_DIVIDE = Scancode::SCANCODE_KP_DIVIDE | K_SCANCODE_MASK
-    K_KP_MULTIPLY = Scancode::SCANCODE_KP_MULTIPLY | K_SCANCODE_MASK
-    K_KP_MINUS = Scancode::SCANCODE_KP_MINUS | K_SCANCODE_MASK
-    K_KP_PLUS = Scancode::SCANCODE_KP_PLUS | K_SCANCODE_MASK
-    K_KP_ENTER = Scancode::SCANCODE_KP_ENTER | K_SCANCODE_MASK
-    K_KP_1 = Scancode::SCANCODE_KP_1 | K_SCANCODE_MASK
-    K_KP_2 = Scancode::SCANCODE_KP_2 | K_SCANCODE_MASK
-    K_KP_3 = Scancode::SCANCODE_KP_3 | K_SCANCODE_MASK
-    K_KP_4 = Scancode::SCANCODE_KP_4 | K_SCANCODE_MASK
-    K_KP_5 = Scancode::SCANCODE_KP_5 | K_SCANCODE_MASK
-    K_KP_6 = Scancode::SCANCODE_KP_6 | K_SCANCODE_MASK
-    K_KP_7 = Scancode::SCANCODE_KP_7 | K_SCANCODE_MASK
-    K_KP_8 = Scancode::SCANCODE_KP_8 | K_SCANCODE_MASK
-    K_KP_9 = Scancode::SCANCODE_KP_9 | K_SCANCODE_MASK
-    K_KP_0 = Scancode::SCANCODE_KP_0 | K_SCANCODE_MASK
-    K_KP_PERIOD = Scancode::SCANCODE_KP_PERIOD | K_SCANCODE_MASK
-    K_APPLICATION = Scancode::SCANCODE_APPLICATION | K_SCANCODE_MASK
-    K_POWER = Scancode::SCANCODE_POWER | K_SCANCODE_MASK
-    K_KP_EQUALS = Scancode::SCANCODE_KP_EQUALS | K_SCANCODE_MASK
-    K_F13 = Scancode::SCANCODE_F13 | K_SCANCODE_MASK
-    K_F14 = Scancode::SCANCODE_F14 | K_SCANCODE_MASK
-    K_F15 = Scancode::SCANCODE_F15 | K_SCANCODE_MASK
-    K_F16 = Scancode::SCANCODE_F16 | K_SCANCODE_MASK
-    K_F17 = Scancode::SCANCODE_F17 | K_SCANCODE_MASK
-    K_F18 = Scancode::SCANCODE_F18 | K_SCANCODE_MASK
-    K_F19 = Scancode::SCANCODE_F19 | K_SCANCODE_MASK
-    K_F20 = Scancode::SCANCODE_F20 | K_SCANCODE_MASK
-    K_F21 = Scancode::SCANCODE_F21 | K_SCANCODE_MASK
-    K_F22 = Scancode::SCANCODE_F22 | K_SCANCODE_MASK
-    K_F23 = Scancode::SCANCODE_F23 | K_SCANCODE_MASK
-    K_F24 = Scancode::SCANCODE_F24 | K_SCANCODE_MASK
-    K_EXECUTE = Scancode::SCANCODE_EXECUTE | K_SCANCODE_MASK
-    K_HELP = Scancode::SCANCODE_HELP | K_SCANCODE_MASK
-    K_MENU = Scancode::SCANCODE_MENU | K_SCANCODE_MASK
-    K_SELECT = Scancode::SCANCODE_SELECT | K_SCANCODE_MASK
-    K_STOP = Scancode::SCANCODE_STOP | K_SCANCODE_MASK
-    K_AGAIN = Scancode::SCANCODE_AGAIN | K_SCANCODE_MASK
-    K_UNDO = Scancode::SCANCODE_UNDO | K_SCANCODE_MASK
-    K_CUT = Scancode::SCANCODE_CUT | K_SCANCODE_MASK
-    K_COPY = Scancode::SCANCODE_COPY | K_SCANCODE_MASK
-    K_PASTE = Scancode::SCANCODE_PASTE | K_SCANCODE_MASK
-    K_FIND = Scancode::SCANCODE_FIND | K_SCANCODE_MASK
-    K_MUTE = Scancode::SCANCODE_MUTE | K_SCANCODE_MASK
-    K_VOLUMEUP = Scancode::SCANCODE_VOLUMEUP | K_SCANCODE_MASK
-    K_VOLUMEDOWN = Scancode::SCANCODE_VOLUMEDOWN | K_SCANCODE_MASK
-    K_KP_COMMA = Scancode::SCANCODE_KP_COMMA | K_SCANCODE_MASK
-    K_KP_EQUALSAS400 = Scancode::SCANCODE_KP_EQUALSAS400 | K_SCANCODE_MASK
-    K_ALTERASE = Scancode::SCANCODE_ALTERASE | K_SCANCODE_MASK
-    K_SYSREQ = Scancode::SCANCODE_SYSREQ | K_SCANCODE_MASK
-    K_CANCEL = Scancode::SCANCODE_CANCEL | K_SCANCODE_MASK
-    K_CLEAR = Scancode::SCANCODE_CLEAR | K_SCANCODE_MASK
-    K_PRIOR = Scancode::SCANCODE_PRIOR | K_SCANCODE_MASK
-    K_RETURN2 = Scancode::SCANCODE_RETURN2 | K_SCANCODE_MASK
-    K_SEPARATOR = Scancode::SCANCODE_SEPARATOR | K_SCANCODE_MASK
-    K_OUT = Scancode::SCANCODE_OUT | K_SCANCODE_MASK
-    K_OPER = Scancode::SCANCODE_OPER | K_SCANCODE_MASK
-    K_CLEARAGAIN = Scancode::SCANCODE_CLEARAGAIN | K_SCANCODE_MASK
-    K_CRSEL = Scancode::SCANCODE_CRSEL | K_SCANCODE_MASK
-    K_EXSEL = Scancode::SCANCODE_EXSEL | K_SCANCODE_MASK
-    K_KP_00 = Scancode::SCANCODE_KP_00 | K_SCANCODE_MASK
-    K_KP_000 = Scancode::SCANCODE_KP_000 | K_SCANCODE_MASK
+    K_UNKNOWN            =   0
+    K_RETURN             =  13
+    K_ESCAPE             =  27
+    K_BACKSPACE          =   8
+    K_TAB                =   9
+    K_SPACE              =  32
+    K_EXCLAIM            =  33
+    K_QUOTEDBL           =  34
+    K_HASH               =  35
+    K_PERCENT            =  37
+    K_DOLLAR             =  36
+    K_AMPERSAND          =  38
+    K_QUOTE              =  39
+    K_LEFTPAREN          =  40
+    K_RIGHTPAREN         =  41
+    K_ASTERISK           =  42
+    K_PLUS               =  43
+    K_COMMA              =  44
+    K_MINUS              =  45
+    K_PERIOD             =  46
+    K_SLASH              =  47
+    K_0                  =  48
+    K_1                  =  49
+    K_2                  =  50
+    K_3                  =  51
+    K_4                  =  52
+    K_5                  =  53
+    K_6                  =  54
+    K_7                  =  55
+    K_8                  =  56
+    K_9                  =  57
+    K_COLON              =  58
+    K_SEMICOLON          =  59
+    K_LESS               =  60
+    K_EQUALS             =  61
+    K_GREATER            =  62
+    K_QUESTION           =  63
+    K_AT                 =  64
+    K_LEFTBRACKET        =  91
+    K_BACKSLASH          =  92
+    K_RIGHTBRACKET       =  93
+    K_CARET              =  94
+    K_UNDERSCORE         =  95
+    K_BACKQUOTE          =  96
+    K_A                  =  97
+    K_B                  =  98
+    K_C                  =  99
+    K_D                  = 100
+    K_E                  = 101
+    K_F                  = 102
+    K_G                  = 103
+    K_H                  = 104
+    K_I                  = 105
+    K_J                  = 106
+    K_K                  = 107
+    K_L                  = 108
+    K_M                  = 109
+    K_N                  = 110
+    K_O                  = 111
+    K_P                  = 112
+    K_Q                  = 113
+    K_R                  = 114
+    K_S                  = 115
+    K_T                  = 116
+    K_U                  = 117
+    K_V                  = 118
+    K_W                  = 119
+    K_X                  = 120
+    K_Y                  = 121
+    K_Z                  = 122
+    K_CAPSLOCK           = Scancode::SCANCODE_CAPSLOCK | K_SCANCODE_MASK
+    K_F1                 = Scancode::SCANCODE_F1 | K_SCANCODE_MASK
+    K_F2                 = Scancode::SCANCODE_F2 | K_SCANCODE_MASK
+    K_F3                 = Scancode::SCANCODE_F3 | K_SCANCODE_MASK
+    K_F4                 = Scancode::SCANCODE_F4 | K_SCANCODE_MASK
+    K_F5                 = Scancode::SCANCODE_F5 | K_SCANCODE_MASK
+    K_F6                 = Scancode::SCANCODE_F6 | K_SCANCODE_MASK
+    K_F7                 = Scancode::SCANCODE_F7 | K_SCANCODE_MASK
+    K_F8                 = Scancode::SCANCODE_F8 | K_SCANCODE_MASK
+    K_F9                 = Scancode::SCANCODE_F9 | K_SCANCODE_MASK
+    K_F10                = Scancode::SCANCODE_F10 | K_SCANCODE_MASK
+    K_F11                = Scancode::SCANCODE_F11 | K_SCANCODE_MASK
+    K_F12                = Scancode::SCANCODE_F12 | K_SCANCODE_MASK
+    K_PRINTSCREEN        = Scancode::SCANCODE_PRINTSCREEN | K_SCANCODE_MASK
+    K_SCROLLLOCK         = Scancode::SCANCODE_SCROLLLOCK | K_SCANCODE_MASK
+    K_PAUSE              = Scancode::SCANCODE_PAUSE | K_SCANCODE_MASK
+    K_INSERT             = Scancode::SCANCODE_INSERT | K_SCANCODE_MASK
+    K_HOME               = Scancode::SCANCODE_HOME | K_SCANCODE_MASK
+    K_PAGEUP             = Scancode::SCANCODE_PAGEUP | K_SCANCODE_MASK
+    K_DELETE             = 127
+    K_END                = Scancode::SCANCODE_END | K_SCANCODE_MASK
+    K_PAGEDOWN           = Scancode::SCANCODE_PAGEDOWN | K_SCANCODE_MASK
+    K_RIGHT              = Scancode::SCANCODE_RIGHT | K_SCANCODE_MASK
+    K_LEFT               = Scancode::SCANCODE_LEFT | K_SCANCODE_MASK
+    K_DOWN               = Scancode::SCANCODE_DOWN | K_SCANCODE_MASK
+    K_UP                 = Scancode::SCANCODE_UP | K_SCANCODE_MASK
+    K_NUMLOCKCLEAR       = Scancode::SCANCODE_NUMLOCKCLEAR | K_SCANCODE_MASK
+    K_KP_DIVIDE          = Scancode::SCANCODE_KP_DIVIDE | K_SCANCODE_MASK
+    K_KP_MULTIPLY        = Scancode::SCANCODE_KP_MULTIPLY | K_SCANCODE_MASK
+    K_KP_MINUS           = Scancode::SCANCODE_KP_MINUS | K_SCANCODE_MASK
+    K_KP_PLUS            = Scancode::SCANCODE_KP_PLUS | K_SCANCODE_MASK
+    K_KP_ENTER           = Scancode::SCANCODE_KP_ENTER | K_SCANCODE_MASK
+    K_KP_1               = Scancode::SCANCODE_KP_1 | K_SCANCODE_MASK
+    K_KP_2               = Scancode::SCANCODE_KP_2 | K_SCANCODE_MASK
+    K_KP_3               = Scancode::SCANCODE_KP_3 | K_SCANCODE_MASK
+    K_KP_4               = Scancode::SCANCODE_KP_4 | K_SCANCODE_MASK
+    K_KP_5               = Scancode::SCANCODE_KP_5 | K_SCANCODE_MASK
+    K_KP_6               = Scancode::SCANCODE_KP_6 | K_SCANCODE_MASK
+    K_KP_7               = Scancode::SCANCODE_KP_7 | K_SCANCODE_MASK
+    K_KP_8               = Scancode::SCANCODE_KP_8 | K_SCANCODE_MASK
+    K_KP_9               = Scancode::SCANCODE_KP_9 | K_SCANCODE_MASK
+    K_KP_0               = Scancode::SCANCODE_KP_0 | K_SCANCODE_MASK
+    K_KP_PERIOD          = Scancode::SCANCODE_KP_PERIOD | K_SCANCODE_MASK
+    K_APPLICATION        = Scancode::SCANCODE_APPLICATION | K_SCANCODE_MASK
+    K_POWER              = Scancode::SCANCODE_POWER | K_SCANCODE_MASK
+    K_KP_EQUALS          = Scancode::SCANCODE_KP_EQUALS | K_SCANCODE_MASK
+    K_F13                = Scancode::SCANCODE_F13 | K_SCANCODE_MASK
+    K_F14                = Scancode::SCANCODE_F14 | K_SCANCODE_MASK
+    K_F15                = Scancode::SCANCODE_F15 | K_SCANCODE_MASK
+    K_F16                = Scancode::SCANCODE_F16 | K_SCANCODE_MASK
+    K_F17                = Scancode::SCANCODE_F17 | K_SCANCODE_MASK
+    K_F18                = Scancode::SCANCODE_F18 | K_SCANCODE_MASK
+    K_F19                = Scancode::SCANCODE_F19 | K_SCANCODE_MASK
+    K_F20                = Scancode::SCANCODE_F20 | K_SCANCODE_MASK
+    K_F21                = Scancode::SCANCODE_F21 | K_SCANCODE_MASK
+    K_F22                = Scancode::SCANCODE_F22 | K_SCANCODE_MASK
+    K_F23                = Scancode::SCANCODE_F23 | K_SCANCODE_MASK
+    K_F24                = Scancode::SCANCODE_F24 | K_SCANCODE_MASK
+    K_EXECUTE            = Scancode::SCANCODE_EXECUTE | K_SCANCODE_MASK
+    K_HELP               = Scancode::SCANCODE_HELP | K_SCANCODE_MASK
+    K_MENU               = Scancode::SCANCODE_MENU | K_SCANCODE_MASK
+    K_SELECT             = Scancode::SCANCODE_SELECT | K_SCANCODE_MASK
+    K_STOP               = Scancode::SCANCODE_STOP | K_SCANCODE_MASK
+    K_AGAIN              = Scancode::SCANCODE_AGAIN | K_SCANCODE_MASK
+    K_UNDO               = Scancode::SCANCODE_UNDO | K_SCANCODE_MASK
+    K_CUT                = Scancode::SCANCODE_CUT | K_SCANCODE_MASK
+    K_COPY               = Scancode::SCANCODE_COPY | K_SCANCODE_MASK
+    K_PASTE              = Scancode::SCANCODE_PASTE | K_SCANCODE_MASK
+    K_FIND               = Scancode::SCANCODE_FIND | K_SCANCODE_MASK
+    K_MUTE               = Scancode::SCANCODE_MUTE | K_SCANCODE_MASK
+    K_VOLUMEUP           = Scancode::SCANCODE_VOLUMEUP | K_SCANCODE_MASK
+    K_VOLUMEDOWN         = Scancode::SCANCODE_VOLUMEDOWN | K_SCANCODE_MASK
+    K_KP_COMMA           = Scancode::SCANCODE_KP_COMMA | K_SCANCODE_MASK
+    K_KP_EQUALSAS400     = Scancode::SCANCODE_KP_EQUALSAS400 | K_SCANCODE_MASK
+    K_ALTERASE           = Scancode::SCANCODE_ALTERASE | K_SCANCODE_MASK
+    K_SYSREQ             = Scancode::SCANCODE_SYSREQ | K_SCANCODE_MASK
+    K_CANCEL             = Scancode::SCANCODE_CANCEL | K_SCANCODE_MASK
+    K_CLEAR              = Scancode::SCANCODE_CLEAR | K_SCANCODE_MASK
+    K_PRIOR              = Scancode::SCANCODE_PRIOR | K_SCANCODE_MASK
+    K_RETURN2            = Scancode::SCANCODE_RETURN2 | K_SCANCODE_MASK
+    K_SEPARATOR          = Scancode::SCANCODE_SEPARATOR | K_SCANCODE_MASK
+    K_OUT                = Scancode::SCANCODE_OUT | K_SCANCODE_MASK
+    K_OPER               = Scancode::SCANCODE_OPER | K_SCANCODE_MASK
+    K_CLEARAGAIN         = Scancode::SCANCODE_CLEARAGAIN | K_SCANCODE_MASK
+    K_CRSEL              = Scancode::SCANCODE_CRSEL | K_SCANCODE_MASK
+    K_EXSEL              = Scancode::SCANCODE_EXSEL | K_SCANCODE_MASK
+    K_KP_00              = Scancode::SCANCODE_KP_00 | K_SCANCODE_MASK
+    K_KP_000             = Scancode::SCANCODE_KP_000 | K_SCANCODE_MASK
     K_THOUSANDSSEPARATOR = Scancode::SCANCODE_THOUSANDSSEPARATOR | K_SCANCODE_MASK
-    K_DECIMALSEPARATOR = Scancode::SCANCODE_DECIMALSEPARATOR | K_SCANCODE_MASK
-    K_CURRENCYUNIT = Scancode::SCANCODE_CURRENCYUNIT | K_SCANCODE_MASK
-    K_CURRENCYSUBUNIT = Scancode::SCANCODE_CURRENCYSUBUNIT | K_SCANCODE_MASK
-    K_KP_LEFTPAREN = Scancode::SCANCODE_KP_LEFTPAREN | K_SCANCODE_MASK
-    K_KP_RIGHTPAREN = Scancode::SCANCODE_KP_RIGHTPAREN | K_SCANCODE_MASK
-    K_KP_LEFTBRACE = Scancode::SCANCODE_KP_LEFTBRACE | K_SCANCODE_MASK
-    K_KP_RIGHTBRACE = Scancode::SCANCODE_KP_RIGHTBRACE | K_SCANCODE_MASK
-    K_KP_TAB = Scancode::SCANCODE_KP_TAB | K_SCANCODE_MASK
-    K_KP_BACKSPACE = Scancode::SCANCODE_KP_BACKSPACE | K_SCANCODE_MASK
-    K_KP_A = Scancode::SCANCODE_KP_A | K_SCANCODE_MASK
-    K_KP_B = Scancode::SCANCODE_KP_B | K_SCANCODE_MASK
-    K_KP_C = Scancode::SCANCODE_KP_C | K_SCANCODE_MASK
-    K_KP_D = Scancode::SCANCODE_KP_D | K_SCANCODE_MASK
-    K_KP_E = Scancode::SCANCODE_KP_E | K_SCANCODE_MASK
-    K_KP_F = Scancode::SCANCODE_KP_F | K_SCANCODE_MASK
-    K_KP_XOR = Scancode::SCANCODE_KP_XOR | K_SCANCODE_MASK
-    K_KP_POWER = Scancode::SCANCODE_KP_POWER | K_SCANCODE_MASK
-    K_KP_PERCENT = Scancode::SCANCODE_KP_PERCENT | K_SCANCODE_MASK
-    K_KP_LESS = Scancode::SCANCODE_KP_LESS | K_SCANCODE_MASK
-    K_KP_GREATER = Scancode::SCANCODE_KP_GREATER | K_SCANCODE_MASK
-    K_KP_AMPERSAND = Scancode::SCANCODE_KP_AMPERSAND | K_SCANCODE_MASK
-    K_KP_DBLAMPERSAND = Scancode::SCANCODE_KP_DBLAMPERSAND | K_SCANCODE_MASK
-    K_KP_VERTICALBAR = Scancode::SCANCODE_KP_VERTICALBAR | K_SCANCODE_MASK
-    K_KP_DBLVERTICALBAR = Scancode::SCANCODE_KP_DBLVERTICALBAR | K_SCANCODE_MASK
-    K_KP_COLON = Scancode::SCANCODE_KP_COLON | K_SCANCODE_MASK
-    K_KP_HASH = Scancode::SCANCODE_KP_HASH | K_SCANCODE_MASK
-    K_KP_SPACE = Scancode::SCANCODE_KP_SPACE | K_SCANCODE_MASK
-    K_KP_AT = Scancode::SCANCODE_KP_AT | K_SCANCODE_MASK
-    K_KP_EXCLAM = Scancode::SCANCODE_KP_EXCLAM | K_SCANCODE_MASK
-    K_KP_MEMSTORE = Scancode::SCANCODE_KP_MEMSTORE | K_SCANCODE_MASK
-    K_KP_MEMRECALL = Scancode::SCANCODE_KP_MEMRECALL | K_SCANCODE_MASK
-    K_KP_MEMCLEAR = Scancode::SCANCODE_KP_MEMCLEAR | K_SCANCODE_MASK
-    K_KP_MEMADD = Scancode::SCANCODE_KP_MEMADD | K_SCANCODE_MASK
-    K_KP_MEMSUBTRACT = Scancode::SCANCODE_KP_MEMSUBTRACT | K_SCANCODE_MASK
-    K_KP_MEMMULTIPLY = Scancode::SCANCODE_KP_MEMMULTIPLY | K_SCANCODE_MASK
-    K_KP_MEMDIVIDE = Scancode::SCANCODE_KP_MEMDIVIDE | K_SCANCODE_MASK
-    K_KP_PLUSMINUS = Scancode::SCANCODE_KP_PLUSMINUS | K_SCANCODE_MASK
-    K_KP_CLEAR = Scancode::SCANCODE_KP_CLEAR | K_SCANCODE_MASK
-    K_KP_CLEARENTRY = Scancode::SCANCODE_KP_CLEARENTRY | K_SCANCODE_MASK
-    K_KP_BINARY = Scancode::SCANCODE_KP_BINARY | K_SCANCODE_MASK
-    K_KP_OCTAL = Scancode::SCANCODE_KP_OCTAL | K_SCANCODE_MASK
-    K_KP_DECIMAL = Scancode::SCANCODE_KP_DECIMAL | K_SCANCODE_MASK
-    K_KP_HEXADECIMAL = Scancode::SCANCODE_KP_HEXADECIMAL | K_SCANCODE_MASK
-    K_LCTRL = Scancode::SCANCODE_LCTRL | K_SCANCODE_MASK
-    K_LSHIFT = Scancode::SCANCODE_LSHIFT | K_SCANCODE_MASK
-    K_LALT = Scancode::SCANCODE_LALT | K_SCANCODE_MASK
-    K_LGUI = Scancode::SCANCODE_LGUI | K_SCANCODE_MASK
-    K_RCTRL = Scancode::SCANCODE_RCTRL | K_SCANCODE_MASK
-    K_RSHIFT = Scancode::SCANCODE_RSHIFT | K_SCANCODE_MASK
-    K_RALT = Scancode::SCANCODE_RALT | K_SCANCODE_MASK
-    K_RGUI = Scancode::SCANCODE_RGUI | K_SCANCODE_MASK
-    K_MODE = Scancode::SCANCODE_MODE | K_SCANCODE_MASK
-    K_AUDIONEXT = Scancode::SCANCODE_AUDIONEXT | K_SCANCODE_MASK
-    K_AUDIOPREV = Scancode::SCANCODE_AUDIOPREV | K_SCANCODE_MASK
-    K_AUDIOSTOP = Scancode::SCANCODE_AUDIOSTOP | K_SCANCODE_MASK
-    K_AUDIOPLAY = Scancode::SCANCODE_AUDIOPLAY | K_SCANCODE_MASK
-    K_AUDIOMUTE = Scancode::SCANCODE_AUDIOMUTE | K_SCANCODE_MASK
-    K_MEDIASELECT = Scancode::SCANCODE_MEDIASELECT | K_SCANCODE_MASK
-    K_WWW = Scancode::SCANCODE_WWW | K_SCANCODE_MASK
-    K_MAIL = Scancode::SCANCODE_MAIL | K_SCANCODE_MASK
-    K_CALCULATOR = Scancode::SCANCODE_CALCULATOR | K_SCANCODE_MASK
-    K_COMPUTER = Scancode::SCANCODE_COMPUTER | K_SCANCODE_MASK
-    K_AC_SEARCH = Scancode::SCANCODE_AC_SEARCH | K_SCANCODE_MASK
-    K_AC_HOME = Scancode::SCANCODE_AC_HOME | K_SCANCODE_MASK
-    K_AC_BACK = Scancode::SCANCODE_AC_BACK | K_SCANCODE_MASK
-    K_AC_FORWARD = Scancode::SCANCODE_AC_FORWARD | K_SCANCODE_MASK
-    K_AC_STOP = Scancode::SCANCODE_AC_STOP | K_SCANCODE_MASK
-    K_AC_REFRESH = Scancode::SCANCODE_AC_REFRESH | K_SCANCODE_MASK
-    K_AC_BOOKMARKS = Scancode::SCANCODE_AC_BOOKMARKS | K_SCANCODE_MASK
-    K_BRIGHTNESSDOWN = Scancode::SCANCODE_BRIGHTNESSDOWN | K_SCANCODE_MASK
-    K_BRIGHTNESSUP = Scancode::SCANCODE_BRIGHTNESSUP | K_SCANCODE_MASK
-    K_DISPLAYSWITCH = Scancode::SCANCODE_DISPLAYSWITCH | K_SCANCODE_MASK
-    K_KBDILLUMTOGGLE = Scancode::SCANCODE_KBDILLUMTOGGLE | K_SCANCODE_MASK
-    K_KBDILLUMDOWN = Scancode::SCANCODE_KBDILLUMDOWN | K_SCANCODE_MASK
-    K_KBDILLUMUP = Scancode::SCANCODE_KBDILLUMUP | K_SCANCODE_MASK
-    K_EJECT = Scancode::SCANCODE_EJECT | K_SCANCODE_MASK
-    K_SLEEP = Scancode::SCANCODE_SLEEP | K_SCANCODE_MASK
-    K_APP1 = Scancode::SCANCODE_APP1 | K_SCANCODE_MASK
-    K_APP2 = Scancode::SCANCODE_APP2 | K_SCANCODE_MASK
-    K_AUDIOREWIND = Scancode::SCANCODE_AUDIOREWIND | K_SCANCODE_MASK
-    K_AUDIOFASTFORWARD = Scancode::SCANCODE_AUDIOFASTFORWARD | K_SCANCODE_MASK
-    K_SOFTLEFT = Scancode::SCANCODE_SOFTLEFT | K_SCANCODE_MASK
-    K_SOFTRIGHT = Scancode::SCANCODE_SOFTRIGHT | K_SCANCODE_MASK
-    K_CALL = Scancode::SCANCODE_CALL | K_SCANCODE_MASK
-    K_ENDCALL = Scancode::SCANCODE_ENDCALL | K_SCANCODE_MASK
+    K_DECIMALSEPARATOR   = Scancode::SCANCODE_DECIMALSEPARATOR | K_SCANCODE_MASK
+    K_CURRENCYUNIT       = Scancode::SCANCODE_CURRENCYUNIT | K_SCANCODE_MASK
+    K_CURRENCYSUBUNIT    = Scancode::SCANCODE_CURRENCYSUBUNIT | K_SCANCODE_MASK
+    K_KP_LEFTPAREN       = Scancode::SCANCODE_KP_LEFTPAREN | K_SCANCODE_MASK
+    K_KP_RIGHTPAREN      = Scancode::SCANCODE_KP_RIGHTPAREN | K_SCANCODE_MASK
+    K_KP_LEFTBRACE       = Scancode::SCANCODE_KP_LEFTBRACE | K_SCANCODE_MASK
+    K_KP_RIGHTBRACE      = Scancode::SCANCODE_KP_RIGHTBRACE | K_SCANCODE_MASK
+    K_KP_TAB             = Scancode::SCANCODE_KP_TAB | K_SCANCODE_MASK
+    K_KP_BACKSPACE       = Scancode::SCANCODE_KP_BACKSPACE | K_SCANCODE_MASK
+    K_KP_A               = Scancode::SCANCODE_KP_A | K_SCANCODE_MASK
+    K_KP_B               = Scancode::SCANCODE_KP_B | K_SCANCODE_MASK
+    K_KP_C               = Scancode::SCANCODE_KP_C | K_SCANCODE_MASK
+    K_KP_D               = Scancode::SCANCODE_KP_D | K_SCANCODE_MASK
+    K_KP_E               = Scancode::SCANCODE_KP_E | K_SCANCODE_MASK
+    K_KP_F               = Scancode::SCANCODE_KP_F | K_SCANCODE_MASK
+    K_KP_XOR             = Scancode::SCANCODE_KP_XOR | K_SCANCODE_MASK
+    K_KP_POWER           = Scancode::SCANCODE_KP_POWER | K_SCANCODE_MASK
+    K_KP_PERCENT         = Scancode::SCANCODE_KP_PERCENT | K_SCANCODE_MASK
+    K_KP_LESS            = Scancode::SCANCODE_KP_LESS | K_SCANCODE_MASK
+    K_KP_GREATER         = Scancode::SCANCODE_KP_GREATER | K_SCANCODE_MASK
+    K_KP_AMPERSAND       = Scancode::SCANCODE_KP_AMPERSAND | K_SCANCODE_MASK
+    K_KP_DBLAMPERSAND    = Scancode::SCANCODE_KP_DBLAMPERSAND | K_SCANCODE_MASK
+    K_KP_VERTICALBAR     = Scancode::SCANCODE_KP_VERTICALBAR | K_SCANCODE_MASK
+    K_KP_DBLVERTICALBAR  = Scancode::SCANCODE_KP_DBLVERTICALBAR | K_SCANCODE_MASK
+    K_KP_COLON           = Scancode::SCANCODE_KP_COLON | K_SCANCODE_MASK
+    K_KP_HASH            = Scancode::SCANCODE_KP_HASH | K_SCANCODE_MASK
+    K_KP_SPACE           = Scancode::SCANCODE_KP_SPACE | K_SCANCODE_MASK
+    K_KP_AT              = Scancode::SCANCODE_KP_AT | K_SCANCODE_MASK
+    K_KP_EXCLAM          = Scancode::SCANCODE_KP_EXCLAM | K_SCANCODE_MASK
+    K_KP_MEMSTORE        = Scancode::SCANCODE_KP_MEMSTORE | K_SCANCODE_MASK
+    K_KP_MEMRECALL       = Scancode::SCANCODE_KP_MEMRECALL | K_SCANCODE_MASK
+    K_KP_MEMCLEAR        = Scancode::SCANCODE_KP_MEMCLEAR | K_SCANCODE_MASK
+    K_KP_MEMADD          = Scancode::SCANCODE_KP_MEMADD | K_SCANCODE_MASK
+    K_KP_MEMSUBTRACT     = Scancode::SCANCODE_KP_MEMSUBTRACT | K_SCANCODE_MASK
+    K_KP_MEMMULTIPLY     = Scancode::SCANCODE_KP_MEMMULTIPLY | K_SCANCODE_MASK
+    K_KP_MEMDIVIDE       = Scancode::SCANCODE_KP_MEMDIVIDE | K_SCANCODE_MASK
+    K_KP_PLUSMINUS       = Scancode::SCANCODE_KP_PLUSMINUS | K_SCANCODE_MASK
+    K_KP_CLEAR           = Scancode::SCANCODE_KP_CLEAR | K_SCANCODE_MASK
+    K_KP_CLEARENTRY      = Scancode::SCANCODE_KP_CLEARENTRY | K_SCANCODE_MASK
+    K_KP_BINARY          = Scancode::SCANCODE_KP_BINARY | K_SCANCODE_MASK
+    K_KP_OCTAL           = Scancode::SCANCODE_KP_OCTAL | K_SCANCODE_MASK
+    K_KP_DECIMAL         = Scancode::SCANCODE_KP_DECIMAL | K_SCANCODE_MASK
+    K_KP_HEXADECIMAL     = Scancode::SCANCODE_KP_HEXADECIMAL | K_SCANCODE_MASK
+    K_LCTRL              = Scancode::SCANCODE_LCTRL | K_SCANCODE_MASK
+    K_LSHIFT             = Scancode::SCANCODE_LSHIFT | K_SCANCODE_MASK
+    K_LALT               = Scancode::SCANCODE_LALT | K_SCANCODE_MASK
+    K_LGUI               = Scancode::SCANCODE_LGUI | K_SCANCODE_MASK
+    K_RCTRL              = Scancode::SCANCODE_RCTRL | K_SCANCODE_MASK
+    K_RSHIFT             = Scancode::SCANCODE_RSHIFT | K_SCANCODE_MASK
+    K_RALT               = Scancode::SCANCODE_RALT | K_SCANCODE_MASK
+    K_RGUI               = Scancode::SCANCODE_RGUI | K_SCANCODE_MASK
+    K_MODE               = Scancode::SCANCODE_MODE | K_SCANCODE_MASK
+    K_AUDIONEXT          = Scancode::SCANCODE_AUDIONEXT | K_SCANCODE_MASK
+    K_AUDIOPREV          = Scancode::SCANCODE_AUDIOPREV | K_SCANCODE_MASK
+    K_AUDIOSTOP          = Scancode::SCANCODE_AUDIOSTOP | K_SCANCODE_MASK
+    K_AUDIOPLAY          = Scancode::SCANCODE_AUDIOPLAY | K_SCANCODE_MASK
+    K_AUDIOMUTE          = Scancode::SCANCODE_AUDIOMUTE | K_SCANCODE_MASK
+    K_MEDIASELECT        = Scancode::SCANCODE_MEDIASELECT | K_SCANCODE_MASK
+    K_WWW                = Scancode::SCANCODE_WWW | K_SCANCODE_MASK
+    K_MAIL               = Scancode::SCANCODE_MAIL | K_SCANCODE_MASK
+    K_CALCULATOR         = Scancode::SCANCODE_CALCULATOR | K_SCANCODE_MASK
+    K_COMPUTER           = Scancode::SCANCODE_COMPUTER | K_SCANCODE_MASK
+    K_AC_SEARCH          = Scancode::SCANCODE_AC_SEARCH | K_SCANCODE_MASK
+    K_AC_HOME            = Scancode::SCANCODE_AC_HOME | K_SCANCODE_MASK
+    K_AC_BACK            = Scancode::SCANCODE_AC_BACK | K_SCANCODE_MASK
+    K_AC_FORWARD         = Scancode::SCANCODE_AC_FORWARD | K_SCANCODE_MASK
+    K_AC_STOP            = Scancode::SCANCODE_AC_STOP | K_SCANCODE_MASK
+    K_AC_REFRESH         = Scancode::SCANCODE_AC_REFRESH | K_SCANCODE_MASK
+    K_AC_BOOKMARKS       = Scancode::SCANCODE_AC_BOOKMARKS | K_SCANCODE_MASK
+    K_BRIGHTNESSDOWN     = Scancode::SCANCODE_BRIGHTNESSDOWN | K_SCANCODE_MASK
+    K_BRIGHTNESSUP       = Scancode::SCANCODE_BRIGHTNESSUP | K_SCANCODE_MASK
+    K_DISPLAYSWITCH      = Scancode::SCANCODE_DISPLAYSWITCH | K_SCANCODE_MASK
+    K_KBDILLUMTOGGLE     = Scancode::SCANCODE_KBDILLUMTOGGLE | K_SCANCODE_MASK
+    K_KBDILLUMDOWN       = Scancode::SCANCODE_KBDILLUMDOWN | K_SCANCODE_MASK
+    K_KBDILLUMUP         = Scancode::SCANCODE_KBDILLUMUP | K_SCANCODE_MASK
+    K_EJECT              = Scancode::SCANCODE_EJECT | K_SCANCODE_MASK
+    K_SLEEP              = Scancode::SCANCODE_SLEEP | K_SCANCODE_MASK
+    K_APP1               = Scancode::SCANCODE_APP1 | K_SCANCODE_MASK
+    K_APP2               = Scancode::SCANCODE_APP2 | K_SCANCODE_MASK
+    K_AUDIOREWIND        = Scancode::SCANCODE_AUDIOREWIND | K_SCANCODE_MASK
+    K_AUDIOFASTFORWARD   = Scancode::SCANCODE_AUDIOFASTFORWARD | K_SCANCODE_MASK
+    K_SOFTLEFT           = Scancode::SCANCODE_SOFTLEFT | K_SCANCODE_MASK
+    K_SOFTRIGHT          = Scancode::SCANCODE_SOFTRIGHT | K_SCANCODE_MASK
+    K_CALL               = Scancode::SCANCODE_CALL | K_SCANCODE_MASK
+    K_ENDCALL            = Scancode::SCANCODE_ENDCALL | K_SCANCODE_MASK
   end
 
   enum Keymod
-    KMOD_NONE = 0x0000
-    KMOD_LSHIFT = 0x0001
-    KMOD_RSHIFT = 0x0002
-    KMOD_LCTRL = 0x0040
-    KMOD_RCTRL = 0x0080
-    KMOD_LALT = 0x0100
-    KMOD_RALT = 0x0200
-    KMOD_LGUI = 0x0400
-    KMOD_RGUI = 0x0800
-    KMOD_NUM = 0x1000
-    KMOD_CAPS = 0x2000
-    KMOD_MODE = 0x4000
-    KMOD_SCROLL = 0x8000
-    KMOD_CTRL = KMOD_LCTRL | KMOD_RCTRL
-    KMOD_SHIFT = KMOD_LSHIFT | KMOD_RSHIFT
-    KMOD_ALT = KMOD_LALT | KMOD_RALT
-    KMOD_GUI = KMOD_LGUI | KMOD_RGUI
+    KMOD_NONE     = 0x0000
+    KMOD_LSHIFT   = 0x0001
+    KMOD_RSHIFT   = 0x0002
+    KMOD_LCTRL    = 0x0040
+    KMOD_RCTRL    = 0x0080
+    KMOD_LALT     = 0x0100
+    KMOD_RALT     = 0x0200
+    KMOD_LGUI     = 0x0400
+    KMOD_RGUI     = 0x0800
+    KMOD_NUM      = 0x1000
+    KMOD_CAPS     = 0x2000
+    KMOD_MODE     = 0x4000
+    KMOD_SCROLL   = 0x8000
+    KMOD_CTRL     = KMOD_LCTRL | KMOD_RCTRL
+    KMOD_SHIFT    = KMOD_LSHIFT | KMOD_RSHIFT
+    KMOD_ALT      = KMOD_LALT | KMOD_RALT
+    KMOD_GUI      = KMOD_LGUI | KMOD_RGUI
     KMOD_RESERVED = KMOD_SCROLL
   end
 
   # SDL_mouse
 
-  BUTTON_LEFT = 1
+  BUTTON_LEFT   = 1
   BUTTON_MIDDLE = 2
-  BUTTON_RIGHT = 3
-  BUTTON_X1 = 4
-  BUTTON_X2 = 5
-  BUTTON_LMASK = BUTTON(BUTTON_LEFT)
-  BUTTON_MMASK = BUTTON(BUTTON_MIDDLE)
-  BUTTON_RMASK = BUTTON(BUTTON_RIGHT)
+  BUTTON_RIGHT  = 3
+  BUTTON_X1     = 4
+  BUTTON_X2     = 5
+  BUTTON_LMASK  = BUTTON(BUTTON_LEFT)
+  BUTTON_MMASK  = BUTTON(BUTTON_MIDDLE)
+  BUTTON_RMASK  = BUTTON(BUTTON_RIGHT)
   BUTTON_X1MASK = BUTTON(BUTTON_X1)
   BUTTON_X2MASK = BUTTON(BUTTON_X2)
 
@@ -1889,7 +1889,7 @@ lib LibSDL
     MOUSEWHEEL_FLIPPED
   end
 
-  fun get_mouse_focus = SDL_GetMouseFocus() : Window*
+  fun get_mouse_focus = SDL_GetMouseFocus : Window*
   fun get_mouse_state = SDL_GetMouseState(x : LibC::Int*, y : LibC::Int*) : UInt32
   fun get_global_mouse_state = SDL_GetGlobalMouseState(x : LibC::Int*, y : LibC::Int*) : UInt32
   fun get_relative_mouse_state = SDL_GetRelativeMouseState(x : LibC::Int*, y : LibC::Int*) : UInt32
@@ -1897,20 +1897,20 @@ lib LibSDL
   fun warp_mouse_global = SDL_WarpMouseGlobal(x : LibC::Int, y : LibC::Int) : LibC::Int
   fun set_relative_mouse_mode = SDL_SetRelativeMouseMode(enabled : SBool) : LibC::Int
   fun capture_mouse = SDL_CaptureMouse(enabled : SBool) : LibC::Int
-  fun get_relative_mouse_mode = SDL_GetRelativeMouseMode() : SBool
+  fun get_relative_mouse_mode = SDL_GetRelativeMouseMode : SBool
   fun create_cursor = SDL_CreateCursor(data : UInt8*, mask : UInt8*, w : LibC::Int, h : LibC::Int, hot_x : LibC::Int, hot_y : LibC::Int) : Cursor*
   fun create_color_cursor = SDL_CreateColorCursor(surface : Surface*, hot_x : LibC::Int, hot_y : LibC::Int) : Cursor*
   fun create_system_cursor = SDL_CreateSystemCursor(id : SystemCursor) : Cursor*
   fun set_cursor = SDL_SetCursor(cursor : Cursor*) : Void
-  fun get_cursor = SDL_GetCursor() : Cursor*
-  fun get_default_cursor = SDL_GetDefaultCursor() : Cursor*
+  fun get_cursor = SDL_GetCursor : Cursor*
+  fun get_default_cursor = SDL_GetDefaultCursor : Cursor*
   fun free_cursor = SDL_FreeCursor(cursor : Cursor*) : Void
   fun show_cursor = SDL_ShowCursor(toggle : LibC::Int) : LibC::Int
 
   # SDL_pixels
 
-  ALPHA_OPAQUE = 255
-  ALPHA_TRANSPARENT = 0
+  ALPHA_OPAQUE      = 255
+  ALPHA_TRANSPARENT =   0
 
   enum PixelType
     PIXELTYPE_UNKNOWN
@@ -2065,9 +2065,9 @@ lib LibSDL
   alias Texture = Void
 
   enum RendererFlags
-    RENDERER_SOFTWARE = 0x00000001
-    RENDERER_ACCELERATED = 0x00000002
-    RENDERER_PRESENTVSYNC = 0x00000004
+    RENDERER_SOFTWARE      = 0x00000001
+    RENDERER_ACCELERATED   = 0x00000002
+    RENDERER_PRESENTVSYNC  = 0x00000004
     RENDERER_TARGETTEXTURE = 0x00000008
   end
 
@@ -2084,15 +2084,15 @@ lib LibSDL
   end
 
   enum TextureModulate
-    TEXTUREMODULATE_NONE = 0x00000000
+    TEXTUREMODULATE_NONE  = 0x00000000
     TEXTUREMODULATE_COLOR = 0x00000001
     TEXTUREMODULATE_ALPHA = 0x00000002
   end
 
   enum RendererFlip
-    FLIP_NONE = 0x00000000
+    FLIP_NONE       = 0x00000000
     FLIP_HORIZONTAL = 0x00000001
-    FLIP_VERTICAL = 0x00000002
+    FLIP_VERTICAL   = 0x00000002
   end
 
   struct RendererInfo
@@ -2110,7 +2110,7 @@ lib LibSDL
     tex_coord : FPoint
   end
 
-  fun get_num_render_drivers = SDL_GetNumRenderDrivers() : LibC::Int
+  fun get_num_render_drivers = SDL_GetNumRenderDrivers : LibC::Int
   fun get_render_driver_info = SDL_GetRenderDriverInfo(index : LibC::Int, info : RendererInfo*) : LibC::Int
   fun create_window_and_renderer = SDL_CreateWindowAndRenderer(width : LibC::Int, height : LibC::Int, window_flags : UInt32, window : Window**, renderer : Renderer**) : LibC::Int
   fun create_renderer = SDL_CreateRenderer(window : Window*, index : LibC::Int, flags : UInt32) : Renderer*
@@ -2198,22 +2198,22 @@ lib LibSDL
 
   # SDL_rwops
 
-  RWOPS_UNKNOWN = 0
-  RWOPS_WINFILE = 1
-  RWOPS_STDFILE = 2
-  RWOPS_JNIFILE = 3
-  RWOPS_MEMORY = 4
+  RWOPS_UNKNOWN   = 0
+  RWOPS_WINFILE   = 1
+  RWOPS_STDFILE   = 2
+  RWOPS_JNIFILE   = 3
+  RWOPS_MEMORY    = 4
   RWOPS_MEMORY_RO = 5
-  RW_SEEK_SET = 0
-  RW_SEEK_CUR = 1
-  RW_SEEK_END = 2
+  RW_SEEK_SET     = 0
+  RW_SEEK_CUR     = 1
+  RW_SEEK_END     = 2
 
   fun rwfrom_file = SDL_RWFromFile(file : LibC::Char*, mode : LibC::Char*) : RWops*
   fun rwfrom_fp = SDL_RWFromFP(fp : Void*, autoclose : SBool) : RWops*
   fun rwfrom_fp = SDL_RWFromFP(fp : Void*, autoclose : SBool) : RWops*
   fun rwfrom_mem = SDL_RWFromMem(mem : Void*, size : LibC::Int) : RWops*
   fun rwfrom_const_mem = SDL_RWFromConstMem(mem : Void*, size : LibC::Int) : RWops*
-  fun alloc_rw = SDL_AllocRW() : RWops*
+  fun alloc_rw = SDL_AllocRW : RWops*
   fun free_rw = SDL_FreeRW(area : RWops*) : Void
   fun rwsize = SDL_RWsize(context : RWops*) : Int64
   fun rwseek = SDL_RWseek(context : RWops*, offset : Int64, whence : LibC::Int) : Int64
@@ -2256,9 +2256,9 @@ lib LibSDL
     SENSOR_GYRO_R
   end
 
-  fun lock_sensors = SDL_LockSensors() : Void
-  fun unlock_sensors = SDL_UnlockSensors() : Void
-  fun num_sensors = SDL_NumSensors() : LibC::Int
+  fun lock_sensors = SDL_LockSensors : Void
+  fun unlock_sensors = SDL_UnlockSensors : Void
+  fun num_sensors = SDL_NumSensors : LibC::Int
   fun sensor_get_device_name = SDL_SensorGetDeviceName(device_index : LibC::Int) : LibC::Char*
   fun sensor_get_device_type = SDL_SensorGetDeviceType(device_index : LibC::Int) : SensorType
   fun sensor_get_device_non_portable_type = SDL_SensorGetDeviceNonPortableType(device_index : LibC::Int) : LibC::Int
@@ -2272,7 +2272,7 @@ lib LibSDL
   fun sensor_get_data = SDL_SensorGetData(sensor : Sensor*, data : LibC::Float*, num_values : LibC::Int) : LibC::Int
   fun sensor_get_data_with_timestamp = SDL_SensorGetDataWithTimestamp(sensor : Sensor*, timestamp : UInt64*, data : LibC::Float*, num_values : LibC::Int) : LibC::Int
   fun sensor_close = SDL_SensorClose(sensor : Sensor*) : Void
-  fun sensor_update = SDL_SensorUpdate() : Void
+  fun sensor_update = SDL_SensorUpdate : Void
 
   # additions/helper_shape.cr
 
@@ -2295,9 +2295,9 @@ lib LibSDL
 
   # SDL_shape
 
-  NONSHAPEABLE_WINDOW = -1
+  NONSHAPEABLE_WINDOW    = -1
   INVALID_SHAPE_ARGUMENT = -2
-  WINDOW_LACKS_SHAPE = -3
+  WINDOW_LACKS_SHAPE     = -3
 
   fun create_shaped_window = SDL_CreateShapedWindow(title : LibC::Char*, x : LibC::UInt, y : LibC::UInt, w : LibC::UInt, h : LibC::UInt, flags : UInt32) : Window*
   fun is_shaped_window = SDL_IsShapedWindow(window : Window*) : SBool
@@ -2306,10 +2306,10 @@ lib LibSDL
 
   # SDL_surface
 
-  SWSURFACE = 0
-  PREALLOC = 0x00000001
-  RLEACCEL = 0x00000002
-  DONTFREE = 0x00000004
+  SWSURFACE    =          0
+  PREALLOC     = 0x00000001
+  RLEACCEL     = 0x00000002
+  DONTFREE     = 0x00000004
   SIMD_ALIGNED = 0x00000008
 
   alias BlitMap = Void
@@ -2373,19 +2373,19 @@ lib LibSDL
   fun upper_blit_scaled = SDL_UpperBlitScaled(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*) : LibC::Int
   fun lower_blit_scaled = SDL_LowerBlitScaled(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*) : LibC::Int
   fun set_yuvconversion_mode = SDL_SetYUVConversionMode(mode : YUVCONVERSIONMODE) : Void
-  fun get_yuvconversion_mode = SDL_GetYUVConversionMode() : YUVCONVERSIONMODE
+  fun get_yuvconversion_mode = SDL_GetYUVConversionMode : YUVCONVERSIONMODE
   fun get_yuvconversion_mode_for_resolution = SDL_GetYUVConversionModeForResolution(width : LibC::Int, height : LibC::Int) : YUVCONVERSIONMODE
 
   # SDL_touch
 
-  TOUCH_MOUSEID = ((Uint32)-1)
-  MOUSE_TOUCHID = ((Sint64)-1)
+  TOUCH_MOUSEID = ((Uint32) - 1)
+  MOUSE_TOUCHID = ((Sint64) - 1)
 
   alias TouchID = Int64
   alias FingerID = Int64
 
   enum TouchDeviceType
-    TOUCH_DEVICE_INVALID = -1
+    TOUCH_DEVICE_INVALID           = -1
     TOUCH_DEVICE_DIRECT
     TOUCH_DEVICE_INDIRECT_ABSOLUTE
     TOUCH_DEVICE_INDIRECT_RELATIVE
@@ -2398,7 +2398,7 @@ lib LibSDL
     pressure : LibC::Float
   end
 
-  fun get_num_touch_devices = SDL_GetNumTouchDevices() : LibC::Int
+  fun get_num_touch_devices = SDL_GetNumTouchDevices : LibC::Int
   fun get_touch_device = SDL_GetTouchDevice(index : LibC::Int) : TouchID
   fun get_touch_name = SDL_GetTouchName(index : LibC::Int) : LibC::Char*
   fun get_touch_device_type = SDL_GetTouchDeviceType(touch_id : TouchID) : TouchDeviceType
@@ -2413,38 +2413,38 @@ lib LibSDL
   # SDL_video
 
   WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000
-  WINDOWPOS_UNDEFINED = (LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)
-  WINDOWPOS_CENTERED_MASK = 0x2FFF0000
-  WINDOWPOS_CENTERED = (LibSDL::WINDOWPOS_CENTERED_MASK | 0)
+  WINDOWPOS_UNDEFINED      = (LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)
+  WINDOWPOS_CENTERED_MASK  = 0x2FFF0000
+  WINDOWPOS_CENTERED       = (LibSDL::WINDOWPOS_CENTERED_MASK | 0)
 
   alias Window = Void
   alias GLContext = Void*
 
   enum WindowFlags
-    WINDOW_FULLSCREEN = 0x00000001
-    WINDOW_OPENGL = 0x00000002
-    WINDOW_SHOWN = 0x00000004
-    WINDOW_HIDDEN = 0x00000008
-    WINDOW_BORDERLESS = 0x00000010
-    WINDOW_RESIZABLE = 0x00000020
-    WINDOW_MINIMIZED = 0x00000040
-    WINDOW_MAXIMIZED = 0x00000080
-    WINDOW_MOUSE_GRABBED = 0x00000100
-    WINDOW_INPUT_FOCUS = 0x00000200
-    WINDOW_MOUSE_FOCUS = 0x00000400
+    WINDOW_FULLSCREEN         = 0x00000001
+    WINDOW_OPENGL             = 0x00000002
+    WINDOW_SHOWN              = 0x00000004
+    WINDOW_HIDDEN             = 0x00000008
+    WINDOW_BORDERLESS         = 0x00000010
+    WINDOW_RESIZABLE          = 0x00000020
+    WINDOW_MINIMIZED          = 0x00000040
+    WINDOW_MAXIMIZED          = 0x00000080
+    WINDOW_MOUSE_GRABBED      = 0x00000100
+    WINDOW_INPUT_FOCUS        = 0x00000200
+    WINDOW_MOUSE_FOCUS        = 0x00000400
     WINDOW_FULLSCREEN_DESKTOP = (WINDOW_FULLSCREEN | 0x00001000)
-    WINDOW_FOREIGN = 0x00000800
-    WINDOW_ALLOW_HIGHDPI = 0x00002000
-    WINDOW_MOUSE_CAPTURE = 0x00004000
-    WINDOW_ALWAYS_ON_TOP = 0x00008000
-    WINDOW_SKIP_TASKBAR = 0x00010000
-    WINDOW_UTILITY = 0x00020000
-    WINDOW_TOOLTIP = 0x00040000
-    WINDOW_POPUP_MENU = 0x00080000
-    WINDOW_KEYBOARD_GRABBED = 0x00100000
-    WINDOW_VULKAN = 0x10000000
-    WINDOW_METAL = 0x20000000
-    WINDOW_INPUT_GRABBED = WINDOW_MOUSE_GRABBED
+    WINDOW_FOREIGN            = 0x00000800
+    WINDOW_ALLOW_HIGHDPI      = 0x00002000
+    WINDOW_MOUSE_CAPTURE      = 0x00004000
+    WINDOW_ALWAYS_ON_TOP      = 0x00008000
+    WINDOW_SKIP_TASKBAR       = 0x00010000
+    WINDOW_UTILITY            = 0x00020000
+    WINDOW_TOOLTIP            = 0x00040000
+    WINDOW_POPUP_MENU         = 0x00080000
+    WINDOW_KEYBOARD_GRABBED   = 0x00100000
+    WINDOW_VULKAN             = 0x10000000
+    WINDOW_METAL              = 0x20000000
+    WINDOW_INPUT_GRABBED      = WINDOW_MOUSE_GRABBED
   end
 
   enum WindowEventID
@@ -2523,26 +2523,26 @@ lib LibSDL
   end
 
   enum GLprofile
-    GL_CONTEXT_PROFILE_CORE = 0x0001
+    GL_CONTEXT_PROFILE_CORE          = 0x0001
     GL_CONTEXT_PROFILE_COMPATIBILITY = 0x0002
-    GL_CONTEXT_PROFILE_ES = 0x0004
+    GL_CONTEXT_PROFILE_ES            = 0x0004
   end
 
   enum GLcontextFlag
-    GL_CONTEXT_DEBUG_FLAG = 0x0001
+    GL_CONTEXT_DEBUG_FLAG              = 0x0001
     GL_CONTEXT_FORWARD_COMPATIBLE_FLAG = 0x0002
-    GL_CONTEXT_ROBUST_ACCESS_FLAG = 0x0004
-    GL_CONTEXT_RESET_ISOLATION_FLAG = 0x0008
+    GL_CONTEXT_ROBUST_ACCESS_FLAG      = 0x0004
+    GL_CONTEXT_RESET_ISOLATION_FLAG    = 0x0008
   end
 
   enum GLcontextReleaseFlag
-    GL_CONTEXT_RELEASE_BEHAVIOR_NONE = 0x0000
+    GL_CONTEXT_RELEASE_BEHAVIOR_NONE  = 0x0000
     GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH = 0x0001
   end
 
   enum GLContextResetNotification
     GL_CONTEXT_RESET_NO_NOTIFICATION = 0x0000
-    GL_CONTEXT_RESET_LOSE_CONTEXT = 0x0001
+    GL_CONTEXT_RESET_LOSE_CONTEXT    = 0x0001
   end
 
   enum HitTestResult
@@ -2566,12 +2566,12 @@ lib LibSDL
     driverdata : Void*
   end
 
-  fun get_num_video_drivers = SDL_GetNumVideoDrivers() : LibC::Int
+  fun get_num_video_drivers = SDL_GetNumVideoDrivers : LibC::Int
   fun get_video_driver = SDL_GetVideoDriver(index : LibC::Int) : LibC::Char*
   fun video_init = SDL_VideoInit(driver_name : LibC::Char*) : LibC::Int
-  fun video_quit = SDL_VideoQuit() : Void
-  fun get_current_video_driver = SDL_GetCurrentVideoDriver() : LibC::Char*
-  fun get_num_video_displays = SDL_GetNumVideoDisplays() : LibC::Int
+  fun video_quit = SDL_VideoQuit : Void
+  fun get_current_video_driver = SDL_GetCurrentVideoDriver : LibC::Char*
+  fun get_num_video_displays = SDL_GetNumVideoDisplays : LibC::Int
   fun get_display_name = SDL_GetDisplayName(display_index : LibC::Int) : LibC::Char*
   fun get_display_bounds = SDL_GetDisplayBounds(display_index : LibC::Int, rect : Rect*) : LibC::Int
   fun get_display_usable_bounds = SDL_GetDisplayUsableBounds(display_index : LibC::Int, rect : Rect*) : LibC::Int
@@ -2628,7 +2628,7 @@ lib LibSDL
   fun get_window_grab = SDL_GetWindowGrab(window : Window*) : SBool
   fun get_window_keyboard_grab = SDL_GetWindowKeyboardGrab(window : Window*) : SBool
   fun get_window_mouse_grab = SDL_GetWindowMouseGrab(window : Window*) : SBool
-  fun get_grabbed_window = SDL_GetGrabbedWindow() : Window*
+  fun get_grabbed_window = SDL_GetGrabbedWindow : Window*
   fun set_window_mouse_rect = SDL_SetWindowMouseRect(window : Window*, rect : Rect*) : LibC::Int
   fun get_window_mouse_rect = SDL_GetWindowMouseRect(window : Window*) : Rect*
   fun set_window_brightness = SDL_SetWindowBrightness(window : Window*, brightness : LibC::Float) : LibC::Int
@@ -2642,26 +2642,25 @@ lib LibSDL
   fun set_window_hit_test = SDL_SetWindowHitTest(window : Window*, callback : HitTest, callback_data : Void*) : LibC::Int
   fun flash_window = SDL_FlashWindow(window : Window*, operation : FlashOperation) : LibC::Int
   fun destroy_window = SDL_DestroyWindow(window : Window*) : Void
-  fun is_screen_saver_enabled = SDL_IsScreenSaverEnabled() : SBool
-  fun enable_screen_saver = SDL_EnableScreenSaver() : Void
-  fun disable_screen_saver = SDL_DisableScreenSaver() : Void
+  fun is_screen_saver_enabled = SDL_IsScreenSaverEnabled : SBool
+  fun enable_screen_saver = SDL_EnableScreenSaver : Void
+  fun disable_screen_saver = SDL_DisableScreenSaver : Void
   fun gl_load_library = SDL_GL_LoadLibrary(path : LibC::Char*) : LibC::Int
   fun gl_get_proc_address = SDL_GL_GetProcAddress(proc : LibC::Char*) : Void*
-  fun gl_unload_library = SDL_GL_UnloadLibrary() : Void
+  fun gl_unload_library = SDL_GL_UnloadLibrary : Void
   fun gl_extension_supported = SDL_GL_ExtensionSupported(extension : LibC::Char*) : SBool
-  fun gl_reset_attributes = SDL_GL_ResetAttributes() : Void
+  fun gl_reset_attributes = SDL_GL_ResetAttributes : Void
   fun gl_set_attribute = SDL_GL_SetAttribute(attr : GLattr, value : LibC::Int) : LibC::Int
   fun gl_get_attribute = SDL_GL_GetAttribute(attr : GLattr, value : LibC::Int*) : LibC::Int
   fun gl_create_context = SDL_GL_CreateContext(window : Window*) : GLContext
   fun gl_make_current = SDL_GL_MakeCurrent(window : Window*, context : GLContext) : LibC::Int
-  fun gl_get_current_window = SDL_GL_GetCurrentWindow() : Window*
-  fun gl_get_current_context = SDL_GL_GetCurrentContext() : GLContext
+  fun gl_get_current_window = SDL_GL_GetCurrentWindow : Window*
+  fun gl_get_current_context = SDL_GL_GetCurrentContext : GLContext
   fun gl_get_drawable_size = SDL_GL_GetDrawableSize(window : Window*, w : LibC::Int*, h : LibC::Int*) : Void
   fun gl_set_swap_interval = SDL_GL_SetSwapInterval(interval : LibC::Int) : LibC::Int
-  fun gl_get_swap_interval = SDL_GL_GetSwapInterval() : LibC::Int
+  fun gl_get_swap_interval = SDL_GL_GetSwapInterval : LibC::Int
   fun gl_swap_window = SDL_GL_SwapWindow(window : Window*) : Void
   fun gl_delete_context = SDL_GL_DeleteContext(context : GLContext) : Void
-
 end
 
 module LibSDLMacro
@@ -2756,7 +2755,7 @@ module LibSDLMacro
   # SDL_mouse
 
   def self.button(x)
-    (1 << ((x)-1))
+    (1 << ((x) - 1))
   end
 
   # SDL_pixels
@@ -2770,7 +2769,7 @@ module LibSDLMacro
   end
 
   def self.pixel_flag(x)
-     (((x) >> 28) & 0x0F)
+    (((x) >> 28) & 0x0F)
   end
 
   def self.pixel_type(x)
@@ -2798,7 +2797,7 @@ module LibSDLMacro
   end
 
   def self.is_pixel_format_packed(format)
-     (!self.is_pixel_format_fourcc(format) && ((self.pixel_type(format) == LibSDL::PIXELTYPE_PACKED8) || (self.pixel_type(format) == LibSDL::PIXELTYPE_PACKED16) || (self.pixel_type(format) == LibSDL::PIXELTYPE_PACKED32)))
+    (!self.is_pixel_format_fourcc(format) && ((self.pixel_type(format) == LibSDL::PIXELTYPE_PACKED8) || (self.pixel_type(format) == LibSDL::PIXELTYPE_PACKED16) || (self.pixel_type(format) == LibSDL::PIXELTYPE_PACKED32)))
   end
 
   def self.is_pixel_format_array(format)
@@ -2848,7 +2847,7 @@ module LibSDLMacro
   end
 
   def self.window_pos_is_undefined(x)
-    (((x)&0xFFFF0000) == LibSDL::WINDOWPOS_UNDEFINED_MASK)
+    (((x) & 0xFFFF0000) == LibSDL::WINDOWPOS_UNDEFINED_MASK)
   end
 
   def self.window_pos_centered_display(x)
@@ -2856,6 +2855,6 @@ module LibSDLMacro
   end
 
   def self.window_pos_is_centered(x)
-    (((x)&0xFFFF0000) == LibSDL::WINDOWPOS_CENTERED_MASK)
+    (((x) & 0xFFFF0000) == LibSDL::WINDOWPOS_CENTERED_MASK)
   end
 end
