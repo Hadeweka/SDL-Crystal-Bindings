@@ -2661,6 +2661,12 @@ lib LibSDL
   fun gl_get_swap_interval = SDL_GL_GetSwapInterval : LibC::Int
   fun gl_swap_window = SDL_GL_SwapWindow(window : Window*) : Void
   fun gl_delete_context = SDL_GL_DeleteContext(context : GLContext) : Void
+
+  # timer methods
+  fun get_ticks64 = SDL_GetTicks64 : UInt64
+  fun get_performance_counter = SDL_GetPerformanceCounter : UInt64
+  fun get_performance_frequency = SDL_GetPerformanceFrequency : UInt64
+  fun delay = SDL_Delay(ms : LibC::UInt) : Void
 end
 
 module LibSDLMacro
