@@ -188,7 +188,7 @@ def get_all_structs(filename)
   single_line_struct_matches = total_str.scan(/typedef struct ([\S]+)[ ]*([\S]*);/)
   multi_line_struct_matches = total_str.scan(/typedef struct ([\S]*)[ ]*{((?>[^}])*)}([^;\}]*) ([\S]+);/)
   typedefs = total_str.scan(/typedef ((?!struct)\S*) (\S*);/)
-  enums = total_str.scan(/typedef enum { ([\S, ]+) } (\S+);/)
+  enums = total_str.scan(/typedef enum [\S ]*{ ([\S, ]+) } (\S+);/)
 
   single_line_struct_matches.each do |match|
     next if should_struct_be_excluded?(match[1])
@@ -376,7 +376,7 @@ headers = [
 ]
 
 img_headers = [
-  ["SDL_image", "SDL_image/SDL2"]
+  ["SDL_image", "SDL_image/SDL2/include"]
 ]
 
 mix_headers = [
