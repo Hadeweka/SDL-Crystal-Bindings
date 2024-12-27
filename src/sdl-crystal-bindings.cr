@@ -1,39 +1,13 @@
-@[Link("SDL2")]
+@[Link("SDL3")]
 lib LibSDL
   # SDL
 
-  INIT_TIMER = 0x00000001
-  INIT_AUDIO = 0x00000010
-  INIT_VIDEO = 0x00000020
-  INIT_JOYSTICK = 0x00000200
-  INIT_HAPTIC = 0x00001000
-  INIT_GAMECONTROLLER = 0x00002000
-  INIT_EVENTS = 0x00004000
-  INIT_SENSOR = 0x00008000
-  INIT_NOPARACHUTE = 0x00100000
-  INIT_EVERYTHING = (INIT_TIMER | INIT_AUDIO | INIT_VIDEO | INIT_EVENTS | INIT_JOYSTICK | INIT_HAPTIC | INIT_GAMECONTROLLER | INIT_SENSOR)
-
-  fun init = SDL_Init(flags : UInt32) : LibC::Int
-  fun init_sub_system = SDL_InitSubSystem(flags : UInt32) : LibC::Int
-  fun quit_sub_system = SDL_QuitSubSystem(flags : UInt32) : Void
-  fun was_init = SDL_WasInit(flags : UInt32) : UInt32
-  fun quit = SDL_Quit() : Void
-
   # SDL_version
 
-  MAJOR_VERSION = 2
-  MINOR_VERSION = 31
-  PATCHLEVEL = 0
-  COMPILEDVERSION = (((MAJOR_VERSION)*1000 + (MINOR_VERSION)*100 + (PATCHLEVEL)))
-
-  struct Version
-    major : UInt8
-    minor : UInt8
-    patch : UInt8
-  end
-
-  fun get_version = SDL_GetVersion(ver : Version*) : Void
-  fun get_revision = SDL_GetRevision() : LibC::Char*
+  MAJOR_VERSION = 3
+  MINOR_VERSION = 1
+  MICRO_VERSION = 7
+  VERSION = (((MAJOR_VERSION)*1000 + (MINOR_VERSION)*100 + (MICRO_VERSION)))
 
   # additions/helper_types.cr
 
@@ -259,134 +233,60 @@ lib LibSDL
     SCANCODE_RALT = 230
     SCANCODE_RGUI = 231
     SCANCODE_MODE = 257
-    SCANCODE_AUDIONEXT = 258
-    SCANCODE_AUDIOPREV = 259
-    SCANCODE_AUDIOSTOP = 260
-    SCANCODE_AUDIOPLAY = 261
-    SCANCODE_AUDIOMUTE = 262
-    SCANCODE_MEDIASELECT = 263
-    SCANCODE_WWW = 264
-    SCANCODE_MAIL = 265
-    SCANCODE_CALCULATOR = 266
-    SCANCODE_COMPUTER = 267
-    SCANCODE_AC_SEARCH = 268
-    SCANCODE_AC_HOME = 269
-    SCANCODE_AC_BACK = 270
-    SCANCODE_AC_FORWARD = 271
-    SCANCODE_AC_STOP = 272
-    SCANCODE_AC_REFRESH = 273
-    SCANCODE_AC_BOOKMARKS = 274
-    SCANCODE_BRIGHTNESSDOWN = 275
-    SCANCODE_BRIGHTNESSUP = 276
-    SCANCODE_DISPLAYSWITCH = 277
-    SCANCODE_KBDILLUMTOGGLE = 278
-    SCANCODE_KBDILLUMDOWN = 279
-    SCANCODE_KBDILLUMUP = 280
-    SCANCODE_EJECT = 281
-    SCANCODE_SLEEP = 282
-    SCANCODE_APP1 = 283
-    SCANCODE_APP2 = 284
-    SCANCODE_AUDIOREWIND = 285
-    SCANCODE_AUDIOFASTFORWARD = 286
+    SCANCODE_SLEEP = 258
+    SCANCODE_WAKE = 259
+    SCANCODE_CHANNEL_INCREMENT = 260
+    SCANCODE_CHANNEL_DECREMENT = 261
+    SCANCODE_MEDIA_PLAY = 262
+    SCANCODE_MEDIA_PAUSE = 263
+    SCANCODE_MEDIA_RECORD = 264
+    SCANCODE_MEDIA_FAST_FORWARD = 265
+    SCANCODE_MEDIA_REWIND = 266
+    SCANCODE_MEDIA_NEXT_TRACK = 267
+    SCANCODE_MEDIA_PREVIOUS_TRACK = 268
+    SCANCODE_MEDIA_STOP = 269
+    SCANCODE_MEDIA_EJECT = 270
+    SCANCODE_MEDIA_PLAY_PAUSE = 271
+    SCANCODE_MEDIA_SELECT = 272
+    SCANCODE_AC_NEW = 273
+    SCANCODE_AC_OPEN = 274
+    SCANCODE_AC_CLOSE = 275
+    SCANCODE_AC_EXIT = 276
+    SCANCODE_AC_SAVE = 277
+    SCANCODE_AC_PRINT = 278
+    SCANCODE_AC_PROPERTIES = 279
+    SCANCODE_AC_SEARCH = 280
+    SCANCODE_AC_HOME = 281
+    SCANCODE_AC_BACK = 282
+    SCANCODE_AC_FORWARD = 283
+    SCANCODE_AC_STOP = 284
+    SCANCODE_AC_REFRESH = 285
+    SCANCODE_AC_BOOKMARKS = 286
     SCANCODE_SOFTLEFT = 287
     SCANCODE_SOFTRIGHT = 288
     SCANCODE_CALL = 289
     SCANCODE_ENDCALL = 290
-    NUM_SCANCODES = 512
+    SCANCODE_RESERVED = 400
+    SCANCODE_COUNT = 512
   end
 
   # SDL_audio
 
-  AUDIO_MASK_BITSIZE = (0xFF)
-  AUDIO_MASK_DATATYPE = (1 << 8)
-  AUDIO_MASK_ENDIAN = (1 << 12)
+  AUDIO_MASK_BITSIZE = (0xFFu)
+  AUDIO_MASK_FLOAT = (1 << 8)
+  AUDIO_MASK_BIG_ENDIAN = (1 << 12)
   AUDIO_MASK_SIGNED = (1 << 15)
-  AUDIO_U8 = 0x0008
-  AUDIO_S8 = 0x8008
-  AUDIO_U16LSB = 0x0010
-  AUDIO_S16LSB = 0x8010
-  AUDIO_U16MSB = 0x1010
-  AUDIO_S16MSB = 0x9010
-  AUDIO_U16 = AUDIO_U16LSB
-  AUDIO_S16 = AUDIO_S16LSB
-  AUDIO_S32LSB = 0x8020
-  AUDIO_S32MSB = 0x9020
-  AUDIO_S32 = AUDIO_S32LSB
-  AUDIO_F32LSB = 0x8120
-  AUDIO_F32MSB = 0x9120
-  AUDIO_F32 = AUDIO_F32LSB
-  AUDIO_U16SYS = AUDIO_U16LSB
-  AUDIO_S16SYS = AUDIO_S16LSB
-  AUDIO_S32SYS = AUDIO_S32LSB
-  AUDIO_F32SYS = AUDIO_F32LSB
-  AUDIO_ALLOW_FREQUENCY_CHANGE = 0x00000001
-  AUDIO_ALLOW_FORMAT_CHANGE = 0x00000002
-  AUDIO_ALLOW_CHANNELS_CHANGE = 0x00000004
-  AUDIO_ALLOW_SAMPLES_CHANGE = 0x00000008
-  AUDIO_ALLOW_ANY_CHANGE = (AUDIO_ALLOW_FREQUENCY_CHANGE | AUDIO_ALLOW_FORMAT_CHANGE | AUDIO_ALLOW_CHANNELS_CHANGE | AUDIO_ALLOW_SAMPLES_CHANGE)
-  AUDIOCVT_MAX_FILTERS = 9
-  MIX_MAXVOLUME = 128
+  AUDIO_DEVICE_DEFAULT_PLAYBACK = ((AudioDeviceID)0xFFFFFFFFu)
+  AUDIO_DEVICE_DEFAULT_RECORDING = ((AudioDeviceID)0xFFFFFFFEu)
 
   alias AudioStream = Void
-  alias AudioFormat = UInt16
   alias AudioDeviceID = UInt32
 
-  enum AudioStatus
-    AUDIO_STOPPED = 0
-    AUDIO_PLAYING
-    AUDIO_PAUSED
-  end
-
   struct AudioSpec
-    freq : LibC::Int
     format : AudioFormat
-    channels : UInt8
-    silence : UInt8
-    samples : UInt16
-    padding : UInt16
-    size : UInt32
-    callback : AudioCallback
-    userdata : Void*
+    channels : LibC::Int
+    freq : LibC::Int
   end
-
-  fun get_num_audio_drivers = SDL_GetNumAudioDrivers() : LibC::Int
-  fun get_audio_driver = SDL_GetAudioDriver(index : LibC::Int) : LibC::Char*
-  fun audio_init = SDL_AudioInit(driver_name : LibC::Char*) : LibC::Int
-  fun audio_quit = SDL_AudioQuit() : Void
-  fun get_current_audio_driver = SDL_GetCurrentAudioDriver() : LibC::Char*
-  fun open_audio = SDL_OpenAudio(desired : AudioSpec*, obtained : AudioSpec*) : LibC::Int
-  fun get_num_audio_devices = SDL_GetNumAudioDevices(iscapture : LibC::Int) : LibC::Int
-  fun get_audio_device_name = SDL_GetAudioDeviceName(index : LibC::Int, iscapture : LibC::Int) : LibC::Char*
-  fun get_audio_device_spec = SDL_GetAudioDeviceSpec(index : LibC::Int, iscapture : LibC::Int, spec : AudioSpec*) : LibC::Int
-  fun get_default_audio_info = SDL_GetDefaultAudioInfo(name : LibC::Char**, spec : AudioSpec*, iscapture : LibC::Int) : LibC::Int
-  fun open_audio_device = SDL_OpenAudioDevice(device : LibC::Char*, iscapture : LibC::Int, desired : AudioSpec*, obtained : AudioSpec*, allowed_changes : LibC::Int) : AudioDeviceID
-  fun get_audio_status = SDL_GetAudioStatus() : AudioStatus
-  fun get_audio_device_status = SDL_GetAudioDeviceStatus(dev : AudioDeviceID) : AudioStatus
-  fun pause_audio = SDL_PauseAudio(pause_on : LibC::Int) : Void
-  fun pause_audio_device = SDL_PauseAudioDevice(dev : AudioDeviceID, pause_on : LibC::Int) : Void
-  fun load_wav_rw = SDL_LoadWAV_RW(src : RWops*, freesrc : LibC::Int, spec : AudioSpec*, audio_buf : UInt8**, audio_len : UInt32*) : AudioSpec*
-  fun free_wav = SDL_FreeWAV(audio_buf : UInt8*) : Void
-  fun build_audio_cvt = SDL_BuildAudioCVT(cvt : AudioCVT*, src_format : AudioFormat, src_channels : UInt8, src_rate : LibC::Int, dst_format : AudioFormat, dst_channels : UInt8, dst_rate : LibC::Int) : LibC::Int
-  fun convert_audio = SDL_ConvertAudio(cvt : AudioCVT*) : LibC::Int
-  fun new_audio_stream = SDL_NewAudioStream(src_format : AudioFormat, src_channels : UInt8, src_rate : LibC::Int, dst_format : AudioFormat, dst_channels : UInt8, dst_rate : LibC::Int) : AudioStream*
-  fun audio_stream_put = SDL_AudioStreamPut(stream : AudioStream*, buf : Void*, len : LibC::Int) : LibC::Int
-  fun audio_stream_get = SDL_AudioStreamGet(stream : AudioStream*, buf : Void*, len : LibC::Int) : LibC::Int
-  fun audio_stream_available = SDL_AudioStreamAvailable(stream : AudioStream*) : LibC::Int
-  fun audio_stream_flush = SDL_AudioStreamFlush(stream : AudioStream*) : LibC::Int
-  fun audio_stream_clear = SDL_AudioStreamClear(stream : AudioStream*) : Void
-  fun free_audio_stream = SDL_FreeAudioStream(stream : AudioStream*) : Void
-  fun mix_audio = SDL_MixAudio(dst : UInt8*, src : UInt8*, len : UInt32, volume : LibC::Int) : Void
-  fun mix_audio_format = SDL_MixAudioFormat(dst : UInt8*, src : UInt8*, format : AudioFormat, len : UInt32, volume : LibC::Int) : Void
-  fun queue_audio = SDL_QueueAudio(dev : AudioDeviceID, data : Void*, len : UInt32) : LibC::Int
-  fun dequeue_audio = SDL_DequeueAudio(dev : AudioDeviceID, data : Void*, len : UInt32) : UInt32
-  fun get_queued_audio_size = SDL_GetQueuedAudioSize(dev : AudioDeviceID) : UInt32
-  fun clear_queued_audio = SDL_ClearQueuedAudio(dev : AudioDeviceID) : Void
-  fun lock_audio = SDL_LockAudio() : Void
-  fun lock_audio_device = SDL_LockAudioDevice(dev : AudioDeviceID) : Void
-  fun unlock_audio = SDL_UnlockAudio() : Void
-  fun unlock_audio_device = SDL_UnlockAudioDevice(dev : AudioDeviceID) : Void
-  fun close_audio = SDL_CloseAudio() : Void
-  fun close_audio_device = SDL_CloseAudioDevice(dev : AudioDeviceID) : Void
 
   # additions/helper_audio.cr
 
@@ -414,14 +314,16 @@ lib LibSDL
 
   # SDL_blendmode
 
-  enum BlendMode
-    BLENDMODE_NONE = 0x00000000
-    BLENDMODE_BLEND = 0x00000001
-    BLENDMODE_ADD = 0x00000002
-    BLENDMODE_MOD = 0x00000004
-    BLENDMODE_MUL = 0x00000008
-    BLENDMODE_INVALID = 0x7FFFFFFF
-  end
+  BLENDMODE_NONE = 0x00000000
+  BLENDMODE_BLEND = 0x00000001
+  BLENDMODE_BLEND_PREMULTIPLIED = 0x00000010
+  BLENDMODE_ADD = 0x00000002
+  BLENDMODE_ADD_PREMULTIPLIED = 0x00000020
+  BLENDMODE_MOD = 0x00000004
+  BLENDMODE_MUL = 0x00000008
+  BLENDMODE_INVALID = 0x7FFFFFFFu
+
+  alias BlendMode = UInt32
 
   enum BlendOperation
     BLENDOPERATION_ADD = 0x1
@@ -444,33 +346,9 @@ lib LibSDL
     BLENDFACTOR_ONE_MINUS_DST_ALPHA = 0xA
   end
 
-  fun compose_custom_blend_mode = SDL_ComposeCustomBlendMode(src_color_factor : BlendFactor, dst_color_factor : BlendFactor, color_operation : BlendOperation, src_alpha_factor : BlendFactor, dst_alpha_factor : BlendFactor, alpha_operation : BlendOperation) : BlendMode
-
   # SDL_clipboard
 
-  fun set_clipboard_text = SDL_SetClipboardText(text : LibC::Char*) : LibC::Int
-  fun get_clipboard_text = SDL_GetClipboardText() : LibC::Char*
-  fun has_clipboard_text = SDL_HasClipboardText() : SBool
-  fun set_primary_selection_text = SDL_SetPrimarySelectionText(text : LibC::Char*) : LibC::Int
-  fun get_primary_selection_text = SDL_GetPrimarySelectionText() : LibC::Char*
-  fun has_primary_selection_text = SDL_HasPrimarySelectionText() : SBool
-
   # SDL_error
-
-  enum Errorcode
-    ENOMEM
-    EFREAD
-    EFWRITE
-    EFSEEK
-    UNSUPPORTED
-    LASTERROR
-  end
-
-  fun set_error = SDL_SetError(fmt : LibC::Char*, ...) : LibC::Int
-  fun get_error = SDL_GetError() : LibC::Char*
-  fun get_error_msg = SDL_GetErrorMsg(errstr : LibC::Char*, maxlen : LibC::Int) : LibC::Char*
-  fun clear_error = SDL_ClearError() : Void
-  fun error = SDL_Error(code : Errorcode) : LibC::Int
 
   # additions/helper_event.cr
 
@@ -514,82 +392,127 @@ lib LibSDL
 
   # SDL_events
 
-  RELEASED = 0
-  PRESSED = 1
-  TEXTEDITINGEVENT_TEXT_SIZE = (32)
-  TEXTINPUTEVENT_TEXT_SIZE = (32)
-  QUERY = -1
-  IGNORE = 0
-  DISABLE = 0
-  ENABLE = 1
-
-  alias SysWMmsg = Void
-
   enum EventType
-    FIRSTEVENT = 0
-    QUIT = 0x100
-    APP_TERMINATING
-    APP_LOWMEMORY
-    APP_WILLENTERBACKGROUND
-    APP_DIDENTERBACKGROUND
-    APP_WILLENTERFOREGROUND
-    APP_DIDENTERFOREGROUND
-    LOCALECHANGED
-    DISPLAYEVENT = 0x150
-    WINDOWEVENT = 0x200
-    SYSWMEVENT
-    KEYDOWN = 0x300
-    KEYUP
-    TEXTEDITING
-    TEXTINPUT
-    KEYMAPCHANGED
-    TEXTEDITING_EXT
-    MOUSEMOTION = 0x400
-    MOUSEBUTTONDOWN
-    MOUSEBUTTONUP
-    MOUSEWHEEL
-    JOYAXISMOTION = 0x600
-    JOYBALLMOTION
-    JOYHATMOTION
-    JOYBUTTONDOWN
-    JOYBUTTONUP
-    JOYDEVICEADDED
-    JOYDEVICEREMOVED
-    JOYBATTERYUPDATED
-    CONTROLLERAXISMOTION = 0x650
-    CONTROLLERBUTTONDOWN
-    CONTROLLERBUTTONUP
-    CONTROLLERDEVICEADDED
-    CONTROLLERDEVICEREMOVED
-    CONTROLLERDEVICEREMAPPED
-    CONTROLLERTOUCHPADDOWN
-    CONTROLLERTOUCHPADMOTION
-    CONTROLLERTOUCHPADUP
-    CONTROLLERSENSORUPDATE
-    CONTROLLERUPDATECOMPLETE_RESERVED_FOR_SDL3
-    CONTROLLERSTEAMHANDLEUPDATED
-    FINGERDOWN = 0x700
-    FINGERUP
-    FINGERMOTION
-    DOLLARGESTURE = 0x800
-    DOLLARRECORD
-    MULTIGESTURE
-    CLIPBOARDUPDATE = 0x900
-    DROPFILE = 0x1000
-    DROPTEXT
-    DROPBEGIN
-    DROPCOMPLETE
-    AUDIODEVICEADDED = 0x1100
-    AUDIODEVICEREMOVED
-    SENSORUPDATE = 0x1200
-    RENDER_TARGETS_RESET = 0x2000
-    RENDER_DEVICE_RESET
-    POLLSENTINEL = 0x7F00
-    USEREVENT = 0x8000
-    LASTEVENT = 0xFFFF
+    EVENT_FIRST = 0
+    EVENT_QUIT = 0x100
+    EVENT_TERMINATING
+    EVENT_LOW_MEMORY
+    EVENT_WILL_ENTER_BACKGROUND
+    EVENT_DID_ENTER_BACKGROUND
+    EVENT_WILL_ENTER_FOREGROUND
+    EVENT_DID_ENTER_FOREGROUND
+    EVENT_LOCALE_CHANGED
+    EVENT_SYSTEM_THEME_CHANGED
+    EVENT_DISPLAY_ORIENTATION = 0x151
+    EVENT_DISPLAY_ADDED
+    EVENT_DISPLAY_REMOVED
+    EVENT_DISPLAY_MOVED
+    EVENT_DISPLAY_DESKTOP_MODE_CHANGED
+    EVENT_DISPLAY_CURRENT_MODE_CHANGED
+    EVENT_DISPLAY_CONTENT_SCALE_CHANGED
+    EVENT_DISPLAY_FIRST = EVENT_DISPLAY_ORIENTATION
+    EVENT_DISPLAY_LAST = EVENT_DISPLAY_CONTENT_SCALE_CHANGED
+    EVENT_WINDOW_SHOWN = 0x202
+    EVENT_WINDOW_HIDDEN
+    EVENT_WINDOW_EXPOSED
+    EVENT_WINDOW_MOVED
+    EVENT_WINDOW_RESIZED
+    EVENT_WINDOW_PIXEL_SIZE_CHANGED
+    EVENT_WINDOW_METAL_VIEW_RESIZED
+    EVENT_WINDOW_MINIMIZED
+    EVENT_WINDOW_MAXIMIZED
+    EVENT_WINDOW_RESTORED
+    EVENT_WINDOW_MOUSE_ENTER
+    EVENT_WINDOW_MOUSE_LEAVE
+    EVENT_WINDOW_FOCUS_GAINED
+    EVENT_WINDOW_FOCUS_LOST
+    EVENT_WINDOW_CLOSE_REQUESTED
+    EVENT_WINDOW_HIT_TEST
+    EVENT_WINDOW_ICCPROF_CHANGED
+    EVENT_WINDOW_DISPLAY_CHANGED
+    EVENT_WINDOW_DISPLAY_SCALE_CHANGED
+    EVENT_WINDOW_SAFE_AREA_CHANGED
+    EVENT_WINDOW_OCCLUDED
+    EVENT_WINDOW_ENTER_FULLSCREEN
+    EVENT_WINDOW_LEAVE_FULLSCREEN
+    EVENT_WINDOW_DESTROYED
+    EVENT_WINDOW_HDR_STATE_CHANGED
+    EVENT_WINDOW_FIRST = EVENT_WINDOW_SHOWN
+    EVENT_WINDOW_LAST = EVENT_WINDOW_HDR_STATE_CHANGED
+    EVENT_KEY_DOWN = 0x300
+    EVENT_KEY_UP
+    EVENT_TEXT_EDITING
+    EVENT_TEXT_INPUT
+    EVENT_KEYMAP_CHANGED
+    EVENT_KEYBOARD_ADDED
+    EVENT_KEYBOARD_REMOVED
+    EVENT_TEXT_EDITING_CANDIDATES
+    EVENT_MOUSE_MOTION = 0x400
+    EVENT_MOUSE_BUTTON_DOWN
+    EVENT_MOUSE_BUTTON_UP
+    EVENT_MOUSE_WHEEL
+    EVENT_MOUSE_ADDED
+    EVENT_MOUSE_REMOVED
+    EVENT_JOYSTICK_AXIS_MOTION = 0x600
+    EVENT_JOYSTICK_BALL_MOTION
+    EVENT_JOYSTICK_HAT_MOTION
+    EVENT_JOYSTICK_BUTTON_DOWN
+    EVENT_JOYSTICK_BUTTON_UP
+    EVENT_JOYSTICK_ADDED
+    EVENT_JOYSTICK_REMOVED
+    EVENT_JOYSTICK_BATTERY_UPDATED
+    EVENT_JOYSTICK_UPDATE_COMPLETE
+    EVENT_GAMEPAD_AXIS_MOTION = 0x650
+    EVENT_GAMEPAD_BUTTON_DOWN
+    EVENT_GAMEPAD_BUTTON_UP
+    EVENT_GAMEPAD_ADDED
+    EVENT_GAMEPAD_REMOVED
+    EVENT_GAMEPAD_REMAPPED
+    EVENT_GAMEPAD_TOUCHPAD_DOWN
+    EVENT_GAMEPAD_TOUCHPAD_MOTION
+    EVENT_GAMEPAD_TOUCHPAD_UP
+    EVENT_GAMEPAD_SENSOR_UPDATE
+    EVENT_GAMEPAD_UPDATE_COMPLETE
+    EVENT_GAMEPAD_STEAM_HANDLE_UPDATED
+    EVENT_FINGER_DOWN = 0x700
+    EVENT_FINGER_UP
+    EVENT_FINGER_MOTION
+    EVENT_CLIPBOARD_UPDATE = 0x900
+    EVENT_DROP_FILE = 0x1000
+    EVENT_DROP_TEXT
+    EVENT_DROP_BEGIN
+    EVENT_DROP_COMPLETE
+    EVENT_DROP_POSITION
+    EVENT_AUDIO_DEVICE_ADDED = 0x1100
+    EVENT_AUDIO_DEVICE_REMOVED
+    EVENT_AUDIO_DEVICE_FORMAT_CHANGED
+    EVENT_SENSOR_UPDATE = 0x1200
+    EVENT_PEN_PROXIMITY_IN = 0x1300
+    EVENT_PEN_PROXIMITY_OUT
+    EVENT_PEN_DOWN
+    EVENT_PEN_UP
+    EVENT_PEN_BUTTON_DOWN
+    EVENT_PEN_BUTTON_UP
+    EVENT_PEN_MOTION
+    EVENT_PEN_AXIS
+    EVENT_CAMERA_DEVICE_ADDED = 0x1400
+    EVENT_CAMERA_DEVICE_REMOVED
+    EVENT_CAMERA_DEVICE_APPROVED
+    EVENT_CAMERA_DEVICE_DENIED
+    EVENT_RENDER_TARGETS_RESET = 0x2000
+    EVENT_RENDER_DEVICE_RESET
+    EVENT_RENDER_DEVICE_LOST
+    EVENT_PRIVATE0 = 0x4000
+    EVENT_PRIVATE1
+    EVENT_PRIVATE2
+    EVENT_PRIVATE3
+    EVENT_POLL_SENTINEL = 0x7F00
+    EVENT_USER = 0x8000
+    EVENT_LAST = 0xFFFF
+    EVENT_ENUM_PADDING = 0x7FFFFFFF
   end
 
-  enum Eventaction
+  enum EventAction
     ADDEVENT
     PEEKEVENT
     GETEVENT
@@ -597,110 +520,133 @@ lib LibSDL
 
   struct CommonEvent
     type : UInt32
-    timestamp : UInt32
+    reserved : UInt32
+    timestamp : UInt64
   end
 
   struct DisplayEvent
-    type : UInt32
-    timestamp : UInt32
-    display : UInt32
-    event : UInt8
-    padding1 : UInt8
-    padding2 : UInt8
-    padding3 : UInt8
-    data1 : Int32
-  end
-
-  struct WindowEvent
-    type : UInt32
-    timestamp : UInt32
-    window_id : UInt32
-    event : UInt8
-    padding1 : UInt8
-    padding2 : UInt8
-    padding3 : UInt8
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    display_id : DisplayID
     data1 : Int32
     data2 : Int32
   end
 
+  struct WindowEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
+    data1 : Int32
+    data2 : Int32
+  end
+
+  struct KeyboardDeviceEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    which : KeyboardID
+  end
+
   struct KeyboardEvent
-    type : UInt32
-    timestamp : UInt32
-    window_id : UInt32
-    state : UInt8
-    repeat : UInt8
-    padding2 : UInt8
-    padding3 : UInt8
-    keysym : Keysym
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
+    which : KeyboardID
+    scancode : Scancode
+    key : Keycode
+    mod : Keymod
+    raw : UInt16
+    down : bool
+    repeat : bool
   end
 
   struct TextEditingEvent
-    type : UInt32
-    timestamp : UInt32
-    window_id : UInt32
-    text : LibC::Char[TEXTEDITINGEVENT_TEXT_SIZE]
-    start_point : Int32
-    length : Int32
-  end
-
-  struct TextEditingExtEvent
-    type : UInt32
-    timestamp : UInt32
-    window_id : UInt32
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
     text : LibC::Char*
     start_point : Int32
     length : Int32
   end
 
+  struct TextEditingCandidatesEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
+    const* : LibC::Char*
+    candidates : LibC::Char*
+    num_candidates : Int32
+    selected_candidate : Int32
+    horizontal : bool
+    padding1 : UInt8
+    padding2 : UInt8
+    padding3 : UInt8
+  end
+
   struct TextInputEvent
-    type : UInt32
-    timestamp : UInt32
-    window_id : UInt32
-    text : LibC::Char[TEXTINPUTEVENT_TEXT_SIZE]
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
+    text : LibC::Char*
+  end
+
+  struct MouseDeviceEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    which : MouseID
   end
 
   struct MouseMotionEvent
-    type : UInt32
-    timestamp : UInt32
-    window_id : UInt32
-    which : UInt32
-    state : UInt32
-    x : Int32
-    y : Int32
-    xrel : Int32
-    yrel : Int32
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
+    which : MouseID
+    state : MouseButtonFlags
+    x : LibC::Float
+    y : LibC::Float
+    xrel : LibC::Float
+    yrel : LibC::Float
   end
 
   struct MouseButtonEvent
-    type : UInt32
-    timestamp : UInt32
-    window_id : UInt32
-    which : UInt32
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
+    which : MouseID
     button : UInt8
-    state : UInt8
+    down : bool
     clicks : UInt8
-    padding1 : UInt8
-    x : Int32
-    y : Int32
+    padding : UInt8
+    x : LibC::Float
+    y : LibC::Float
   end
 
   struct MouseWheelEvent
-    type : UInt32
-    timestamp : UInt32
-    window_id : UInt32
-    which : UInt32
-    x : Int32
-    y : Int32
-    direction : UInt32
-    precise_x : LibC::Float
-    precise_y : LibC::Float
-    mouse_x : Int32
-    mouse_y : Int32
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
+    which : MouseID
+    x : LibC::Float
+    y : LibC::Float
+    direction : MouseWheelDirection
+    mouse_x : LibC::Float
+    mouse_y : LibC::Float
   end
 
   struct JoyAxisEvent
-    type : UInt32
-    timestamp : UInt32
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
     which : JoystickID
     axis : UInt8
     padding1 : UInt8
@@ -711,8 +657,9 @@ lib LibSDL
   end
 
   struct JoyBallEvent
-    type : UInt32
-    timestamp : UInt32
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
     which : JoystickID
     ball : UInt8
     padding1 : UInt8
@@ -723,8 +670,9 @@ lib LibSDL
   end
 
   struct JoyHatEvent
-    type : UInt32
-    timestamp : UInt32
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
     which : JoystickID
     hat : UInt8
     value : UInt8
@@ -733,31 +681,36 @@ lib LibSDL
   end
 
   struct JoyButtonEvent
-    type : UInt32
-    timestamp : UInt32
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
     which : JoystickID
     button : UInt8
-    state : UInt8
+    down : bool
     padding1 : UInt8
     padding2 : UInt8
   end
 
   struct JoyDeviceEvent
-    type : UInt32
-    timestamp : UInt32
-    which : Int32
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    which : JoystickID
   end
 
   struct JoyBatteryEvent
-    type : UInt32
-    timestamp : UInt32
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
     which : JoystickID
-    level : JoystickPowerLevel
+    state : PowerState
+    percent : LibC::Int
   end
 
-  struct ControllerAxisEvent
-    type : UInt32
-    timestamp : UInt32
+  struct GamepadAxisEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
     which : JoystickID
     axis : UInt8
     padding1 : UInt8
@@ -767,25 +720,28 @@ lib LibSDL
     padding4 : UInt16
   end
 
-  struct ControllerButtonEvent
-    type : UInt32
-    timestamp : UInt32
+  struct GamepadButtonEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
     which : JoystickID
     button : UInt8
-    state : UInt8
+    down : bool
     padding1 : UInt8
     padding2 : UInt8
   end
 
-  struct ControllerDeviceEvent
-    type : UInt32
-    timestamp : UInt32
-    which : Int32
+  struct GamepadDeviceEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    which : JoystickID
   end
 
-  struct ControllerTouchpadEvent
-    type : UInt32
-    timestamp : UInt32
+  struct GamepadTouchpadEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
     which : JoystickID
     touchpad : Int32
     finger : Int32
@@ -794,28 +750,45 @@ lib LibSDL
     pressure : LibC::Float
   end
 
-  struct ControllerSensorEvent
-    type : UInt32
-    timestamp : UInt32
+  struct GamepadSensorEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
     which : JoystickID
     sensor : Int32
     data : LibC::Float[3]
-    timestamp_us : UInt64
+    sensor_timestamp : UInt64
   end
 
   struct AudioDeviceEvent
-    type : UInt32
-    timestamp : UInt32
-    which : UInt32
-    iscapture : UInt8
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    which : AudioDeviceID
+    recording : bool
     padding1 : UInt8
     padding2 : UInt8
     padding3 : UInt8
   end
 
+  struct CameraDeviceEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    which : CameraID
+  end
+
+  struct RenderEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
+  end
+
   struct TouchFingerEvent
-    type : UInt32
-    timestamp : UInt32
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
     touch_id : TouchID
     finger_id : FingerID
     x : LibC::Float
@@ -823,89 +796,153 @@ lib LibSDL
     dx : LibC::Float
     dy : LibC::Float
     pressure : LibC::Float
-    window_id : UInt32
+    window_id : WindowID
   end
 
-  struct MultiGestureEvent
-    type : UInt32
-    timestamp : UInt32
-    touch_id : TouchID
-    d_theta : LibC::Float
-    d_dist : LibC::Float
-    x : LibC::Float
-    y : LibC::Float
-    num_fingers : UInt16
-    padding : UInt16
+  struct PenProximityEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
+    which : PenID
   end
 
-  struct DollarGestureEvent
-    type : UInt32
-    timestamp : UInt32
-    touch_id : TouchID
-    gesture_id : GestureID
-    num_fingers : UInt32
-    error : LibC::Float
+  struct PenMotionEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
+    which : PenID
+    pen_state : PenInputFlags
     x : LibC::Float
     y : LibC::Float
+  end
+
+  struct PenTouchEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
+    which : PenID
+    pen_state : PenInputFlags
+    x : LibC::Float
+    y : LibC::Float
+    eraser : bool
+    down : bool
+  end
+
+  struct PenButtonEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
+    which : PenID
+    pen_state : PenInputFlags
+    x : LibC::Float
+    y : LibC::Float
+    button : UInt8
+    down : bool
+  end
+
+  struct PenAxisEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
+    which : PenID
+    pen_state : PenInputFlags
+    x : LibC::Float
+    y : LibC::Float
+    axis : PenAxis
+    value : LibC::Float
   end
 
   struct DropEvent
-    type : UInt32
-    timestamp : UInt32
-    file : LibC::Char*
-    window_id : UInt32
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
+    x : LibC::Float
+    y : LibC::Float
+    source : LibC::Char*
+    data : LibC::Char*
+  end
+
+  struct ClipboardEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    owner : bool
+    n_mime_types : Int32
+    mime_types : LibC::Char**
   end
 
   struct SensorEvent
-    type : UInt32
-    timestamp : UInt32
-    which : Int32
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    which : SensorID
     data : LibC::Float[6]
-    timestamp_us : UInt64
+    sensor_timestamp : UInt64
   end
 
   struct QuitEvent
-    type : UInt32
-    timestamp : UInt32
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
   end
 
   struct UserEvent
     type : UInt32
-    timestamp : UInt32
-    window_id : UInt32
+    reserved : UInt32
+    timestamp : UInt64
+    window_id : WindowID
     code : Int32
     data1 : Void*
     data2 : Void*
   end
 
-  struct SysWMEvent
-    type : UInt32
-    timestamp : UInt32
-    msg : SysWMmsg*
-  end
-
-  fun pump_events = SDL_PumpEvents() : Void
-  fun peep_events = SDL_PeepEvents(events : Event*, numevents : LibC::Int, action : Eventaction, min_type : UInt32, max_type : UInt32) : LibC::Int
-  fun has_event = SDL_HasEvent(type : UInt32) : SBool
-  fun has_events = SDL_HasEvents(min_type : UInt32, max_type : UInt32) : SBool
-  fun flush_event = SDL_FlushEvent(type : UInt32) : Void
-  fun flush_events = SDL_FlushEvents(min_type : UInt32, max_type : UInt32) : Void
-  fun poll_event = SDL_PollEvent(event : Event*) : LibC::Int
-  fun wait_event = SDL_WaitEvent(event : Event*) : LibC::Int
-  fun wait_event_timeout = SDL_WaitEventTimeout(event : Event*, timeout : LibC::Int) : LibC::Int
-  fun push_event = SDL_PushEvent(event : Event*) : LibC::Int
-  fun set_event_filter = SDL_SetEventFilter(filter : EventFilter, userdata : Void*) : Void
-  fun get_event_filter = SDL_GetEventFilter(filter : EventFilter*, userdata : Void**) : SBool
-  fun add_event_watch = SDL_AddEventWatch(filter : EventFilter, userdata : Void*) : Void
-  fun del_event_watch = SDL_DelEventWatch(filter : EventFilter, userdata : Void*) : Void
-  fun filter_events = SDL_FilterEvents(filter : EventFilter, userdata : Void*) : Void
-  fun event_state = SDL_EventState(type : UInt32, state : LibC::Int) : UInt8
-  fun register_events = SDL_RegisterEvents(numevents : LibC::Int) : UInt32
-
   # SDL_filesystem
 
-  fun get_base_path = SDL_GetBasePath() : LibC::Char*
-  fun get_pref_path = SDL_GetPrefPath(org : LibC::Char*, app : LibC::Char*) : LibC::Char*
+  GLOB_CASEINSENSITIVE = (1 << 0)
+
+  alias GlobFlags = UInt32
+
+  enum Folder
+    FOLDER_HOME
+    FOLDER_DESKTOP
+    FOLDER_DOCUMENTS
+    FOLDER_DOWNLOADS
+    FOLDER_MUSIC
+    FOLDER_PICTURES
+    FOLDER_PUBLICSHARE
+    FOLDER_SAVEDGAMES
+    FOLDER_SCREENSHOTS
+    FOLDER_TEMPLATES
+    FOLDER_VIDEOS
+    FOLDER_COUNT
+  end
+
+  enum PathType
+    PATHTYPE_NONE
+    PATHTYPE_FILE
+    PATHTYPE_DIRECTORY
+    PATHTYPE_OTHER
+  end
+
+  enum EnumerationResult
+    ENUM_CONTINUE
+    ENUM_SUCCESS
+    ENUM_FAILURE
+  end
+
+  struct PathInfo
+    type : PathType
+    size : UInt64
+    create_time : Time
+    modify_time : Time
+    access_time : Time
+  end
 
   # additions/helper_gamecontroller.cr
 
@@ -927,137 +964,7 @@ lib LibSDL
 
   # SDL_gamecontroller
 
-  alias GameController = Void
-
-  enum GameControllerType
-    CONTROLLER_TYPE_UNKNOWN = 0
-    CONTROLLER_TYPE_XBOX360
-    CONTROLLER_TYPE_XBOXONE
-    CONTROLLER_TYPE_PS3
-    CONTROLLER_TYPE_PS4
-    CONTROLLER_TYPE_NINTENDO_SWITCH_PRO
-    CONTROLLER_TYPE_VIRTUAL
-    CONTROLLER_TYPE_PS5
-    CONTROLLER_TYPE_AMAZON_LUNA
-    CONTROLLER_TYPE_GOOGLE_STADIA
-    CONTROLLER_TYPE_NVIDIA_SHIELD
-    CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_LEFT
-    CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT
-    CONTROLLER_TYPE_NINTENDO_SWITCH_JOYCON_PAIR
-    CONTROLLER_TYPE_MAX
-  end
-
-  enum GameControllerBindType
-    CONTROLLER_BINDTYPE_NONE = 0
-    CONTROLLER_BINDTYPE_BUTTON
-    CONTROLLER_BINDTYPE_AXIS
-    CONTROLLER_BINDTYPE_HAT
-  end
-
-  enum GameControllerAxis
-    CONTROLLER_AXIS_INVALID = -1
-    CONTROLLER_AXIS_LEFTX
-    CONTROLLER_AXIS_LEFTY
-    CONTROLLER_AXIS_RIGHTX
-    CONTROLLER_AXIS_RIGHTY
-    CONTROLLER_AXIS_TRIGGERLEFT
-    CONTROLLER_AXIS_TRIGGERRIGHT
-    CONTROLLER_AXIS_MAX
-  end
-
-  enum GameControllerButton
-    CONTROLLER_BUTTON_INVALID = -1
-    CONTROLLER_BUTTON_A
-    CONTROLLER_BUTTON_B
-    CONTROLLER_BUTTON_X
-    CONTROLLER_BUTTON_Y
-    CONTROLLER_BUTTON_BACK
-    CONTROLLER_BUTTON_GUIDE
-    CONTROLLER_BUTTON_START
-    CONTROLLER_BUTTON_LEFTSTICK
-    CONTROLLER_BUTTON_RIGHTSTICK
-    CONTROLLER_BUTTON_LEFTSHOULDER
-    CONTROLLER_BUTTON_RIGHTSHOULDER
-    CONTROLLER_BUTTON_DPAD_UP
-    CONTROLLER_BUTTON_DPAD_DOWN
-    CONTROLLER_BUTTON_DPAD_LEFT
-    CONTROLLER_BUTTON_DPAD_RIGHT
-    CONTROLLER_BUTTON_MISC1
-    CONTROLLER_BUTTON_PADDLE1
-    CONTROLLER_BUTTON_PADDLE2
-    CONTROLLER_BUTTON_PADDLE3
-    CONTROLLER_BUTTON_PADDLE4
-    CONTROLLER_BUTTON_TOUCHPAD
-    CONTROLLER_BUTTON_MAX
-  end
-
-  fun game_controller_add_mappings_from_rw = SDL_GameControllerAddMappingsFromRW(rw : RWops*, freerw : LibC::Int) : LibC::Int
-  fun game_controller_add_mapping = SDL_GameControllerAddMapping(mapping_string : LibC::Char*) : LibC::Int
-  fun game_controller_num_mappings = SDL_GameControllerNumMappings() : LibC::Int
-  fun game_controller_mapping_for_index = SDL_GameControllerMappingForIndex(mapping_index : LibC::Int) : LibC::Char*
-  fun game_controller_mapping_for_guid = SDL_GameControllerMappingForGUID(guid : JoystickGUID) : LibC::Char*
-  fun game_controller_mapping = SDL_GameControllerMapping(gamecontroller : GameController*) : LibC::Char*
-  fun is_game_controller = SDL_IsGameController(joystick_index : LibC::Int) : SBool
-  fun game_controller_name_for_index = SDL_GameControllerNameForIndex(joystick_index : LibC::Int) : LibC::Char*
-  fun game_controller_path_for_index = SDL_GameControllerPathForIndex(joystick_index : LibC::Int) : LibC::Char*
-  fun game_controller_type_for_index = SDL_GameControllerTypeForIndex(joystick_index : LibC::Int) : GameControllerType
-  fun game_controller_mapping_for_device_index = SDL_GameControllerMappingForDeviceIndex(joystick_index : LibC::Int) : LibC::Char*
-  fun game_controller_open = SDL_GameControllerOpen(joystick_index : LibC::Int) : GameController*
-  fun game_controller_from_instance_id = SDL_GameControllerFromInstanceID(joyid : JoystickID) : GameController*
-  fun game_controller_from_player_index = SDL_GameControllerFromPlayerIndex(player_index : LibC::Int) : GameController*
-  fun game_controller_name = SDL_GameControllerName(gamecontroller : GameController*) : LibC::Char*
-  fun game_controller_path = SDL_GameControllerPath(gamecontroller : GameController*) : LibC::Char*
-  fun game_controller_get_type = SDL_GameControllerGetType(gamecontroller : GameController*) : GameControllerType
-  fun game_controller_get_player_index = SDL_GameControllerGetPlayerIndex(gamecontroller : GameController*) : LibC::Int
-  fun game_controller_set_player_index = SDL_GameControllerSetPlayerIndex(gamecontroller : GameController*, player_index : LibC::Int) : Void
-  fun game_controller_get_vendor = SDL_GameControllerGetVendor(gamecontroller : GameController*) : UInt16
-  fun game_controller_get_product = SDL_GameControllerGetProduct(gamecontroller : GameController*) : UInt16
-  fun game_controller_get_product_version = SDL_GameControllerGetProductVersion(gamecontroller : GameController*) : UInt16
-  fun game_controller_get_firmware_version = SDL_GameControllerGetFirmwareVersion(gamecontroller : GameController*) : UInt16
-  fun game_controller_get_serial = SDL_GameControllerGetSerial(gamecontroller : GameController*) : LibC::Char*
-  fun game_controller_get_steam_handle = SDL_GameControllerGetSteamHandle(gamecontroller : GameController*) : UInt64
-  fun game_controller_get_attached = SDL_GameControllerGetAttached(gamecontroller : GameController*) : SBool
-  fun game_controller_get_joystick = SDL_GameControllerGetJoystick(gamecontroller : GameController*) : Joystick*
-  fun game_controller_event_state = SDL_GameControllerEventState(state : LibC::Int) : LibC::Int
-  fun game_controller_update = SDL_GameControllerUpdate() : Void
-  fun game_controller_get_axis_from_string = SDL_GameControllerGetAxisFromString(str : LibC::Char*) : GameControllerAxis
-  fun game_controller_get_string_for_axis = SDL_GameControllerGetStringForAxis(axis : GameControllerAxis) : LibC::Char*
-  fun game_controller_get_bind_for_axis = SDL_GameControllerGetBindForAxis(gamecontroller : GameController*, axis : GameControllerAxis) : GameControllerButtonBind
-  fun game_controller_has_axis = SDL_GameControllerHasAxis(gamecontroller : GameController*, axis : GameControllerAxis) : SBool
-  fun game_controller_get_axis = SDL_GameControllerGetAxis(gamecontroller : GameController*, axis : GameControllerAxis) : Int16
-  fun game_controller_get_button_from_string = SDL_GameControllerGetButtonFromString(str : LibC::Char*) : GameControllerButton
-  fun game_controller_get_string_for_button = SDL_GameControllerGetStringForButton(button : GameControllerButton) : LibC::Char*
-  fun game_controller_get_bind_for_button = SDL_GameControllerGetBindForButton(gamecontroller : GameController*, button : GameControllerButton) : GameControllerButtonBind
-  fun game_controller_has_button = SDL_GameControllerHasButton(gamecontroller : GameController*, button : GameControllerButton) : SBool
-  fun game_controller_get_button = SDL_GameControllerGetButton(gamecontroller : GameController*, button : GameControllerButton) : UInt8
-  fun game_controller_get_num_touchpads = SDL_GameControllerGetNumTouchpads(gamecontroller : GameController*) : LibC::Int
-  fun game_controller_get_num_touchpad_fingers = SDL_GameControllerGetNumTouchpadFingers(gamecontroller : GameController*, touchpad : LibC::Int) : LibC::Int
-  fun game_controller_get_touchpad_finger = SDL_GameControllerGetTouchpadFinger(gamecontroller : GameController*, touchpad : LibC::Int, finger : LibC::Int, state : UInt8*, x : LibC::Float*, y : LibC::Float*, pressure : LibC::Float*) : LibC::Int
-  fun game_controller_has_sensor = SDL_GameControllerHasSensor(gamecontroller : GameController*, type : SensorType) : SBool
-  fun game_controller_set_sensor_enabled = SDL_GameControllerSetSensorEnabled(gamecontroller : GameController*, type : SensorType, enabled : SBool) : LibC::Int
-  fun game_controller_is_sensor_enabled = SDL_GameControllerIsSensorEnabled(gamecontroller : GameController*, type : SensorType) : SBool
-  fun game_controller_get_sensor_data_rate = SDL_GameControllerGetSensorDataRate(gamecontroller : GameController*, type : SensorType) : LibC::Float
-  fun game_controller_get_sensor_data = SDL_GameControllerGetSensorData(gamecontroller : GameController*, type : SensorType, data : LibC::Float*, num_values : LibC::Int) : LibC::Int
-  fun game_controller_get_sensor_data_with_timestamp = SDL_GameControllerGetSensorDataWithTimestamp(gamecontroller : GameController*, type : SensorType, timestamp : UInt64*, data : LibC::Float*, num_values : LibC::Int) : LibC::Int
-  fun game_controller_rumble = SDL_GameControllerRumble(gamecontroller : GameController*, low_frequency_rumble : UInt16, high_frequency_rumble : UInt16, duration_ms : UInt32) : LibC::Int
-  fun game_controller_rumble_triggers = SDL_GameControllerRumbleTriggers(gamecontroller : GameController*, left_rumble : UInt16, right_rumble : UInt16, duration_ms : UInt32) : LibC::Int
-  fun game_controller_has_led = SDL_GameControllerHasLED(gamecontroller : GameController*) : SBool
-  fun game_controller_has_rumble = SDL_GameControllerHasRumble(gamecontroller : GameController*) : SBool
-  fun game_controller_has_rumble_triggers = SDL_GameControllerHasRumbleTriggers(gamecontroller : GameController*) : SBool
-  fun game_controller_set_led = SDL_GameControllerSetLED(gamecontroller : GameController*, red : UInt8, green : UInt8, blue : UInt8) : LibC::Int
-  fun game_controller_send_effect = SDL_GameControllerSendEffect(gamecontroller : GameController*, data : Void*, size : LibC::Int) : LibC::Int
-  fun game_controller_close = SDL_GameControllerClose(gamecontroller : GameController*) : Void
-  fun game_controller_get_apple_sfsymbols_name_for_button = SDL_GameControllerGetAppleSFSymbolsNameForButton(gamecontroller : GameController*, button : GameControllerButton) : LibC::Char*
-  fun game_controller_get_apple_sfsymbols_name_for_axis = SDL_GameControllerGetAppleSFSymbolsNameForAxis(gamecontroller : GameController*, axis : GameControllerAxis) : LibC::Char*
-
   # SDL_gesture
-
-  alias GestureID = Int64
-
-  fun record_gesture = SDL_RecordGesture(touch_id : TouchID) : LibC::Int
-  fun save_all_dollar_templates = SDL_SaveAllDollarTemplates(dst : RWops*) : LibC::Int
-  fun save_dollar_template = SDL_SaveDollarTemplate(gesture_id : GestureID, dst : RWops*) : LibC::Int
-  fun load_dollar_templates = SDL_LoadDollarTemplates(touch_id : TouchID, src : RWops*) : LibC::Int
 
   # SDL_guid
 
@@ -1065,14 +972,11 @@ lib LibSDL
     data : UInt8[16]
   end
 
-  fun guidto_string = SDL_GUIDToString(guid : GUID, psz_guid : LibC::Char*, cb_guid : LibC::Int) : Void
-  fun guidfrom_string = SDL_GUIDFromString(pch_guid : LibC::Char*) : GUID
-
   # SDL_haptic
 
   HAPTIC_CONSTANT = (1 << 0)
   HAPTIC_SINE = (1 << 1)
-  HAPTIC_LEFTRIGHT = (1 << 2)
+  HAPTIC_SQUARE = (1 << 2)
   HAPTIC_TRIANGLE = (1 << 3)
   HAPTIC_SAWTOOTHUP = (1 << 4)
   HAPTIC_SAWTOOTHDOWN = (1 << 5)
@@ -1081,11 +985,15 @@ lib LibSDL
   HAPTIC_DAMPER = (1 << 8)
   HAPTIC_INERTIA = (1 << 9)
   HAPTIC_FRICTION = (1 << 10)
-  HAPTIC_CUSTOM = (1 << 11)
-  HAPTIC_GAIN = (1 << 12)
-  HAPTIC_AUTOCENTER = (1 << 13)
-  HAPTIC_STATUS = (1 << 14)
-  HAPTIC_PAUSE = (1 << 15)
+  HAPTIC_LEFTRIGHT = (1 << 11)
+  HAPTIC_RESERVED1 = (1 << 12)
+  HAPTIC_RESERVED2 = (1 << 13)
+  HAPTIC_RESERVED3 = (1 << 14)
+  HAPTIC_CUSTOM = (1 << 15)
+  HAPTIC_GAIN = (1 << 16)
+  HAPTIC_AUTOCENTER = (1 << 17)
+  HAPTIC_STATUS = (1 << 18)
+  HAPTIC_PAUSE = (1 << 19)
   HAPTIC_POLAR = 0
   HAPTIC_CARTESIAN = 1
   HAPTIC_SPHERICAL = 2
@@ -1093,6 +1001,7 @@ lib LibSDL
   HAPTIC_INFINITY = 4294967295
 
   alias Haptic = Void
+  alias HapticID = UInt32
 
   struct HapticDirection
     type : UInt8
@@ -1184,37 +1093,6 @@ lib LibSDL
     fade_level : UInt16
   end
 
-  fun num_haptics = SDL_NumHaptics() : LibC::Int
-  fun haptic_name = SDL_HapticName(device_index : LibC::Int) : LibC::Char*
-  fun haptic_open = SDL_HapticOpen(device_index : LibC::Int) : Haptic*
-  fun haptic_opened = SDL_HapticOpened(device_index : LibC::Int) : LibC::Int
-  fun haptic_index = SDL_HapticIndex(haptic : Haptic*) : LibC::Int
-  fun mouse_is_haptic = SDL_MouseIsHaptic() : LibC::Int
-  fun haptic_open_from_mouse = SDL_HapticOpenFromMouse() : Haptic*
-  fun joystick_is_haptic = SDL_JoystickIsHaptic(joystick : Joystick*) : LibC::Int
-  fun haptic_open_from_joystick = SDL_HapticOpenFromJoystick(joystick : Joystick*) : Haptic*
-  fun haptic_close = SDL_HapticClose(haptic : Haptic*) : Void
-  fun haptic_num_effects = SDL_HapticNumEffects(haptic : Haptic*) : LibC::Int
-  fun haptic_num_effects_playing = SDL_HapticNumEffectsPlaying(haptic : Haptic*) : LibC::Int
-  fun haptic_query = SDL_HapticQuery(haptic : Haptic*) : LibC::Int
-  fun haptic_num_axes = SDL_HapticNumAxes(haptic : Haptic*) : LibC::Int
-  fun haptic_effect_supported = SDL_HapticEffectSupported(haptic : Haptic*, effect : HapticEffect*) : LibC::Int
-  fun haptic_new_effect = SDL_HapticNewEffect(haptic : Haptic*, effect : HapticEffect*) : LibC::Int
-  fun haptic_update_effect = SDL_HapticUpdateEffect(haptic : Haptic*, effect : LibC::Int, data : HapticEffect*) : LibC::Int
-  fun haptic_run_effect = SDL_HapticRunEffect(haptic : Haptic*, effect : LibC::Int, iterations : UInt32) : LibC::Int
-  fun haptic_stop_effect = SDL_HapticStopEffect(haptic : Haptic*, effect : LibC::Int) : LibC::Int
-  fun haptic_destroy_effect = SDL_HapticDestroyEffect(haptic : Haptic*, effect : LibC::Int) : Void
-  fun haptic_get_effect_status = SDL_HapticGetEffectStatus(haptic : Haptic*, effect : LibC::Int) : LibC::Int
-  fun haptic_set_gain = SDL_HapticSetGain(haptic : Haptic*, gain : LibC::Int) : LibC::Int
-  fun haptic_set_autocenter = SDL_HapticSetAutocenter(haptic : Haptic*, autocenter : LibC::Int) : LibC::Int
-  fun haptic_pause = SDL_HapticPause(haptic : Haptic*) : LibC::Int
-  fun haptic_unpause = SDL_HapticUnpause(haptic : Haptic*) : LibC::Int
-  fun haptic_stop_all = SDL_HapticStopAll(haptic : Haptic*) : LibC::Int
-  fun haptic_rumble_supported = SDL_HapticRumbleSupported(haptic : Haptic*) : LibC::Int
-  fun haptic_rumble_init = SDL_HapticRumbleInit(haptic : Haptic*) : LibC::Int
-  fun haptic_rumble_play = SDL_HapticRumblePlay(haptic : Haptic*, strength : LibC::Float, length : UInt32) : LibC::Int
-  fun haptic_rumble_stop = SDL_HapticRumbleStop(haptic : Haptic*) : LibC::Int
-
   # additions/helper_haptic.cr
 
   union HapticEffect
@@ -1229,77 +1107,104 @@ lib LibSDL
 
   # SDL_hints
 
-  HINT_ACCELEROMETER_AS_JOYSTICK = "ACCELEROMETER_AS_JOYSTICK"
   HINT_ALLOW_ALT_TAB_WHILE_GRABBED = "ALLOW_ALT_TAB_WHILE_GRABBED"
-  HINT_ALLOW_TOPMOST = "ALLOW_TOPMOST"
-  HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION = "ANDROID_APK_EXPANSION_MAIN_FILE_VERSION"
-  HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION = "ANDROID_APK_EXPANSION_PATCH_FILE_VERSION"
+  HINT_ANDROID_ALLOW_RECREATE_ACTIVITY = "ANDROID_ALLOW_RECREATE_ACTIVITY"
   HINT_ANDROID_BLOCK_ON_PAUSE = "ANDROID_BLOCK_ON_PAUSE"
-  HINT_ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO = "ANDROID_BLOCK_ON_PAUSE_PAUSEAUDIO"
+  HINT_ANDROID_LOW_LATENCY_AUDIO = "ANDROID_LOW_LATENCY_AUDIO"
   HINT_ANDROID_TRAP_BACK_BUTTON = "ANDROID_TRAP_BACK_BUTTON"
+  HINT_APP_ID = "APP_ID"
   HINT_APP_NAME = "APP_NAME"
   HINT_APPLE_TV_CONTROLLER_UI_EVENTS = "APPLE_TV_CONTROLLER_UI_EVENTS"
   HINT_APPLE_TV_REMOTE_ALLOW_ROTATION = "APPLE_TV_REMOTE_ALLOW_ROTATION"
+  HINT_AUDIO_ALSA_DEFAULT_DEVICE = "AUDIO_ALSA_DEFAULT_DEVICE"
+  HINT_AUDIO_ALSA_DEFAULT_PLAYBACK_DEVICE = "AUDIO_ALSA_DEFAULT_PLAYBACK_DEVICE"
+  HINT_AUDIO_ALSA_DEFAULT_RECORDING_DEVICE = "AUDIO_ALSA_DEFAULT_RECORDING_DEVICE"
   HINT_AUDIO_CATEGORY = "AUDIO_CATEGORY"
-  HINT_AUDIO_DEVICE_APP_NAME = "AUDIO_DEVICE_APP_NAME"
+  HINT_AUDIO_CHANNELS = "AUDIO_CHANNELS"
+  HINT_AUDIO_DEVICE_APP_ICON_NAME = "AUDIO_DEVICE_APP_ICON_NAME"
+  HINT_AUDIO_DEVICE_SAMPLE_FRAMES = "AUDIO_DEVICE_SAMPLE_FRAMES"
   HINT_AUDIO_DEVICE_STREAM_NAME = "AUDIO_DEVICE_STREAM_NAME"
   HINT_AUDIO_DEVICE_STREAM_ROLE = "AUDIO_DEVICE_STREAM_ROLE"
-  HINT_AUDIO_RESAMPLING_MODE = "AUDIO_RESAMPLING_MODE"
+  HINT_AUDIO_DISK_INPUT_FILE = "AUDIO_DISK_INPUT_FILE"
+  HINT_AUDIO_DISK_OUTPUT_FILE = "AUDIO_DISK_OUTPUT_FILE"
+  HINT_AUDIO_DISK_TIMESCALE = "AUDIO_DISK_TIMESCALE"
+  HINT_AUDIO_DRIVER = "AUDIO_DRIVER"
+  HINT_AUDIO_DUMMY_TIMESCALE = "AUDIO_DUMMY_TIMESCALE"
+  HINT_AUDIO_FORMAT = "AUDIO_FORMAT"
+  HINT_AUDIO_FREQUENCY = "AUDIO_FREQUENCY"
+  HINT_AUDIO_INCLUDE_MONITORS = "AUDIO_INCLUDE_MONITORS"
   HINT_AUTO_UPDATE_JOYSTICKS = "AUTO_UPDATE_JOYSTICKS"
   HINT_AUTO_UPDATE_SENSORS = "AUTO_UPDATE_SENSORS"
   HINT_BMP_SAVE_LEGACY_FORMAT = "BMP_SAVE_LEGACY_FORMAT"
+  HINT_CAMERA_DRIVER = "CAMERA_DRIVER"
+  HINT_CPU_FEATURE_MASK = "CPU_FEATURE_MASK"
+  HINT_JOYSTICK_DIRECTINPUT = "JOYSTICK_DIRECTINPUT"
+  HINT_FILE_DIALOG_DRIVER = "FILE_DIALOG_DRIVER"
   HINT_DISPLAY_USABLE_BOUNDS = "DISPLAY_USABLE_BOUNDS"
   HINT_EMSCRIPTEN_ASYNCIFY = "EMSCRIPTEN_ASYNCIFY"
+  HINT_EMSCRIPTEN_CANVAS_SELECTOR = "EMSCRIPTEN_CANVAS_SELECTOR"
   HINT_EMSCRIPTEN_KEYBOARD_ELEMENT = "EMSCRIPTEN_KEYBOARD_ELEMENT"
   HINT_ENABLE_SCREEN_KEYBOARD = "ENABLE_SCREEN_KEYBOARD"
-  HINT_ENABLE_STEAM_CONTROLLERS = "ENABLE_STEAM_CONTROLLERS"
+  HINT_EVDEV_DEVICES = "EVDEV_DEVICES"
   HINT_EVENT_LOGGING = "EVENT_LOGGING"
-  HINT_FORCE_RAISEWINDOW = "HINT_FORCE_RAISEWINDOW"
+  HINT_FORCE_RAISEWINDOW = "FORCE_RAISEWINDOW"
   HINT_FRAMEBUFFER_ACCELERATION = "FRAMEBUFFER_ACCELERATION"
   HINT_GAMECONTROLLERCONFIG = "GAMECONTROLLERCONFIG"
   HINT_GAMECONTROLLERCONFIG_FILE = "GAMECONTROLLERCONFIG_FILE"
   HINT_GAMECONTROLLERTYPE = "GAMECONTROLLERTYPE"
   HINT_GAMECONTROLLER_IGNORE_DEVICES = "GAMECONTROLLER_IGNORE_DEVICES"
   HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT = "GAMECONTROLLER_IGNORE_DEVICES_EXCEPT"
-  HINT_GAMECONTROLLER_USE_BUTTON_LABELS = "GAMECONTROLLER_USE_BUTTON_LABELS"
-  HINT_GRAB_KEYBOARD = "GRAB_KEYBOARD"
+  HINT_GAMECONTROLLER_SENSOR_FUSION = "GAMECONTROLLER_SENSOR_FUSION"
+  HINT_GDK_TEXTINPUT_DEFAULT_TEXT = "GDK_TEXTINPUT_DEFAULT_TEXT"
+  HINT_GDK_TEXTINPUT_DESCRIPTION = "GDK_TEXTINPUT_DESCRIPTION"
+  HINT_GDK_TEXTINPUT_MAX_LENGTH = "GDK_TEXTINPUT_MAX_LENGTH"
+  HINT_GDK_TEXTINPUT_SCOPE = "GDK_TEXTINPUT_SCOPE"
+  HINT_GDK_TEXTINPUT_TITLE = "GDK_TEXTINPUT_TITLE"
+  HINT_HIDAPI_LIBUSB = "HIDAPI_LIBUSB"
+  HINT_HIDAPI_LIBUSB_WHITELIST = "HIDAPI_LIBUSB_WHITELIST"
+  HINT_HIDAPI_UDEV = "HIDAPI_UDEV"
+  HINT_GPU_DRIVER = "GPU_DRIVER"
+  HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS = "HIDAPI_ENUMERATE_ONLY_CONTROLLERS"
   HINT_HIDAPI_IGNORE_DEVICES = "HIDAPI_IGNORE_DEVICES"
-  HINT_IDLE_TIMER_DISABLED = "IOS_IDLE_TIMER_DISABLED"
-  HINT_IME_INTERNAL_EDITING = "IME_INTERNAL_EDITING"
-  HINT_IME_SHOW_UI = "IME_SHOW_UI"
-  HINT_IME_SUPPORT_EXTENDED_TEXT = "IME_SUPPORT_EXTENDED_TEXT"
+  HINT_IME_IMPLEMENTED_UI = "IME_IMPLEMENTED_UI"
   HINT_IOS_HIDE_HOME_INDICATOR = "IOS_HIDE_HOME_INDICATOR"
   HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS = "JOYSTICK_ALLOW_BACKGROUND_EVENTS"
   HINT_JOYSTICK_ARCADESTICK_DEVICES = "JOYSTICK_ARCADESTICK_DEVICES"
   HINT_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED = "JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED"
   HINT_JOYSTICK_BLACKLIST_DEVICES = "JOYSTICK_BLACKLIST_DEVICES"
   HINT_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED = "JOYSTICK_BLACKLIST_DEVICES_EXCLUDED"
+  HINT_JOYSTICK_DEVICE = "JOYSTICK_DEVICE"
   HINT_JOYSTICK_FLIGHTSTICK_DEVICES = "JOYSTICK_FLIGHTSTICK_DEVICES"
   HINT_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED = "JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED"
+  HINT_JOYSTICK_GAMEINPUT = "JOYSTICK_GAMEINPUT"
   HINT_JOYSTICK_GAMECUBE_DEVICES = "JOYSTICK_GAMECUBE_DEVICES"
   HINT_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED = "JOYSTICK_GAMECUBE_DEVICES_EXCLUDED"
   HINT_JOYSTICK_HIDAPI = "JOYSTICK_HIDAPI"
-  HINT_JOYSTICK_HIDAPI_GAMECUBE = "JOYSTICK_HIDAPI_GAMECUBE"
-  HINT_JOYSTICK_GAMECUBE_RUMBLE_BRAKE = "JOYSTICK_GAMECUBE_RUMBLE_BRAKE"
-  HINT_JOYSTICK_HIDAPI_JOY_CONS = "JOYSTICK_HIDAPI_JOY_CONS"
   HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS = "JOYSTICK_HIDAPI_COMBINE_JOY_CONS"
-  HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS = "JOYSTICK_HIDAPI_VERTICAL_JOY_CONS"
+  HINT_JOYSTICK_HIDAPI_GAMECUBE = "JOYSTICK_HIDAPI_GAMECUBE"
+  HINT_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE = "JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE"
+  HINT_JOYSTICK_HIDAPI_JOY_CONS = "JOYSTICK_HIDAPI_JOY_CONS"
+  HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED = "JOYSTICK_HIDAPI_JOYCON_HOME_LED"
   HINT_JOYSTICK_HIDAPI_LUNA = "JOYSTICK_HIDAPI_LUNA"
   HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC = "JOYSTICK_HIDAPI_NINTENDO_CLASSIC"
-  HINT_JOYSTICK_HIDAPI_SHIELD = "JOYSTICK_HIDAPI_SHIELD"
   HINT_JOYSTICK_HIDAPI_PS3 = "JOYSTICK_HIDAPI_PS3"
+  HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER = "JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER"
   HINT_JOYSTICK_HIDAPI_PS4 = "JOYSTICK_HIDAPI_PS4"
+  HINT_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL = "JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL"
   HINT_JOYSTICK_HIDAPI_PS4_RUMBLE = "JOYSTICK_HIDAPI_PS4_RUMBLE"
   HINT_JOYSTICK_HIDAPI_PS5 = "JOYSTICK_HIDAPI_PS5"
   HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED = "JOYSTICK_HIDAPI_PS5_PLAYER_LED"
   HINT_JOYSTICK_HIDAPI_PS5_RUMBLE = "JOYSTICK_HIDAPI_PS5_RUMBLE"
+  HINT_JOYSTICK_HIDAPI_SHIELD = "JOYSTICK_HIDAPI_SHIELD"
   HINT_JOYSTICK_HIDAPI_STADIA = "JOYSTICK_HIDAPI_STADIA"
   HINT_JOYSTICK_HIDAPI_STEAM = "JOYSTICK_HIDAPI_STEAM"
+  HINT_JOYSTICK_HIDAPI_STEAM_HOME_LED = "JOYSTICK_HIDAPI_STEAM_HOME_LED"
   HINT_JOYSTICK_HIDAPI_STEAMDECK = "JOYSTICK_HIDAPI_STEAMDECK"
+  HINT_JOYSTICK_HIDAPI_STEAM_HORI = "JOYSTICK_HIDAPI_STEAM_HORI"
   HINT_JOYSTICK_HIDAPI_SWITCH = "JOYSTICK_HIDAPI_SWITCH"
   HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED = "JOYSTICK_HIDAPI_SWITCH_HOME_LED"
-  HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED = "JOYSTICK_HIDAPI_JOYCON_HOME_LED"
   HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED = "JOYSTICK_HIDAPI_SWITCH_PLAYER_LED"
+  HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS = "JOYSTICK_HIDAPI_VERTICAL_JOY_CONS"
   HINT_JOYSTICK_HIDAPI_WII = "JOYSTICK_HIDAPI_WII"
   HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED = "JOYSTICK_HIDAPI_WII_PLAYER_LED"
   HINT_JOYSTICK_HIDAPI_XBOX = "JOYSTICK_HIDAPI_XBOX"
@@ -1309,6 +1214,10 @@ lib LibSDL
   HINT_JOYSTICK_HIDAPI_XBOX_ONE = "JOYSTICK_HIDAPI_XBOX_ONE"
   HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED = "JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED"
   HINT_JOYSTICK_IOKIT = "JOYSTICK_IOKIT"
+  HINT_JOYSTICK_LINUX_CLASSIC = "JOYSTICK_LINUX_CLASSIC"
+  HINT_JOYSTICK_LINUX_DEADZONES = "JOYSTICK_LINUX_DEADZONES"
+  HINT_JOYSTICK_LINUX_DIGITAL_HATS = "JOYSTICK_LINUX_DIGITAL_HATS"
+  HINT_JOYSTICK_LINUX_HAT_DEADZONES = "JOYSTICK_LINUX_HAT_DEADZONES"
   HINT_JOYSTICK_MFI = "JOYSTICK_MFI"
   HINT_JOYSTICK_RAWINPUT = "JOYSTICK_RAWINPUT"
   HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT = "JOYSTICK_RAWINPUT_CORRELATE_XINPUT"
@@ -1320,127 +1229,122 @@ lib LibSDL
   HINT_JOYSTICK_WHEEL_DEVICES = "JOYSTICK_WHEEL_DEVICES"
   HINT_JOYSTICK_WHEEL_DEVICES_EXCLUDED = "JOYSTICK_WHEEL_DEVICES_EXCLUDED"
   HINT_JOYSTICK_ZERO_CENTERED_DEVICES = "JOYSTICK_ZERO_CENTERED_DEVICES"
+  HINT_KEYCODE_OPTIONS = "KEYCODE_OPTIONS"
+  HINT_KMSDRM_DEVICE_INDEX = "KMSDRM_DEVICE_INDEX"
   HINT_KMSDRM_REQUIRE_DRM_MASTER = "KMSDRM_REQUIRE_DRM_MASTER"
-  HINT_JOYSTICK_DEVICE = "JOYSTICK_DEVICE"
-  HINT_LINUX_DIGITAL_HATS = "LINUX_DIGITAL_HATS"
-  HINT_LINUX_HAT_DEADZONES = "LINUX_HAT_DEADZONES"
-  HINT_LINUX_JOYSTICK_CLASSIC = "LINUX_JOYSTICK_CLASSIC"
-  HINT_LINUX_JOYSTICK_DEADZONES = "LINUX_JOYSTICK_DEADZONES"
   HINT_LOGGING = "LOGGING"
   HINT_MAC_BACKGROUND_APP = "MAC_BACKGROUND_APP"
   HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK = "MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK"
   HINT_MAC_OPENGL_ASYNC_DISPATCH = "MAC_OPENGL_ASYNC_DISPATCH"
+  HINT_MAC_SCROLL_MOMENTUM = "MAC_SCROLL_MOMENTUM"
+  HINT_MAIN_CALLBACK_RATE = "MAIN_CALLBACK_RATE"
+  HINT_MOUSE_AUTO_CAPTURE = "MOUSE_AUTO_CAPTURE"
   HINT_MOUSE_DOUBLE_CLICK_RADIUS = "MOUSE_DOUBLE_CLICK_RADIUS"
   HINT_MOUSE_DOUBLE_CLICK_TIME = "MOUSE_DOUBLE_CLICK_TIME"
+  HINT_MOUSE_DEFAULT_SYSTEM_CURSOR = "MOUSE_DEFAULT_SYSTEM_CURSOR"
+  HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE = "MOUSE_EMULATE_WARP_WITH_RELATIVE"
   HINT_MOUSE_FOCUS_CLICKTHROUGH = "MOUSE_FOCUS_CLICKTHROUGH"
   HINT_MOUSE_NORMAL_SPEED_SCALE = "MOUSE_NORMAL_SPEED_SCALE"
   HINT_MOUSE_RELATIVE_MODE_CENTER = "MOUSE_RELATIVE_MODE_CENTER"
-  HINT_MOUSE_RELATIVE_MODE_WARP = "MOUSE_RELATIVE_MODE_WARP"
-  HINT_MOUSE_RELATIVE_SCALING = "MOUSE_RELATIVE_SCALING"
   HINT_MOUSE_RELATIVE_SPEED_SCALE = "MOUSE_RELATIVE_SPEED_SCALE"
   HINT_MOUSE_RELATIVE_SYSTEM_SCALE = "MOUSE_RELATIVE_SYSTEM_SCALE"
   HINT_MOUSE_RELATIVE_WARP_MOTION = "MOUSE_RELATIVE_WARP_MOTION"
+  HINT_MOUSE_RELATIVE_CURSOR_VISIBLE = "MOUSE_RELATIVE_CURSOR_VISIBLE"
   HINT_MOUSE_TOUCH_EVENTS = "MOUSE_TOUCH_EVENTS"
-  HINT_MOUSE_AUTO_CAPTURE = "MOUSE_AUTO_CAPTURE"
+  HINT_MUTE_CONSOLE_KEYBOARD = "MUTE_CONSOLE_KEYBOARD"
   HINT_NO_SIGNAL_HANDLERS = "NO_SIGNAL_HANDLERS"
+  HINT_OPENGL_LIBRARY = "OPENGL_LIBRARY"
   HINT_OPENGL_ES_DRIVER = "OPENGL_ES_DRIVER"
-  HINT_ORIENTATIONS = "IOS_ORIENTATIONS"
+  HINT_OPENVR_LIBRARY = "OPENVR_LIBRARY"
+  HINT_ORIENTATIONS = "ORIENTATIONS"
   HINT_POLL_SENTINEL = "POLL_SENTINEL"
   HINT_PREFERRED_LOCALES = "PREFERRED_LOCALES"
-  HINT_QTWAYLAND_CONTENT_ORIENTATION = "QTWAYLAND_CONTENT_ORIENTATION"
-  HINT_QTWAYLAND_WINDOW_FLAGS = "QTWAYLAND_WINDOW_FLAGS"
-  HINT_RENDER_BATCHING = "RENDER_BATCHING"
-  HINT_RENDER_LINE_METHOD = "RENDER_LINE_METHOD"
-  HINT_RENDER_DIRECT3D11_DEBUG = "RENDER_DIRECT3D11_DEBUG"
+  HINT_QUIT_ON_LAST_WINDOW_CLOSE = "QUIT_ON_LAST_WINDOW_CLOSE"
   HINT_RENDER_DIRECT3D_THREADSAFE = "RENDER_DIRECT3D_THREADSAFE"
+  HINT_RENDER_DIRECT3D11_DEBUG = "RENDER_DIRECT3D11_DEBUG"
+  HINT_RENDER_VULKAN_DEBUG = "RENDER_VULKAN_DEBUG"
+  HINT_RENDER_GPU_DEBUG = "RENDER_GPU_DEBUG"
+  HINT_RENDER_GPU_LOW_POWER = "RENDER_GPU_LOW_POWER"
   HINT_RENDER_DRIVER = "RENDER_DRIVER"
-  HINT_RENDER_LOGICAL_SIZE_MODE = "RENDER_LOGICAL_SIZE_MODE"
-  HINT_RENDER_OPENGL_SHADERS = "RENDER_OPENGL_SHADERS"
-  HINT_RENDER_SCALE_QUALITY = "RENDER_SCALE_QUALITY"
-  HINT_RENDER_VSYNC = "RENDER_VSYNC"
+  HINT_RENDER_LINE_METHOD = "RENDER_LINE_METHOD"
   HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE = "RENDER_METAL_PREFER_LOW_POWER_DEVICE"
+  HINT_RENDER_VSYNC = "RENDER_VSYNC"
+  HINT_RETURN_KEY_HIDES_IME = "RETURN_KEY_HIDES_IME"
   HINT_ROG_GAMEPAD_MICE = "ROG_GAMEPAD_MICE"
   HINT_ROG_GAMEPAD_MICE_EXCLUDED = "ROG_GAMEPAD_MICE_EXCLUDED"
-  HINT_PS2_DYNAMIC_VSYNC = "PS2_DYNAMIC_VSYNC"
-  HINT_RETURN_KEY_HIDES_IME = "RETURN_KEY_HIDES_IME"
   HINT_RPI_VIDEO_LAYER = "RPI_VIDEO_LAYER"
   HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME = "SCREENSAVER_INHIBIT_ACTIVITY_NAME"
+  HINT_SHUTDOWN_DBUS_ON_QUIT = "SHUTDOWN_DBUS_ON_QUIT"
+  HINT_STORAGE_TITLE_DRIVER = "STORAGE_TITLE_DRIVER"
+  HINT_STORAGE_USER_DRIVER = "STORAGE_USER_DRIVER"
   HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL = "THREAD_FORCE_REALTIME_TIME_CRITICAL"
   HINT_THREAD_PRIORITY_POLICY = "THREAD_PRIORITY_POLICY"
-  HINT_THREAD_STACK_SIZE = "THREAD_STACK_SIZE"
   HINT_TIMER_RESOLUTION = "TIMER_RESOLUTION"
   HINT_TOUCH_MOUSE_EVENTS = "TOUCH_MOUSE_EVENTS"
-  HINT_VITA_TOUCH_MOUSE_DEVICE = "HINT_VITA_TOUCH_MOUSE_DEVICE"
+  HINT_TRACKPAD_IS_TOUCH_ONLY = "TRACKPAD_IS_TOUCH_ONLY"
   HINT_TV_REMOTE_AS_JOYSTICK = "TV_REMOTE_AS_JOYSTICK"
   HINT_VIDEO_ALLOW_SCREENSAVER = "VIDEO_ALLOW_SCREENSAVER"
+  HINT_VIDEO_DISPLAY_PRIORITY = "VIDEO_DISPLAY_PRIORITY"
   HINT_VIDEO_DOUBLE_BUFFER = "VIDEO_DOUBLE_BUFFER"
-  HINT_VIDEO_EGL_ALLOW_TRANSPARENCY = "VIDEO_EGL_ALLOW_TRANSPARENCY"
-  HINT_VIDEO_EXTERNAL_CONTEXT = "VIDEO_EXTERNAL_CONTEXT"
-  HINT_VIDEO_HIGHDPI_DISABLED = "VIDEO_HIGHDPI_DISABLED"
+  HINT_VIDEO_DRIVER = "VIDEO_DRIVER"
+  HINT_VIDEO_DUMMY_SAVE_FRAMES = "VIDEO_DUMMY_SAVE_FRAMES"
+  HINT_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK = "VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK"
+  HINT_VIDEO_FORCE_EGL = "VIDEO_FORCE_EGL"
   HINT_VIDEO_MAC_FULLSCREEN_SPACES = "VIDEO_MAC_FULLSCREEN_SPACES"
   HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS = "VIDEO_MINIMIZE_ON_FOCUS_LOSS"
+  HINT_VIDEO_OFFSCREEN_SAVE_FRAMES = "VIDEO_OFFSCREEN_SAVE_FRAMES"
+  HINT_VIDEO_SYNC_WINDOW_OPERATIONS = "VIDEO_SYNC_WINDOW_OPERATIONS"
   HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR = "VIDEO_WAYLAND_ALLOW_LIBDECOR"
-  HINT_VIDEO_WAYLAND_PREFER_LIBDECOR = "VIDEO_WAYLAND_PREFER_LIBDECOR"
   HINT_VIDEO_WAYLAND_MODE_EMULATION = "VIDEO_WAYLAND_MODE_EMULATION"
-  HINT_VIDEO_WAYLAND_EMULATE_MOUSE_WARP = "VIDEO_WAYLAND_EMULATE_MOUSE_WARP"
-  HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT = "VIDEO_WINDOW_SHARE_PIXEL_FORMAT"
-  HINT_VIDEO_FOREIGN_WINDOW_OPENGL = "VIDEO_FOREIGN_WINDOW_OPENGL"
-  HINT_VIDEO_FOREIGN_WINDOW_VULKAN = "VIDEO_FOREIGN_WINDOW_VULKAN"
+  HINT_VIDEO_WAYLAND_MODE_SCALING = "VIDEO_WAYLAND_MODE_SCALING"
+  HINT_VIDEO_WAYLAND_PREFER_LIBDECOR = "VIDEO_WAYLAND_PREFER_LIBDECOR"
+  HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY = "VIDEO_WAYLAND_SCALE_TO_DISPLAY"
   HINT_VIDEO_WIN_D3DCOMPILER = "VIDEO_WIN_D3DCOMPILER"
-  HINT_VIDEO_X11_FORCE_EGL = "VIDEO_X11_FORCE_EGL"
   HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR = "VIDEO_X11_NET_WM_BYPASS_COMPOSITOR"
   HINT_VIDEO_X11_NET_WM_PING = "VIDEO_X11_NET_WM_PING"
+  HINT_VIDEO_X11_NODIRECTCOLOR = "VIDEO_X11_NODIRECTCOLOR"
+  HINT_VIDEO_X11_SCALING_FACTOR = "VIDEO_X11_SCALING_FACTOR"
+  HINT_VIDEO_X11_VISUALID = "VIDEO_X11_VISUALID"
   HINT_VIDEO_X11_WINDOW_VISUALID = "VIDEO_X11_WINDOW_VISUALID"
-  HINT_VIDEO_X11_XINERAMA = "VIDEO_X11_XINERAMA"
   HINT_VIDEO_X11_XRANDR = "VIDEO_X11_XRANDR"
-  HINT_VIDEO_X11_XVIDMODE = "VIDEO_X11_XVIDMODE"
+  HINT_VITA_ENABLE_BACK_TOUCH = "VITA_ENABLE_BACK_TOUCH"
+  HINT_VITA_ENABLE_FRONT_TOUCH = "VITA_ENABLE_FRONT_TOUCH"
+  HINT_VITA_MODULE_PATH = "VITA_MODULE_PATH"
+  HINT_VITA_PVR_INIT = "VITA_PVR_INIT"
+  HINT_VITA_RESOLUTION = "VITA_RESOLUTION"
+  HINT_VITA_PVR_OPENGL = "VITA_PVR_OPENGL"
+  HINT_VITA_TOUCH_MOUSE_DEVICE = "VITA_TOUCH_MOUSE_DEVICE"
+  HINT_VULKAN_DISPLAY = "VULKAN_DISPLAY"
+  HINT_VULKAN_LIBRARY = "VULKAN_LIBRARY"
   HINT_WAVE_FACT_CHUNK = "WAVE_FACT_CHUNK"
+  HINT_WAVE_CHUNK_LIMIT = "WAVE_CHUNK_LIMIT"
   HINT_WAVE_RIFF_CHUNK_SIZE = "WAVE_RIFF_CHUNK_SIZE"
   HINT_WAVE_TRUNCATION = "WAVE_TRUNCATION"
-  HINT_WINDOWS_DISABLE_THREAD_NAMING = "WINDOWS_DISABLE_THREAD_NAMING"
+  HINT_WINDOW_ACTIVATE_WHEN_RAISED = "WINDOW_ACTIVATE_WHEN_RAISED"
+  HINT_WINDOW_ACTIVATE_WHEN_SHOWN = "WINDOW_ACTIVATE_WHEN_SHOWN"
+  HINT_WINDOW_ALLOW_TOPMOST = "WINDOW_ALLOW_TOPMOST"
+  HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN = "WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN"
+  HINT_WINDOWS_CLOSE_ON_ALT_F4 = "WINDOWS_CLOSE_ON_ALT_F4"
   HINT_WINDOWS_ENABLE_MENU_MNEMONICS = "WINDOWS_ENABLE_MENU_MNEMONICS"
   HINT_WINDOWS_ENABLE_MESSAGELOOP = "WINDOWS_ENABLE_MESSAGELOOP"
-  HINT_WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS = "WINDOWS_FORCE_MUTEX_CRITICAL_SECTIONS"
+  HINT_WINDOWS_GAMEINPUT = "WINDOWS_GAMEINPUT"
+  HINT_WINDOWS_RAW_KEYBOARD = "WINDOWS_RAW_KEYBOARD"
   HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL = "WINDOWS_FORCE_SEMAPHORE_KERNEL"
   HINT_WINDOWS_INTRESOURCE_ICON = "WINDOWS_INTRESOURCE_ICON"
   HINT_WINDOWS_INTRESOURCE_ICON_SMALL = "WINDOWS_INTRESOURCE_ICON_SMALL"
-  HINT_WINDOWS_NO_CLOSE_ON_ALT_F4 = "WINDOWS_NO_CLOSE_ON_ALT_F4"
   HINT_WINDOWS_USE_D3D9EX = "WINDOWS_USE_D3D9EX"
-  HINT_WINDOWS_DPI_AWARENESS = "WINDOWS_DPI_AWARENESS"
-  HINT_WINDOWS_DPI_SCALING = "WINDOWS_DPI_SCALING"
-  HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN = "WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN"
-  HINT_WINDOW_NO_ACTIVATION_WHEN_SHOWN = "WINDOW_NO_ACTIVATION_WHEN_SHOWN"
-  HINT_WINRT_HANDLE_BACK_BUTTON = "WINRT_HANDLE_BACK_BUTTON"
-  HINT_WINRT_PRIVACY_POLICY_LABEL = "WINRT_PRIVACY_POLICY_LABEL"
-  HINT_WINRT_PRIVACY_POLICY_URL = "WINRT_PRIVACY_POLICY_URL"
+  HINT_WINDOWS_ERASE_BACKGROUND_MODE = "WINDOWS_ERASE_BACKGROUND_MODE"
   HINT_X11_FORCE_OVERRIDE_REDIRECT = "X11_FORCE_OVERRIDE_REDIRECT"
-  HINT_XINPUT_ENABLED = "XINPUT_ENABLED"
-  HINT_DIRECTINPUT_ENABLED = "DIRECTINPUT_ENABLED"
-  HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING = "XINPUT_USE_OLD_JOYSTICK_MAPPING"
-  HINT_AUDIO_INCLUDE_MONITORS = "AUDIO_INCLUDE_MONITORS"
   HINT_X11_WINDOW_TYPE = "X11_WINDOW_TYPE"
-  HINT_QUIT_ON_LAST_WINDOW_CLOSE = "QUIT_ON_LAST_WINDOW_CLOSE"
-  HINT_VIDEODRIVER = "VIDEODRIVER"
-  HINT_AUDIODRIVER = "AUDIODRIVER"
-  HINT_KMSDRM_DEVICE_INDEX = "KMSDRM_DEVICE_INDEX"
-  HINT_TRACKPAD_IS_TOUCH_ONLY = "TRACKPAD_IS_TOUCH_ONLY"
-  HINT_SHUTDOWN_DBUS_ON_QUIT = "SHUTDOWN_DBUS_ON_QUIT"
+  HINT_X11_XCB_LIBRARY = "X11_XCB_LIBRARY"
+  HINT_XINPUT_ENABLED = "XINPUT_ENABLED"
+  HINT_ASSERT = "ASSERT"
 
   enum HintPriority
     HINT_DEFAULT
     HINT_NORMAL
     HINT_OVERRIDE
   end
-
-  fun set_hint_with_priority = SDL_SetHintWithPriority(name : LibC::Char*, value : LibC::Char*, priority : HintPriority) : SBool
-  fun set_hint = SDL_SetHint(name : LibC::Char*, value : LibC::Char*) : SBool
-  fun reset_hint = SDL_ResetHint(name : LibC::Char*) : SBool
-  fun reset_hints = SDL_ResetHints() : Void
-  fun get_hint = SDL_GetHint(name : LibC::Char*) : LibC::Char*
-  fun get_hint_boolean = SDL_GetHintBoolean(name : LibC::Char*, default_value : SBool) : SBool
-  fun add_hint_callback = SDL_AddHintCallback(name : LibC::Char*, callback : HintCallback, userdata : Void*) : Void
-  fun del_hint_callback = SDL_DelHintCallback(name : LibC::Char*, callback : HintCallback, userdata : Void*) : Void
-  fun clear_hints = SDL_ClearHints() : Void
 
   # additions/helper_hints.cr
 
@@ -1449,10 +1353,13 @@ lib LibSDL
 
   # SDL_joystick
 
-  IPHONE_MAX_GFORCE = 5.0
-  VIRTUAL_JOYSTICK_DESC_VERSION = 1
   JOYSTICK_AXIS_MAX = 32767
   JOYSTICK_AXIS_MIN = -32768
+  PROP_JOYSTICK_CAP_MONO_LED_BOOLEAN = "SDL.joystick.cap.mono_led"
+  PROP_JOYSTICK_CAP_RGB_LED_BOOLEAN = "SDL.joystick.cap.rgb_led"
+  PROP_JOYSTICK_CAP_PLAYER_LED_BOOLEAN = "SDL.joystick.cap.player_led"
+  PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN = "SDL.joystick.cap.rumble"
+  PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN = "SDL.joystick.cap.trigger_rumble"
   HAT_CENTERED = 0x00
   HAT_UP = 0x01
   HAT_RIGHT = 0x02
@@ -1464,12 +1371,11 @@ lib LibSDL
   HAT_LEFTDOWN = (HAT_LEFT | HAT_DOWN)
 
   alias Joystick = Void
-  alias JoystickGUID = GUID
-  alias JoystickID = Int32
+  alias JoystickID = UInt32
 
   enum JoystickType
     JOYSTICK_TYPE_UNKNOWN
-    JOYSTICK_TYPE_GAMECONTROLLER
+    JOYSTICK_TYPE_GAMEPAD
     JOYSTICK_TYPE_WHEEL
     JOYSTICK_TYPE_ARCADE_STICK
     JOYSTICK_TYPE_FLIGHT_STICK
@@ -1478,76 +1384,25 @@ lib LibSDL
     JOYSTICK_TYPE_DRUM_KIT
     JOYSTICK_TYPE_ARCADE_PAD
     JOYSTICK_TYPE_THROTTLE
+    JOYSTICK_TYPE_COUNT
   end
 
-  enum JoystickPowerLevel
-    JOYSTICK_POWER_UNKNOWN = -1
-    JOYSTICK_POWER_EMPTY
-    JOYSTICK_POWER_LOW
-    JOYSTICK_POWER_MEDIUM
-    JOYSTICK_POWER_FULL
-    JOYSTICK_POWER_WIRED
-    JOYSTICK_POWER_MAX
+  enum JoystickConnectionState
+    JOYSTICK_CONNECTION_INVALID = -1
+    JOYSTICK_CONNECTION_UNKNOWN
+    JOYSTICK_CONNECTION_WIRED
+    JOYSTICK_CONNECTION_WIRELESS
   end
 
-  fun lock_joysticks = SDL_LockJoysticks() : Void
-  fun unlock_joysticks = SDL_UnlockJoysticks() : Void
-  fun num_joysticks = SDL_NumJoysticks() : LibC::Int
-  fun joystick_name_for_index = SDL_JoystickNameForIndex(device_index : LibC::Int) : LibC::Char*
-  fun joystick_path_for_index = SDL_JoystickPathForIndex(device_index : LibC::Int) : LibC::Char*
-  fun joystick_get_device_player_index = SDL_JoystickGetDevicePlayerIndex(device_index : LibC::Int) : LibC::Int
-  fun joystick_get_device_guid = SDL_JoystickGetDeviceGUID(device_index : LibC::Int) : JoystickGUID
-  fun joystick_get_device_vendor = SDL_JoystickGetDeviceVendor(device_index : LibC::Int) : UInt16
-  fun joystick_get_device_product = SDL_JoystickGetDeviceProduct(device_index : LibC::Int) : UInt16
-  fun joystick_get_device_product_version = SDL_JoystickGetDeviceProductVersion(device_index : LibC::Int) : UInt16
-  fun joystick_get_device_type = SDL_JoystickGetDeviceType(device_index : LibC::Int) : JoystickType
-  fun joystick_get_device_instance_id = SDL_JoystickGetDeviceInstanceID(device_index : LibC::Int) : JoystickID
-  fun joystick_open = SDL_JoystickOpen(device_index : LibC::Int) : Joystick*
-  fun joystick_from_instance_id = SDL_JoystickFromInstanceID(instance_id : JoystickID) : Joystick*
-  fun joystick_from_player_index = SDL_JoystickFromPlayerIndex(player_index : LibC::Int) : Joystick*
-  fun joystick_attach_virtual = SDL_JoystickAttachVirtual(type : JoystickType, naxes : LibC::Int, nbuttons : LibC::Int, nhats : LibC::Int) : LibC::Int
-  fun joystick_attach_virtual_ex = SDL_JoystickAttachVirtualEx(desc : VirtualJoystickDesc*) : LibC::Int
-  fun joystick_detach_virtual = SDL_JoystickDetachVirtual(device_index : LibC::Int) : LibC::Int
-  fun joystick_is_virtual = SDL_JoystickIsVirtual(device_index : LibC::Int) : SBool
-  fun joystick_set_virtual_axis = SDL_JoystickSetVirtualAxis(joystick : Joystick*, axis : LibC::Int, value : Int16) : LibC::Int
-  fun joystick_set_virtual_button = SDL_JoystickSetVirtualButton(joystick : Joystick*, button : LibC::Int, value : UInt8) : LibC::Int
-  fun joystick_set_virtual_hat = SDL_JoystickSetVirtualHat(joystick : Joystick*, hat : LibC::Int, value : UInt8) : LibC::Int
-  fun joystick_name = SDL_JoystickName(joystick : Joystick*) : LibC::Char*
-  fun joystick_path = SDL_JoystickPath(joystick : Joystick*) : LibC::Char*
-  fun joystick_get_player_index = SDL_JoystickGetPlayerIndex(joystick : Joystick*) : LibC::Int
-  fun joystick_set_player_index = SDL_JoystickSetPlayerIndex(joystick : Joystick*, player_index : LibC::Int) : Void
-  fun joystick_get_guid = SDL_JoystickGetGUID(joystick : Joystick*) : JoystickGUID
-  fun joystick_get_vendor = SDL_JoystickGetVendor(joystick : Joystick*) : UInt16
-  fun joystick_get_product = SDL_JoystickGetProduct(joystick : Joystick*) : UInt16
-  fun joystick_get_product_version = SDL_JoystickGetProductVersion(joystick : Joystick*) : UInt16
-  fun joystick_get_firmware_version = SDL_JoystickGetFirmwareVersion(joystick : Joystick*) : UInt16
-  fun joystick_get_serial = SDL_JoystickGetSerial(joystick : Joystick*) : LibC::Char*
-  fun joystick_get_type = SDL_JoystickGetType(joystick : Joystick*) : JoystickType
-  fun joystick_get_guidstring = SDL_JoystickGetGUIDString(guid : JoystickGUID, psz_guid : LibC::Char*, cb_guid : LibC::Int) : Void
-  fun joystick_get_guidfrom_string = SDL_JoystickGetGUIDFromString(pch_guid : LibC::Char*) : JoystickGUID
-  fun get_joystick_guidinfo = SDL_GetJoystickGUIDInfo(guid : JoystickGUID, vendor : UInt16*, product : UInt16*, version : UInt16*, crc16 : UInt16*) : Void
-  fun joystick_get_attached = SDL_JoystickGetAttached(joystick : Joystick*) : SBool
-  fun joystick_instance_id = SDL_JoystickInstanceID(joystick : Joystick*) : JoystickID
-  fun joystick_num_axes = SDL_JoystickNumAxes(joystick : Joystick*) : LibC::Int
-  fun joystick_num_balls = SDL_JoystickNumBalls(joystick : Joystick*) : LibC::Int
-  fun joystick_num_hats = SDL_JoystickNumHats(joystick : Joystick*) : LibC::Int
-  fun joystick_num_buttons = SDL_JoystickNumButtons(joystick : Joystick*) : LibC::Int
-  fun joystick_update = SDL_JoystickUpdate() : Void
-  fun joystick_event_state = SDL_JoystickEventState(state : LibC::Int) : LibC::Int
-  fun joystick_get_axis = SDL_JoystickGetAxis(joystick : Joystick*, axis : LibC::Int) : Int16
-  fun joystick_get_axis_initial_state = SDL_JoystickGetAxisInitialState(joystick : Joystick*, axis : LibC::Int, state : Int16*) : SBool
-  fun joystick_get_hat = SDL_JoystickGetHat(joystick : Joystick*, hat : LibC::Int) : UInt8
-  fun joystick_get_ball = SDL_JoystickGetBall(joystick : Joystick*, ball : LibC::Int, dx : LibC::Int*, dy : LibC::Int*) : LibC::Int
-  fun joystick_get_button = SDL_JoystickGetButton(joystick : Joystick*, button : LibC::Int) : UInt8
-  fun joystick_rumble = SDL_JoystickRumble(joystick : Joystick*, low_frequency_rumble : UInt16, high_frequency_rumble : UInt16, duration_ms : UInt32) : LibC::Int
-  fun joystick_rumble_triggers = SDL_JoystickRumbleTriggers(joystick : Joystick*, left_rumble : UInt16, right_rumble : UInt16, duration_ms : UInt32) : LibC::Int
-  fun joystick_has_led = SDL_JoystickHasLED(joystick : Joystick*) : SBool
-  fun joystick_has_rumble = SDL_JoystickHasRumble(joystick : Joystick*) : SBool
-  fun joystick_has_rumble_triggers = SDL_JoystickHasRumbleTriggers(joystick : Joystick*) : SBool
-  fun joystick_set_led = SDL_JoystickSetLED(joystick : Joystick*, red : UInt8, green : UInt8, blue : UInt8) : LibC::Int
-  fun joystick_send_effect = SDL_JoystickSendEffect(joystick : Joystick*, data : Void*, size : LibC::Int) : LibC::Int
-  fun joystick_close = SDL_JoystickClose(joystick : Joystick*) : Void
-  fun joystick_current_power_level = SDL_JoystickCurrentPowerLevel(joystick : Joystick*) : JoystickPowerLevel
+  struct VirtualJoystickTouchpadDesc
+    nfingers : UInt16
+    padding : UInt16[3]
+  end
+
+  struct VirtualJoystickSensorDesc
+    type : SensorType
+    rate : LibC::Float
+  end
 
   # additions/helper_joystick.cr
 
@@ -1574,306 +1429,305 @@ lib LibSDL
 
   # SDL_keyboard
 
-  struct Keysym
-    scancode : Scancode
-    sym : Keycode
-    mod : UInt16
-    unused : UInt32
+  PROP_TEXTINPUT_TYPE_NUMBER = "SDL.textinput.type"
+  PROP_TEXTINPUT_CAPITALIZATION_NUMBER = "SDL.textinput.capitalization"
+  PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN = "SDL.textinput.autocorrect"
+  PROP_TEXTINPUT_MULTILINE_BOOLEAN = "SDL.textinput.multiline"
+  PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER = "SDL.textinput.android.inputtype"
+
+  alias KeyboardID = UInt32
+
+  enum TextInputType
+    TEXTINPUT_TYPE_TEXT
+    TEXTINPUT_TYPE_TEXT_NAME
+    TEXTINPUT_TYPE_TEXT_EMAIL
+    TEXTINPUT_TYPE_TEXT_USERNAME
+    TEXTINPUT_TYPE_TEXT_PASSWORD_HIDDEN
+    TEXTINPUT_TYPE_TEXT_PASSWORD_VISIBLE
+    TEXTINPUT_TYPE_NUMBER
+    TEXTINPUT_TYPE_NUMBER_PASSWORD_HIDDEN
+    TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE
   end
 
-  fun get_keyboard_focus = SDL_GetKeyboardFocus() : Window*
-  fun get_keyboard_state = SDL_GetKeyboardState(numkeys : LibC::Int*) : UInt8*
-  fun reset_keyboard = SDL_ResetKeyboard() : Void
-  fun get_mod_state = SDL_GetModState() : Keymod
-  fun set_mod_state = SDL_SetModState(modstate : Keymod) : Void
-  fun get_key_from_scancode = SDL_GetKeyFromScancode(scancode : Scancode) : Keycode
-  fun get_scancode_from_key = SDL_GetScancodeFromKey(key : Keycode) : Scancode
-  fun get_scancode_name = SDL_GetScancodeName(scancode : Scancode) : LibC::Char*
-  fun get_scancode_from_name = SDL_GetScancodeFromName(name : LibC::Char*) : Scancode
-  fun get_key_name = SDL_GetKeyName(key : Keycode) : LibC::Char*
-  fun get_key_from_name = SDL_GetKeyFromName(name : LibC::Char*) : Keycode
-  fun start_text_input = SDL_StartTextInput() : Void
-  fun is_text_input_active = SDL_IsTextInputActive() : SBool
-  fun stop_text_input = SDL_StopTextInput() : Void
-  fun clear_composition = SDL_ClearComposition() : Void
-  fun is_text_input_shown = SDL_IsTextInputShown() : SBool
-  fun set_text_input_rect = SDL_SetTextInputRect(rect : Rect*) : Void
-  fun has_screen_keyboard_support = SDL_HasScreenKeyboardSupport() : SBool
-  fun is_screen_keyboard_shown = SDL_IsScreenKeyboardShown(window : Window*) : SBool
+  enum Capitalization
+    CAPITALIZE_NONE
+    CAPITALIZE_SENTENCES
+    CAPITALIZE_WORDS
+    CAPITALIZE_LETTERS
+  end
 
   # SDL_keycode
 
   K_SCANCODE_MASK = (1 << 30)
+  K_UNKNOWN = 0x00000000
+  K_RETURN = 0x0000000du
+  K_ESCAPE = 0x0000001bu
+  K_BACKSPACE = 0x00000008
+  K_TAB = 0x00000009
+  K_SPACE = 0x00000020
+  K_EXCLAIM = 0x00000021
+  K_DBLAPOSTROPHE = 0x00000022
+  K_HASH = 0x00000023
+  K_DOLLAR = 0x00000024
+  K_PERCENT = 0x00000025
+  K_AMPERSAND = 0x00000026
+  K_APOSTROPHE = 0x00000027
+  K_LEFTPAREN = 0x00000028
+  K_RIGHTPAREN = 0x00000029
+  K_ASTERISK = 0x0000002au
+  K_PLUS = 0x0000002bu
+  K_COMMA = 0x0000002cu
+  K_MINUS = 0x0000002du
+  K_PERIOD = 0x0000002eu
+  K_SLASH = 0x0000002fu
+  K_0 = 0x00000030
+  K_1 = 0x00000031
+  K_2 = 0x00000032
+  K_3 = 0x00000033
+  K_4 = 0x00000034
+  K_5 = 0x00000035
+  K_6 = 0x00000036
+  K_7 = 0x00000037
+  K_8 = 0x00000038
+  K_9 = 0x00000039
+  K_COLON = 0x0000003au
+  K_SEMICOLON = 0x0000003bu
+  K_LESS = 0x0000003cu
+  K_EQUALS = 0x0000003du
+  K_GREATER = 0x0000003eu
+  K_QUESTION = 0x0000003fu
+  K_AT = 0x00000040
+  K_LEFTBRACKET = 0x0000005bu
+  K_BACKSLASH = 0x0000005cu
+  K_RIGHTBRACKET = 0x0000005du
+  K_CARET = 0x0000005eu
+  K_UNDERSCORE = 0x0000005fu
+  K_GRAVE = 0x00000060
+  K_A = 0x00000061
+  K_B = 0x00000062
+  K_C = 0x00000063
+  K_D = 0x00000064
+  K_E = 0x00000065
+  K_F = 0x00000066
+  K_G = 0x00000067
+  K_H = 0x00000068
+  K_I = 0x00000069
+  K_J = 0x0000006au
+  K_K = 0x0000006bu
+  K_L = 0x0000006cu
+  K_M = 0x0000006du
+  K_N = 0x0000006eu
+  K_O = 0x0000006fu
+  K_P = 0x00000070
+  K_Q = 0x00000071
+  K_R = 0x00000072
+  K_S = 0x00000073
+  K_T = 0x00000074
+  K_U = 0x00000075
+  K_V = 0x00000076
+  K_W = 0x00000077
+  K_X = 0x00000078
+  K_Y = 0x00000079
+  K_Z = 0x0000007au
+  K_LEFTBRACE = 0x0000007bu
+  K_PIPE = 0x0000007cu
+  K_RIGHTBRACE = 0x0000007du
+  K_TILDE = 0x0000007eu
+  K_DELETE = 0x0000007fu
+  K_PLUSMINUS = 0x000000b1
+  K_CAPSLOCK = 0x40000039
+  K_F1 = 0x4000003au
+  K_F2 = 0x4000003bu
+  K_F3 = 0x4000003cu
+  K_F4 = 0x4000003du
+  K_F5 = 0x4000003eu
+  K_F6 = 0x4000003fu
+  K_F7 = 0x40000040
+  K_F8 = 0x40000041
+  K_F9 = 0x40000042
+  K_F10 = 0x40000043
+  K_F11 = 0x40000044
+  K_F12 = 0x40000045
+  K_PRINTSCREEN = 0x40000046
+  K_SCROLLLOCK = 0x40000047
+  K_PAUSE = 0x40000048
+  K_INSERT = 0x40000049
+  K_HOME = 0x4000004au
+  K_PAGEUP = 0x4000004bu
+  K_END = 0x4000004du
+  K_PAGEDOWN = 0x4000004eu
+  K_RIGHT = 0x4000004fu
+  K_LEFT = 0x40000050
+  K_DOWN = 0x40000051
+  K_UP = 0x40000052
+  K_NUMLOCKCLEAR = 0x40000053
+  K_KP_DIVIDE = 0x40000054
+  K_KP_MULTIPLY = 0x40000055
+  K_KP_MINUS = 0x40000056
+  K_KP_PLUS = 0x40000057
+  K_KP_ENTER = 0x40000058
+  K_KP_1 = 0x40000059
+  K_KP_2 = 0x4000005au
+  K_KP_3 = 0x4000005bu
+  K_KP_4 = 0x4000005cu
+  K_KP_5 = 0x4000005du
+  K_KP_6 = 0x4000005eu
+  K_KP_7 = 0x4000005fu
+  K_KP_8 = 0x40000060
+  K_KP_9 = 0x40000061
+  K_KP_0 = 0x40000062
+  K_KP_PERIOD = 0x40000063
+  K_APPLICATION = 0x40000065
+  K_POWER = 0x40000066
+  K_KP_EQUALS = 0x40000067
+  K_F13 = 0x40000068
+  K_F14 = 0x40000069
+  K_F15 = 0x4000006au
+  K_F16 = 0x4000006bu
+  K_F17 = 0x4000006cu
+  K_F18 = 0x4000006du
+  K_F19 = 0x4000006eu
+  K_F20 = 0x4000006fu
+  K_F21 = 0x40000070
+  K_F22 = 0x40000071
+  K_F23 = 0x40000072
+  K_F24 = 0x40000073
+  K_EXECUTE = 0x40000074
+  K_HELP = 0x40000075
+  K_MENU = 0x40000076
+  K_SELECT = 0x40000077
+  K_STOP = 0x40000078
+  K_AGAIN = 0x40000079
+  K_UNDO = 0x4000007au
+  K_CUT = 0x4000007bu
+  K_COPY = 0x4000007cu
+  K_PASTE = 0x4000007du
+  K_FIND = 0x4000007eu
+  K_MUTE = 0x4000007fu
+  K_VOLUMEUP = 0x40000080
+  K_VOLUMEDOWN = 0x40000081
+  K_KP_COMMA = 0x40000085
+  K_KP_EQUALSAS400 = 0x40000086
+  K_ALTERASE = 0x40000099
+  K_SYSREQ = 0x4000009au
+  K_CANCEL = 0x4000009bu
+  K_CLEAR = 0x4000009cu
+  K_PRIOR = 0x4000009du
+  K_RETURN2 = 0x4000009eu
+  K_SEPARATOR = 0x4000009fu
+  K_OUT = 0x400000a0
+  K_OPER = 0x400000a1
+  K_CLEARAGAIN = 0x400000a2
+  K_CRSEL = 0x400000a3
+  K_EXSEL = 0x400000a4
+  K_KP_00 = 0x400000b0
+  K_KP_000 = 0x400000b1
+  K_THOUSANDSSEPARATOR = 0x400000b2
+  K_DECIMALSEPARATOR = 0x400000b3
+  K_CURRENCYUNIT = 0x400000b4
+  K_CURRENCYSUBUNIT = 0x400000b5
+  K_KP_LEFTPAREN = 0x400000b6
+  K_KP_RIGHTPAREN = 0x400000b7
+  K_KP_LEFTBRACE = 0x400000b8
+  K_KP_RIGHTBRACE = 0x400000b9
+  K_KP_TAB = 0x400000bau
+  K_KP_BACKSPACE = 0x400000bbu
+  K_KP_A = 0x400000bcu
+  K_KP_B = 0x400000bdu
+  K_KP_C = 0x400000beu
+  K_KP_D = 0x400000bfu
+  K_KP_E = 0x400000c0
+  K_KP_F = 0x400000c1
+  K_KP_XOR = 0x400000c2
+  K_KP_POWER = 0x400000c3
+  K_KP_PERCENT = 0x400000c4
+  K_KP_LESS = 0x400000c5
+  K_KP_GREATER = 0x400000c6
+  K_KP_AMPERSAND = 0x400000c7
+  K_KP_DBLAMPERSAND = 0x400000c8
+  K_KP_VERTICALBAR = 0x400000c9
+  K_KP_DBLVERTICALBAR = 0x400000cau
+  K_KP_COLON = 0x400000cbu
+  K_KP_HASH = 0x400000ccu
+  K_KP_SPACE = 0x400000cdu
+  K_KP_AT = 0x400000ceu
+  K_KP_EXCLAM = 0x400000cfu
+  K_KP_MEMSTORE = 0x400000d0
+  K_KP_MEMRECALL = 0x400000d1
+  K_KP_MEMCLEAR = 0x400000d2
+  K_KP_MEMADD = 0x400000d3
+  K_KP_MEMSUBTRACT = 0x400000d4
+  K_KP_MEMMULTIPLY = 0x400000d5
+  K_KP_MEMDIVIDE = 0x400000d6
+  K_KP_PLUSMINUS = 0x400000d7
+  K_KP_CLEAR = 0x400000d8
+  K_KP_CLEARENTRY = 0x400000d9
+  K_KP_BINARY = 0x400000dau
+  K_KP_OCTAL = 0x400000dbu
+  K_KP_DECIMAL = 0x400000dcu
+  K_KP_HEXADECIMAL = 0x400000ddu
+  K_LCTRL = 0x400000e0
+  K_LSHIFT = 0x400000e1
+  K_LALT = 0x400000e2
+  K_LGUI = 0x400000e3
+  K_RCTRL = 0x400000e4
+  K_RSHIFT = 0x400000e5
+  K_RALT = 0x400000e6
+  K_RGUI = 0x400000e7
+  K_MODE = 0x40000101
+  K_SLEEP = 0x40000102
+  K_WAKE = 0x40000103
+  K_CHANNEL_INCREMENT = 0x40000104
+  K_CHANNEL_DECREMENT = 0x40000105
+  K_MEDIA_PLAY = 0x40000106
+  K_MEDIA_PAUSE = 0x40000107
+  K_MEDIA_RECORD = 0x40000108
+  K_MEDIA_FAST_FORWARD = 0x40000109
+  K_MEDIA_REWIND = 0x4000010au
+  K_MEDIA_NEXT_TRACK = 0x4000010bu
+  K_MEDIA_PREVIOUS_TRACK = 0x4000010cu
+  K_MEDIA_STOP = 0x4000010du
+  K_MEDIA_EJECT = 0x4000010eu
+  K_MEDIA_PLAY_PAUSE = 0x4000010fu
+  K_MEDIA_SELECT = 0x40000110
+  K_AC_NEW = 0x40000111
+  K_AC_OPEN = 0x40000112
+  K_AC_CLOSE = 0x40000113
+  K_AC_EXIT = 0x40000114
+  K_AC_SAVE = 0x40000115
+  K_AC_PRINT = 0x40000116
+  K_AC_PROPERTIES = 0x40000117
+  K_AC_SEARCH = 0x40000118
+  K_AC_HOME = 0x40000119
+  K_AC_BACK = 0x4000011au
+  K_AC_FORWARD = 0x4000011bu
+  K_AC_STOP = 0x4000011cu
+  K_AC_REFRESH = 0x4000011du
+  K_AC_BOOKMARKS = 0x4000011eu
+  K_SOFTLEFT = 0x4000011fu
+  K_SOFTRIGHT = 0x40000120
+  K_CALL = 0x40000121
+  K_ENDCALL = 0x40000122
+  KMOD_NONE = 0x0000
+  KMOD_LSHIFT = 0x0001
+  KMOD_RSHIFT = 0x0002
+  KMOD_LCTRL = 0x0040
+  KMOD_RCTRL = 0x0080
+  KMOD_LALT = 0x0100
+  KMOD_RALT = 0x0200
+  KMOD_LGUI = 0x0400
+  KMOD_RGUI = 0x0800
+  KMOD_NUM = 0x1000
+  KMOD_CAPS = 0x2000
+  KMOD_MODE = 0x4000
+  KMOD_SCROLL = 0x8000
+  KMOD_CTRL = (KMOD_LCTRL | KMOD_RCTRL)
+  KMOD_SHIFT = (KMOD_LSHIFT | KMOD_RSHIFT)
+  KMOD_ALT = (KMOD_LALT | KMOD_RALT)
+  KMOD_GUI = (KMOD_LGUI | KMOD_RGUI)
 
-  alias Keycode = Int32
-
-  enum KeyCode
-    K_UNKNOWN = 0
-    K_RETURN = 13
-    K_ESCAPE = 27
-    K_BACKSPACE = 8
-    K_TAB = 9
-    K_SPACE = 32
-    K_EXCLAIM = 33
-    K_QUOTEDBL = 34
-    K_HASH = 35
-    K_PERCENT = 37
-    K_DOLLAR = 36
-    K_AMPERSAND = 38
-    K_QUOTE = 39
-    K_LEFTPAREN = 40
-    K_RIGHTPAREN = 41
-    K_ASTERISK = 42
-    K_PLUS = 43
-    K_COMMA = 44
-    K_MINUS = 45
-    K_PERIOD = 46
-    K_SLASH = 47
-    K_0 = 48
-    K_1 = 49
-    K_2 = 50
-    K_3 = 51
-    K_4 = 52
-    K_5 = 53
-    K_6 = 54
-    K_7 = 55
-    K_8 = 56
-    K_9 = 57
-    K_COLON = 58
-    K_SEMICOLON = 59
-    K_LESS = 60
-    K_EQUALS = 61
-    K_GREATER = 62
-    K_QUESTION = 63
-    K_AT = 64
-    K_LEFTBRACKET = 91
-    K_BACKSLASH = 92
-    K_RIGHTBRACKET = 93
-    K_CARET = 94
-    K_UNDERSCORE = 95
-    K_BACKQUOTE = 96
-    K_A = 97
-    K_B = 98
-    K_C = 99
-    K_D = 100
-    K_E = 101
-    K_F = 102
-    K_G = 103
-    K_H = 104
-    K_I = 105
-    K_J = 106
-    K_K = 107
-    K_L = 108
-    K_M = 109
-    K_N = 110
-    K_O = 111
-    K_P = 112
-    K_Q = 113
-    K_R = 114
-    K_S = 115
-    K_T = 116
-    K_U = 117
-    K_V = 118
-    K_W = 119
-    K_X = 120
-    K_Y = 121
-    K_Z = 122
-    K_CAPSLOCK = Scancode::SCANCODE_CAPSLOCK | K_SCANCODE_MASK
-    K_F1 = Scancode::SCANCODE_F1 | K_SCANCODE_MASK
-    K_F2 = Scancode::SCANCODE_F2 | K_SCANCODE_MASK
-    K_F3 = Scancode::SCANCODE_F3 | K_SCANCODE_MASK
-    K_F4 = Scancode::SCANCODE_F4 | K_SCANCODE_MASK
-    K_F5 = Scancode::SCANCODE_F5 | K_SCANCODE_MASK
-    K_F6 = Scancode::SCANCODE_F6 | K_SCANCODE_MASK
-    K_F7 = Scancode::SCANCODE_F7 | K_SCANCODE_MASK
-    K_F8 = Scancode::SCANCODE_F8 | K_SCANCODE_MASK
-    K_F9 = Scancode::SCANCODE_F9 | K_SCANCODE_MASK
-    K_F10 = Scancode::SCANCODE_F10 | K_SCANCODE_MASK
-    K_F11 = Scancode::SCANCODE_F11 | K_SCANCODE_MASK
-    K_F12 = Scancode::SCANCODE_F12 | K_SCANCODE_MASK
-    K_PRINTSCREEN = Scancode::SCANCODE_PRINTSCREEN | K_SCANCODE_MASK
-    K_SCROLLLOCK = Scancode::SCANCODE_SCROLLLOCK | K_SCANCODE_MASK
-    K_PAUSE = Scancode::SCANCODE_PAUSE | K_SCANCODE_MASK
-    K_INSERT = Scancode::SCANCODE_INSERT | K_SCANCODE_MASK
-    K_HOME = Scancode::SCANCODE_HOME | K_SCANCODE_MASK
-    K_PAGEUP = Scancode::SCANCODE_PAGEUP | K_SCANCODE_MASK
-    K_DELETE = 127
-    K_END = Scancode::SCANCODE_END | K_SCANCODE_MASK
-    K_PAGEDOWN = Scancode::SCANCODE_PAGEDOWN | K_SCANCODE_MASK
-    K_RIGHT = Scancode::SCANCODE_RIGHT | K_SCANCODE_MASK
-    K_LEFT = Scancode::SCANCODE_LEFT | K_SCANCODE_MASK
-    K_DOWN = Scancode::SCANCODE_DOWN | K_SCANCODE_MASK
-    K_UP = Scancode::SCANCODE_UP | K_SCANCODE_MASK
-    K_NUMLOCKCLEAR = Scancode::SCANCODE_NUMLOCKCLEAR | K_SCANCODE_MASK
-    K_KP_DIVIDE = Scancode::SCANCODE_KP_DIVIDE | K_SCANCODE_MASK
-    K_KP_MULTIPLY = Scancode::SCANCODE_KP_MULTIPLY | K_SCANCODE_MASK
-    K_KP_MINUS = Scancode::SCANCODE_KP_MINUS | K_SCANCODE_MASK
-    K_KP_PLUS = Scancode::SCANCODE_KP_PLUS | K_SCANCODE_MASK
-    K_KP_ENTER = Scancode::SCANCODE_KP_ENTER | K_SCANCODE_MASK
-    K_KP_1 = Scancode::SCANCODE_KP_1 | K_SCANCODE_MASK
-    K_KP_2 = Scancode::SCANCODE_KP_2 | K_SCANCODE_MASK
-    K_KP_3 = Scancode::SCANCODE_KP_3 | K_SCANCODE_MASK
-    K_KP_4 = Scancode::SCANCODE_KP_4 | K_SCANCODE_MASK
-    K_KP_5 = Scancode::SCANCODE_KP_5 | K_SCANCODE_MASK
-    K_KP_6 = Scancode::SCANCODE_KP_6 | K_SCANCODE_MASK
-    K_KP_7 = Scancode::SCANCODE_KP_7 | K_SCANCODE_MASK
-    K_KP_8 = Scancode::SCANCODE_KP_8 | K_SCANCODE_MASK
-    K_KP_9 = Scancode::SCANCODE_KP_9 | K_SCANCODE_MASK
-    K_KP_0 = Scancode::SCANCODE_KP_0 | K_SCANCODE_MASK
-    K_KP_PERIOD = Scancode::SCANCODE_KP_PERIOD | K_SCANCODE_MASK
-    K_APPLICATION = Scancode::SCANCODE_APPLICATION | K_SCANCODE_MASK
-    K_POWER = Scancode::SCANCODE_POWER | K_SCANCODE_MASK
-    K_KP_EQUALS = Scancode::SCANCODE_KP_EQUALS | K_SCANCODE_MASK
-    K_F13 = Scancode::SCANCODE_F13 | K_SCANCODE_MASK
-    K_F14 = Scancode::SCANCODE_F14 | K_SCANCODE_MASK
-    K_F15 = Scancode::SCANCODE_F15 | K_SCANCODE_MASK
-    K_F16 = Scancode::SCANCODE_F16 | K_SCANCODE_MASK
-    K_F17 = Scancode::SCANCODE_F17 | K_SCANCODE_MASK
-    K_F18 = Scancode::SCANCODE_F18 | K_SCANCODE_MASK
-    K_F19 = Scancode::SCANCODE_F19 | K_SCANCODE_MASK
-    K_F20 = Scancode::SCANCODE_F20 | K_SCANCODE_MASK
-    K_F21 = Scancode::SCANCODE_F21 | K_SCANCODE_MASK
-    K_F22 = Scancode::SCANCODE_F22 | K_SCANCODE_MASK
-    K_F23 = Scancode::SCANCODE_F23 | K_SCANCODE_MASK
-    K_F24 = Scancode::SCANCODE_F24 | K_SCANCODE_MASK
-    K_EXECUTE = Scancode::SCANCODE_EXECUTE | K_SCANCODE_MASK
-    K_HELP = Scancode::SCANCODE_HELP | K_SCANCODE_MASK
-    K_MENU = Scancode::SCANCODE_MENU | K_SCANCODE_MASK
-    K_SELECT = Scancode::SCANCODE_SELECT | K_SCANCODE_MASK
-    K_STOP = Scancode::SCANCODE_STOP | K_SCANCODE_MASK
-    K_AGAIN = Scancode::SCANCODE_AGAIN | K_SCANCODE_MASK
-    K_UNDO = Scancode::SCANCODE_UNDO | K_SCANCODE_MASK
-    K_CUT = Scancode::SCANCODE_CUT | K_SCANCODE_MASK
-    K_COPY = Scancode::SCANCODE_COPY | K_SCANCODE_MASK
-    K_PASTE = Scancode::SCANCODE_PASTE | K_SCANCODE_MASK
-    K_FIND = Scancode::SCANCODE_FIND | K_SCANCODE_MASK
-    K_MUTE = Scancode::SCANCODE_MUTE | K_SCANCODE_MASK
-    K_VOLUMEUP = Scancode::SCANCODE_VOLUMEUP | K_SCANCODE_MASK
-    K_VOLUMEDOWN = Scancode::SCANCODE_VOLUMEDOWN | K_SCANCODE_MASK
-    K_KP_COMMA = Scancode::SCANCODE_KP_COMMA | K_SCANCODE_MASK
-    K_KP_EQUALSAS400 = Scancode::SCANCODE_KP_EQUALSAS400 | K_SCANCODE_MASK
-    K_ALTERASE = Scancode::SCANCODE_ALTERASE | K_SCANCODE_MASK
-    K_SYSREQ = Scancode::SCANCODE_SYSREQ | K_SCANCODE_MASK
-    K_CANCEL = Scancode::SCANCODE_CANCEL | K_SCANCODE_MASK
-    K_CLEAR = Scancode::SCANCODE_CLEAR | K_SCANCODE_MASK
-    K_PRIOR = Scancode::SCANCODE_PRIOR | K_SCANCODE_MASK
-    K_RETURN2 = Scancode::SCANCODE_RETURN2 | K_SCANCODE_MASK
-    K_SEPARATOR = Scancode::SCANCODE_SEPARATOR | K_SCANCODE_MASK
-    K_OUT = Scancode::SCANCODE_OUT | K_SCANCODE_MASK
-    K_OPER = Scancode::SCANCODE_OPER | K_SCANCODE_MASK
-    K_CLEARAGAIN = Scancode::SCANCODE_CLEARAGAIN | K_SCANCODE_MASK
-    K_CRSEL = Scancode::SCANCODE_CRSEL | K_SCANCODE_MASK
-    K_EXSEL = Scancode::SCANCODE_EXSEL | K_SCANCODE_MASK
-    K_KP_00 = Scancode::SCANCODE_KP_00 | K_SCANCODE_MASK
-    K_KP_000 = Scancode::SCANCODE_KP_000 | K_SCANCODE_MASK
-    K_THOUSANDSSEPARATOR = Scancode::SCANCODE_THOUSANDSSEPARATOR | K_SCANCODE_MASK
-    K_DECIMALSEPARATOR = Scancode::SCANCODE_DECIMALSEPARATOR | K_SCANCODE_MASK
-    K_CURRENCYUNIT = Scancode::SCANCODE_CURRENCYUNIT | K_SCANCODE_MASK
-    K_CURRENCYSUBUNIT = Scancode::SCANCODE_CURRENCYSUBUNIT | K_SCANCODE_MASK
-    K_KP_LEFTPAREN = Scancode::SCANCODE_KP_LEFTPAREN | K_SCANCODE_MASK
-    K_KP_RIGHTPAREN = Scancode::SCANCODE_KP_RIGHTPAREN | K_SCANCODE_MASK
-    K_KP_LEFTBRACE = Scancode::SCANCODE_KP_LEFTBRACE | K_SCANCODE_MASK
-    K_KP_RIGHTBRACE = Scancode::SCANCODE_KP_RIGHTBRACE | K_SCANCODE_MASK
-    K_KP_TAB = Scancode::SCANCODE_KP_TAB | K_SCANCODE_MASK
-    K_KP_BACKSPACE = Scancode::SCANCODE_KP_BACKSPACE | K_SCANCODE_MASK
-    K_KP_A = Scancode::SCANCODE_KP_A | K_SCANCODE_MASK
-    K_KP_B = Scancode::SCANCODE_KP_B | K_SCANCODE_MASK
-    K_KP_C = Scancode::SCANCODE_KP_C | K_SCANCODE_MASK
-    K_KP_D = Scancode::SCANCODE_KP_D | K_SCANCODE_MASK
-    K_KP_E = Scancode::SCANCODE_KP_E | K_SCANCODE_MASK
-    K_KP_F = Scancode::SCANCODE_KP_F | K_SCANCODE_MASK
-    K_KP_XOR = Scancode::SCANCODE_KP_XOR | K_SCANCODE_MASK
-    K_KP_POWER = Scancode::SCANCODE_KP_POWER | K_SCANCODE_MASK
-    K_KP_PERCENT = Scancode::SCANCODE_KP_PERCENT | K_SCANCODE_MASK
-    K_KP_LESS = Scancode::SCANCODE_KP_LESS | K_SCANCODE_MASK
-    K_KP_GREATER = Scancode::SCANCODE_KP_GREATER | K_SCANCODE_MASK
-    K_KP_AMPERSAND = Scancode::SCANCODE_KP_AMPERSAND | K_SCANCODE_MASK
-    K_KP_DBLAMPERSAND = Scancode::SCANCODE_KP_DBLAMPERSAND | K_SCANCODE_MASK
-    K_KP_VERTICALBAR = Scancode::SCANCODE_KP_VERTICALBAR | K_SCANCODE_MASK
-    K_KP_DBLVERTICALBAR = Scancode::SCANCODE_KP_DBLVERTICALBAR | K_SCANCODE_MASK
-    K_KP_COLON = Scancode::SCANCODE_KP_COLON | K_SCANCODE_MASK
-    K_KP_HASH = Scancode::SCANCODE_KP_HASH | K_SCANCODE_MASK
-    K_KP_SPACE = Scancode::SCANCODE_KP_SPACE | K_SCANCODE_MASK
-    K_KP_AT = Scancode::SCANCODE_KP_AT | K_SCANCODE_MASK
-    K_KP_EXCLAM = Scancode::SCANCODE_KP_EXCLAM | K_SCANCODE_MASK
-    K_KP_MEMSTORE = Scancode::SCANCODE_KP_MEMSTORE | K_SCANCODE_MASK
-    K_KP_MEMRECALL = Scancode::SCANCODE_KP_MEMRECALL | K_SCANCODE_MASK
-    K_KP_MEMCLEAR = Scancode::SCANCODE_KP_MEMCLEAR | K_SCANCODE_MASK
-    K_KP_MEMADD = Scancode::SCANCODE_KP_MEMADD | K_SCANCODE_MASK
-    K_KP_MEMSUBTRACT = Scancode::SCANCODE_KP_MEMSUBTRACT | K_SCANCODE_MASK
-    K_KP_MEMMULTIPLY = Scancode::SCANCODE_KP_MEMMULTIPLY | K_SCANCODE_MASK
-    K_KP_MEMDIVIDE = Scancode::SCANCODE_KP_MEMDIVIDE | K_SCANCODE_MASK
-    K_KP_PLUSMINUS = Scancode::SCANCODE_KP_PLUSMINUS | K_SCANCODE_MASK
-    K_KP_CLEAR = Scancode::SCANCODE_KP_CLEAR | K_SCANCODE_MASK
-    K_KP_CLEARENTRY = Scancode::SCANCODE_KP_CLEARENTRY | K_SCANCODE_MASK
-    K_KP_BINARY = Scancode::SCANCODE_KP_BINARY | K_SCANCODE_MASK
-    K_KP_OCTAL = Scancode::SCANCODE_KP_OCTAL | K_SCANCODE_MASK
-    K_KP_DECIMAL = Scancode::SCANCODE_KP_DECIMAL | K_SCANCODE_MASK
-    K_KP_HEXADECIMAL = Scancode::SCANCODE_KP_HEXADECIMAL | K_SCANCODE_MASK
-    K_LCTRL = Scancode::SCANCODE_LCTRL | K_SCANCODE_MASK
-    K_LSHIFT = Scancode::SCANCODE_LSHIFT | K_SCANCODE_MASK
-    K_LALT = Scancode::SCANCODE_LALT | K_SCANCODE_MASK
-    K_LGUI = Scancode::SCANCODE_LGUI | K_SCANCODE_MASK
-    K_RCTRL = Scancode::SCANCODE_RCTRL | K_SCANCODE_MASK
-    K_RSHIFT = Scancode::SCANCODE_RSHIFT | K_SCANCODE_MASK
-    K_RALT = Scancode::SCANCODE_RALT | K_SCANCODE_MASK
-    K_RGUI = Scancode::SCANCODE_RGUI | K_SCANCODE_MASK
-    K_MODE = Scancode::SCANCODE_MODE | K_SCANCODE_MASK
-    K_AUDIONEXT = Scancode::SCANCODE_AUDIONEXT | K_SCANCODE_MASK
-    K_AUDIOPREV = Scancode::SCANCODE_AUDIOPREV | K_SCANCODE_MASK
-    K_AUDIOSTOP = Scancode::SCANCODE_AUDIOSTOP | K_SCANCODE_MASK
-    K_AUDIOPLAY = Scancode::SCANCODE_AUDIOPLAY | K_SCANCODE_MASK
-    K_AUDIOMUTE = Scancode::SCANCODE_AUDIOMUTE | K_SCANCODE_MASK
-    K_MEDIASELECT = Scancode::SCANCODE_MEDIASELECT | K_SCANCODE_MASK
-    K_WWW = Scancode::SCANCODE_WWW | K_SCANCODE_MASK
-    K_MAIL = Scancode::SCANCODE_MAIL | K_SCANCODE_MASK
-    K_CALCULATOR = Scancode::SCANCODE_CALCULATOR | K_SCANCODE_MASK
-    K_COMPUTER = Scancode::SCANCODE_COMPUTER | K_SCANCODE_MASK
-    K_AC_SEARCH = Scancode::SCANCODE_AC_SEARCH | K_SCANCODE_MASK
-    K_AC_HOME = Scancode::SCANCODE_AC_HOME | K_SCANCODE_MASK
-    K_AC_BACK = Scancode::SCANCODE_AC_BACK | K_SCANCODE_MASK
-    K_AC_FORWARD = Scancode::SCANCODE_AC_FORWARD | K_SCANCODE_MASK
-    K_AC_STOP = Scancode::SCANCODE_AC_STOP | K_SCANCODE_MASK
-    K_AC_REFRESH = Scancode::SCANCODE_AC_REFRESH | K_SCANCODE_MASK
-    K_AC_BOOKMARKS = Scancode::SCANCODE_AC_BOOKMARKS | K_SCANCODE_MASK
-    K_BRIGHTNESSDOWN = Scancode::SCANCODE_BRIGHTNESSDOWN | K_SCANCODE_MASK
-    K_BRIGHTNESSUP = Scancode::SCANCODE_BRIGHTNESSUP | K_SCANCODE_MASK
-    K_DISPLAYSWITCH = Scancode::SCANCODE_DISPLAYSWITCH | K_SCANCODE_MASK
-    K_KBDILLUMTOGGLE = Scancode::SCANCODE_KBDILLUMTOGGLE | K_SCANCODE_MASK
-    K_KBDILLUMDOWN = Scancode::SCANCODE_KBDILLUMDOWN | K_SCANCODE_MASK
-    K_KBDILLUMUP = Scancode::SCANCODE_KBDILLUMUP | K_SCANCODE_MASK
-    K_EJECT = Scancode::SCANCODE_EJECT | K_SCANCODE_MASK
-    K_SLEEP = Scancode::SCANCODE_SLEEP | K_SCANCODE_MASK
-    K_APP1 = Scancode::SCANCODE_APP1 | K_SCANCODE_MASK
-    K_APP2 = Scancode::SCANCODE_APP2 | K_SCANCODE_MASK
-    K_AUDIOREWIND = Scancode::SCANCODE_AUDIOREWIND | K_SCANCODE_MASK
-    K_AUDIOFASTFORWARD = Scancode::SCANCODE_AUDIOFASTFORWARD | K_SCANCODE_MASK
-    K_SOFTLEFT = Scancode::SCANCODE_SOFTLEFT | K_SCANCODE_MASK
-    K_SOFTRIGHT = Scancode::SCANCODE_SOFTRIGHT | K_SCANCODE_MASK
-    K_CALL = Scancode::SCANCODE_CALL | K_SCANCODE_MASK
-    K_ENDCALL = Scancode::SCANCODE_ENDCALL | K_SCANCODE_MASK
-  end
-
-  enum Keymod
-    KMOD_NONE = 0x0000
-    KMOD_LSHIFT = 0x0001
-    KMOD_RSHIFT = 0x0002
-    KMOD_LCTRL = 0x0040
-    KMOD_RCTRL = 0x0080
-    KMOD_LALT = 0x0100
-    KMOD_RALT = 0x0200
-    KMOD_LGUI = 0x0400
-    KMOD_RGUI = 0x0800
-    KMOD_NUM = 0x1000
-    KMOD_CAPS = 0x2000
-    KMOD_MODE = 0x4000
-    KMOD_SCROLL = 0x8000
-    KMOD_CTRL = KMOD_LCTRL | KMOD_RCTRL
-    KMOD_SHIFT = KMOD_LSHIFT | KMOD_RSHIFT
-    KMOD_ALT = KMOD_LALT | KMOD_RALT
-    KMOD_GUI = KMOD_LGUI | KMOD_RGUI
-    KMOD_RESERVED = KMOD_SCROLL
-  end
+  alias Keycode = UInt32
+  alias Keymod = UInt16
 
   # SDL_mouse
 
@@ -1882,28 +1736,38 @@ lib LibSDL
   BUTTON_RIGHT = 3
   BUTTON_X1 = 4
   BUTTON_X2 = 5
-  BUTTON_LMASK = BUTTON(BUTTON_LEFT)
-  BUTTON_MMASK = BUTTON(BUTTON_MIDDLE)
-  BUTTON_RMASK = BUTTON(BUTTON_RIGHT)
-  BUTTON_X1MASK = BUTTON(BUTTON_X1)
-  BUTTON_X2MASK = BUTTON(BUTTON_X2)
+  BUTTON_LMASK = BUTTON_MASK(BUTTON_LEFT)
+  BUTTON_MMASK = BUTTON_MASK(BUTTON_MIDDLE)
+  BUTTON_RMASK = BUTTON_MASK(BUTTON_RIGHT)
+  BUTTON_X1MASK = BUTTON_MASK(BUTTON_X1)
+  BUTTON_X2MASK = BUTTON_MASK(BUTTON_X2)
 
   alias Cursor = Void
+  alias MouseID = UInt32
+  alias MouseButtonFlags = UInt32
 
   enum SystemCursor
-    SYSTEM_CURSOR_ARROW
-    SYSTEM_CURSOR_IBEAM
+    SYSTEM_CURSOR_DEFAULT
+    SYSTEM_CURSOR_TEXT
     SYSTEM_CURSOR_WAIT
     SYSTEM_CURSOR_CROSSHAIR
-    SYSTEM_CURSOR_WAITARROW
-    SYSTEM_CURSOR_SIZENWSE
-    SYSTEM_CURSOR_SIZENESW
-    SYSTEM_CURSOR_SIZEWE
-    SYSTEM_CURSOR_SIZENS
-    SYSTEM_CURSOR_SIZEALL
-    SYSTEM_CURSOR_NO
-    SYSTEM_CURSOR_HAND
-    NUM_SYSTEM_CURSORS
+    SYSTEM_CURSOR_PROGRESS
+    SYSTEM_CURSOR_NWSE_RESIZE
+    SYSTEM_CURSOR_NESW_RESIZE
+    SYSTEM_CURSOR_EW_RESIZE
+    SYSTEM_CURSOR_NS_RESIZE
+    SYSTEM_CURSOR_MOVE
+    SYSTEM_CURSOR_NOT_ALLOWED
+    SYSTEM_CURSOR_POINTER
+    SYSTEM_CURSOR_NW_RESIZE
+    SYSTEM_CURSOR_N_RESIZE
+    SYSTEM_CURSOR_NE_RESIZE
+    SYSTEM_CURSOR_E_RESIZE
+    SYSTEM_CURSOR_SE_RESIZE
+    SYSTEM_CURSOR_S_RESIZE
+    SYSTEM_CURSOR_SW_RESIZE
+    SYSTEM_CURSOR_W_RESIZE
+    SYSTEM_CURSOR_COUNT
   end
 
   enum MouseWheelDirection
@@ -1911,28 +1775,12 @@ lib LibSDL
     MOUSEWHEEL_FLIPPED
   end
 
-  fun get_mouse_focus = SDL_GetMouseFocus() : Window*
-  fun get_mouse_state = SDL_GetMouseState(x : LibC::Int*, y : LibC::Int*) : UInt32
-  fun get_global_mouse_state = SDL_GetGlobalMouseState(x : LibC::Int*, y : LibC::Int*) : UInt32
-  fun get_relative_mouse_state = SDL_GetRelativeMouseState(x : LibC::Int*, y : LibC::Int*) : UInt32
-  fun warp_mouse_in_window = SDL_WarpMouseInWindow(window : Window*, x : LibC::Int, y : LibC::Int) : Void
-  fun warp_mouse_global = SDL_WarpMouseGlobal(x : LibC::Int, y : LibC::Int) : LibC::Int
-  fun set_relative_mouse_mode = SDL_SetRelativeMouseMode(enabled : SBool) : LibC::Int
-  fun capture_mouse = SDL_CaptureMouse(enabled : SBool) : LibC::Int
-  fun get_relative_mouse_mode = SDL_GetRelativeMouseMode() : SBool
-  fun create_cursor = SDL_CreateCursor(data : UInt8*, mask : UInt8*, w : LibC::Int, h : LibC::Int, hot_x : LibC::Int, hot_y : LibC::Int) : Cursor*
-  fun create_color_cursor = SDL_CreateColorCursor(surface : Surface*, hot_x : LibC::Int, hot_y : LibC::Int) : Cursor*
-  fun create_system_cursor = SDL_CreateSystemCursor(id : SystemCursor) : Cursor*
-  fun set_cursor = SDL_SetCursor(cursor : Cursor*) : Void
-  fun get_cursor = SDL_GetCursor() : Cursor*
-  fun get_default_cursor = SDL_GetDefaultCursor() : Cursor*
-  fun free_cursor = SDL_FreeCursor(cursor : Cursor*) : Void
-  fun show_cursor = SDL_ShowCursor(toggle : LibC::Int) : LibC::Int
-
   # SDL_pixels
 
   ALPHA_OPAQUE = 255
+  ALPHA_OPAQUE_FLOAT = 1.0
   ALPHA_TRANSPARENT = 0
+  ALPHA_TRANSPARENT_FLOAT = 0.0
 
   enum PixelType
     PIXELTYPE_UNKNOWN
@@ -1990,11 +1838,110 @@ lib LibSDL
     PACKEDLAYOUT_1010102
   end
 
+  enum ColorType
+    COLOR_TYPE_UNKNOWN = 0
+    COLOR_TYPE_RGB = 1
+    COLOR_TYPE_YCBCR = 2
+  end
+
+  enum ColorRange
+    COLOR_RANGE_UNKNOWN = 0
+    COLOR_RANGE_LIMITED = 1
+    COLOR_RANGE_FULL = 2
+  end
+
+  enum ColorPrimaries
+    COLOR_PRIMARIES_UNKNOWN = 0
+    COLOR_PRIMARIES_BT709 = 1
+    COLOR_PRIMARIES_UNSPECIFIED = 2
+    COLOR_PRIMARIES_BT470M = 4
+    COLOR_PRIMARIES_BT470BG = 5
+    COLOR_PRIMARIES_BT601 = 6
+    COLOR_PRIMARIES_SMPTE240 = 7
+    COLOR_PRIMARIES_GENERIC_FILM = 8
+    COLOR_PRIMARIES_BT2020 = 9
+    COLOR_PRIMARIES_XYZ = 10
+    COLOR_PRIMARIES_SMPTE431 = 11
+    COLOR_PRIMARIES_SMPTE432 = 12
+    COLOR_PRIMARIES_EBU3213 = 22
+    COLOR_PRIMARIES_CUSTOM = 31
+  end
+
+  enum TransferCharacteristics
+    TRANSFER_CHARACTERISTICS_UNKNOWN = 0
+    TRANSFER_CHARACTERISTICS_BT709 = 1
+    TRANSFER_CHARACTERISTICS_UNSPECIFIED = 2
+    TRANSFER_CHARACTERISTICS_GAMMA22 = 4
+    TRANSFER_CHARACTERISTICS_GAMMA28 = 5
+    TRANSFER_CHARACTERISTICS_BT601 = 6
+    TRANSFER_CHARACTERISTICS_SMPTE240 = 7
+    TRANSFER_CHARACTERISTICS_LINEAR = 8
+    TRANSFER_CHARACTERISTICS_LOG100 = 9
+    TRANSFER_CHARACTERISTICS_LOG100_SQRT10 = 10
+    TRANSFER_CHARACTERISTICS_IEC61966 = 11
+    TRANSFER_CHARACTERISTICS_BT1361 = 12
+    TRANSFER_CHARACTERISTICS_SRGB = 13
+    TRANSFER_CHARACTERISTICS_BT2020_10BIT = 14
+    TRANSFER_CHARACTERISTICS_BT2020_12BIT = 15
+    TRANSFER_CHARACTERISTICS_PQ = 16
+    TRANSFER_CHARACTERISTICS_SMPTE428 = 17
+    TRANSFER_CHARACTERISTICS_HLG = 18
+    TRANSFER_CHARACTERISTICS_CUSTOM = 31
+  end
+
+  enum MatrixCoefficients
+    MATRIX_COEFFICIENTS_IDENTITY = 0
+    MATRIX_COEFFICIENTS_BT709 = 1
+    MATRIX_COEFFICIENTS_UNSPECIFIED = 2
+    MATRIX_COEFFICIENTS_FCC = 4
+    MATRIX_COEFFICIENTS_BT470BG = 5
+    MATRIX_COEFFICIENTS_BT601 = 6
+    MATRIX_COEFFICIENTS_SMPTE240 = 7
+    MATRIX_COEFFICIENTS_YCGCO = 8
+    MATRIX_COEFFICIENTS_BT2020_NCL = 9
+    MATRIX_COEFFICIENTS_BT2020_CL = 10
+    MATRIX_COEFFICIENTS_SMPTE2085 = 11
+    MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL = 12
+    MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL = 13
+    MATRIX_COEFFICIENTS_ICTCP = 14
+    MATRIX_COEFFICIENTS_CUSTOM = 31
+  end
+
+  enum ChromaLocation
+    CHROMA_LOCATION_NONE = 0
+    CHROMA_LOCATION_LEFT = 1
+    CHROMA_LOCATION_CENTER = 2
+    CHROMA_LOCATION_TOPLEFT = 3
+  end
+
+  enum Colorspace
+    COLORSPACE_UNKNOWN = 0
+    COLORSPACE_SRGB = 0x120005a0
+    COLORSPACE_SRGB_LINEAR = 0x12000500
+    COLORSPACE_HDR10 = 0x12002600
+    COLORSPACE_JPEG = 0x220004c6
+    COLORSPACE_BT601_LIMITED = 0x211018c6
+    COLORSPACE_BT601_FULL = 0x221018c6
+    COLORSPACE_BT709_LIMITED = 0x21100421
+    COLORSPACE_BT709_FULL = 0x22100421
+    COLORSPACE_BT2020_LIMITED = 0x21102609
+    COLORSPACE_BT2020_FULL = 0x22102609
+    COLORSPACE_RGB_DEFAULT = COLORSPACE_SRGB
+    COLORSPACE_YUV_DEFAULT = COLORSPACE_JPEG
+  end
+
   struct Color
     r : UInt8
     g : UInt8
     b : UInt8
     a : UInt8
+  end
+
+  struct FColor
+    r : LibC::Float
+    g : LibC::Float
+    b : LibC::Float
+    a : LibC::Float
   end
 
   struct Palette
@@ -2004,9 +1951,8 @@ lib LibSDL
     refcount : LibC::Int
   end
 
-  struct PixelFormat
-    format : UInt32
-    palette : Palette*
+  struct PixelFormatDetails
+    format : PixelFormat
     bits_per_pixel : UInt8
     bytes_per_pixel : UInt8
     padding : UInt8[2]
@@ -2014,32 +1960,15 @@ lib LibSDL
     gmask : UInt32
     bmask : UInt32
     amask : UInt32
-    rloss : UInt8
-    gloss : UInt8
-    bloss : UInt8
-    aloss : UInt8
+    rbits : UInt8
+    gbits : UInt8
+    bbits : UInt8
+    abits : UInt8
     rshift : UInt8
     gshift : UInt8
     bshift : UInt8
     ashift : UInt8
-    refcount : LibC::Int
-    next : PixelFormat*
   end
-
-  fun get_pixel_format_name = SDL_GetPixelFormatName(format : UInt32) : LibC::Char*
-  fun pixel_format_enum_to_masks = SDL_PixelFormatEnumToMasks(format : UInt32, bpp : LibC::Int*, rmask : UInt32*, gmask : UInt32*, bmask : UInt32*, amask : UInt32*) : SBool
-  fun masks_to_pixel_format_enum = SDL_MasksToPixelFormatEnum(bpp : LibC::Int, rmask : UInt32, gmask : UInt32, bmask : UInt32, amask : UInt32) : UInt32
-  fun alloc_format = SDL_AllocFormat(pixel_format : UInt32) : PixelFormat*
-  fun free_format = SDL_FreeFormat(format : PixelFormat*) : Void
-  fun alloc_palette = SDL_AllocPalette(ncolors : LibC::Int) : Palette*
-  fun set_pixel_format_palette = SDL_SetPixelFormatPalette(format : PixelFormat*, palette : Palette*) : LibC::Int
-  fun set_palette_colors = SDL_SetPaletteColors(palette : Palette*, colors : Color*, firstcolor : LibC::Int, ncolors : LibC::Int) : LibC::Int
-  fun free_palette = SDL_FreePalette(palette : Palette*) : Void
-  fun map_rgb = SDL_MapRGB(format : PixelFormat*, r : UInt8, g : UInt8, b : UInt8) : UInt32
-  fun map_rgba = SDL_MapRGBA(format : PixelFormat*, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : UInt32
-  fun get_rgb = SDL_GetRGB(pixel : UInt32, format : PixelFormat*, r : UInt8*, g : UInt8*, b : UInt8*) : Void
-  fun get_rgba = SDL_GetRGBA(pixel : UInt32, format : PixelFormat*, r : UInt8*, g : UInt8*, b : UInt8*, a : UInt8*) : Void
-  fun calculate_gamma_ramp = SDL_CalculateGammaRamp(gamma : LibC::Float, ramp : UInt16*) : Void
 
   # additions/helper_pixels.cr
 
@@ -2071,34 +2000,99 @@ lib LibSDL
     h : LibC::Float
   end
 
-  fun has_intersection = SDL_HasIntersection(a : Rect*, b : Rect*) : SBool
-  fun intersect_rect = SDL_IntersectRect(a : Rect*, b : Rect*, result : Rect*) : SBool
-  fun union_rect = SDL_UnionRect(a : Rect*, b : Rect*, result : Rect*) : Void
-  fun enclose_points = SDL_EnclosePoints(points : Point*, count : LibC::Int, clip : Rect*, result : Rect*) : SBool
-  fun intersect_rect_and_line = SDL_IntersectRectAndLine(rect : Rect*, x1 : LibC::Int*, y1 : LibC::Int*, x2 : LibC::Int*, y2 : LibC::Int*) : SBool
-  fun has_intersection_f = SDL_HasIntersectionF(a : FRect*, b : FRect*) : SBool
-  fun intersect_frect = SDL_IntersectFRect(a : FRect*, b : FRect*, result : FRect*) : SBool
-  fun union_frect = SDL_UnionFRect(a : FRect*, b : FRect*, result : FRect*) : Void
-  fun enclose_fpoints = SDL_EncloseFPoints(points : FPoint*, count : LibC::Int, clip : FRect*, result : FRect*) : SBool
-  fun intersect_frect_and_line = SDL_IntersectFRectAndLine(rect : FRect*, x1 : LibC::Float*, y1 : LibC::Float*, x2 : LibC::Float*, y2 : LibC::Float*) : SBool
-
   # SDL_render
+
+  SOFTWARE_RENDERER = "software"
+  PROP_RENDERER_CREATE_NAME_STRING = "SDL.renderer.create.name"
+  PROP_RENDERER_CREATE_WINDOW_POINTER = "SDL.renderer.create.window"
+  PROP_RENDERER_CREATE_SURFACE_POINTER = "SDL.renderer.create.surface"
+  PROP_RENDERER_CREATE_OUTPUT_COLORSPACE_NUMBER = "SDL.renderer.create.output_colorspace"
+  PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER = "SDL.renderer.create.present_vsync"
+  PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER = "SDL.renderer.create.vulkan.instance"
+  PROP_RENDERER_CREATE_VULKAN_SURFACE_NUMBER = "SDL.renderer.create.vulkan.surface"
+  PROP_RENDERER_CREATE_VULKAN_PHYSICAL_DEVICE_POINTER = "SDL.renderer.create.vulkan.physical_device"
+  PROP_RENDERER_CREATE_VULKAN_DEVICE_POINTER = "SDL.renderer.create.vulkan.device"
+  PROP_RENDERER_CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER = "SDL.renderer.create.vulkan.graphics_queue_family_index"
+  PROP_RENDERER_CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER = "SDL.renderer.create.vulkan.present_queue_family_index"
+  PROP_RENDERER_NAME_STRING = "SDL.renderer.name"
+  PROP_RENDERER_WINDOW_POINTER = "SDL.renderer.window"
+  PROP_RENDERER_SURFACE_POINTER = "SDL.renderer.surface"
+  PROP_RENDERER_VSYNC_NUMBER = "SDL.renderer.vsync"
+  PROP_RENDERER_MAX_TEXTURE_SIZE_NUMBER = "SDL.renderer.max_texture_size"
+  PROP_RENDERER_TEXTURE_FORMATS_POINTER = "SDL.renderer.texture_formats"
+  PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER = "SDL.renderer.output_colorspace"
+  PROP_RENDERER_HDR_ENABLED_BOOLEAN = "SDL.renderer.HDR_enabled"
+  PROP_RENDERER_SDR_WHITE_POINT_FLOAT = "SDL.renderer.SDR_white_point"
+  PROP_RENDERER_HDR_HEADROOM_FLOAT = "SDL.renderer.HDR_headroom"
+  PROP_RENDERER_D3D9_DEVICE_POINTER = "SDL.renderer.d3d9.device"
+  PROP_RENDERER_D3D11_DEVICE_POINTER = "SDL.renderer.d3d11.device"
+  PROP_RENDERER_D3D11_SWAPCHAIN_POINTER = "SDL.renderer.d3d11.swap_chain"
+  PROP_RENDERER_D3D12_DEVICE_POINTER = "SDL.renderer.d3d12.device"
+  PROP_RENDERER_D3D12_SWAPCHAIN_POINTER = "SDL.renderer.d3d12.swap_chain"
+  PROP_RENDERER_D3D12_COMMAND_QUEUE_POINTER = "SDL.renderer.d3d12.command_queue"
+  PROP_RENDERER_VULKAN_INSTANCE_POINTER = "SDL.renderer.vulkan.instance"
+  PROP_RENDERER_VULKAN_SURFACE_NUMBER = "SDL.renderer.vulkan.surface"
+  PROP_RENDERER_VULKAN_PHYSICAL_DEVICE_POINTER = "SDL.renderer.vulkan.physical_device"
+  PROP_RENDERER_VULKAN_DEVICE_POINTER = "SDL.renderer.vulkan.device"
+  PROP_RENDERER_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER = "SDL.renderer.vulkan.graphics_queue_family_index"
+  PROP_RENDERER_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER = "SDL.renderer.vulkan.present_queue_family_index"
+  PROP_RENDERER_VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER = "SDL.renderer.vulkan.swapchain_image_count"
+  PROP_RENDERER_GPU_DEVICE_POINTER = "SDL.renderer.gpu.device"
+  PROP_TEXTURE_CREATE_COLORSPACE_NUMBER = "SDL.texture.create.colorspace"
+  PROP_TEXTURE_CREATE_FORMAT_NUMBER = "SDL.texture.create.format"
+  PROP_TEXTURE_CREATE_ACCESS_NUMBER = "SDL.texture.create.access"
+  PROP_TEXTURE_CREATE_WIDTH_NUMBER = "SDL.texture.create.width"
+  PROP_TEXTURE_CREATE_HEIGHT_NUMBER = "SDL.texture.create.height"
+  PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT = "SDL.texture.create.SDR_white_point"
+  PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT = "SDL.texture.create.HDR_headroom"
+  PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER = "SDL.texture.create.d3d11.texture"
+  PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER = "SDL.texture.create.d3d11.texture_u"
+  PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER = "SDL.texture.create.d3d11.texture_v"
+  PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER = "SDL.texture.create.d3d12.texture"
+  PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER = "SDL.texture.create.d3d12.texture_u"
+  PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER = "SDL.texture.create.d3d12.texture_v"
+  PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER = "SDL.texture.create.metal.pixelbuffer"
+  PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER = "SDL.texture.create.opengl.texture"
+  PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER = "SDL.texture.create.opengl.texture_uv"
+  PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER = "SDL.texture.create.opengl.texture_u"
+  PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER = "SDL.texture.create.opengl.texture_v"
+  PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER = "SDL.texture.create.opengles2.texture"
+  PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER = "SDL.texture.create.opengles2.texture_uv"
+  PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER = "SDL.texture.create.opengles2.texture_u"
+  PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER = "SDL.texture.create.opengles2.texture_v"
+  PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER = "SDL.texture.create.vulkan.texture"
+  PROP_TEXTURE_COLORSPACE_NUMBER = "SDL.texture.colorspace"
+  PROP_TEXTURE_FORMAT_NUMBER = "SDL.texture.format"
+  PROP_TEXTURE_ACCESS_NUMBER = "SDL.texture.access"
+  PROP_TEXTURE_WIDTH_NUMBER = "SDL.texture.width"
+  PROP_TEXTURE_HEIGHT_NUMBER = "SDL.texture.height"
+  PROP_TEXTURE_SDR_WHITE_POINT_FLOAT = "SDL.texture.SDR_white_point"
+  PROP_TEXTURE_HDR_HEADROOM_FLOAT = "SDL.texture.HDR_headroom"
+  PROP_TEXTURE_D3D11_TEXTURE_POINTER = "SDL.texture.d3d11.texture"
+  PROP_TEXTURE_D3D11_TEXTURE_U_POINTER = "SDL.texture.d3d11.texture_u"
+  PROP_TEXTURE_D3D11_TEXTURE_V_POINTER = "SDL.texture.d3d11.texture_v"
+  PROP_TEXTURE_D3D12_TEXTURE_POINTER = "SDL.texture.d3d12.texture"
+  PROP_TEXTURE_D3D12_TEXTURE_U_POINTER = "SDL.texture.d3d12.texture_u"
+  PROP_TEXTURE_D3D12_TEXTURE_V_POINTER = "SDL.texture.d3d12.texture_v"
+  PROP_TEXTURE_OPENGL_TEXTURE_NUMBER = "SDL.texture.opengl.texture"
+  PROP_TEXTURE_OPENGL_TEXTURE_UV_NUMBER = "SDL.texture.opengl.texture_uv"
+  PROP_TEXTURE_OPENGL_TEXTURE_U_NUMBER = "SDL.texture.opengl.texture_u"
+  PROP_TEXTURE_OPENGL_TEXTURE_V_NUMBER = "SDL.texture.opengl.texture_v"
+  PROP_TEXTURE_OPENGL_TEXTURE_TARGET_NUMBER = "SDL.texture.opengl.target"
+  PROP_TEXTURE_OPENGL_TEX_W_FLOAT = "SDL.texture.opengl.tex_w"
+  PROP_TEXTURE_OPENGL_TEX_H_FLOAT = "SDL.texture.opengl.tex_h"
+  PROP_TEXTURE_OPENGLES2_TEXTURE_NUMBER = "SDL.texture.opengles2.texture"
+  PROP_TEXTURE_OPENGLES2_TEXTURE_UV_NUMBER = "SDL.texture.opengles2.texture_uv"
+  PROP_TEXTURE_OPENGLES2_TEXTURE_U_NUMBER = "SDL.texture.opengles2.texture_u"
+  PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER = "SDL.texture.opengles2.texture_v"
+  PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER = "SDL.texture.opengles2.target"
+  PROP_TEXTURE_VULKAN_TEXTURE_NUMBER = "SDL.texture.vulkan.texture"
+  RENDERER_VSYNC_DISABLED = 0
+  RENDERER_VSYNC_ADAPTIVE = (-1)
+  DEBUG_TEXT_FONT_CHARACTER_SIZE = 8
 
   alias Renderer = Void
   alias Texture = Void
-
-  enum RendererFlags
-    RENDERER_SOFTWARE = 0x00000001
-    RENDERER_ACCELERATED = 0x00000002
-    RENDERER_PRESENTVSYNC = 0x00000004
-    RENDERER_TARGETTEXTURE = 0x00000008
-  end
-
-  enum ScaleMode
-    SCALEMODENEAREST
-    SCALEMODELINEAR
-    SCALEMODEBEST
-  end
 
   enum TextureAccess
     TEXTUREACCESS_STATIC
@@ -2106,114 +2100,19 @@ lib LibSDL
     TEXTUREACCESS_TARGET
   end
 
-  enum TextureModulate
-    TEXTUREMODULATE_NONE = 0x00000000
-    TEXTUREMODULATE_COLOR = 0x00000001
-    TEXTUREMODULATE_ALPHA = 0x00000002
-  end
-
-  enum RendererFlip
-    FLIP_NONE = 0x00000000
-    FLIP_HORIZONTAL = 0x00000001
-    FLIP_VERTICAL = 0x00000002
-  end
-
-  struct RendererInfo
-    name : LibC::Char*
-    flags : UInt32
-    num_texture_formats : UInt32
-    texture_formats : UInt32[16]
-    max_texture_width : LibC::Int
-    max_texture_height : LibC::Int
+  enum RendererLogicalPresentation
+    LOGICAL_PRESENTATION_DISABLED
+    LOGICAL_PRESENTATION_STRETCH
+    LOGICAL_PRESENTATION_LETTERBOX
+    LOGICAL_PRESENTATION_OVERSCAN
+    LOGICAL_PRESENTATION_INTEGER_SCALE
   end
 
   struct Vertex
     position : FPoint
-    color : Color
+    color : FColor
     tex_coord : FPoint
   end
-
-  fun get_num_render_drivers = SDL_GetNumRenderDrivers() : LibC::Int
-  fun get_render_driver_info = SDL_GetRenderDriverInfo(index : LibC::Int, info : RendererInfo*) : LibC::Int
-  fun create_window_and_renderer = SDL_CreateWindowAndRenderer(width : LibC::Int, height : LibC::Int, window_flags : UInt32, window : Window**, renderer : Renderer**) : LibC::Int
-  fun create_renderer = SDL_CreateRenderer(window : Window*, index : LibC::Int, flags : UInt32) : Renderer*
-  fun create_software_renderer = SDL_CreateSoftwareRenderer(surface : Surface*) : Renderer*
-  fun get_renderer = SDL_GetRenderer(window : Window*) : Renderer*
-  fun render_get_window = SDL_RenderGetWindow(renderer : Renderer*) : Window*
-  fun get_renderer_info = SDL_GetRendererInfo(renderer : Renderer*, info : RendererInfo*) : LibC::Int
-  fun get_renderer_output_size = SDL_GetRendererOutputSize(renderer : Renderer*, w : LibC::Int*, h : LibC::Int*) : LibC::Int
-  fun create_texture = SDL_CreateTexture(renderer : Renderer*, format : UInt32, access : LibC::Int, w : LibC::Int, h : LibC::Int) : Texture*
-  fun create_texture_from_surface = SDL_CreateTextureFromSurface(renderer : Renderer*, surface : Surface*) : Texture*
-  fun query_texture = SDL_QueryTexture(texture : Texture*, format : UInt32*, access : LibC::Int*, w : LibC::Int*, h : LibC::Int*) : LibC::Int
-  fun set_texture_color_mod = SDL_SetTextureColorMod(texture : Texture*, r : UInt8, g : UInt8, b : UInt8) : LibC::Int
-  fun get_texture_color_mod = SDL_GetTextureColorMod(texture : Texture*, r : UInt8*, g : UInt8*, b : UInt8*) : LibC::Int
-  fun set_texture_alpha_mod = SDL_SetTextureAlphaMod(texture : Texture*, alpha : UInt8) : LibC::Int
-  fun get_texture_alpha_mod = SDL_GetTextureAlphaMod(texture : Texture*, alpha : UInt8*) : LibC::Int
-  fun set_texture_blend_mode = SDL_SetTextureBlendMode(texture : Texture*, blend_mode : BlendMode) : LibC::Int
-  fun get_texture_blend_mode = SDL_GetTextureBlendMode(texture : Texture*, blend_mode : BlendMode*) : LibC::Int
-  fun set_texture_scale_mode = SDL_SetTextureScaleMode(texture : Texture*, scale_mode : ScaleMode) : LibC::Int
-  fun get_texture_scale_mode = SDL_GetTextureScaleMode(texture : Texture*, scale_mode : ScaleMode*) : LibC::Int
-  fun set_texture_user_data = SDL_SetTextureUserData(texture : Texture*, userdata : Void*) : LibC::Int
-  fun get_texture_user_data = SDL_GetTextureUserData(texture : Texture*) : Void*
-  fun update_texture = SDL_UpdateTexture(texture : Texture*, rect : Rect*, pixels : Void*, pitch : LibC::Int) : LibC::Int
-  fun update_yuvtexture = SDL_UpdateYUVTexture(texture : Texture*, rect : Rect*, yplane : UInt8*, ypitch : LibC::Int, uplane : UInt8*, upitch : LibC::Int, vplane : UInt8*, vpitch : LibC::Int) : LibC::Int
-  fun update_nvtexture = SDL_UpdateNVTexture(texture : Texture*, rect : Rect*, yplane : UInt8*, ypitch : LibC::Int, uvplane : UInt8*, uvpitch : LibC::Int) : LibC::Int
-  fun lock_texture = SDL_LockTexture(texture : Texture*, rect : Rect*, pixels : Void**, pitch : LibC::Int*) : LibC::Int
-  fun lock_texture_to_surface = SDL_LockTextureToSurface(texture : Texture*, rect : Rect*, surface : Surface**) : LibC::Int
-  fun unlock_texture = SDL_UnlockTexture(texture : Texture*) : Void
-  fun render_target_supported = SDL_RenderTargetSupported(renderer : Renderer*) : SBool
-  fun set_render_target = SDL_SetRenderTarget(renderer : Renderer*, texture : Texture*) : LibC::Int
-  fun get_render_target = SDL_GetRenderTarget(renderer : Renderer*) : Texture*
-  fun render_set_logical_size = SDL_RenderSetLogicalSize(renderer : Renderer*, w : LibC::Int, h : LibC::Int) : LibC::Int
-  fun render_get_logical_size = SDL_RenderGetLogicalSize(renderer : Renderer*, w : LibC::Int*, h : LibC::Int*) : Void
-  fun render_set_integer_scale = SDL_RenderSetIntegerScale(renderer : Renderer*, enable : SBool) : LibC::Int
-  fun render_get_integer_scale = SDL_RenderGetIntegerScale(renderer : Renderer*) : SBool
-  fun render_set_viewport = SDL_RenderSetViewport(renderer : Renderer*, rect : Rect*) : LibC::Int
-  fun render_get_viewport = SDL_RenderGetViewport(renderer : Renderer*, rect : Rect*) : Void
-  fun render_set_clip_rect = SDL_RenderSetClipRect(renderer : Renderer*, rect : Rect*) : LibC::Int
-  fun render_get_clip_rect = SDL_RenderGetClipRect(renderer : Renderer*, rect : Rect*) : Void
-  fun render_is_clip_enabled = SDL_RenderIsClipEnabled(renderer : Renderer*) : SBool
-  fun render_set_scale = SDL_RenderSetScale(renderer : Renderer*, scale_x : LibC::Float, scale_y : LibC::Float) : LibC::Int
-  fun render_get_scale = SDL_RenderGetScale(renderer : Renderer*, scale_x : LibC::Float*, scale_y : LibC::Float*) : Void
-  fun render_window_to_logical = SDL_RenderWindowToLogical(renderer : Renderer*, window_x : LibC::Int, window_y : LibC::Int, logical_x : LibC::Float*, logical_y : LibC::Float*) : Void
-  fun render_logical_to_window = SDL_RenderLogicalToWindow(renderer : Renderer*, logical_x : LibC::Float, logical_y : LibC::Float, window_x : LibC::Int*, window_y : LibC::Int*) : Void
-  fun set_render_draw_color = SDL_SetRenderDrawColor(renderer : Renderer*, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : LibC::Int
-  fun get_render_draw_color = SDL_GetRenderDrawColor(renderer : Renderer*, r : UInt8*, g : UInt8*, b : UInt8*, a : UInt8*) : LibC::Int
-  fun set_render_draw_blend_mode = SDL_SetRenderDrawBlendMode(renderer : Renderer*, blend_mode : BlendMode) : LibC::Int
-  fun get_render_draw_blend_mode = SDL_GetRenderDrawBlendMode(renderer : Renderer*, blend_mode : BlendMode*) : LibC::Int
-  fun render_clear = SDL_RenderClear(renderer : Renderer*) : LibC::Int
-  fun render_draw_point = SDL_RenderDrawPoint(renderer : Renderer*, x : LibC::Int, y : LibC::Int) : LibC::Int
-  fun render_draw_points = SDL_RenderDrawPoints(renderer : Renderer*, points : Point*, count : LibC::Int) : LibC::Int
-  fun render_draw_line = SDL_RenderDrawLine(renderer : Renderer*, x1 : LibC::Int, y1 : LibC::Int, x2 : LibC::Int, y2 : LibC::Int) : LibC::Int
-  fun render_draw_lines = SDL_RenderDrawLines(renderer : Renderer*, points : Point*, count : LibC::Int) : LibC::Int
-  fun render_draw_rect = SDL_RenderDrawRect(renderer : Renderer*, rect : Rect*) : LibC::Int
-  fun render_draw_rects = SDL_RenderDrawRects(renderer : Renderer*, rects : Rect*, count : LibC::Int) : LibC::Int
-  fun render_fill_rect = SDL_RenderFillRect(renderer : Renderer*, rect : Rect*) : LibC::Int
-  fun render_fill_rects = SDL_RenderFillRects(renderer : Renderer*, rects : Rect*, count : LibC::Int) : LibC::Int
-  fun render_copy = SDL_RenderCopy(renderer : Renderer*, texture : Texture*, srcrect : Rect*, dstrect : Rect*) : LibC::Int
-  fun render_copy_ex = SDL_RenderCopyEx(renderer : Renderer*, texture : Texture*, srcrect : Rect*, dstrect : Rect*, angle : LibC::Double, center : Point*, flip : RendererFlip) : LibC::Int
-  fun render_draw_point_f = SDL_RenderDrawPointF(renderer : Renderer*, x : LibC::Float, y : LibC::Float) : LibC::Int
-  fun render_draw_points_f = SDL_RenderDrawPointsF(renderer : Renderer*, points : FPoint*, count : LibC::Int) : LibC::Int
-  fun render_draw_line_f = SDL_RenderDrawLineF(renderer : Renderer*, x1 : LibC::Float, y1 : LibC::Float, x2 : LibC::Float, y2 : LibC::Float) : LibC::Int
-  fun render_draw_lines_f = SDL_RenderDrawLinesF(renderer : Renderer*, points : FPoint*, count : LibC::Int) : LibC::Int
-  fun render_draw_rect_f = SDL_RenderDrawRectF(renderer : Renderer*, rect : FRect*) : LibC::Int
-  fun render_draw_rects_f = SDL_RenderDrawRectsF(renderer : Renderer*, rects : FRect*, count : LibC::Int) : LibC::Int
-  fun render_fill_rect_f = SDL_RenderFillRectF(renderer : Renderer*, rect : FRect*) : LibC::Int
-  fun render_fill_rects_f = SDL_RenderFillRectsF(renderer : Renderer*, rects : FRect*, count : LibC::Int) : LibC::Int
-  fun render_copy_f = SDL_RenderCopyF(renderer : Renderer*, texture : Texture*, srcrect : Rect*, dstrect : FRect*) : LibC::Int
-  fun render_copy_ex_f = SDL_RenderCopyExF(renderer : Renderer*, texture : Texture*, srcrect : Rect*, dstrect : FRect*, angle : LibC::Double, center : FPoint*, flip : RendererFlip) : LibC::Int
-  fun render_geometry = SDL_RenderGeometry(renderer : Renderer*, texture : Texture*, vertices : Vertex*, num_vertices : LibC::Int, indices : LibC::Int*, num_indices : LibC::Int) : LibC::Int
-  fun render_geometry_raw = SDL_RenderGeometryRaw(renderer : Renderer*, texture : Texture*, xy : LibC::Float*, xy_stride : LibC::Int, color : Color*, color_stride : LibC::Int, uv : LibC::Float*, uv_stride : LibC::Int, num_vertices : LibC::Int, indices : Void*, num_indices : LibC::Int, size_indices : LibC::Int) : LibC::Int
-  fun render_read_pixels = SDL_RenderReadPixels(renderer : Renderer*, rect : Rect*, format : UInt32, pixels : Void*, pitch : LibC::Int) : LibC::Int
-  fun render_present = SDL_RenderPresent(renderer : Renderer*) : Void
-  fun destroy_texture = SDL_DestroyTexture(texture : Texture*) : Void
-  fun destroy_renderer = SDL_DestroyRenderer(renderer : Renderer*) : Void
-  fun render_flush = SDL_RenderFlush(renderer : Renderer*) : LibC::Int
-  fun gl_bind_texture = SDL_GL_BindTexture(texture : Texture*, texw : LibC::Float*, texh : LibC::Float*) : LibC::Int
-  fun gl_unbind_texture = SDL_GL_UnbindTexture(texture : Texture*) : LibC::Int
-  fun render_get_metal_layer = SDL_RenderGetMetalLayer(renderer : Renderer*) : Void*
-  fun render_get_metal_command_encoder = SDL_RenderGetMetalCommandEncoder(renderer : Renderer*) : Void*
-  fun render_set_vsync = SDL_RenderSetVSync(renderer : Renderer*, vsync : LibC::Int) : LibC::Int
 
   # additions/helper_rwops.cr
 
@@ -2221,52 +2120,12 @@ lib LibSDL
 
   # SDL_rwops
 
-  RWOPS_UNKNOWN = 0
-  RWOPS_WINFILE = 1
-  RWOPS_STDFILE = 2
-  RWOPS_JNIFILE = 3
-  RWOPS_MEMORY = 4
-  RWOPS_MEMORY_RO = 5
-  RW_SEEK_SET = 0
-  RW_SEEK_CUR = 1
-  RW_SEEK_END = 2
-
-  fun rwfrom_file = SDL_RWFromFile(file : LibC::Char*, mode : LibC::Char*) : RWops*
-  fun rwfrom_fp = SDL_RWFromFP(fp : Void*, autoclose : SBool) : RWops*
-  fun rwfrom_fp = SDL_RWFromFP(fp : Void*, autoclose : SBool) : RWops*
-  fun rwfrom_mem = SDL_RWFromMem(mem : Void*, size : LibC::Int) : RWops*
-  fun rwfrom_const_mem = SDL_RWFromConstMem(mem : Void*, size : LibC::Int) : RWops*
-  fun alloc_rw = SDL_AllocRW() : RWops*
-  fun free_rw = SDL_FreeRW(area : RWops*) : Void
-  fun rwsize = SDL_RWsize(context : RWops*) : Int64
-  fun rwseek = SDL_RWseek(context : RWops*, offset : Int64, whence : LibC::Int) : Int64
-  fun rwtell = SDL_RWtell(context : RWops*) : Int64
-  fun rwread = SDL_RWread(context : RWops*, ptr : Void*, size : LibC::SizeT, maxnum : LibC::SizeT) : LibC::SizeT
-  fun rwwrite = SDL_RWwrite(context : RWops*, ptr : Void*, size : LibC::SizeT, num : LibC::SizeT) : LibC::SizeT
-  fun rwclose = SDL_RWclose(context : RWops*) : LibC::Int
-  fun load_file_rw = SDL_LoadFile_RW(src : RWops*, datasize : LibC::SizeT*, freesrc : LibC::Int) : Void*
-  fun load_file = SDL_LoadFile(file : LibC::Char*, datasize : LibC::SizeT*) : Void*
-  fun read_u8 = SDL_ReadU8(src : RWops*) : UInt8
-  fun read_le16 = SDL_ReadLE16(src : RWops*) : UInt16
-  fun read_be16 = SDL_ReadBE16(src : RWops*) : UInt16
-  fun read_le32 = SDL_ReadLE32(src : RWops*) : UInt32
-  fun read_be32 = SDL_ReadBE32(src : RWops*) : UInt32
-  fun read_le64 = SDL_ReadLE64(src : RWops*) : UInt64
-  fun read_be64 = SDL_ReadBE64(src : RWops*) : UInt64
-  fun write_u8 = SDL_WriteU8(dst : RWops*, value : UInt8) : LibC::SizeT
-  fun write_le16 = SDL_WriteLE16(dst : RWops*, value : UInt16) : LibC::SizeT
-  fun write_be16 = SDL_WriteBE16(dst : RWops*, value : UInt16) : LibC::SizeT
-  fun write_le32 = SDL_WriteLE32(dst : RWops*, value : UInt32) : LibC::SizeT
-  fun write_be32 = SDL_WriteBE32(dst : RWops*, value : UInt32) : LibC::SizeT
-  fun write_le64 = SDL_WriteLE64(dst : RWops*, value : UInt64) : LibC::SizeT
-  fun write_be64 = SDL_WriteBE64(dst : RWops*, value : UInt64) : LibC::SizeT
-
   # SDL_sensor
 
   STANDARD_GRAVITY = 9.80665
 
   alias Sensor = Void
-  alias SensorID = Int32
+  alias SensorID = UInt32
 
   enum SensorType
     SENSOR_INVALID = -1
@@ -2278,24 +2137,6 @@ lib LibSDL
     SENSOR_ACCEL_R
     SENSOR_GYRO_R
   end
-
-  fun lock_sensors = SDL_LockSensors() : Void
-  fun unlock_sensors = SDL_UnlockSensors() : Void
-  fun num_sensors = SDL_NumSensors() : LibC::Int
-  fun sensor_get_device_name = SDL_SensorGetDeviceName(device_index : LibC::Int) : LibC::Char*
-  fun sensor_get_device_type = SDL_SensorGetDeviceType(device_index : LibC::Int) : SensorType
-  fun sensor_get_device_non_portable_type = SDL_SensorGetDeviceNonPortableType(device_index : LibC::Int) : LibC::Int
-  fun sensor_get_device_instance_id = SDL_SensorGetDeviceInstanceID(device_index : LibC::Int) : SensorID
-  fun sensor_open = SDL_SensorOpen(device_index : LibC::Int) : Sensor*
-  fun sensor_from_instance_id = SDL_SensorFromInstanceID(instance_id : SensorID) : Sensor*
-  fun sensor_get_name = SDL_SensorGetName(sensor : Sensor*) : LibC::Char*
-  fun sensor_get_type = SDL_SensorGetType(sensor : Sensor*) : SensorType
-  fun sensor_get_non_portable_type = SDL_SensorGetNonPortableType(sensor : Sensor*) : LibC::Int
-  fun sensor_get_instance_id = SDL_SensorGetInstanceID(sensor : Sensor*) : SensorID
-  fun sensor_get_data = SDL_SensorGetData(sensor : Sensor*, data : LibC::Float*, num_values : LibC::Int) : LibC::Int
-  fun sensor_get_data_with_timestamp = SDL_SensorGetDataWithTimestamp(sensor : Sensor*, timestamp : UInt64*, data : LibC::Float*, num_values : LibC::Int) : LibC::Int
-  fun sensor_close = SDL_SensorClose(sensor : Sensor*) : Void
-  fun sensor_update = SDL_SensorUpdate() : Void
 
   # additions/helper_shape.cr
 
@@ -2318,94 +2159,37 @@ lib LibSDL
 
   # SDL_shape
 
-  NONSHAPEABLE_WINDOW = -1
-  INVALID_SHAPE_ARGUMENT = -2
-  WINDOW_LACKS_SHAPE = -3
-
-  fun create_shaped_window = SDL_CreateShapedWindow(title : LibC::Char*, x : LibC::UInt, y : LibC::UInt, w : LibC::UInt, h : LibC::UInt, flags : UInt32) : Window*
-  fun is_shaped_window = SDL_IsShapedWindow(window : Window*) : SBool
-  fun set_window_shape = SDL_SetWindowShape(window : Window*, shape : Surface*, shape_mode : WindowShapeMode*) : LibC::Int
-  fun get_shaped_window_mode = SDL_GetShapedWindowMode(window : Window*, shape_mode : WindowShapeMode*) : LibC::Int
-
   # SDL_surface
 
-  SWSURFACE = 0
-  PREALLOC = 0x00000001
-  RLEACCEL = 0x00000002
-  DONTFREE = 0x00000004
-  SIMD_ALIGNED = 0x00000008
+  SURFACE_PREALLOCATED = 0x00000001
+  SURFACE_LOCK_NEEDED = 0x00000002
+  SURFACE_LOCKED = 0x00000004
+  SURFACE_SIMD_ALIGNED = 0x00000008
+  PROP_SURFACE_SDR_WHITE_POINT_FLOAT = "SDL.surface.SDR_white_point"
+  PROP_SURFACE_HDR_HEADROOM_FLOAT = "SDL.surface.HDR_headroom"
+  PROP_SURFACE_TONEMAP_OPERATOR_STRING = "SDL.surface.tonemap"
 
-  alias BlitMap = Void
+  alias Surface = Void
+  alias SurfaceFlags = UInt32
 
-  enum YUVCONVERSIONMODE
-    YUV_CONVERSION_JPEG
-    YUV_CONVERSION_BT601
-    YUV_CONVERSION_BT709
-    YUV_CONVERSION_AUTOMATIC
+  enum ScaleMode
+    SCALEMODE_NEAREST
+    SCALEMODE_LINEAR
   end
 
-  struct Surface
-    flags : UInt32
-    format : PixelFormat*
-    w : LibC::Int
-    h : LibC::Int
-    pitch : LibC::Int
-    pixels : Void*
-    userdata : Void*
-    locked : LibC::Int
-    list_blitmap : Void*
-    clip_rect : Rect
-    map : BlitMap*
-    refcount : LibC::Int
+  enum FlipMode
+    FLIP_NONE
+    FLIP_HORIZONTAL
+    FLIP_VERTICAL
   end
-
-  fun create_rgbsurface = SDL_CreateRGBSurface(flags : UInt32, width : LibC::Int, height : LibC::Int, depth : LibC::Int, rmask : UInt32, gmask : UInt32, bmask : UInt32, amask : UInt32) : Surface*
-  fun create_rgbsurface_with_format = SDL_CreateRGBSurfaceWithFormat(flags : UInt32, width : LibC::Int, height : LibC::Int, depth : LibC::Int, format : UInt32) : Surface*
-  fun create_rgbsurface_from = SDL_CreateRGBSurfaceFrom(pixels : Void*, width : LibC::Int, height : LibC::Int, depth : LibC::Int, pitch : LibC::Int, rmask : UInt32, gmask : UInt32, bmask : UInt32, amask : UInt32) : Surface*
-  fun create_rgbsurface_with_format_from = SDL_CreateRGBSurfaceWithFormatFrom(pixels : Void*, width : LibC::Int, height : LibC::Int, depth : LibC::Int, pitch : LibC::Int, format : UInt32) : Surface*
-  fun free_surface = SDL_FreeSurface(surface : Surface*) : Void
-  fun set_surface_palette = SDL_SetSurfacePalette(surface : Surface*, palette : Palette*) : LibC::Int
-  fun lock_surface = SDL_LockSurface(surface : Surface*) : LibC::Int
-  fun unlock_surface = SDL_UnlockSurface(surface : Surface*) : Void
-  fun load_bmp_rw = SDL_LoadBMP_RW(src : RWops*, freesrc : LibC::Int) : Surface*
-  fun save_bmp_rw = SDL_SaveBMP_RW(surface : Surface*, dst : RWops*, freedst : LibC::Int) : LibC::Int
-  fun set_surface_rle = SDL_SetSurfaceRLE(surface : Surface*, flag : LibC::Int) : LibC::Int
-  fun has_surface_rle = SDL_HasSurfaceRLE(surface : Surface*) : SBool
-  fun set_color_key = SDL_SetColorKey(surface : Surface*, flag : LibC::Int, key : UInt32) : LibC::Int
-  fun has_color_key = SDL_HasColorKey(surface : Surface*) : SBool
-  fun get_color_key = SDL_GetColorKey(surface : Surface*, key : UInt32*) : LibC::Int
-  fun set_surface_color_mod = SDL_SetSurfaceColorMod(surface : Surface*, r : UInt8, g : UInt8, b : UInt8) : LibC::Int
-  fun get_surface_color_mod = SDL_GetSurfaceColorMod(surface : Surface*, r : UInt8*, g : UInt8*, b : UInt8*) : LibC::Int
-  fun set_surface_alpha_mod = SDL_SetSurfaceAlphaMod(surface : Surface*, alpha : UInt8) : LibC::Int
-  fun get_surface_alpha_mod = SDL_GetSurfaceAlphaMod(surface : Surface*, alpha : UInt8*) : LibC::Int
-  fun set_surface_blend_mode = SDL_SetSurfaceBlendMode(surface : Surface*, blend_mode : BlendMode) : LibC::Int
-  fun get_surface_blend_mode = SDL_GetSurfaceBlendMode(surface : Surface*, blend_mode : BlendMode*) : LibC::Int
-  fun set_clip_rect = SDL_SetClipRect(surface : Surface*, rect : Rect*) : SBool
-  fun get_clip_rect = SDL_GetClipRect(surface : Surface*, rect : Rect*) : Void
-  fun duplicate_surface = SDL_DuplicateSurface(surface : Surface*) : Surface*
-  fun convert_surface = SDL_ConvertSurface(src : Surface*, fmt : PixelFormat*, flags : UInt32) : Surface*
-  fun convert_surface_format = SDL_ConvertSurfaceFormat(src : Surface*, pixel_format : UInt32, flags : UInt32) : Surface*
-  fun convert_pixels = SDL_ConvertPixels(width : LibC::Int, height : LibC::Int, src_format : UInt32, src : Void*, src_pitch : LibC::Int, dst_format : UInt32, dst : Void*, dst_pitch : LibC::Int) : LibC::Int
-  fun premultiply_alpha = SDL_PremultiplyAlpha(width : LibC::Int, height : LibC::Int, src_format : UInt32, src : Void*, src_pitch : LibC::Int, dst_format : UInt32, dst : Void*, dst_pitch : LibC::Int) : LibC::Int
-  fun fill_rect = SDL_FillRect(dst : Surface*, rect : Rect*, color : UInt32) : LibC::Int
-  fun fill_rects = SDL_FillRects(dst : Surface*, rects : Rect*, count : LibC::Int, color : UInt32) : LibC::Int
-  fun upper_blit = SDL_UpperBlit(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*) : LibC::Int
-  fun lower_blit = SDL_LowerBlit(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*) : LibC::Int
-  fun soft_stretch = SDL_SoftStretch(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*) : LibC::Int
-  fun soft_stretch_linear = SDL_SoftStretchLinear(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*) : LibC::Int
-  fun upper_blit_scaled = SDL_UpperBlitScaled(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*) : LibC::Int
-  fun lower_blit_scaled = SDL_LowerBlitScaled(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*) : LibC::Int
-  fun set_yuvconversion_mode = SDL_SetYUVConversionMode(mode : YUVCONVERSIONMODE) : Void
-  fun get_yuvconversion_mode = SDL_GetYUVConversionMode() : YUVCONVERSIONMODE
-  fun get_yuvconversion_mode_for_resolution = SDL_GetYUVConversionModeForResolution(width : LibC::Int, height : LibC::Int) : YUVCONVERSIONMODE
 
   # SDL_touch
 
-  TOUCH_MOUSEID = ((Uint32)-1)
-  MOUSE_TOUCHID = ((Sint64)-1)
+  TOUCH_MOUSEID = ((MouseID)-1)
+  MOUSE_TOUCHID = ((TouchID)-1)
 
-  alias TouchID = Int64
-  alias FingerID = Int64
+  alias TouchID = UInt64
+  alias FingerID = UInt64
 
   enum TouchDeviceType
     TOUCH_DEVICE_INVALID = -1
@@ -2421,13 +2205,6 @@ lib LibSDL
     pressure : LibC::Float
   end
 
-  fun get_num_touch_devices = SDL_GetNumTouchDevices() : LibC::Int
-  fun get_touch_device = SDL_GetTouchDevice(index : LibC::Int) : TouchID
-  fun get_touch_name = SDL_GetTouchName(index : LibC::Int) : LibC::Char*
-  fun get_touch_device_type = SDL_GetTouchDeviceType(touch_id : TouchID) : TouchDeviceType
-  fun get_num_touch_fingers = SDL_GetNumTouchFingers(touch_id : TouchID) : LibC::Int
-  fun get_touch_finger = SDL_GetTouchFinger(touch_id : TouchID, index : LibC::Int) : Finger*
-
   # additions/helper_video.cr
 
   # (SDL_Window* win, const SDL_Point* area, void* data)
@@ -2435,69 +2212,141 @@ lib LibSDL
 
   # SDL_video
 
+  PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER = "SDL.video.wayland.wl_display"
+  WINDOW_FULLSCREEN = UINT64_C(0x0000000000000001)
+  WINDOW_OPENGL = UINT64_C(0x0000000000000002)
+  WINDOW_OCCLUDED = UINT64_C(0x0000000000000004)
+  WINDOW_HIDDEN = UINT64_C(0x0000000000000008)
+  WINDOW_BORDERLESS = UINT64_C(0x0000000000000010)
+  WINDOW_RESIZABLE = UINT64_C(0x0000000000000020)
+  WINDOW_MINIMIZED = UINT64_C(0x0000000000000040)
+  WINDOW_MAXIMIZED = UINT64_C(0x0000000000000080)
+  WINDOW_MOUSE_GRABBED = UINT64_C(0x0000000000000100)
+  WINDOW_INPUT_FOCUS = UINT64_C(0x0000000000000200)
+  WINDOW_MOUSE_FOCUS = UINT64_C(0x0000000000000400)
+  WINDOW_EXTERNAL = UINT64_C(0x0000000000000800)
+  WINDOW_MODAL = UINT64_C(0x0000000000001000)
+  WINDOW_HIGH_PIXEL_DENSITY = UINT64_C(0x0000000000002000)
+  WINDOW_MOUSE_CAPTURE = UINT64_C(0x0000000000004000)
+  WINDOW_MOUSE_RELATIVE_MODE = UINT64_C(0x0000000000008000)
+  WINDOW_ALWAYS_ON_TOP = UINT64_C(0x0000000000010000)
+  WINDOW_UTILITY = UINT64_C(0x0000000000020000)
+  WINDOW_TOOLTIP = UINT64_C(0x0000000000040000)
+  WINDOW_POPUP_MENU = UINT64_C(0x0000000000080000)
+  WINDOW_KEYBOARD_GRABBED = UINT64_C(0x0000000000100000)
+  WINDOW_VULKAN = UINT64_C(0x0000000010000000)
+  WINDOW_METAL = UINT64_C(0x0000000020000000)
+  WINDOW_TRANSPARENT = UINT64_C(0x0000000040000000)
+  WINDOW_NOT_FOCUSABLE = UINT64_C(0x0000000080000000)
   WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000
   WINDOWPOS_UNDEFINED = (LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)
   WINDOWPOS_CENTERED_MASK = 0x2FFF0000
   WINDOWPOS_CENTERED = (LibSDL::WINDOWPOS_CENTERED_MASK | 0)
+  GL_CONTEXT_PROFILE_CORE = 0x0001
+  GL_CONTEXT_PROFILE_COMPATIBILITY = 0x0002
+  GL_CONTEXT_PROFILE_ES = 0x0004
+  GL_CONTEXT_DEBUG_FLAG = 0x0001
+  GL_CONTEXT_FORWARD_COMPATIBLE_FLAG = 0x0002
+  GL_CONTEXT_ROBUST_ACCESS_FLAG = 0x0004
+  GL_CONTEXT_RESET_ISOLATION_FLAG = 0x0008
+  GL_CONTEXT_RELEASE_BEHAVIOR_NONE = 0x0000
+  GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH = 0x0001
+  GL_CONTEXT_RESET_NO_NOTIFICATION = 0x0000
+  GL_CONTEXT_RESET_LOSE_CONTEXT = 0x0001
+  PROP_DISPLAY_HDR_ENABLED_BOOLEAN = "SDL.display.HDR_enabled"
+  PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER = "SDL.display.KMSDRM.panel_orientation"
+  PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN = "SDL.window.create.always_on_top"
+  PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN = "SDL.window.create.borderless"
+  PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN = "SDL.window.create.focusable"
+  PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN = "SDL.window.create.external_graphics_context"
+  PROP_WINDOW_CREATE_FLAGS_NUMBER = "SDL.window.create.flags"
+  PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN = "SDL.window.create.fullscreen"
+  PROP_WINDOW_CREATE_HEIGHT_NUMBER = "SDL.window.create.height"
+  PROP_WINDOW_CREATE_HIDDEN_BOOLEAN = "SDL.window.create.hidden"
+  PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN = "SDL.window.create.high_pixel_density"
+  PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN = "SDL.window.create.maximized"
+  PROP_WINDOW_CREATE_MENU_BOOLEAN = "SDL.window.create.menu"
+  PROP_WINDOW_CREATE_METAL_BOOLEAN = "SDL.window.create.metal"
+  PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN = "SDL.window.create.minimized"
+  PROP_WINDOW_CREATE_MODAL_BOOLEAN = "SDL.window.create.modal"
+  PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN = "SDL.window.create.mouse_grabbed"
+  PROP_WINDOW_CREATE_OPENGL_BOOLEAN = "SDL.window.create.opengl"
+  PROP_WINDOW_CREATE_PARENT_POINTER = "SDL.window.create.parent"
+  PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN = "SDL.window.create.resizable"
+  PROP_WINDOW_CREATE_TITLE_STRING = "SDL.window.create.title"
+  PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN = "SDL.window.create.transparent"
+  PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN = "SDL.window.create.tooltip"
+  PROP_WINDOW_CREATE_UTILITY_BOOLEAN = "SDL.window.create.utility"
+  PROP_WINDOW_CREATE_VULKAN_BOOLEAN = "SDL.window.create.vulkan"
+  PROP_WINDOW_CREATE_WIDTH_NUMBER = "SDL.window.create.width"
+  PROP_WINDOW_CREATE_X_NUMBER = "SDL.window.create.x"
+  PROP_WINDOW_CREATE_Y_NUMBER = "SDL.window.create.y"
+  PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER = "SDL.window.create.cocoa.window"
+  PROP_WINDOW_CREATE_COCOA_VIEW_POINTER = "SDL.window.create.cocoa.view"
+  PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN = "SDL.window.create.wayland.surface_role_custom"
+  PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN = "SDL.window.create.wayland.create_egl_window"
+  PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER = "SDL.window.create.wayland.wl_surface"
+  PROP_WINDOW_CREATE_WIN32_HWND_POINTER = "SDL.window.create.win32.hwnd"
+  PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER = "SDL.window.create.win32.pixel_format_hwnd"
+  PROP_WINDOW_CREATE_X11_WINDOW_NUMBER = "SDL.window.create.x11.window"
+  PROP_WINDOW_SHAPE_POINTER = "SDL.window.shape"
+  PROP_WINDOW_HDR_ENABLED_BOOLEAN = "SDL.window.HDR_enabled"
+  PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT = "SDL.window.SDR_white_level"
+  PROP_WINDOW_HDR_HEADROOM_FLOAT = "SDL.window.HDR_headroom"
+  PROP_WINDOW_ANDROID_WINDOW_POINTER = "SDL.window.android.window"
+  PROP_WINDOW_ANDROID_SURFACE_POINTER = "SDL.window.android.surface"
+  PROP_WINDOW_UIKIT_WINDOW_POINTER = "SDL.window.uikit.window"
+  PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER = "SDL.window.uikit.metal_view_tag"
+  PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER = "SDL.window.uikit.opengl.framebuffer"
+  PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER = "SDL.window.uikit.opengl.renderbuffer"
+  PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER = "SDL.window.uikit.opengl.resolve_framebuffer"
+  PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER = "SDL.window.kmsdrm.dev_index"
+  PROP_WINDOW_KMSDRM_DRM_FD_NUMBER = "SDL.window.kmsdrm.drm_fd"
+  PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER = "SDL.window.kmsdrm.gbm_dev"
+  PROP_WINDOW_COCOA_WINDOW_POINTER = "SDL.window.cocoa.window"
+  PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER = "SDL.window.cocoa.metal_view_tag"
+  PROP_WINDOW_OPENVR_OVERLAY_ID = "SDL.window.openvr.overlay_id"
+  PROP_WINDOW_VIVANTE_DISPLAY_POINTER = "SDL.window.vivante.display"
+  PROP_WINDOW_VIVANTE_WINDOW_POINTER = "SDL.window.vivante.window"
+  PROP_WINDOW_VIVANTE_SURFACE_POINTER = "SDL.window.vivante.surface"
+  PROP_WINDOW_WIN32_HWND_POINTER = "SDL.window.win32.hwnd"
+  PROP_WINDOW_WIN32_HDC_POINTER = "SDL.window.win32.hdc"
+  PROP_WINDOW_WIN32_INSTANCE_POINTER = "SDL.window.win32.instance"
+  PROP_WINDOW_WAYLAND_DISPLAY_POINTER = "SDL.window.wayland.display"
+  PROP_WINDOW_WAYLAND_SURFACE_POINTER = "SDL.window.wayland.surface"
+  PROP_WINDOW_WAYLAND_VIEWPORT_POINTER = "SDL.window.wayland.viewport"
+  PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER = "SDL.window.wayland.egl_window"
+  PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER = "SDL.window.wayland.xdg_surface"
+  PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER = "SDL.window.wayland.xdg_toplevel"
+  PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING = "SDL.window.wayland.xdg_toplevel_export_handle"
+  PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER = "SDL.window.wayland.xdg_popup"
+  PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER = "SDL.window.wayland.xdg_positioner"
+  PROP_WINDOW_X11_DISPLAY_POINTER = "SDL.window.x11.display"
+  PROP_WINDOW_X11_SCREEN_NUMBER = "SDL.window.x11.screen"
+  PROP_WINDOW_X11_WINDOW_NUMBER = "SDL.window.x11.window"
+  WINDOW_SURFACE_VSYNC_DISABLED = 0
+  WINDOW_SURFACE_VSYNC_ADAPTIVE = (-1)
 
+  alias DisplayModeData = Void
   alias Window = Void
-  alias GLContext = Void*
+  alias GLContext = Void
+  alias DisplayID = UInt32
+  alias WindowID = UInt32
+  alias WindowFlags = UInt64
+  alias EGLDisplay = Void*
+  alias EGLConfig = Void*
+  alias EGLSurface = Void*
+  alias EGLAttrib = LibC::IntptrT
+  alias EGLint = LibC::Int
+  alias GLProfile = UInt32
+  alias GLContextFlag = UInt32
+  alias GLContextReleaseFlag = UInt32
+  alias GLContextResetNotification = UInt32
 
-  enum WindowFlags
-    WINDOW_FULLSCREEN = 0x00000001
-    WINDOW_OPENGL = 0x00000002
-    WINDOW_SHOWN = 0x00000004
-    WINDOW_HIDDEN = 0x00000008
-    WINDOW_BORDERLESS = 0x00000010
-    WINDOW_RESIZABLE = 0x00000020
-    WINDOW_MINIMIZED = 0x00000040
-    WINDOW_MAXIMIZED = 0x00000080
-    WINDOW_MOUSE_GRABBED = 0x00000100
-    WINDOW_INPUT_FOCUS = 0x00000200
-    WINDOW_MOUSE_FOCUS = 0x00000400
-    WINDOW_FULLSCREEN_DESKTOP = (WINDOW_FULLSCREEN | 0x00001000)
-    WINDOW_FOREIGN = 0x00000800
-    WINDOW_ALLOW_HIGHDPI = 0x00002000
-    WINDOW_MOUSE_CAPTURE = 0x00004000
-    WINDOW_ALWAYS_ON_TOP = 0x00008000
-    WINDOW_SKIP_TASKBAR = 0x00010000
-    WINDOW_UTILITY = 0x00020000
-    WINDOW_TOOLTIP = 0x00040000
-    WINDOW_POPUP_MENU = 0x00080000
-    WINDOW_KEYBOARD_GRABBED = 0x00100000
-    WINDOW_VULKAN = 0x10000000
-    WINDOW_METAL = 0x20000000
-    WINDOW_INPUT_GRABBED = WINDOW_MOUSE_GRABBED
-  end
-
-  enum WindowEventID
-    WINDOWEVENT_NONE
-    WINDOWEVENT_SHOWN
-    WINDOWEVENT_HIDDEN
-    WINDOWEVENT_EXPOSED
-    WINDOWEVENT_MOVED
-    WINDOWEVENT_RESIZED
-    WINDOWEVENT_SIZE_CHANGED
-    WINDOWEVENT_MINIMIZED
-    WINDOWEVENT_MAXIMIZED
-    WINDOWEVENT_RESTORED
-    WINDOWEVENT_ENTER
-    WINDOWEVENT_LEAVE
-    WINDOWEVENT_FOCUS_GAINED
-    WINDOWEVENT_FOCUS_LOST
-    WINDOWEVENT_CLOSE
-    WINDOWEVENT_TAKE_FOCUS
-    WINDOWEVENT_HIT_TEST
-    WINDOWEVENT_ICCPROF_CHANGED
-    WINDOWEVENT_DISPLAY_CHANGED
-  end
-
-  enum DisplayEventID
-    DISPLAYEVENT_NONE
-    DISPLAYEVENT_ORIENTATION
-    DISPLAYEVENT_CONNECTED
-    DISPLAYEVENT_DISCONNECTED
-    DISPLAYEVENT_MOVED
+  enum SystemTheme
+    SYSTEM_THEME_UNKNOWN
+    SYSTEM_THEME_LIGHT
+    SYSTEM_THEME_DARK
   end
 
   enum DisplayOrientation
@@ -2514,7 +2363,7 @@ lib LibSDL
     FLASH_UNTIL_FOCUSED
   end
 
-  enum GLattr
+  enum GLAttr
     GL_RED_SIZE
     GL_GREEN_SIZE
     GL_BLUE_SIZE
@@ -2534,7 +2383,6 @@ lib LibSDL
     GL_RETAINED_BACKING
     GL_CONTEXT_MAJOR_VERSION
     GL_CONTEXT_MINOR_VERSION
-    GL_CONTEXT_EGL
     GL_CONTEXT_FLAGS
     GL_CONTEXT_PROFILE_MASK
     GL_SHARE_WITH_CURRENT_CONTEXT
@@ -2543,29 +2391,7 @@ lib LibSDL
     GL_CONTEXT_RESET_NOTIFICATION
     GL_CONTEXT_NO_ERROR
     GL_FLOATBUFFERS
-  end
-
-  enum GLprofile
-    GL_CONTEXT_PROFILE_CORE = 0x0001
-    GL_CONTEXT_PROFILE_COMPATIBILITY = 0x0002
-    GL_CONTEXT_PROFILE_ES = 0x0004
-  end
-
-  enum GLcontextFlag
-    GL_CONTEXT_DEBUG_FLAG = 0x0001
-    GL_CONTEXT_FORWARD_COMPATIBLE_FLAG = 0x0002
-    GL_CONTEXT_ROBUST_ACCESS_FLAG = 0x0004
-    GL_CONTEXT_RESET_ISOLATION_FLAG = 0x0008
-  end
-
-  enum GLcontextReleaseFlag
-    GL_CONTEXT_RELEASE_BEHAVIOR_NONE = 0x0000
-    GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH = 0x0001
-  end
-
-  enum GLContextResetNotification
-    GL_CONTEXT_RESET_NO_NOTIFICATION = 0x0000
-    GL_CONTEXT_RESET_LOSE_CONTEXT = 0x0001
+    GL_EGL_PLATFORM
   end
 
   enum HitTestResult
@@ -2582,110 +2408,16 @@ lib LibSDL
   end
 
   struct DisplayMode
-    format : UInt32
+    display_id : DisplayID
+    format : PixelFormat
     w : LibC::Int
     h : LibC::Int
-    refresh_rate : LibC::Int
-    driverdata : Void*
+    pixel_density : LibC::Float
+    refresh_rate : LibC::Float
+    refresh_rate_numerator : LibC::Int
+    refresh_rate_denominator : LibC::Int
+    internal : DisplayModeData*
   end
-
-  fun get_num_video_drivers = SDL_GetNumVideoDrivers() : LibC::Int
-  fun get_video_driver = SDL_GetVideoDriver(index : LibC::Int) : LibC::Char*
-  fun video_init = SDL_VideoInit(driver_name : LibC::Char*) : LibC::Int
-  fun video_quit = SDL_VideoQuit() : Void
-  fun get_current_video_driver = SDL_GetCurrentVideoDriver() : LibC::Char*
-  fun get_num_video_displays = SDL_GetNumVideoDisplays() : LibC::Int
-  fun get_display_name = SDL_GetDisplayName(display_index : LibC::Int) : LibC::Char*
-  fun get_display_bounds = SDL_GetDisplayBounds(display_index : LibC::Int, rect : Rect*) : LibC::Int
-  fun get_display_usable_bounds = SDL_GetDisplayUsableBounds(display_index : LibC::Int, rect : Rect*) : LibC::Int
-  fun get_display_dpi = SDL_GetDisplayDPI(display_index : LibC::Int, ddpi : LibC::Float*, hdpi : LibC::Float*, vdpi : LibC::Float*) : LibC::Int
-  fun get_display_orientation = SDL_GetDisplayOrientation(display_index : LibC::Int) : DisplayOrientation
-  fun get_num_display_modes = SDL_GetNumDisplayModes(display_index : LibC::Int) : LibC::Int
-  fun get_display_mode = SDL_GetDisplayMode(display_index : LibC::Int, mode_index : LibC::Int, mode : DisplayMode*) : LibC::Int
-  fun get_desktop_display_mode = SDL_GetDesktopDisplayMode(display_index : LibC::Int, mode : DisplayMode*) : LibC::Int
-  fun get_current_display_mode = SDL_GetCurrentDisplayMode(display_index : LibC::Int, mode : DisplayMode*) : LibC::Int
-  fun get_closest_display_mode = SDL_GetClosestDisplayMode(display_index : LibC::Int, mode : DisplayMode*, closest : DisplayMode*) : DisplayMode*
-  fun get_point_display_index = SDL_GetPointDisplayIndex(point : Point*) : LibC::Int
-  fun get_rect_display_index = SDL_GetRectDisplayIndex(rect : Rect*) : LibC::Int
-  fun get_window_display_index = SDL_GetWindowDisplayIndex(window : Window*) : LibC::Int
-  fun set_window_display_mode = SDL_SetWindowDisplayMode(window : Window*, mode : DisplayMode*) : LibC::Int
-  fun get_window_display_mode = SDL_GetWindowDisplayMode(window : Window*, mode : DisplayMode*) : LibC::Int
-  fun get_window_iccprofile = SDL_GetWindowICCProfile(window : Window*, size : LibC::SizeT*) : Void*
-  fun get_window_pixel_format = SDL_GetWindowPixelFormat(window : Window*) : UInt32
-  fun create_window = SDL_CreateWindow(title : LibC::Char*, x : LibC::Int, y : LibC::Int, w : LibC::Int, h : LibC::Int, flags : UInt32) : Window*
-  fun create_window_from = SDL_CreateWindowFrom(data : Void*) : Window*
-  fun get_window_id = SDL_GetWindowID(window : Window*) : UInt32
-  fun get_window_from_id = SDL_GetWindowFromID(id : UInt32) : Window*
-  fun get_window_flags = SDL_GetWindowFlags(window : Window*) : UInt32
-  fun set_window_title = SDL_SetWindowTitle(window : Window*, title : LibC::Char*) : Void
-  fun get_window_title = SDL_GetWindowTitle(window : Window*) : LibC::Char*
-  fun set_window_icon = SDL_SetWindowIcon(window : Window*, icon : Surface*) : Void
-  fun set_window_data = SDL_SetWindowData(window : Window*, name : LibC::Char*, userdata : Void*) : Void*
-  fun get_window_data = SDL_GetWindowData(window : Window*, name : LibC::Char*) : Void*
-  fun set_window_position = SDL_SetWindowPosition(window : Window*, x : LibC::Int, y : LibC::Int) : Void
-  fun get_window_position = SDL_GetWindowPosition(window : Window*, x : LibC::Int*, y : LibC::Int*) : Void
-  fun set_window_size = SDL_SetWindowSize(window : Window*, w : LibC::Int, h : LibC::Int) : Void
-  fun get_window_size = SDL_GetWindowSize(window : Window*, w : LibC::Int*, h : LibC::Int*) : Void
-  fun get_window_borders_size = SDL_GetWindowBordersSize(window : Window*, top : LibC::Int*, left : LibC::Int*, bottom : LibC::Int*, right : LibC::Int*) : LibC::Int
-  fun get_window_size_in_pixels = SDL_GetWindowSizeInPixels(window : Window*, w : LibC::Int*, h : LibC::Int*) : Void
-  fun set_window_minimum_size = SDL_SetWindowMinimumSize(window : Window*, min_w : LibC::Int, min_h : LibC::Int) : Void
-  fun get_window_minimum_size = SDL_GetWindowMinimumSize(window : Window*, w : LibC::Int*, h : LibC::Int*) : Void
-  fun set_window_maximum_size = SDL_SetWindowMaximumSize(window : Window*, max_w : LibC::Int, max_h : LibC::Int) : Void
-  fun get_window_maximum_size = SDL_GetWindowMaximumSize(window : Window*, w : LibC::Int*, h : LibC::Int*) : Void
-  fun set_window_bordered = SDL_SetWindowBordered(window : Window*, bordered : SBool) : Void
-  fun set_window_resizable = SDL_SetWindowResizable(window : Window*, resizable : SBool) : Void
-  fun set_window_always_on_top = SDL_SetWindowAlwaysOnTop(window : Window*, on_top : SBool) : Void
-  fun show_window = SDL_ShowWindow(window : Window*) : Void
-  fun hide_window = SDL_HideWindow(window : Window*) : Void
-  fun raise_window = SDL_RaiseWindow(window : Window*) : Void
-  fun maximize_window = SDL_MaximizeWindow(window : Window*) : Void
-  fun minimize_window = SDL_MinimizeWindow(window : Window*) : Void
-  fun restore_window = SDL_RestoreWindow(window : Window*) : Void
-  fun set_window_fullscreen = SDL_SetWindowFullscreen(window : Window*, flags : UInt32) : LibC::Int
-  fun has_window_surface = SDL_HasWindowSurface(window : Window*) : SBool
-  fun get_window_surface = SDL_GetWindowSurface(window : Window*) : Surface*
-  fun update_window_surface = SDL_UpdateWindowSurface(window : Window*) : LibC::Int
-  fun update_window_surface_rects = SDL_UpdateWindowSurfaceRects(window : Window*, rects : Rect*, numrects : LibC::Int) : LibC::Int
-  fun destroy_window_surface = SDL_DestroyWindowSurface(window : Window*) : LibC::Int
-  fun set_window_grab = SDL_SetWindowGrab(window : Window*, grabbed : SBool) : Void
-  fun set_window_keyboard_grab = SDL_SetWindowKeyboardGrab(window : Window*, grabbed : SBool) : Void
-  fun set_window_mouse_grab = SDL_SetWindowMouseGrab(window : Window*, grabbed : SBool) : Void
-  fun get_window_grab = SDL_GetWindowGrab(window : Window*) : SBool
-  fun get_window_keyboard_grab = SDL_GetWindowKeyboardGrab(window : Window*) : SBool
-  fun get_window_mouse_grab = SDL_GetWindowMouseGrab(window : Window*) : SBool
-  fun get_grabbed_window = SDL_GetGrabbedWindow() : Window*
-  fun set_window_mouse_rect = SDL_SetWindowMouseRect(window : Window*, rect : Rect*) : LibC::Int
-  fun get_window_mouse_rect = SDL_GetWindowMouseRect(window : Window*) : Rect*
-  fun set_window_brightness = SDL_SetWindowBrightness(window : Window*, brightness : LibC::Float) : LibC::Int
-  fun get_window_brightness = SDL_GetWindowBrightness(window : Window*) : LibC::Float
-  fun set_window_opacity = SDL_SetWindowOpacity(window : Window*, opacity : LibC::Float) : LibC::Int
-  fun get_window_opacity = SDL_GetWindowOpacity(window : Window*, out_opacity : LibC::Float*) : LibC::Int
-  fun set_window_modal_for = SDL_SetWindowModalFor(modal_window : Window*, parent_window : Window*) : LibC::Int
-  fun set_window_input_focus = SDL_SetWindowInputFocus(window : Window*) : LibC::Int
-  fun set_window_gamma_ramp = SDL_SetWindowGammaRamp(window : Window*, red : UInt16*, green : UInt16*, blue : UInt16*) : LibC::Int
-  fun get_window_gamma_ramp = SDL_GetWindowGammaRamp(window : Window*, red : UInt16*, green : UInt16*, blue : UInt16*) : LibC::Int
-  fun set_window_hit_test = SDL_SetWindowHitTest(window : Window*, callback : HitTest, callback_data : Void*) : LibC::Int
-  fun flash_window = SDL_FlashWindow(window : Window*, operation : FlashOperation) : LibC::Int
-  fun destroy_window = SDL_DestroyWindow(window : Window*) : Void
-  fun is_screen_saver_enabled = SDL_IsScreenSaverEnabled() : SBool
-  fun enable_screen_saver = SDL_EnableScreenSaver() : Void
-  fun disable_screen_saver = SDL_DisableScreenSaver() : Void
-  fun gl_load_library = SDL_GL_LoadLibrary(path : LibC::Char*) : LibC::Int
-  fun gl_get_proc_address = SDL_GL_GetProcAddress(proc : LibC::Char*) : Void*
-  fun gl_unload_library = SDL_GL_UnloadLibrary() : Void
-  fun gl_extension_supported = SDL_GL_ExtensionSupported(extension : LibC::Char*) : SBool
-  fun gl_reset_attributes = SDL_GL_ResetAttributes() : Void
-  fun gl_set_attribute = SDL_GL_SetAttribute(attr : GLattr, value : LibC::Int) : LibC::Int
-  fun gl_get_attribute = SDL_GL_GetAttribute(attr : GLattr, value : LibC::Int*) : LibC::Int
-  fun gl_create_context = SDL_GL_CreateContext(window : Window*) : GLContext
-  fun gl_make_current = SDL_GL_MakeCurrent(window : Window*, context : GLContext) : LibC::Int
-  fun gl_get_current_window = SDL_GL_GetCurrentWindow() : Window*
-  fun gl_get_current_context = SDL_GL_GetCurrentContext() : GLContext
-  fun gl_get_drawable_size = SDL_GL_GetDrawableSize(window : Window*, w : LibC::Int*, h : LibC::Int*) : Void
-  fun gl_set_swap_interval = SDL_GL_SetSwapInterval(interval : LibC::Int) : LibC::Int
-  fun gl_get_swap_interval = SDL_GL_GetSwapInterval() : LibC::Int
-  fun gl_swap_window = SDL_GL_SwapWindow(window : Window*) : Void
-  fun gl_delete_context = SDL_GL_DeleteContext(context : GLContext) : Void
 
 end
 

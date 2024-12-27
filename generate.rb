@@ -6,7 +6,7 @@ def compact_header(header)
   name = header[0]
   return if name.start_with? "additions/"
 
-  external_path = header[1] ? header[1] : "SDL/SDL2/include"
+  external_path = header[1] ? header[1] : "SDL/refs/heads/main/include/SDL3"
 
   puts "EX = #{external_path}"
 
@@ -376,16 +376,16 @@ headers = [
 ]
 
 img_headers = [
-  ["SDL_image", "SDL_image/SDL2/include"]
+  ["SDL_image", "SDL_image/refs/heads/main/include/SDL3_image"]
 ]
 
 mix_headers = [
   ["additions/helper_mixer.cr"],
-  ["SDL_mixer", "SDL_mixer/SDL2/include"]
+  ["SDL_mixer", "SDL_mixer/refs/heads/main/include/SDL3_mixer"]
 ]
 
 ttf_headers = [
-  ["SDL_ttf", "SDL_ttf/SDL2"]
+  ["SDL_ttf", "SDL_ttf/refs/heads/main/include/SDL3_ttf"]
 ]
 
 (headers + img_headers + mix_headers + ttf_headers).each {|header| compact_header(header)}
@@ -447,7 +447,7 @@ def write_bindings_to_file(filename, which_headers, lib_name, macro_file)
 end
 
 system("mkdir -p src")
-write_bindings_to_file("src/sdl-crystal-bindings.cr", headers, "SDL2", "additions/macros.cr")
-write_bindings_to_file("src/sdl-image-bindings.cr", img_headers, "SDL2_image", "additions/macros_img.cr")
-write_bindings_to_file("src/sdl-mixer-bindings.cr", mix_headers, "SDL2_mixer", "additions/macros_mix.cr")
-write_bindings_to_file("src/sdl-ttf-bindings.cr", ttf_headers, "SDL2_ttf", "additions/macros_ttf.cr")
+write_bindings_to_file("src/sdl-crystal-bindings.cr", headers, "SDL3", "additions/macros.cr")
+write_bindings_to_file("src/sdl-image-bindings.cr", img_headers, "SDL3_image", "additions/macros_img.cr")
+write_bindings_to_file("src/sdl-mixer-bindings.cr", mix_headers, "SDL3_mixer", "additions/macros_mix.cr")
+write_bindings_to_file("src/sdl-ttf-bindings.cr", ttf_headers, "SDL3_ttf", "additions/macros_ttf.cr")
