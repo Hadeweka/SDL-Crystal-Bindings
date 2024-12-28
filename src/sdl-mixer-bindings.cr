@@ -2,22 +2,24 @@
 lib LibSDL
   # additions/helper_mixer.cr
 
+  # (void *udata, Uint8 *stream, int len)
+  alias MixMixCallback = (Void*, UInt8*, LibC::Int) -> Void
+
+  # (void)
+  alias MixMusicFinishedCallback = (Void) -> Void
+
+  # (int channel)
+  alias MixChannelFinishedCallback = (LibC::Int) -> Void
+
+  # (const char*, void*)
+  alias MixEachSoundFontCallback = (LibC::Char*, Void*) -> LibC::Int
+
   # (int chan, void *stream, int len, void *udata)
   alias MixEffectFuncT = (LibC::Int, Void*, LibC::Int, Void*) -> Void
 
   # (int chan, void *udata)
   alias MixEffectDoneT = (LibC::Int, Void*) -> Void
   
-  # (void *udata, Uint8 *stream, int len)
-  fun mix_set_post_mix = Mix_SetPostMix(mix_func : (Void*, UInt8*, LibC::Int) -> Void, arg : Void*) : Void
-  # (void *udata, Uint8 *stream, int len)
-  fun mix_hook_music = Mix_HookMusic(mix_func : (Void*, UInt8*, LibC::Int) -> Void, arg : Void*) : Void
-  # (void)
-  fun mix_hook_music_finished = Mix_HookMusicFinished(music_finished : (Void) -> Void) : Void
-  # (int channel)
-  fun mix_channel_finished = Mix_ChannelFinished(channel_finished : (LibC::Int) -> Void) : Void
-  # (const char*, void*)
-  fun mix_each_sound_font = Mix_EachSoundFont(function : (LibC::Char*, Void*) -> LibC::Int, data : Void*) : LibC::Int 
 
   # SDL_mixer
 
@@ -106,7 +108,11 @@ lib LibSDL
   fun mix_get_music_artist_tag = Mix_GetMusicArtistTag(music : MixMusic*) : LibC::Char*
   fun mix_get_music_album_tag = Mix_GetMusicAlbumTag(music : MixMusic*) : LibC::Char*
   fun mix_get_music_copyright_tag = Mix_GetMusicCopyrightTag(music : MixMusic*) : LibC::Char*
+  fun mix_set_post_mix = Mix_SetPostMix(mix_func : MixMixCallback, arg : Void*) : Void
+  fun mix_hook_music = Mix_HookMusic(mix_func : MixMixCallback, arg : Void*) : Void
+  fun mix_hook_music_finished = Mix_HookMusicFinished(music_finished : MixMusicFinishedCallback) : Void
   fun mix_get_music_hook_data = Mix_GetMusicHookData() : Void*
+  fun mix_channel_finished = Mix_ChannelFinished(channel_finished : MixChannelFinishedCallback) : Void
   fun mix_register_effect = Mix_RegisterEffect(chan : LibC::Int, f : MixEffectFuncT, d : MixEffectDoneT, arg : Void*) : LibC::Int
   fun mix_unregister_effect = Mix_UnregisterEffect(channel : LibC::Int, f : MixEffectFuncT) : LibC::Int
   fun mix_unregister_all_effects = Mix_UnregisterAllEffects(channel : LibC::Int) : LibC::Int
@@ -165,6 +171,7 @@ lib LibSDL
   fun mix_get_synchro_value = Mix_GetSynchroValue() : LibC::Int
   fun mix_set_sound_fonts = Mix_SetSoundFonts(paths : LibC::Char*) : LibC::Int
   fun mix_get_sound_fonts = Mix_GetSoundFonts() : LibC::Char*
+  fun mix_each_sound_font = Mix_EachSoundFont(function : MixEachSoundFontCallback, data : Void*) : LibC::Int
   fun mix_set_timidity_cfg = Mix_SetTimidityCfg(path : LibC::Char*) : LibC::Int
   fun mix_get_timidity_cfg = Mix_GetTimidityCfg() : LibC::Char*
   fun mix_get_chunk = Mix_GetChunk(channel : LibC::Int) : MixChunk*

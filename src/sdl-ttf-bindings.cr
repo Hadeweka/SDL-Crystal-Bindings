@@ -58,6 +58,7 @@ lib LibSDL
   fun ttf_font_ascent = TTF_FontAscent(font : TTFFont*) : LibC::Int
   fun ttf_font_descent = TTF_FontDescent(font : TTFFont*) : LibC::Int
   fun ttf_font_line_skip = TTF_FontLineSkip(font : TTFFont*) : LibC::Int
+  fun ttf_set_font_line_skip = TTF_SetFontLineSkip(font : TTFFont*, lineskip : LibC::Int) : Void
   fun ttf_get_font_kerning = TTF_GetFontKerning(font : TTFFont*) : LibC::Int
   fun ttf_set_font_kerning = TTF_SetFontKerning(font : TTFFont*, allowed : LibC::Int) : Void
   fun ttf_font_faces = TTF_FontFaces(font : TTFFont*) : LibC::Long

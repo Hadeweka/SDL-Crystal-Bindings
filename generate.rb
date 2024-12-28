@@ -110,7 +110,8 @@ def should_struct_be_excluded?(name)
     "hidden",
     "androidio",
     "SDL_WindowShapeMode",
-    "WindowShapeMode"
+    "WindowShapeMode",
+    "Mix_MusicFinishedCallback)(void)"  # TODO: A bit cheaty due to the way the Regexes work, but it does the job for now
   ]
 
   filters.index(name)
@@ -129,11 +130,6 @@ end
 
 def should_function_be_excluded?(name)
   filters = [
-    "Mix_SetPostMix",
-    "Mix_HookMusic",
-    "Mix_HookMusicFinished",
-    "Mix_ChannelFinished",
-    "Mix_EachSoundFont"
   ]
 
   filters.index(name)
@@ -196,6 +192,7 @@ def get_all_structs(filename)
   end
 
   typedefs.each do |match|
+    puts match.inspect
     next if should_struct_be_excluded?(match[1])
     final_typedefs.push [match[1], match[0]]
   end
@@ -451,3 +448,9 @@ write_bindings_to_file("src/sdl-crystal-bindings.cr", headers, "SDL2", "addition
 write_bindings_to_file("src/sdl-image-bindings.cr", img_headers, "SDL2_image", "additions/macros_img.cr")
 write_bindings_to_file("src/sdl-mixer-bindings.cr", mix_headers, "SDL2_mixer", "additions/macros_mix.cr")
 write_bindings_to_file("src/sdl-ttf-bindings.cr", ttf_headers, "SDL2_ttf", "additions/macros_ttf.cr")
+
+# TODO: Fix mixer callbacks
+# TODO: Add missing functions to SDL2
+# TODO: Inspect differences between SDL2 and SDL3
+# TODO: Check macros for SDL3 (and remove obsolete functions)
+# TODO: Finalize and think about how to use different versions
