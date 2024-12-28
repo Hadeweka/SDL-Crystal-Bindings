@@ -110,7 +110,8 @@ def should_struct_be_excluded?(name)
     "hidden",
     "androidio",
     "SDL_WindowShapeMode",
-    "WindowShapeMode"
+    "WindowShapeMode",
+    "Mix_MusicFinishedCallback)(void)"  # TODO: A bit cheaty due to the way the Regexes work, but it does the job for now
   ]
 
   filters.index(name)
@@ -129,11 +130,6 @@ end
 
 def should_function_be_excluded?(name)
   filters = [
-    "Mix_SetPostMix",
-    "Mix_HookMusic",
-    "Mix_HookMusicFinished",
-    "Mix_ChannelFinished",
-    "Mix_EachSoundFont"
   ]
 
   filters.index(name)
@@ -154,7 +150,7 @@ def get_all_functions(filename)
   end
 
   lines.each do |line|
-    function_matches = line.match(/extern DECLSPEC ([^;]*);/)
+    function_matches = line.match(/extern SDL_DECLSPEC ([^;]*);/)
     if function_matches
       function_part = function_matches[1].gsub("SDL_PRINTF_FORMAT_STRING", "").gsub(" SDL_ACQUIRE(SDL_joystick_lock)", "").gsub(" SDL_RELEASE(SDL_joystick_lock)", "").gsub(/SDL_PRINTF_VARARG_FUNC\([\d]+\)/, "")
 
@@ -451,3 +447,7 @@ write_bindings_to_file("src/sdl-crystal-bindings.cr", headers, "SDL3", "addition
 write_bindings_to_file("src/sdl-image-bindings.cr", img_headers, "SDL3_image", "additions/macros_img.cr")
 write_bindings_to_file("src/sdl-mixer-bindings.cr", mix_headers, "SDL3_mixer", "additions/macros_mix.cr")
 write_bindings_to_file("src/sdl-ttf-bindings.cr", ttf_headers, "SDL3_ttf", "additions/macros_ttf.cr")
+
+# TODO: Inspect differences between SDL2 and SDL3 (missing: gamecontroller, gesture, rwops, shape)
+# TODO: Check macros for SDL3 (and remove obsolete functions)
+# TODO: Finalize and think about how to use different versions
