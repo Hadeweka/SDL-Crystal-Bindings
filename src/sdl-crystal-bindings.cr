@@ -12,13 +12,6 @@ lib LibSDL
   fun get_version = SDL_GetVersion() : LibC::Int
   fun get_revision = SDL_GetRevision() : LibC::Char*
 
-  # additions/helper_types.cr
-
-  enum SBool
-    FALSE = 0
-    TRUE = 1
-  end
-
   # SDL_scancode
 
   enum Scancode
@@ -297,53 +290,53 @@ lib LibSDL
   fun get_audio_playback_devices = SDL_GetAudioPlaybackDevices(count : LibC::Int*) : AudioDeviceID*
   fun get_audio_recording_devices = SDL_GetAudioRecordingDevices(count : LibC::Int*) : AudioDeviceID*
   fun get_audio_device_name = SDL_GetAudioDeviceName(devid : AudioDeviceID) : LibC::Char*
-  fun get_audio_device_format = SDL_GetAudioDeviceFormat(devid : AudioDeviceID, spec : AudioSpec*, sample_frames : LibC::Int*) : bool
+  fun get_audio_device_format = SDL_GetAudioDeviceFormat(devid : AudioDeviceID, spec : AudioSpec*, sample_frames : LibC::Int*) : Bool
   fun get_audio_device_channel_map = SDL_GetAudioDeviceChannelMap(devid : AudioDeviceID, count : LibC::Int*) : LibC::Int*
   fun open_audio_device = SDL_OpenAudioDevice(devid : AudioDeviceID, spec : AudioSpec*) : AudioDeviceID
-  fun is_audio_device_physical = SDL_IsAudioDevicePhysical(devid : AudioDeviceID) : bool
-  fun is_audio_device_playback = SDL_IsAudioDevicePlayback(devid : AudioDeviceID) : bool
-  fun pause_audio_device = SDL_PauseAudioDevice(dev : AudioDeviceID) : bool
-  fun resume_audio_device = SDL_ResumeAudioDevice(dev : AudioDeviceID) : bool
-  fun audio_device_paused = SDL_AudioDevicePaused(dev : AudioDeviceID) : bool
+  fun is_audio_device_physical = SDL_IsAudioDevicePhysical(devid : AudioDeviceID) : Bool
+  fun is_audio_device_playback = SDL_IsAudioDevicePlayback(devid : AudioDeviceID) : Bool
+  fun pause_audio_device = SDL_PauseAudioDevice(dev : AudioDeviceID) : Bool
+  fun resume_audio_device = SDL_ResumeAudioDevice(dev : AudioDeviceID) : Bool
+  fun audio_device_paused = SDL_AudioDevicePaused(dev : AudioDeviceID) : Bool
   fun get_audio_device_gain = SDL_GetAudioDeviceGain(devid : AudioDeviceID) : LibC::Float
-  fun set_audio_device_gain = SDL_SetAudioDeviceGain(devid : AudioDeviceID, gain : LibC::Float) : bool
+  fun set_audio_device_gain = SDL_SetAudioDeviceGain(devid : AudioDeviceID, gain : LibC::Float) : Bool
   fun close_audio_device = SDL_CloseAudioDevice(devid : AudioDeviceID) : Void
-  fun bind_audio_streams = SDL_BindAudioStreams(devid : AudioDeviceID, streams : AudioStream* const*, num_streams : LibC::Int) : bool
-  fun bind_audio_stream = SDL_BindAudioStream(devid : AudioDeviceID, stream : AudioStream*) : bool
+  fun bind_audio_streams = SDL_BindAudioStreams(devid : AudioDeviceID, streams : AudioStream* const*, num_streams : LibC::Int) : Bool
+  fun bind_audio_stream = SDL_BindAudioStream(devid : AudioDeviceID, stream : AudioStream*) : Bool
   fun unbind_audio_streams = SDL_UnbindAudioStreams(streams : AudioStream* const*, num_streams : LibC::Int) : Void
   fun unbind_audio_stream = SDL_UnbindAudioStream(stream : AudioStream*) : Void
   fun get_audio_stream_device = SDL_GetAudioStreamDevice(stream : AudioStream*) : AudioDeviceID
   fun create_audio_stream = SDL_CreateAudioStream(src_spec : AudioSpec*, dst_spec : AudioSpec*) : AudioStream*
   fun get_audio_stream_properties = SDL_GetAudioStreamProperties(stream : AudioStream*) : PropertiesID
-  fun get_audio_stream_format = SDL_GetAudioStreamFormat(stream : AudioStream*, src_spec : AudioSpec*, dst_spec : AudioSpec*) : bool
-  fun set_audio_stream_format = SDL_SetAudioStreamFormat(stream : AudioStream*, src_spec : AudioSpec*, dst_spec : AudioSpec*) : bool
+  fun get_audio_stream_format = SDL_GetAudioStreamFormat(stream : AudioStream*, src_spec : AudioSpec*, dst_spec : AudioSpec*) : Bool
+  fun set_audio_stream_format = SDL_SetAudioStreamFormat(stream : AudioStream*, src_spec : AudioSpec*, dst_spec : AudioSpec*) : Bool
   fun get_audio_stream_frequency_ratio = SDL_GetAudioStreamFrequencyRatio(stream : AudioStream*) : LibC::Float
-  fun set_audio_stream_frequency_ratio = SDL_SetAudioStreamFrequencyRatio(stream : AudioStream*, ratio : LibC::Float) : bool
+  fun set_audio_stream_frequency_ratio = SDL_SetAudioStreamFrequencyRatio(stream : AudioStream*, ratio : LibC::Float) : Bool
   fun get_audio_stream_gain = SDL_GetAudioStreamGain(stream : AudioStream*) : LibC::Float
-  fun set_audio_stream_gain = SDL_SetAudioStreamGain(stream : AudioStream*, gain : LibC::Float) : bool
+  fun set_audio_stream_gain = SDL_SetAudioStreamGain(stream : AudioStream*, gain : LibC::Float) : Bool
   fun get_audio_stream_input_channel_map = SDL_GetAudioStreamInputChannelMap(stream : AudioStream*, count : LibC::Int*) : LibC::Int*
   fun get_audio_stream_output_channel_map = SDL_GetAudioStreamOutputChannelMap(stream : AudioStream*, count : LibC::Int*) : LibC::Int*
-  fun set_audio_stream_input_channel_map = SDL_SetAudioStreamInputChannelMap(stream : AudioStream*, chmap : LibC::Int*, count : LibC::Int) : bool
-  fun set_audio_stream_output_channel_map = SDL_SetAudioStreamOutputChannelMap(stream : AudioStream*, chmap : LibC::Int*, count : LibC::Int) : bool
-  fun put_audio_stream_data = SDL_PutAudioStreamData(stream : AudioStream*, buf : Void*, len : LibC::Int) : bool
+  fun set_audio_stream_input_channel_map = SDL_SetAudioStreamInputChannelMap(stream : AudioStream*, chmap : LibC::Int*, count : LibC::Int) : Bool
+  fun set_audio_stream_output_channel_map = SDL_SetAudioStreamOutputChannelMap(stream : AudioStream*, chmap : LibC::Int*, count : LibC::Int) : Bool
+  fun put_audio_stream_data = SDL_PutAudioStreamData(stream : AudioStream*, buf : Void*, len : LibC::Int) : Bool
   fun get_audio_stream_data = SDL_GetAudioStreamData(stream : AudioStream*, buf : Void*, len : LibC::Int) : LibC::Int
   fun get_audio_stream_available = SDL_GetAudioStreamAvailable(stream : AudioStream*) : LibC::Int
   fun get_audio_stream_queued = SDL_GetAudioStreamQueued(stream : AudioStream*) : LibC::Int
-  fun flush_audio_stream = SDL_FlushAudioStream(stream : AudioStream*) : bool
-  fun clear_audio_stream = SDL_ClearAudioStream(stream : AudioStream*) : bool
-  fun pause_audio_stream_device = SDL_PauseAudioStreamDevice(stream : AudioStream*) : bool
-  fun resume_audio_stream_device = SDL_ResumeAudioStreamDevice(stream : AudioStream*) : bool
-  fun lock_audio_stream = SDL_LockAudioStream(stream : AudioStream*) : bool
-  fun unlock_audio_stream = SDL_UnlockAudioStream(stream : AudioStream*) : bool
-  fun set_audio_stream_get_callback = SDL_SetAudioStreamGetCallback(stream : AudioStream*, callback : AudioStreamCallback, userdata : Void*) : bool
-  fun set_audio_stream_put_callback = SDL_SetAudioStreamPutCallback(stream : AudioStream*, callback : AudioStreamCallback, userdata : Void*) : bool
+  fun flush_audio_stream = SDL_FlushAudioStream(stream : AudioStream*) : Bool
+  fun clear_audio_stream = SDL_ClearAudioStream(stream : AudioStream*) : Bool
+  fun pause_audio_stream_device = SDL_PauseAudioStreamDevice(stream : AudioStream*) : Bool
+  fun resume_audio_stream_device = SDL_ResumeAudioStreamDevice(stream : AudioStream*) : Bool
+  fun lock_audio_stream = SDL_LockAudioStream(stream : AudioStream*) : Bool
+  fun unlock_audio_stream = SDL_UnlockAudioStream(stream : AudioStream*) : Bool
+  fun set_audio_stream_get_callback = SDL_SetAudioStreamGetCallback(stream : AudioStream*, callback : AudioStreamCallback, userdata : Void*) : Bool
+  fun set_audio_stream_put_callback = SDL_SetAudioStreamPutCallback(stream : AudioStream*, callback : AudioStreamCallback, userdata : Void*) : Bool
   fun destroy_audio_stream = SDL_DestroyAudioStream(stream : AudioStream*) : Void
   fun open_audio_device_stream = SDL_OpenAudioDeviceStream(devid : AudioDeviceID, spec : AudioSpec*, callback : AudioStreamCallback, userdata : Void*) : AudioStream*
-  fun set_audio_postmix_callback = SDL_SetAudioPostmixCallback(devid : AudioDeviceID, callback : AudioPostmixCallback, userdata : Void*) : bool
-  fun load_wav_io = SDL_LoadWAV_IO(src : IOStream*, closeio : bool, spec : AudioSpec*, audio_buf : UInt8**, audio_len : UInt32*) : bool
-  fun load_wav = SDL_LoadWAV(path : LibC::Char*, spec : AudioSpec*, audio_buf : UInt8**, audio_len : UInt32*) : bool
-  fun mix_audio = SDL_MixAudio(dst : UInt8*, src : UInt8*, format : AudioFormat, len : UInt32, volume : LibC::Float) : bool
-  fun convert_audio_samples = SDL_ConvertAudioSamples(src_spec : AudioSpec*, src_data : UInt8*, src_len : LibC::Int, dst_spec : AudioSpec*, dst_data : UInt8**, dst_len : LibC::Int*) : bool
+  fun set_audio_postmix_callback = SDL_SetAudioPostmixCallback(devid : AudioDeviceID, callback : AudioPostmixCallback, userdata : Void*) : Bool
+  fun load_wav_io = SDL_LoadWAV_IO(src : IOStream*, closeio : Bool, spec : AudioSpec*, audio_buf : UInt8**, audio_len : UInt32*) : Bool
+  fun load_wav = SDL_LoadWAV(path : LibC::Char*, spec : AudioSpec*, audio_buf : UInt8**, audio_len : UInt32*) : Bool
+  fun mix_audio = SDL_MixAudio(dst : UInt8*, src : UInt8*, format : AudioFormat, len : UInt32, volume : LibC::Float) : Bool
+  fun convert_audio_samples = SDL_ConvertAudioSamples(src_spec : AudioSpec*, src_data : UInt8*, src_len : LibC::Int, dst_spec : AudioSpec*, dst_data : UInt8**, dst_len : LibC::Int*) : Bool
   fun get_audio_format_name = SDL_GetAudioFormatName(format : AudioFormat) : LibC::Char*
   fun get_silence_value_for_format = SDL_GetSilenceValueForFormat(format : AudioFormat) : LibC::Int
 
@@ -407,27 +400,113 @@ lib LibSDL
 
   fun compose_custom_blend_mode = SDL_ComposeCustomBlendMode(src_color_factor : BlendFactor, dst_color_factor : BlendFactor, color_operation : BlendOperation, src_alpha_factor : BlendFactor, dst_alpha_factor : BlendFactor, alpha_operation : BlendOperation) : BlendMode
 
+  # SDL_camera
+
+  alias Camera = Void
+  alias CameraID = UInt32
+
+  enum CameraPosition
+    CAMERA_POSITION_UNKNOWN
+    CAMERA_POSITION_FRONT_FACING
+    CAMERA_POSITION_BACK_FACING
+  end
+
+  struct CameraSpec
+    format : PixelFormat
+    colorspace : Colorspace
+    width : LibC::Int
+    height : LibC::Int
+    framerate_numerator : LibC::Int
+    framerate_denominator : LibC::Int
+  end
+
+  fun get_num_camera_drivers = SDL_GetNumCameraDrivers() : LibC::Int
+  fun get_camera_driver = SDL_GetCameraDriver(index : LibC::Int) : LibC::Char*
+  fun get_current_camera_driver = SDL_GetCurrentCameraDriver() : LibC::Char*
+  fun get_cameras = SDL_GetCameras(count : LibC::Int*) : CameraID*
+  fun get_camera_supported_formats = SDL_GetCameraSupportedFormats(devid : CameraID, count : LibC::Int*) : CameraSpec**
+  fun get_camera_name = SDL_GetCameraName(instance_id : CameraID) : LibC::Char*
+  fun get_camera_position = SDL_GetCameraPosition(instance_id : CameraID) : CameraPosition
+  fun open_camera = SDL_OpenCamera(instance_id : CameraID, spec : CameraSpec*) : Camera*
+  fun get_camera_permission_state = SDL_GetCameraPermissionState(camera : Camera*) : LibC::Int
+  fun get_camera_id = SDL_GetCameraID(camera : Camera*) : CameraID
+  fun get_camera_properties = SDL_GetCameraProperties(camera : Camera*) : PropertiesID
+  fun get_camera_format = SDL_GetCameraFormat(camera : Camera*, spec : CameraSpec*) : Bool
+  fun acquire_camera_frame = SDL_AcquireCameraFrame(camera : Camera*, timestamp_ns : UInt64*) : Surface*
+  fun release_camera_frame = SDL_ReleaseCameraFrame(camera : Camera*, frame : Surface*) : Void
+  fun close_camera = SDL_CloseCamera(camera : Camera*) : Void
+
   # SDL_clipboard
 
-  fun set_clipboard_text = SDL_SetClipboardText(text : LibC::Char*) : bool
+  fun set_clipboard_text = SDL_SetClipboardText(text : LibC::Char*) : Bool
   fun get_clipboard_text = SDL_GetClipboardText() : LibC::Char*
-  fun has_clipboard_text = SDL_HasClipboardText() : bool
-  fun set_primary_selection_text = SDL_SetPrimarySelectionText(text : LibC::Char*) : bool
+  fun has_clipboard_text = SDL_HasClipboardText() : Bool
+  fun set_primary_selection_text = SDL_SetPrimarySelectionText(text : LibC::Char*) : Bool
   fun get_primary_selection_text = SDL_GetPrimarySelectionText() : LibC::Char*
-  fun has_primary_selection_text = SDL_HasPrimarySelectionText() : bool
-  fun set_clipboard_data = SDL_SetClipboardData(callback : ClipboardDataCallback, cleanup : ClipboardCleanupCallback, userdata : Void*, mime_types : LibC::Char**, num_mime_types : LibC::SizeT) : bool
-  fun clear_clipboard_data = SDL_ClearClipboardData() : bool
+  fun has_primary_selection_text = SDL_HasPrimarySelectionText() : Bool
+  fun set_clipboard_data = SDL_SetClipboardData(callback : ClipboardDataCallback, cleanup : ClipboardCleanupCallback, userdata : Void*, mime_types : LibC::Char**, num_mime_types : LibC::SizeT) : Bool
+  fun clear_clipboard_data = SDL_ClearClipboardData() : Bool
   fun get_clipboard_data = SDL_GetClipboardData(mime_type : LibC::Char*, size : LibC::SizeT*) : Void*
-  fun has_clipboard_data = SDL_HasClipboardData(mime_type : LibC::Char*) : bool
+  fun has_clipboard_data = SDL_HasClipboardData(mime_type : LibC::Char*) : Bool
   fun get_clipboard_mime_types = SDL_GetClipboardMimeTypes(num_mime_types : LibC::SizeT*) : LibC::Char**
+
+  # SDL_cpuinfo
+
+  CACHELINE_SIZE = 128
+
+  fun get_num_logical_cpucores = SDL_GetNumLogicalCPUCores() : LibC::Int
+  fun get_cpucache_line_size = SDL_GetCPUCacheLineSize() : LibC::Int
+  fun has_alti_vec = SDL_HasAltiVec() : Bool
+  fun has_mmx = SDL_HasMMX() : Bool
+  fun has_sse = SDL_HasSSE() : Bool
+  fun has_sse2 = SDL_HasSSE2() : Bool
+  fun has_sse3 = SDL_HasSSE3() : Bool
+  fun has_sse41 = SDL_HasSSE41() : Bool
+  fun has_sse42 = SDL_HasSSE42() : Bool
+  fun has_avx = SDL_HasAVX() : Bool
+  fun has_avx2 = SDL_HasAVX2() : Bool
+  fun has_avx512_f = SDL_HasAVX512F() : Bool
+  fun has_armsimd = SDL_HasARMSIMD() : Bool
+  fun has_neon = SDL_HasNEON() : Bool
+  fun has_lsx = SDL_HasLSX() : Bool
+  fun has_lasx = SDL_HasLASX() : Bool
+  fun get_system_ram = SDL_GetSystemRAM() : LibC::Int
+  fun get_simdalignment = SDL_GetSIMDAlignment() : LibC::SizeT
+
+  # SDL_dialog
+
+  PROP_FILE_DIALOG_FILTERS_POINTER = "SDL.filedialog.filters"
+  PROP_FILE_DIALOG_NFILTERS_NUMBER = "SDL.filedialog.nfilters"
+  PROP_FILE_DIALOG_WINDOW_POINTER = "SDL.filedialog.window"
+  PROP_FILE_DIALOG_LOCATION_STRING = "SDL.filedialog.location"
+  PROP_FILE_DIALOG_MANY_BOOLEAN = "SDL.filedialog.many"
+  PROP_FILE_DIALOG_TITLE_STRING = "SDL.filedialog.title"
+  PROP_FILE_DIALOG_ACCEPT_STRING = "SDL.filedialog.accept"
+  PROP_FILE_DIALOG_CANCEL_STRING = "SDL.filedialog.cancel"
+
+  enum FileDialogType
+    FILEDIALOG_OPENFILE
+    FILEDIALOG_SAVEFILE
+    FILEDIALOG_OPENFOLDER
+  end
+
+  struct DialogFileFilter
+    name : LibC::Char*
+    pattern : LibC::Char*
+  end
+
+  fun show_open_file_dialog = SDL_ShowOpenFileDialog(callback : DialogFileCallback, userdata : Void*, window : Window*, filters : DialogFileFilter*, nfilters : LibC::Int, default_location : LibC::Char*, allow_many : Bool) : Void
+  fun show_save_file_dialog = SDL_ShowSaveFileDialog(callback : DialogFileCallback, userdata : Void*, window : Window*, filters : DialogFileFilter*, nfilters : LibC::Int, default_location : LibC::Char*) : Void
+  fun show_open_folder_dialog = SDL_ShowOpenFolderDialog(callback : DialogFileCallback, userdata : Void*, window : Window*, default_location : LibC::Char*, allow_many : Bool) : Void
+  fun show_file_dialog_with_properties = SDL_ShowFileDialogWithProperties(type : FileDialogType, callback : DialogFileCallback, userdata : Void*, props : PropertiesID) : Void
 
   # SDL_error
 
-  fun set_error = SDL_SetError(fmt : LibC::Char*, ...) : bool
-  fun set_error_v = SDL_SetErrorV(fmt : LibC::Char*, sdl_printf_vararg_funcv(1 : vaList ap)) : bool
-  fun out_of_memory = SDL_OutOfMemory() : bool
+  fun set_error = SDL_SetError(fmt : LibC::Char*, ...) : Bool
+  fun set_error_v = SDL_SetErrorV(fmt : LibC::Char*, sdl_printf_vararg_funcv(1 : vaList ap)) : Bool
+  fun out_of_memory = SDL_OutOfMemory() : Bool
   fun get_error = SDL_GetError() : LibC::Char*
-  fun clear_error = SDL_ClearError() : bool
+  fun clear_error = SDL_ClearError() : Bool
 
   # additions/helper_event.cr
 
@@ -638,8 +717,8 @@ lib LibSDL
     key : Keycode
     mod : Keymod
     raw : UInt16
-    down : bool
-    repeat : bool
+    down : Bool
+    repeat : Bool
   end
 
   struct TextEditingEvent
@@ -661,7 +740,7 @@ lib LibSDL
     candidates : LibC::Char*
     num_candidates : Int32
     selected_candidate : Int32
-    horizontal : bool
+    horizontal : Bool
     padding1 : UInt8
     padding2 : UInt8
     padding3 : UInt8
@@ -702,7 +781,7 @@ lib LibSDL
     window_id : WindowID
     which : MouseID
     button : UInt8
-    down : bool
+    down : Bool
     clicks : UInt8
     padding : UInt8
     x : LibC::Float
@@ -765,7 +844,7 @@ lib LibSDL
     timestamp : UInt64
     which : JoystickID
     button : UInt8
-    down : bool
+    down : Bool
     padding1 : UInt8
     padding2 : UInt8
   end
@@ -805,7 +884,7 @@ lib LibSDL
     timestamp : UInt64
     which : JoystickID
     button : UInt8
-    down : bool
+    down : Bool
     padding1 : UInt8
     padding2 : UInt8
   end
@@ -844,7 +923,7 @@ lib LibSDL
     reserved : UInt32
     timestamp : UInt64
     which : AudioDeviceID
-    recording : bool
+    recording : Bool
     padding1 : UInt8
     padding2 : UInt8
     padding3 : UInt8
@@ -906,8 +985,8 @@ lib LibSDL
     pen_state : PenInputFlags
     x : LibC::Float
     y : LibC::Float
-    eraser : bool
-    down : bool
+    eraser : Bool
+    down : Bool
   end
 
   struct PenButtonEvent
@@ -920,7 +999,7 @@ lib LibSDL
     x : LibC::Float
     y : LibC::Float
     button : UInt8
-    down : bool
+    down : Bool
   end
 
   struct PenAxisEvent
@@ -951,7 +1030,7 @@ lib LibSDL
     type : EventType
     reserved : UInt32
     timestamp : UInt64
-    owner : bool
+    owner : Bool
     n_mime_types : Int32
     mime_types : LibC::Char**
   end
@@ -983,21 +1062,21 @@ lib LibSDL
 
   fun pump_events = SDL_PumpEvents() : Void
   fun peep_events = SDL_PeepEvents(events : Event*, numevents : LibC::Int, action : EventAction, min_type : UInt32, max_type : UInt32) : LibC::Int
-  fun has_event = SDL_HasEvent(type : UInt32) : bool
-  fun has_events = SDL_HasEvents(min_type : UInt32, max_type : UInt32) : bool
+  fun has_event = SDL_HasEvent(type : UInt32) : Bool
+  fun has_events = SDL_HasEvents(min_type : UInt32, max_type : UInt32) : Bool
   fun flush_event = SDL_FlushEvent(type : UInt32) : Void
   fun flush_events = SDL_FlushEvents(min_type : UInt32, max_type : UInt32) : Void
-  fun poll_event = SDL_PollEvent(event : Event*) : bool
-  fun wait_event = SDL_WaitEvent(event : Event*) : bool
-  fun wait_event_timeout = SDL_WaitEventTimeout(event : Event*, timeout_ms : Int32) : bool
-  fun push_event = SDL_PushEvent(event : Event*) : bool
+  fun poll_event = SDL_PollEvent(event : Event*) : Bool
+  fun wait_event = SDL_WaitEvent(event : Event*) : Bool
+  fun wait_event_timeout = SDL_WaitEventTimeout(event : Event*, timeout_ms : Int32) : Bool
+  fun push_event = SDL_PushEvent(event : Event*) : Bool
   fun set_event_filter = SDL_SetEventFilter(filter : EventFilter, userdata : Void*) : Void
-  fun get_event_filter = SDL_GetEventFilter(filter : EventFilter*, userdata : Void**) : bool
-  fun add_event_watch = SDL_AddEventWatch(filter : EventFilter, userdata : Void*) : bool
+  fun get_event_filter = SDL_GetEventFilter(filter : EventFilter*, userdata : Void**) : Bool
+  fun add_event_watch = SDL_AddEventWatch(filter : EventFilter, userdata : Void*) : Bool
   fun remove_event_watch = SDL_RemoveEventWatch(filter : EventFilter, userdata : Void*) : Void
   fun filter_events = SDL_FilterEvents(filter : EventFilter, userdata : Void*) : Void
-  fun set_event_enabled = SDL_SetEventEnabled(type : UInt32, enabled : bool) : Void
-  fun event_enabled = SDL_EventEnabled(type : UInt32) : bool
+  fun set_event_enabled = SDL_SetEventEnabled(type : UInt32, enabled : Bool) : Void
+  fun event_enabled = SDL_EventEnabled(type : UInt32) : Bool
   fun register_events = SDL_RegisterEvents(numevents : LibC::Int) : UInt32
   fun get_window_from_event = SDL_GetWindowFromEvent(event : Event*) : Window*
 
@@ -1046,36 +1125,973 @@ lib LibSDL
   fun get_base_path = SDL_GetBasePath() : LibC::Char*
   fun get_pref_path = SDL_GetPrefPath(org : LibC::Char*, app : LibC::Char*) : LibC::Char*
   fun get_user_folder = SDL_GetUserFolder(folder : Folder) : LibC::Char*
-  fun create_directory = SDL_CreateDirectory(path : LibC::Char*) : bool
-  fun enumerate_directory = SDL_EnumerateDirectory(path : LibC::Char*, callback : EnumerateDirectoryCallback, userdata : Void*) : bool
-  fun remove_path = SDL_RemovePath(path : LibC::Char*) : bool
-  fun rename_path = SDL_RenamePath(oldpath : LibC::Char*, newpath : LibC::Char*) : bool
-  fun copy_file = SDL_CopyFile(oldpath : LibC::Char*, newpath : LibC::Char*) : bool
-  fun get_path_info = SDL_GetPathInfo(path : LibC::Char*, info : PathInfo*) : bool
+  fun create_directory = SDL_CreateDirectory(path : LibC::Char*) : Bool
+  fun enumerate_directory = SDL_EnumerateDirectory(path : LibC::Char*, callback : EnumerateDirectoryCallback, userdata : Void*) : Bool
+  fun remove_path = SDL_RemovePath(path : LibC::Char*) : Bool
+  fun rename_path = SDL_RenamePath(oldpath : LibC::Char*, newpath : LibC::Char*) : Bool
+  fun copy_file = SDL_CopyFile(oldpath : LibC::Char*, newpath : LibC::Char*) : Bool
+  fun get_path_info = SDL_GetPathInfo(path : LibC::Char*, info : PathInfo*) : Bool
   fun glob_directory = SDL_GlobDirectory(path : LibC::Char*, pattern : LibC::Char*, flags : GlobFlags, count : LibC::Int*) : LibC::Char**
   fun get_current_directory = SDL_GetCurrentDirectory() : LibC::Char*
 
-  # additions/helper_gamecontroller.cr
+  # SDL_gamepad
 
-  struct GameControllerButtonBindUnionHat
-    hat : LibC::Int
-    hat_mask : LibC::Int
+  PROP_GAMEPAD_CAP_MONO_LED_BOOLEAN = PROP_JOYSTICK_CAP_MONO_LED_BOOLEAN
+  PROP_GAMEPAD_CAP_RGB_LED_BOOLEAN = PROP_JOYSTICK_CAP_RGB_LED_BOOLEAN
+  PROP_GAMEPAD_CAP_PLAYER_LED_BOOLEAN = PROP_JOYSTICK_CAP_PLAYER_LED_BOOLEAN
+  PROP_GAMEPAD_CAP_RUMBLE_BOOLEAN = PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN
+  PROP_GAMEPAD_CAP_TRIGGER_RUMBLE_BOOLEAN = PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN
+
+  alias Gamepad = Void
+
+  enum GamepadType
+    GAMEPAD_TYPE_UNKNOWN = 0
+    GAMEPAD_TYPE_STANDARD
+    GAMEPAD_TYPE_XBOX360
+    GAMEPAD_TYPE_XBOXONE
+    GAMEPAD_TYPE_PS3
+    GAMEPAD_TYPE_PS4
+    GAMEPAD_TYPE_PS5
+    GAMEPAD_TYPE_NINTENDO_SWITCH_PRO
+    GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_LEFT
+    GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT
+    GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR
+    GAMEPAD_TYPE_COUNT
   end
 
-  union GameControllerButtonBindUnion
+  enum GamepadButton
+    GAMEPAD_BUTTON_INVALID = -1
+    GAMEPAD_BUTTON_SOUTH
+    GAMEPAD_BUTTON_EAST
+    GAMEPAD_BUTTON_WEST
+    GAMEPAD_BUTTON_NORTH
+    GAMEPAD_BUTTON_BACK
+    GAMEPAD_BUTTON_GUIDE
+    GAMEPAD_BUTTON_START
+    GAMEPAD_BUTTON_LEFT_STICK
+    GAMEPAD_BUTTON_RIGHT_STICK
+    GAMEPAD_BUTTON_LEFT_SHOULDER
+    GAMEPAD_BUTTON_RIGHT_SHOULDER
+    GAMEPAD_BUTTON_DPAD_UP
+    GAMEPAD_BUTTON_DPAD_DOWN
+    GAMEPAD_BUTTON_DPAD_LEFT
+    GAMEPAD_BUTTON_DPAD_RIGHT
+    GAMEPAD_BUTTON_MISC1
+    GAMEPAD_BUTTON_RIGHT_PADDLE1
+    GAMEPAD_BUTTON_LEFT_PADDLE1
+    GAMEPAD_BUTTON_RIGHT_PADDLE2
+    GAMEPAD_BUTTON_LEFT_PADDLE2
+    GAMEPAD_BUTTON_TOUCHPAD
+    GAMEPAD_BUTTON_MISC2
+    GAMEPAD_BUTTON_MISC3
+    GAMEPAD_BUTTON_MISC4
+    GAMEPAD_BUTTON_MISC5
+    GAMEPAD_BUTTON_MISC6
+    GAMEPAD_BUTTON_COUNT
+  end
+
+  enum GamepadButtonLabel
+    GAMEPAD_BUTTON_LABEL_UNKNOWN
+    GAMEPAD_BUTTON_LABEL_A
+    GAMEPAD_BUTTON_LABEL_B
+    GAMEPAD_BUTTON_LABEL_X
+    GAMEPAD_BUTTON_LABEL_Y
+    GAMEPAD_BUTTON_LABEL_CROSS
+    GAMEPAD_BUTTON_LABEL_CIRCLE
+    GAMEPAD_BUTTON_LABEL_SQUARE
+    GAMEPAD_BUTTON_LABEL_TRIANGLE
+  end
+
+  enum GamepadAxis
+    GAMEPAD_AXIS_INVALID = -1
+    GAMEPAD_AXIS_LEFTX
+    GAMEPAD_AXIS_LEFTY
+    GAMEPAD_AXIS_RIGHTX
+    GAMEPAD_AXIS_RIGHTY
+    GAMEPAD_AXIS_LEFT_TRIGGER
+    GAMEPAD_AXIS_RIGHT_TRIGGER
+    GAMEPAD_AXIS_COUNT
+  end
+
+  enum GamepadBindingType
+    GAMEPAD_BINDTYPE_NONE = 0
+    GAMEPAD_BINDTYPE_BUTTON
+    GAMEPAD_BINDTYPE_AXIS
+    GAMEPAD_BINDTYPE_HAT
+  end
+
+  struct axis
+    input_type : GamepadBindingType
+    { : union
     button : LibC::Int
     axis : LibC::Int
-    hat : GameControllerButtonBindUnionHat
+    axis_min : LibC::Int
+    axis_max : LibC::Int
   end
 
-  struct GameControllerButtonBind
-    bind_type : GameControllerBindType
-    value : GameControllerButtonBindUnion
+  fun add_gamepad_mapping = SDL_AddGamepadMapping(mapping : LibC::Char*) : LibC::Int
+  fun add_gamepad_mappings_from_io = SDL_AddGamepadMappingsFromIO(src : IOStream*, closeio : Bool) : LibC::Int
+  fun add_gamepad_mappings_from_file = SDL_AddGamepadMappingsFromFile(file : LibC::Char*) : LibC::Int
+  fun reload_gamepad_mappings = SDL_ReloadGamepadMappings() : Bool
+  fun get_gamepad_mappings = SDL_GetGamepadMappings(count : LibC::Int*) : LibC::Char**
+  fun get_gamepad_mapping_for_guid = SDL_GetGamepadMappingForGUID(guid : GUID) : LibC::Char*
+  fun get_gamepad_mapping = SDL_GetGamepadMapping(gamepad : Gamepad*) : LibC::Char*
+  fun set_gamepad_mapping = SDL_SetGamepadMapping(instance_id : JoystickID, mapping : LibC::Char*) : Bool
+  fun has_gamepad = SDL_HasGamepad() : Bool
+  fun get_gamepads = SDL_GetGamepads(count : LibC::Int*) : JoystickID*
+  fun is_gamepad = SDL_IsGamepad(instance_id : JoystickID) : Bool
+  fun get_gamepad_name_for_id = SDL_GetGamepadNameForID(instance_id : JoystickID) : LibC::Char*
+  fun get_gamepad_path_for_id = SDL_GetGamepadPathForID(instance_id : JoystickID) : LibC::Char*
+  fun get_gamepad_player_index_for_id = SDL_GetGamepadPlayerIndexForID(instance_id : JoystickID) : LibC::Int
+  fun get_gamepad_guidfor_id = SDL_GetGamepadGUIDForID(instance_id : JoystickID) : GUID
+  fun get_gamepad_vendor_for_id = SDL_GetGamepadVendorForID(instance_id : JoystickID) : UInt16
+  fun get_gamepad_product_for_id = SDL_GetGamepadProductForID(instance_id : JoystickID) : UInt16
+  fun get_gamepad_product_version_for_id = SDL_GetGamepadProductVersionForID(instance_id : JoystickID) : UInt16
+  fun get_gamepad_type_for_id = SDL_GetGamepadTypeForID(instance_id : JoystickID) : GamepadType
+  fun get_real_gamepad_type_for_id = SDL_GetRealGamepadTypeForID(instance_id : JoystickID) : GamepadType
+  fun get_gamepad_mapping_for_id = SDL_GetGamepadMappingForID(instance_id : JoystickID) : LibC::Char*
+  fun open_gamepad = SDL_OpenGamepad(instance_id : JoystickID) : Gamepad*
+  fun get_gamepad_from_id = SDL_GetGamepadFromID(instance_id : JoystickID) : Gamepad*
+  fun get_gamepad_from_player_index = SDL_GetGamepadFromPlayerIndex(player_index : LibC::Int) : Gamepad*
+  fun get_gamepad_properties = SDL_GetGamepadProperties(gamepad : Gamepad*) : PropertiesID
+  fun get_gamepad_id = SDL_GetGamepadID(gamepad : Gamepad*) : JoystickID
+  fun get_gamepad_name = SDL_GetGamepadName(gamepad : Gamepad*) : LibC::Char*
+  fun get_gamepad_path = SDL_GetGamepadPath(gamepad : Gamepad*) : LibC::Char*
+  fun get_gamepad_type = SDL_GetGamepadType(gamepad : Gamepad*) : GamepadType
+  fun get_real_gamepad_type = SDL_GetRealGamepadType(gamepad : Gamepad*) : GamepadType
+  fun get_gamepad_player_index = SDL_GetGamepadPlayerIndex(gamepad : Gamepad*) : LibC::Int
+  fun set_gamepad_player_index = SDL_SetGamepadPlayerIndex(gamepad : Gamepad*, player_index : LibC::Int) : Bool
+  fun get_gamepad_vendor = SDL_GetGamepadVendor(gamepad : Gamepad*) : UInt16
+  fun get_gamepad_product = SDL_GetGamepadProduct(gamepad : Gamepad*) : UInt16
+  fun get_gamepad_product_version = SDL_GetGamepadProductVersion(gamepad : Gamepad*) : UInt16
+  fun get_gamepad_firmware_version = SDL_GetGamepadFirmwareVersion(gamepad : Gamepad*) : UInt16
+  fun get_gamepad_serial = SDL_GetGamepadSerial(gamepad : Gamepad*) : LibC::Char*
+  fun get_gamepad_steam_handle = SDL_GetGamepadSteamHandle(gamepad : Gamepad*) : UInt64
+  fun get_gamepad_connection_state = SDL_GetGamepadConnectionState(gamepad : Gamepad*) : JoystickConnectionState
+  fun get_gamepad_power_info = SDL_GetGamepadPowerInfo(gamepad : Gamepad*, percent : LibC::Int*) : PowerState
+  fun gamepad_connected = SDL_GamepadConnected(gamepad : Gamepad*) : Bool
+  fun get_gamepad_joystick = SDL_GetGamepadJoystick(gamepad : Gamepad*) : Joystick*
+  fun set_gamepad_events_enabled = SDL_SetGamepadEventsEnabled(enabled : Bool) : Void
+  fun gamepad_events_enabled = SDL_GamepadEventsEnabled() : Bool
+  fun get_gamepad_bindings = SDL_GetGamepadBindings(gamepad : Gamepad*, count : LibC::Int*) : GamepadBinding**
+  fun update_gamepads = SDL_UpdateGamepads() : Void
+  fun get_gamepad_type_from_string = SDL_GetGamepadTypeFromString(str : LibC::Char*) : GamepadType
+  fun get_gamepad_string_for_type = SDL_GetGamepadStringForType(type : GamepadType) : LibC::Char*
+  fun get_gamepad_axis_from_string = SDL_GetGamepadAxisFromString(str : LibC::Char*) : GamepadAxis
+  fun get_gamepad_string_for_axis = SDL_GetGamepadStringForAxis(axis : GamepadAxis) : LibC::Char*
+  fun gamepad_has_axis = SDL_GamepadHasAxis(gamepad : Gamepad*, axis : GamepadAxis) : Bool
+  fun get_gamepad_axis = SDL_GetGamepadAxis(gamepad : Gamepad*, axis : GamepadAxis) : Int16
+  fun get_gamepad_button_from_string = SDL_GetGamepadButtonFromString(str : LibC::Char*) : GamepadButton
+  fun get_gamepad_string_for_button = SDL_GetGamepadStringForButton(button : GamepadButton) : LibC::Char*
+  fun gamepad_has_button = SDL_GamepadHasButton(gamepad : Gamepad*, button : GamepadButton) : Bool
+  fun get_gamepad_button = SDL_GetGamepadButton(gamepad : Gamepad*, button : GamepadButton) : Bool
+  fun get_gamepad_button_label_for_type = SDL_GetGamepadButtonLabelForType(type : GamepadType, button : GamepadButton) : GamepadButtonLabel
+  fun get_gamepad_button_label = SDL_GetGamepadButtonLabel(gamepad : Gamepad*, button : GamepadButton) : GamepadButtonLabel
+  fun get_num_gamepad_touchpads = SDL_GetNumGamepadTouchpads(gamepad : Gamepad*) : LibC::Int
+  fun get_num_gamepad_touchpad_fingers = SDL_GetNumGamepadTouchpadFingers(gamepad : Gamepad*, touchpad : LibC::Int) : LibC::Int
+  fun get_gamepad_touchpad_finger = SDL_GetGamepadTouchpadFinger(gamepad : Gamepad*, touchpad : LibC::Int, finger : LibC::Int, down : Bool*, x : LibC::Float*, y : LibC::Float*, pressure : LibC::Float*) : Bool
+  fun gamepad_has_sensor = SDL_GamepadHasSensor(gamepad : Gamepad*, type : SensorType) : Bool
+  fun set_gamepad_sensor_enabled = SDL_SetGamepadSensorEnabled(gamepad : Gamepad*, type : SensorType, enabled : Bool) : Bool
+  fun gamepad_sensor_enabled = SDL_GamepadSensorEnabled(gamepad : Gamepad*, type : SensorType) : Bool
+  fun get_gamepad_sensor_data_rate = SDL_GetGamepadSensorDataRate(gamepad : Gamepad*, type : SensorType) : LibC::Float
+  fun get_gamepad_sensor_data = SDL_GetGamepadSensorData(gamepad : Gamepad*, type : SensorType, data : LibC::Float*, num_values : LibC::Int) : Bool
+  fun rumble_gamepad = SDL_RumbleGamepad(gamepad : Gamepad*, low_frequency_rumble : UInt16, high_frequency_rumble : UInt16, duration_ms : UInt32) : Bool
+  fun rumble_gamepad_triggers = SDL_RumbleGamepadTriggers(gamepad : Gamepad*, left_rumble : UInt16, right_rumble : UInt16, duration_ms : UInt32) : Bool
+  fun set_gamepad_led = SDL_SetGamepadLED(gamepad : Gamepad*, red : UInt8, green : UInt8, blue : UInt8) : Bool
+  fun send_gamepad_effect = SDL_SendGamepadEffect(gamepad : Gamepad*, data : Void*, size : LibC::Int) : Bool
+  fun close_gamepad = SDL_CloseGamepad(gamepad : Gamepad*) : Void
+  fun get_gamepad_apple_sfsymbols_name_for_button = SDL_GetGamepadAppleSFSymbolsNameForButton(gamepad : Gamepad*, button : GamepadButton) : LibC::Char*
+  fun get_gamepad_apple_sfsymbols_name_for_axis = SDL_GetGamepadAppleSFSymbolsNameForAxis(gamepad : Gamepad*, axis : GamepadAxis) : LibC::Char*
+
+  # SDL_gpu
+
+  GPU_TEXTUREUSAGE_SAMPLER = (1 << 0)
+  GPU_TEXTUREUSAGE_COLOR_TARGET = (1 << 1)
+  GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET = (1 << 2)
+  GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ = (1 << 3)
+  GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ = (1 << 4)
+  GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE = (1 << 5)
+  GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE = (1 << 6)
+  GPU_BUFFERUSAGE_VERTEX = (1 << 0)
+  GPU_BUFFERUSAGE_INDEX = (1 << 1)
+  GPU_BUFFERUSAGE_INDIRECT = (1 << 2)
+  GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ = (1 << 3)
+  GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ = (1 << 4)
+  GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE = (1 << 5)
+  GPU_SHADERFORMAT_INVALID = 0
+  GPU_SHADERFORMAT_PRIVATE = (1 << 0)
+  GPU_SHADERFORMAT_SPIRV = (1 << 1)
+  GPU_SHADERFORMAT_DXBC = (1 << 2)
+  GPU_SHADERFORMAT_DXIL = (1 << 3)
+  GPU_SHADERFORMAT_MSL = (1 << 4)
+  GPU_SHADERFORMAT_METALLIB = (1 << 5)
+  GPU_COLORCOMPONENT_R = (1 << 0)
+  GPU_COLORCOMPONENT_G = (1 << 1)
+  GPU_COLORCOMPONENT_B = (1 << 2)
+  GPU_COLORCOMPONENT_A = (1 << 3)
+  PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN = "SDL.gpu.device.create.debugmode"
+  PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN = "SDL.gpu.device.create.preferlowpower"
+  PROP_GPU_DEVICE_CREATE_NAME_STRING = "SDL.gpu.device.create.name"
+  PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN = "SDL.gpu.device.create.shaders.private"
+  PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN = "SDL.gpu.device.create.shaders.spirv"
+  PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN = "SDL.gpu.device.create.shaders.dxbc"
+  PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN = "SDL.gpu.device.create.shaders.dxil"
+  PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN = "SDL.gpu.device.create.shaders.msl"
+  PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN = "SDL.gpu.device.create.shaders.metallib"
+  PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING = "SDL.gpu.device.create.d3d12.semantic"
+  PROP_GPU_CREATETEXTURE_D3D12_CLEAR_R_FLOAT = "SDL.gpu.createtexture.d3d12.clear.r"
+  PROP_GPU_CREATETEXTURE_D3D12_CLEAR_G_FLOAT = "SDL.gpu.createtexture.d3d12.clear.g"
+  PROP_GPU_CREATETEXTURE_D3D12_CLEAR_B_FLOAT = "SDL.gpu.createtexture.d3d12.clear.b"
+  PROP_GPU_CREATETEXTURE_D3D12_CLEAR_A_FLOAT = "SDL.gpu.createtexture.d3d12.clear.a"
+  PROP_GPU_CREATETEXTURE_D3D12_CLEAR_DEPTH_FLOAT = "SDL.gpu.createtexture.d3d12.clear.depth"
+  PROP_GPU_CREATETEXTURE_D3D12_CLEAR_STENCIL_UINT8 = "SDL.gpu.createtexture.d3d12.clear.stencil"
+
+  alias GPUDevice = Void
+  alias GPUBuffer = Void
+  alias GPUTransferBuffer = Void
+  alias GPUTexture = Void
+  alias GPUSampler = Void
+  alias GPUShader = Void
+  alias GPUComputePipeline = Void
+  alias GPUGraphicsPipeline = Void
+  alias GPUCommandBuffer = Void
+  alias GPURenderPass = Void
+  alias GPUComputePass = Void
+  alias GPUCopyPass = Void
+  alias GPUFence = Void
+  alias GPUTextureUsageFlags = UInt32
+  alias GPUBufferUsageFlags = UInt32
+  alias GPUShaderFormat = UInt32
+  alias GPUColorComponentFlags = UInt8
+
+  enum GPUPrimitiveType
+    GPU_PRIMITIVETYPE_TRIANGLELIST
+    GPU_PRIMITIVETYPE_TRIANGLESTRIP
+    GPU_PRIMITIVETYPE_LINELIST
+    GPU_PRIMITIVETYPE_LINESTRIP
+    GPU_PRIMITIVETYPE_POINTLIST
   end
 
-  # SDL_gamecontroller
+  enum GPULoadOp
+    GPU_LOADOP_LOAD
+    GPU_LOADOP_CLEAR
+    GPU_LOADOP_DONT_CARE
+  end
 
-  # SDL_gesture
+  enum GPUStoreOp
+    GPU_STOREOP_STORE
+    GPU_STOREOP_DONT_CARE
+    GPU_STOREOP_RESOLVE
+    GPU_STOREOP_RESOLVE_AND_STORE
+  end
+
+  enum GPUIndexElementSize
+    GPU_INDEXELEMENTSIZE_16BIT
+    GPU_INDEXELEMENTSIZE_32BIT
+  end
+
+  enum GPUTextureFormat
+    GPU_TEXTUREFORMAT_INVALID
+    GPU_TEXTUREFORMAT_A8_UNORM
+    GPU_TEXTUREFORMAT_R8_UNORM
+    GPU_TEXTUREFORMAT_R8G8_UNORM
+    GPU_TEXTUREFORMAT_R8G8B8A8_UNORM
+    GPU_TEXTUREFORMAT_R16_UNORM
+    GPU_TEXTUREFORMAT_R16G16_UNORM
+    GPU_TEXTUREFORMAT_R16G16B16A16_UNORM
+    GPU_TEXTUREFORMAT_R10G10B10A2_UNORM
+    GPU_TEXTUREFORMAT_B5G6R5_UNORM
+    GPU_TEXTUREFORMAT_B5G5R5A1_UNORM
+    GPU_TEXTUREFORMAT_B4G4R4A4_UNORM
+    GPU_TEXTUREFORMAT_B8G8R8A8_UNORM
+    GPU_TEXTUREFORMAT_BC1_RGBA_UNORM
+    GPU_TEXTUREFORMAT_BC2_RGBA_UNORM
+    GPU_TEXTUREFORMAT_BC3_RGBA_UNORM
+    GPU_TEXTUREFORMAT_BC4_R_UNORM
+    GPU_TEXTUREFORMAT_BC5_RG_UNORM
+    GPU_TEXTUREFORMAT_BC7_RGBA_UNORM
+    GPU_TEXTUREFORMAT_BC6H_RGB_FLOAT
+    GPU_TEXTUREFORMAT_BC6H_RGB_UFLOAT
+    GPU_TEXTUREFORMAT_R8_SNORM
+    GPU_TEXTUREFORMAT_R8G8_SNORM
+    GPU_TEXTUREFORMAT_R8G8B8A8_SNORM
+    GPU_TEXTUREFORMAT_R16_SNORM
+    GPU_TEXTUREFORMAT_R16G16_SNORM
+    GPU_TEXTUREFORMAT_R16G16B16A16_SNORM
+    GPU_TEXTUREFORMAT_R16_FLOAT
+    GPU_TEXTUREFORMAT_R16G16_FLOAT
+    GPU_TEXTUREFORMAT_R16G16B16A16_FLOAT
+    GPU_TEXTUREFORMAT_R32_FLOAT
+    GPU_TEXTUREFORMAT_R32G32_FLOAT
+    GPU_TEXTUREFORMAT_R32G32B32A32_FLOAT
+    GPU_TEXTUREFORMAT_R11G11B10_UFLOAT
+    GPU_TEXTUREFORMAT_R8_UINT
+    GPU_TEXTUREFORMAT_R8G8_UINT
+    GPU_TEXTUREFORMAT_R8G8B8A8_UINT
+    GPU_TEXTUREFORMAT_R16_UINT
+    GPU_TEXTUREFORMAT_R16G16_UINT
+    GPU_TEXTUREFORMAT_R16G16B16A16_UINT
+    GPU_TEXTUREFORMAT_R32_UINT
+    GPU_TEXTUREFORMAT_R32G32_UINT
+    GPU_TEXTUREFORMAT_R32G32B32A32_UINT
+    GPU_TEXTUREFORMAT_R8_INT
+    GPU_TEXTUREFORMAT_R8G8_INT
+    GPU_TEXTUREFORMAT_R8G8B8A8_INT
+    GPU_TEXTUREFORMAT_R16_INT
+    GPU_TEXTUREFORMAT_R16G16_INT
+    GPU_TEXTUREFORMAT_R16G16B16A16_INT
+    GPU_TEXTUREFORMAT_R32_INT
+    GPU_TEXTUREFORMAT_R32G32_INT
+    GPU_TEXTUREFORMAT_R32G32B32A32_INT
+    GPU_TEXTUREFORMAT_R8G8B8A8_UNORM_SRGB
+    GPU_TEXTUREFORMAT_B8G8R8A8_UNORM_SRGB
+    GPU_TEXTUREFORMAT_BC1_RGBA_UNORM_SRGB
+    GPU_TEXTUREFORMAT_BC2_RGBA_UNORM_SRGB
+    GPU_TEXTUREFORMAT_BC3_RGBA_UNORM_SRGB
+    GPU_TEXTUREFORMAT_BC7_RGBA_UNORM_SRGB
+    GPU_TEXTUREFORMAT_D16_UNORM
+    GPU_TEXTUREFORMAT_D24_UNORM
+    GPU_TEXTUREFORMAT_D32_FLOAT
+    GPU_TEXTUREFORMAT_D24_UNORM_S8_UINT
+    GPU_TEXTUREFORMAT_D32_FLOAT_S8_UINT
+    GPU_TEXTUREFORMAT_ASTC_4X4_UNORM
+    GPU_TEXTUREFORMAT_ASTC_5X4_UNORM
+    GPU_TEXTUREFORMAT_ASTC_5X5_UNORM
+    GPU_TEXTUREFORMAT_ASTC_6X5_UNORM
+    GPU_TEXTUREFORMAT_ASTC_6X6_UNORM
+    GPU_TEXTUREFORMAT_ASTC_8X5_UNORM
+    GPU_TEXTUREFORMAT_ASTC_8X6_UNORM
+    GPU_TEXTUREFORMAT_ASTC_8X8_UNORM
+    GPU_TEXTUREFORMAT_ASTC_10X5_UNORM
+    GPU_TEXTUREFORMAT_ASTC_10X6_UNORM
+    GPU_TEXTUREFORMAT_ASTC_10X8_UNORM
+    GPU_TEXTUREFORMAT_ASTC_10X10_UNORM
+    GPU_TEXTUREFORMAT_ASTC_12X10_UNORM
+    GPU_TEXTUREFORMAT_ASTC_12X12_UNORM
+    GPU_TEXTUREFORMAT_ASTC_4X4_UNORM_SRGB
+    GPU_TEXTUREFORMAT_ASTC_5X4_UNORM_SRGB
+    GPU_TEXTUREFORMAT_ASTC_5X5_UNORM_SRGB
+    GPU_TEXTUREFORMAT_ASTC_6X5_UNORM_SRGB
+    GPU_TEXTUREFORMAT_ASTC_6X6_UNORM_SRGB
+    GPU_TEXTUREFORMAT_ASTC_8X5_UNORM_SRGB
+    GPU_TEXTUREFORMAT_ASTC_8X6_UNORM_SRGB
+    GPU_TEXTUREFORMAT_ASTC_8X8_UNORM_SRGB
+    GPU_TEXTUREFORMAT_ASTC_10X5_UNORM_SRGB
+    GPU_TEXTUREFORMAT_ASTC_10X6_UNORM_SRGB
+    GPU_TEXTUREFORMAT_ASTC_10X8_UNORM_SRGB
+    GPU_TEXTUREFORMAT_ASTC_10X10_UNORM_SRGB
+    GPU_TEXTUREFORMAT_ASTC_12X10_UNORM_SRGB
+    GPU_TEXTUREFORMAT_ASTC_12X12_UNORM_SRGB
+    GPU_TEXTUREFORMAT_ASTC_4X4_FLOAT
+    GPU_TEXTUREFORMAT_ASTC_5X4_FLOAT
+    GPU_TEXTUREFORMAT_ASTC_5X5_FLOAT
+    GPU_TEXTUREFORMAT_ASTC_6X5_FLOAT
+    GPU_TEXTUREFORMAT_ASTC_6X6_FLOAT
+    GPU_TEXTUREFORMAT_ASTC_8X5_FLOAT
+    GPU_TEXTUREFORMAT_ASTC_8X6_FLOAT
+    GPU_TEXTUREFORMAT_ASTC_8X8_FLOAT
+    GPU_TEXTUREFORMAT_ASTC_10X5_FLOAT
+    GPU_TEXTUREFORMAT_ASTC_10X6_FLOAT
+    GPU_TEXTUREFORMAT_ASTC_10X8_FLOAT
+    GPU_TEXTUREFORMAT_ASTC_10X10_FLOAT
+    GPU_TEXTUREFORMAT_ASTC_12X10_FLOAT
+    GPU_TEXTUREFORMAT_ASTC_12X12_FLOAT
+  end
+
+  enum GPUTextureType
+    GPU_TEXTURETYPE_2D
+    GPU_TEXTURETYPE_2D_ARRAY
+    GPU_TEXTURETYPE_3D
+    GPU_TEXTURETYPE_CUBE
+    GPU_TEXTURETYPE_CUBE_ARRAY
+  end
+
+  enum GPUSampleCount
+    GPU_SAMPLECOUNT_1
+    GPU_SAMPLECOUNT_2
+    GPU_SAMPLECOUNT_4
+    GPU_SAMPLECOUNT_8
+  end
+
+  enum GPUCubeMapFace
+    GPU_CUBEMAPFACE_POSITIVEX
+    GPU_CUBEMAPFACE_NEGATIVEX
+    GPU_CUBEMAPFACE_POSITIVEY
+    GPU_CUBEMAPFACE_NEGATIVEY
+    GPU_CUBEMAPFACE_POSITIVEZ
+    GPU_CUBEMAPFACE_NEGATIVEZ
+  end
+
+  enum GPUTransferBufferUsage
+    GPU_TRANSFERBUFFERUSAGE_UPLOAD
+    GPU_TRANSFERBUFFERUSAGE_DOWNLOAD
+  end
+
+  enum GPUShaderStage
+    GPU_SHADERSTAGE_VERTEX
+    GPU_SHADERSTAGE_FRAGMENT
+  end
+
+  enum GPUVertexElementFormat
+    GPU_VERTEXELEMENTFORMAT_INVALID
+    GPU_VERTEXELEMENTFORMAT_INT
+    GPU_VERTEXELEMENTFORMAT_INT2
+    GPU_VERTEXELEMENTFORMAT_INT3
+    GPU_VERTEXELEMENTFORMAT_INT4
+    GPU_VERTEXELEMENTFORMAT_UINT
+    GPU_VERTEXELEMENTFORMAT_UINT2
+    GPU_VERTEXELEMENTFORMAT_UINT3
+    GPU_VERTEXELEMENTFORMAT_UINT4
+    GPU_VERTEXELEMENTFORMAT_FLOAT
+    GPU_VERTEXELEMENTFORMAT_FLOAT2
+    GPU_VERTEXELEMENTFORMAT_FLOAT3
+    GPU_VERTEXELEMENTFORMAT_FLOAT4
+    GPU_VERTEXELEMENTFORMAT_BYTE2
+    GPU_VERTEXELEMENTFORMAT_BYTE4
+    GPU_VERTEXELEMENTFORMAT_UBYTE2
+    GPU_VERTEXELEMENTFORMAT_UBYTE4
+    GPU_VERTEXELEMENTFORMAT_BYTE2_NORM
+    GPU_VERTEXELEMENTFORMAT_BYTE4_NORM
+    GPU_VERTEXELEMENTFORMAT_UBYTE2_NORM
+    GPU_VERTEXELEMENTFORMAT_UBYTE4_NORM
+    GPU_VERTEXELEMENTFORMAT_SHORT2
+    GPU_VERTEXELEMENTFORMAT_SHORT4
+    GPU_VERTEXELEMENTFORMAT_USHORT2
+    GPU_VERTEXELEMENTFORMAT_USHORT4
+    GPU_VERTEXELEMENTFORMAT_SHORT2_NORM
+    GPU_VERTEXELEMENTFORMAT_SHORT4_NORM
+    GPU_VERTEXELEMENTFORMAT_USHORT2_NORM
+    GPU_VERTEXELEMENTFORMAT_USHORT4_NORM
+    GPU_VERTEXELEMENTFORMAT_HALF2
+    GPU_VERTEXELEMENTFORMAT_HALF4
+  end
+
+  enum GPUVertexInputRate
+    GPU_VERTEXINPUTRATE_VERTEX
+    GPU_VERTEXINPUTRATE_INSTANCE
+  end
+
+  enum GPUFillMode
+    GPU_FILLMODE_FILL
+    GPU_FILLMODE_LINE
+  end
+
+  enum GPUCullMode
+    GPU_CULLMODE_NONE
+    GPU_CULLMODE_FRONT
+    GPU_CULLMODE_BACK
+  end
+
+  enum GPUFrontFace
+    GPU_FRONTFACE_COUNTER_CLOCKWISE
+    GPU_FRONTFACE_CLOCKWISE
+  end
+
+  enum GPUCompareOp
+    GPU_COMPAREOP_INVALID
+    GPU_COMPAREOP_NEVER
+    GPU_COMPAREOP_LESS
+    GPU_COMPAREOP_EQUAL
+    GPU_COMPAREOP_LESS_OR_EQUAL
+    GPU_COMPAREOP_GREATER
+    GPU_COMPAREOP_NOT_EQUAL
+    GPU_COMPAREOP_GREATER_OR_EQUAL
+    GPU_COMPAREOP_ALWAYS
+  end
+
+  enum GPUStencilOp
+    GPU_STENCILOP_INVALID
+    GPU_STENCILOP_KEEP
+    GPU_STENCILOP_ZERO
+    GPU_STENCILOP_REPLACE
+    GPU_STENCILOP_INCREMENT_AND_CLAMP
+    GPU_STENCILOP_DECREMENT_AND_CLAMP
+    GPU_STENCILOP_INVERT
+    GPU_STENCILOP_INCREMENT_AND_WRAP
+    GPU_STENCILOP_DECREMENT_AND_WRAP
+  end
+
+  enum GPUBlendOp
+    GPU_BLENDOP_INVALID
+    GPU_BLENDOP_ADD
+    GPU_BLENDOP_SUBTRACT
+    GPU_BLENDOP_REVERSE_SUBTRACT
+    GPU_BLENDOP_MIN
+    GPU_BLENDOP_MAX
+  end
+
+  enum GPUBlendFactor
+    GPU_BLENDFACTOR_INVALID
+    GPU_BLENDFACTOR_ZERO
+    GPU_BLENDFACTOR_ONE
+    GPU_BLENDFACTOR_SRC_COLOR
+    GPU_BLENDFACTOR_ONE_MINUS_SRC_COLOR
+    GPU_BLENDFACTOR_DST_COLOR
+    GPU_BLENDFACTOR_ONE_MINUS_DST_COLOR
+    GPU_BLENDFACTOR_SRC_ALPHA
+    GPU_BLENDFACTOR_ONE_MINUS_SRC_ALPHA
+    GPU_BLENDFACTOR_DST_ALPHA
+    GPU_BLENDFACTOR_ONE_MINUS_DST_ALPHA
+    GPU_BLENDFACTOR_CONSTANT_COLOR
+    GPU_BLENDFACTOR_ONE_MINUS_CONSTANT_COLOR
+    GPU_BLENDFACTOR_SRC_ALPHA_SATURATE
+  end
+
+  enum GPUFilter
+    GPU_FILTER_NEAREST
+    GPU_FILTER_LINEAR
+  end
+
+  enum GPUSamplerMipmapMode
+    GPU_SAMPLERMIPMAPMODE_NEAREST
+    GPU_SAMPLERMIPMAPMODE_LINEAR
+  end
+
+  enum GPUSamplerAddressMode
+    GPU_SAMPLERADDRESSMODE_REPEAT
+    GPU_SAMPLERADDRESSMODE_MIRRORED_REPEAT
+    GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE
+  end
+
+  enum GPUPresentMode
+    GPU_PRESENTMODE_VSYNC
+    GPU_PRESENTMODE_IMMEDIATE
+    GPU_PRESENTMODE_MAILBOX
+  end
+
+  enum GPUSwapchainComposition
+    GPU_SWAPCHAINCOMPOSITION_SDR
+    GPU_SWAPCHAINCOMPOSITION_SDR_LINEAR
+    GPU_SWAPCHAINCOMPOSITION_HDR_EXTENDED_LINEAR
+    GPU_SWAPCHAINCOMPOSITION_HDR10_ST2084
+  end
+
+  struct GPUViewport
+    x : LibC::Float
+    y : LibC::Float
+    w : LibC::Float
+    h : LibC::Float
+    min_depth : LibC::Float
+    max_depth : LibC::Float
+  end
+
+  struct GPUTextureTransferInfo
+    transfer_buffer : GPUTransferBuffer*
+    offset : UInt32
+    pixels_per_row : UInt32
+    rows_per_layer : UInt32
+  end
+
+  struct GPUTransferBufferLocation
+    transfer_buffer : GPUTransferBuffer*
+    offset : UInt32
+  end
+
+  struct GPUTextureLocation
+    texture : GPUTexture*
+    mip_level : UInt32
+    layer : UInt32
+    x : UInt32
+    y : UInt32
+    z : UInt32
+  end
+
+  struct GPUTextureRegion
+    texture : GPUTexture*
+    mip_level : UInt32
+    layer : UInt32
+    x : UInt32
+    y : UInt32
+    z : UInt32
+    w : UInt32
+    h : UInt32
+    d : UInt32
+  end
+
+  struct GPUBlitRegion
+    texture : GPUTexture*
+    mip_level : UInt32
+    layer_or_depth_plane : UInt32
+    x : UInt32
+    y : UInt32
+    w : UInt32
+    h : UInt32
+  end
+
+  struct GPUBufferLocation
+    buffer : GPUBuffer*
+    offset : UInt32
+  end
+
+  struct GPUBufferRegion
+    buffer : GPUBuffer*
+    offset : UInt32
+    size : UInt32
+  end
+
+  struct GPUIndirectDrawCommand
+    num_vertices : UInt32
+    num_instances : UInt32
+    first_vertex : UInt32
+    first_instance : UInt32
+  end
+
+  struct GPUIndexedIndirectDrawCommand
+    num_indices : UInt32
+    num_instances : UInt32
+    first_index : UInt32
+    vertex_offset : Int32
+    first_instance : UInt32
+  end
+
+  struct GPUIndirectDispatchCommand
+    groupcount_x : UInt32
+    groupcount_y : UInt32
+    groupcount_z : UInt32
+  end
+
+  struct GPUSamplerCreateInfo
+    min_filter : GPUFilter
+    mag_filter : GPUFilter
+    mipmap_mode : GPUSamplerMipmapMode
+    address_mode_u : GPUSamplerAddressMode
+    address_mode_v : GPUSamplerAddressMode
+    address_mode_w : GPUSamplerAddressMode
+    mip_lod_bias : LibC::Float
+    max_anisotropy : LibC::Float
+    compare_op : GPUCompareOp
+    min_lod : LibC::Float
+    max_lod : LibC::Float
+    enable_anisotropy : Bool
+    enable_compare : Bool
+    padding1 : UInt8
+    padding2 : UInt8
+    props : PropertiesID
+  end
+
+  struct GPUVertexBufferDescription
+    slot : UInt32
+    pitch : UInt32
+    input_rate : GPUVertexInputRate
+    instance_step_rate : UInt32
+  end
+
+  struct GPUVertexAttribute
+    location : UInt32
+    buffer_slot : UInt32
+    format : GPUVertexElementFormat
+    offset : UInt32
+  end
+
+  struct GPUVertexInputState
+    vertex_buffer_descriptions : GPUVertexBufferDescription*
+    num_vertex_buffers : UInt32
+    vertex_attributes : GPUVertexAttribute*
+    num_vertex_attributes : UInt32
+  end
+
+  struct GPUStencilOpState
+    fail_op : GPUStencilOp
+    pass_op : GPUStencilOp
+    depth_fail_op : GPUStencilOp
+    compare_op : GPUCompareOp
+  end
+
+  struct GPUColorTargetBlendState
+    src_color_blendfactor : GPUBlendFactor
+    dst_color_blendfactor : GPUBlendFactor
+    color_blend_op : GPUBlendOp
+    src_alpha_blendfactor : GPUBlendFactor
+    dst_alpha_blendfactor : GPUBlendFactor
+    alpha_blend_op : GPUBlendOp
+    color_write_mask : GPUColorComponentFlags
+    enable_blend : Bool
+    enable_color_write_mask : Bool
+    padding1 : UInt8
+    padding2 : UInt8
+  end
+
+  struct GPUShaderCreateInfo
+    code_size : LibC::SizeT
+    code : UInt8*
+    entrypoint : LibC::Char*
+    format : GPUShaderFormat
+    stage : GPUShaderStage
+    num_samplers : UInt32
+    num_storage_textures : UInt32
+    num_storage_buffers : UInt32
+    num_uniform_buffers : UInt32
+    props : PropertiesID
+  end
+
+  struct GPUTextureCreateInfo
+    type : GPUTextureType
+    format : GPUTextureFormat
+    usage : GPUTextureUsageFlags
+    width : UInt32
+    height : UInt32
+    layer_count_or_depth : UInt32
+    num_levels : UInt32
+    sample_count : GPUSampleCount
+    props : PropertiesID
+  end
+
+  struct GPUBufferCreateInfo
+    usage : GPUBufferUsageFlags
+    size : UInt32
+    props : PropertiesID
+  end
+
+  struct GPUTransferBufferCreateInfo
+    usage : GPUTransferBufferUsage
+    size : UInt32
+    props : PropertiesID
+  end
+
+  struct GPURasterizerState
+    fill_mode : GPUFillMode
+    cull_mode : GPUCullMode
+    front_face : GPUFrontFace
+    depth_bias_constant_factor : LibC::Float
+    depth_bias_clamp : LibC::Float
+    depth_bias_slope_factor : LibC::Float
+    enable_depth_bias : Bool
+    enable_depth_clip : Bool
+    padding1 : UInt8
+    padding2 : UInt8
+  end
+
+  struct GPUMultisampleState
+    sample_count : GPUSampleCount
+    sample_mask : UInt32
+    enable_mask : Bool
+    padding1 : UInt8
+    padding2 : UInt8
+    padding3 : UInt8
+  end
+
+  struct GPUDepthStencilState
+    compare_op : GPUCompareOp
+    back_stencil_state : GPUStencilOpState
+    front_stencil_state : GPUStencilOpState
+    compare_mask : UInt8
+    write_mask : UInt8
+    enable_depth_test : Bool
+    enable_depth_write : Bool
+    enable_stencil_test : Bool
+    padding1 : UInt8
+    padding2 : UInt8
+    padding3 : UInt8
+  end
+
+  struct GPUColorTargetDescription
+    format : GPUTextureFormat
+    blend_state : GPUColorTargetBlendState
+  end
+
+  struct GPUGraphicsPipelineTargetInfo
+    color_target_descriptions : GPUColorTargetDescription*
+    num_color_targets : UInt32
+    depth_stencil_format : GPUTextureFormat
+    has_depth_stencil_target : Bool
+    padding1 : UInt8
+    padding2 : UInt8
+    padding3 : UInt8
+  end
+
+  struct GPUGraphicsPipelineCreateInfo
+    vertex_shader : GPUShader*
+    fragment_shader : GPUShader*
+    vertex_input_state : GPUVertexInputState
+    primitive_type : GPUPrimitiveType
+    rasterizer_state : GPURasterizerState
+    multisample_state : GPUMultisampleState
+    depth_stencil_state : GPUDepthStencilState
+    target_info : GPUGraphicsPipelineTargetInfo
+    props : PropertiesID
+  end
+
+  struct GPUComputePipelineCreateInfo
+    code_size : LibC::SizeT
+    code : UInt8*
+    entrypoint : LibC::Char*
+    format : GPUShaderFormat
+    num_samplers : UInt32
+    num_readonly_storage_textures : UInt32
+    num_readonly_storage_buffers : UInt32
+    num_readwrite_storage_textures : UInt32
+    num_readwrite_storage_buffers : UInt32
+    num_uniform_buffers : UInt32
+    threadcount_x : UInt32
+    threadcount_y : UInt32
+    threadcount_z : UInt32
+    props : PropertiesID
+  end
+
+  struct GPUColorTargetInfo
+    texture : GPUTexture*
+    mip_level : UInt32
+    layer_or_depth_plane : UInt32
+    clear_color : FColor
+    load_op : GPULoadOp
+    store_op : GPUStoreOp
+    resolve_texture : GPUTexture*
+    resolve_mip_level : UInt32
+    resolve_layer : UInt32
+    cycle : Bool
+    cycle_resolve_texture : Bool
+    padding1 : UInt8
+    padding2 : UInt8
+  end
+
+  struct GPUDepthStencilTargetInfo
+    texture : GPUTexture*
+    clear_depth : LibC::Float
+    load_op : GPULoadOp
+    store_op : GPUStoreOp
+    stencil_load_op : GPULoadOp
+    stencil_store_op : GPUStoreOp
+    cycle : Bool
+    clear_stencil : UInt8
+    padding1 : UInt8
+    padding2 : UInt8
+  end
+
+  struct GPUBlitInfo
+    source : GPUBlitRegion
+    destination : GPUBlitRegion
+    load_op : GPULoadOp
+    clear_color : FColor
+    flip_mode : FlipMode
+    filter : GPUFilter
+    cycle : Bool
+    padding1 : UInt8
+    padding2 : UInt8
+    padding3 : UInt8
+  end
+
+  struct GPUBufferBinding
+    buffer : GPUBuffer*
+    offset : UInt32
+  end
+
+  struct GPUTextureSamplerBinding
+    texture : GPUTexture*
+    sampler : GPUSampler*
+  end
+
+  struct GPUStorageBufferReadWriteBinding
+    buffer : GPUBuffer*
+    cycle : Bool
+    padding1 : UInt8
+    padding2 : UInt8
+    padding3 : UInt8
+  end
+
+  struct GPUStorageTextureReadWriteBinding
+    texture : GPUTexture*
+    mip_level : UInt32
+    layer : UInt32
+    cycle : Bool
+    padding1 : UInt8
+    padding2 : UInt8
+    padding3 : UInt8
+  end
+
+  fun gpusupports_shader_formats = SDL_GPUSupportsShaderFormats(format_flags : GPUShaderFormat, name : LibC::Char*) : Bool
+  fun gpusupports_properties = SDL_GPUSupportsProperties(props : PropertiesID) : Bool
+  fun create_gpudevice = SDL_CreateGPUDevice(format_flags : GPUShaderFormat, debug_mode : Bool, name : LibC::Char*) : GPUDevice*
+  fun create_gpudevice_with_properties = SDL_CreateGPUDeviceWithProperties(props : PropertiesID) : GPUDevice*
+  fun destroy_gpudevice = SDL_DestroyGPUDevice(device : GPUDevice*) : Void
+  fun get_num_gpudrivers = SDL_GetNumGPUDrivers() : LibC::Int
+  fun get_gpudriver = SDL_GetGPUDriver(index : LibC::Int) : LibC::Char*
+  fun get_gpudevice_driver = SDL_GetGPUDeviceDriver(device : GPUDevice*) : LibC::Char*
+  fun get_gpushader_formats = SDL_GetGPUShaderFormats(device : GPUDevice*) : GPUShaderFormat
+  fun create_gpucompute_pipeline = SDL_CreateGPUComputePipeline(device : GPUDevice*, createinfo : GPUComputePipelineCreateInfo*) : GPUComputePipeline*
+  fun create_gpugraphics_pipeline = SDL_CreateGPUGraphicsPipeline(device : GPUDevice*, createinfo : GPUGraphicsPipelineCreateInfo*) : GPUGraphicsPipeline*
+  fun create_gpusampler = SDL_CreateGPUSampler(device : GPUDevice*, createinfo : GPUSamplerCreateInfo*) : GPUSampler*
+  fun create_gpushader = SDL_CreateGPUShader(device : GPUDevice*, createinfo : GPUShaderCreateInfo*) : GPUShader*
+  fun create_gputexture = SDL_CreateGPUTexture(device : GPUDevice*, createinfo : GPUTextureCreateInfo*) : GPUTexture*
+  fun create_gpubuffer = SDL_CreateGPUBuffer(device : GPUDevice*, createinfo : GPUBufferCreateInfo*) : GPUBuffer*
+  fun create_gputransfer_buffer = SDL_CreateGPUTransferBuffer(device : GPUDevice*, createinfo : GPUTransferBufferCreateInfo*) : GPUTransferBuffer*
+  fun set_gpubuffer_name = SDL_SetGPUBufferName(device : GPUDevice*, buffer : GPUBuffer*, text : LibC::Char*) : Void
+  fun set_gputexture_name = SDL_SetGPUTextureName(device : GPUDevice*, texture : GPUTexture*, text : LibC::Char*) : Void
+  fun insert_gpudebug_label = SDL_InsertGPUDebugLabel(command_buffer : GPUCommandBuffer*, text : LibC::Char*) : Void
+  fun push_gpudebug_group = SDL_PushGPUDebugGroup(command_buffer : GPUCommandBuffer*, name : LibC::Char*) : Void
+  fun pop_gpudebug_group = SDL_PopGPUDebugGroup(command_buffer : GPUCommandBuffer*) : Void
+  fun release_gputexture = SDL_ReleaseGPUTexture(device : GPUDevice*, texture : GPUTexture*) : Void
+  fun release_gpusampler = SDL_ReleaseGPUSampler(device : GPUDevice*, sampler : GPUSampler*) : Void
+  fun release_gpubuffer = SDL_ReleaseGPUBuffer(device : GPUDevice*, buffer : GPUBuffer*) : Void
+  fun release_gputransfer_buffer = SDL_ReleaseGPUTransferBuffer(device : GPUDevice*, transfer_buffer : GPUTransferBuffer*) : Void
+  fun release_gpucompute_pipeline = SDL_ReleaseGPUComputePipeline(device : GPUDevice*, compute_pipeline : GPUComputePipeline*) : Void
+  fun release_gpushader = SDL_ReleaseGPUShader(device : GPUDevice*, shader : GPUShader*) : Void
+  fun release_gpugraphics_pipeline = SDL_ReleaseGPUGraphicsPipeline(device : GPUDevice*, graphics_pipeline : GPUGraphicsPipeline*) : Void
+  fun acquire_gpucommand_buffer = SDL_AcquireGPUCommandBuffer(device : GPUDevice*) : GPUCommandBuffer*
+  fun push_gpuvertex_uniform_data = SDL_PushGPUVertexUniformData(command_buffer : GPUCommandBuffer*, slot_index : UInt32, data : Void*, length : UInt32) : Void
+  fun push_gpufragment_uniform_data = SDL_PushGPUFragmentUniformData(command_buffer : GPUCommandBuffer*, slot_index : UInt32, data : Void*, length : UInt32) : Void
+  fun push_gpucompute_uniform_data = SDL_PushGPUComputeUniformData(command_buffer : GPUCommandBuffer*, slot_index : UInt32, data : Void*, length : UInt32) : Void
+  fun begin_gpurender_pass = SDL_BeginGPURenderPass(command_buffer : GPUCommandBuffer*, color_target_infos : GPUColorTargetInfo*, num_color_targets : UInt32, depth_stencil_target_info : GPUDepthStencilTargetInfo*) : GPURenderPass*
+  fun bind_gpugraphics_pipeline = SDL_BindGPUGraphicsPipeline(render_pass : GPURenderPass*, graphics_pipeline : GPUGraphicsPipeline*) : Void
+  fun set_gpuviewport = SDL_SetGPUViewport(render_pass : GPURenderPass*, viewport : GPUViewport*) : Void
+  fun set_gpuscissor = SDL_SetGPUScissor(render_pass : GPURenderPass*, scissor : Rect*) : Void
+  fun set_gpublend_constants = SDL_SetGPUBlendConstants(render_pass : GPURenderPass*, blend_constants : FColor) : Void
+  fun set_gpustencil_reference = SDL_SetGPUStencilReference(render_pass : GPURenderPass*, reference : UInt8) : Void
+  fun bind_gpuvertex_buffers = SDL_BindGPUVertexBuffers(render_pass : GPURenderPass*, first_slot : UInt32, bindings : GPUBufferBinding*, num_bindings : UInt32) : Void
+  fun bind_gpuindex_buffer = SDL_BindGPUIndexBuffer(render_pass : GPURenderPass*, binding : GPUBufferBinding*, index_element_size : GPUIndexElementSize) : Void
+  fun bind_gpuvertex_samplers = SDL_BindGPUVertexSamplers(render_pass : GPURenderPass*, first_slot : UInt32, texture_sampler_bindings : GPUTextureSamplerBinding*, num_bindings : UInt32) : Void
+  fun bind_gpuvertex_storage_textures = SDL_BindGPUVertexStorageTextures(render_pass : GPURenderPass*, first_slot : UInt32, storage_textures : GPUTexture* const*, num_bindings : UInt32) : Void
+  fun bind_gpuvertex_storage_buffers = SDL_BindGPUVertexStorageBuffers(render_pass : GPURenderPass*, first_slot : UInt32, storage_buffers : GPUBuffer* const*, num_bindings : UInt32) : Void
+  fun bind_gpufragment_samplers = SDL_BindGPUFragmentSamplers(render_pass : GPURenderPass*, first_slot : UInt32, texture_sampler_bindings : GPUTextureSamplerBinding*, num_bindings : UInt32) : Void
+  fun bind_gpufragment_storage_textures = SDL_BindGPUFragmentStorageTextures(render_pass : GPURenderPass*, first_slot : UInt32, storage_textures : GPUTexture* const*, num_bindings : UInt32) : Void
+  fun bind_gpufragment_storage_buffers = SDL_BindGPUFragmentStorageBuffers(render_pass : GPURenderPass*, first_slot : UInt32, storage_buffers : GPUBuffer* const*, num_bindings : UInt32) : Void
+  fun draw_gpuindexed_primitives = SDL_DrawGPUIndexedPrimitives(render_pass : GPURenderPass*, num_indices : UInt32, num_instances : UInt32, first_index : UInt32, vertex_offset : Int32, first_instance : UInt32) : Void
+  fun draw_gpuprimitives = SDL_DrawGPUPrimitives(render_pass : GPURenderPass*, num_vertices : UInt32, num_instances : UInt32, first_vertex : UInt32, first_instance : UInt32) : Void
+  fun draw_gpuprimitives_indirect = SDL_DrawGPUPrimitivesIndirect(render_pass : GPURenderPass*, buffer : GPUBuffer*, offset : UInt32, draw_count : UInt32) : Void
+  fun draw_gpuindexed_primitives_indirect = SDL_DrawGPUIndexedPrimitivesIndirect(render_pass : GPURenderPass*, buffer : GPUBuffer*, offset : UInt32, draw_count : UInt32) : Void
+  fun end_gpurender_pass = SDL_EndGPURenderPass(render_pass : GPURenderPass*) : Void
+  fun begin_gpucompute_pass = SDL_BeginGPUComputePass(command_buffer : GPUCommandBuffer*, storage_texture_bindings : GPUStorageTextureReadWriteBinding*, num_storage_texture_bindings : UInt32, storage_buffer_bindings : GPUStorageBufferReadWriteBinding*, num_storage_buffer_bindings : UInt32) : GPUComputePass*
+  fun bind_gpucompute_pipeline = SDL_BindGPUComputePipeline(compute_pass : GPUComputePass*, compute_pipeline : GPUComputePipeline*) : Void
+  fun bind_gpucompute_samplers = SDL_BindGPUComputeSamplers(compute_pass : GPUComputePass*, first_slot : UInt32, texture_sampler_bindings : GPUTextureSamplerBinding*, num_bindings : UInt32) : Void
+  fun bind_gpucompute_storage_textures = SDL_BindGPUComputeStorageTextures(compute_pass : GPUComputePass*, first_slot : UInt32, storage_textures : GPUTexture* const*, num_bindings : UInt32) : Void
+  fun bind_gpucompute_storage_buffers = SDL_BindGPUComputeStorageBuffers(compute_pass : GPUComputePass*, first_slot : UInt32, storage_buffers : GPUBuffer* const*, num_bindings : UInt32) : Void
+  fun dispatch_gpucompute = SDL_DispatchGPUCompute(compute_pass : GPUComputePass*, groupcount_x : UInt32, groupcount_y : UInt32, groupcount_z : UInt32) : Void
+  fun dispatch_gpucompute_indirect = SDL_DispatchGPUComputeIndirect(compute_pass : GPUComputePass*, buffer : GPUBuffer*, offset : UInt32) : Void
+  fun end_gpucompute_pass = SDL_EndGPUComputePass(compute_pass : GPUComputePass*) : Void
+  fun map_gputransfer_buffer = SDL_MapGPUTransferBuffer(device : GPUDevice*, transfer_buffer : GPUTransferBuffer*, cycle : Bool) : Void*
+  fun unmap_gputransfer_buffer = SDL_UnmapGPUTransferBuffer(device : GPUDevice*, transfer_buffer : GPUTransferBuffer*) : Void
+  fun begin_gpucopy_pass = SDL_BeginGPUCopyPass(command_buffer : GPUCommandBuffer*) : GPUCopyPass*
+  fun upload_to_gputexture = SDL_UploadToGPUTexture(copy_pass : GPUCopyPass*, source : GPUTextureTransferInfo*, destination : GPUTextureRegion*, cycle : Bool) : Void
+  fun upload_to_gpubuffer = SDL_UploadToGPUBuffer(copy_pass : GPUCopyPass*, source : GPUTransferBufferLocation*, destination : GPUBufferRegion*, cycle : Bool) : Void
+  fun copy_gputexture_to_texture = SDL_CopyGPUTextureToTexture(copy_pass : GPUCopyPass*, source : GPUTextureLocation*, destination : GPUTextureLocation*, w : UInt32, h : UInt32, d : UInt32, cycle : Bool) : Void
+  fun copy_gpubuffer_to_buffer = SDL_CopyGPUBufferToBuffer(copy_pass : GPUCopyPass*, source : GPUBufferLocation*, destination : GPUBufferLocation*, size : UInt32, cycle : Bool) : Void
+  fun download_from_gputexture = SDL_DownloadFromGPUTexture(copy_pass : GPUCopyPass*, source : GPUTextureRegion*, destination : GPUTextureTransferInfo*) : Void
+  fun download_from_gpubuffer = SDL_DownloadFromGPUBuffer(copy_pass : GPUCopyPass*, source : GPUBufferRegion*, destination : GPUTransferBufferLocation*) : Void
+  fun end_gpucopy_pass = SDL_EndGPUCopyPass(copy_pass : GPUCopyPass*) : Void
+  fun generate_mipmaps_for_gputexture = SDL_GenerateMipmapsForGPUTexture(command_buffer : GPUCommandBuffer*, texture : GPUTexture*) : Void
+  fun blit_gputexture = SDL_BlitGPUTexture(command_buffer : GPUCommandBuffer*, info : GPUBlitInfo*) : Void
+  fun window_supports_gpuswapchain_composition = SDL_WindowSupportsGPUSwapchainComposition(device : GPUDevice*, window : Window*, swapchain_composition : GPUSwapchainComposition) : Bool
+  fun window_supports_gpupresent_mode = SDL_WindowSupportsGPUPresentMode(device : GPUDevice*, window : Window*, present_mode : GPUPresentMode) : Bool
+  fun claim_window_for_gpudevice = SDL_ClaimWindowForGPUDevice(device : GPUDevice*, window : Window*) : Bool
+  fun release_window_from_gpudevice = SDL_ReleaseWindowFromGPUDevice(device : GPUDevice*, window : Window*) : Void
+  fun set_gpuswapchain_parameters = SDL_SetGPUSwapchainParameters(device : GPUDevice*, window : Window*, swapchain_composition : GPUSwapchainComposition, present_mode : GPUPresentMode) : Bool
+  fun set_gpuallowed_frames_in_flight = SDL_SetGPUAllowedFramesInFlight(device : GPUDevice*, allowed_frames_in_flight : UInt32) : Bool
+  fun get_gpuswapchain_texture_format = SDL_GetGPUSwapchainTextureFormat(device : GPUDevice*, window : Window*) : GPUTextureFormat
+  fun acquire_gpuswapchain_texture = SDL_AcquireGPUSwapchainTexture(command_buffer : GPUCommandBuffer*, window : Window*, swapchain_texture : GPUTexture**, swapchain_texture_width : UInt32*, swapchain_texture_height : UInt32*) : Bool
+  fun wait_for_gpuswapchain = SDL_WaitForGPUSwapchain(device : GPUDevice*, window : Window*) : Bool
+  fun wait_and_acquire_gpuswapchain_texture = SDL_WaitAndAcquireGPUSwapchainTexture(command_buffer : GPUCommandBuffer*, window : Window*, swapchain_texture : GPUTexture**, swapchain_texture_width : UInt32*, swapchain_texture_height : UInt32*) : Bool
+  fun submit_gpucommand_buffer = SDL_SubmitGPUCommandBuffer(command_buffer : GPUCommandBuffer*) : Bool
+  fun submit_gpucommand_buffer_and_acquire_fence = SDL_SubmitGPUCommandBufferAndAcquireFence(command_buffer : GPUCommandBuffer*) : GPUFence*
+  fun cancel_gpucommand_buffer = SDL_CancelGPUCommandBuffer(command_buffer : GPUCommandBuffer*) : Bool
+  fun wait_for_gpuidle = SDL_WaitForGPUIdle(device : GPUDevice*) : Bool
+  fun wait_for_gpufences = SDL_WaitForGPUFences(device : GPUDevice*, wait_all : Bool, fences : GPUFence* const*, num_fences : UInt32) : Bool
+  fun query_gpufence = SDL_QueryGPUFence(device : GPUDevice*, fence : GPUFence*) : Bool
+  fun release_gpufence = SDL_ReleaseGPUFence(device : GPUDevice*, fence : GPUFence*) : Void
+  fun gputexture_format_texel_block_size = SDL_GPUTextureFormatTexelBlockSize(format : GPUTextureFormat) : UInt32
+  fun gputexture_supports_format = SDL_GPUTextureSupportsFormat(device : GPUDevice*, format : GPUTextureFormat, type : GPUTextureType, usage : GPUTextureUsageFlags) : Bool
+  fun gputexture_supports_sample_count = SDL_GPUTextureSupportsSampleCount(device : GPUDevice*, format : GPUTextureFormat, sample_count : GPUSampleCount) : Bool
+  fun calculate_gputexture_format_size = SDL_CalculateGPUTextureFormatSize(format : GPUTextureFormat, width : UInt32, height : UInt32, depth_or_layer_count : UInt32) : UInt32
+  fun gdksuspend_gpu = SDL_GDKSuspendGPU(device : GPUDevice*) : Void
+  fun gdkresume_gpu = SDL_GDKResumeGPU(device : GPUDevice*) : Void
 
   # SDL_guid
 
@@ -1213,31 +2229,31 @@ lib LibSDL
   fun get_haptic_from_id = SDL_GetHapticFromID(instance_id : HapticID) : Haptic*
   fun get_haptic_id = SDL_GetHapticID(haptic : Haptic*) : HapticID
   fun get_haptic_name = SDL_GetHapticName(haptic : Haptic*) : LibC::Char*
-  fun is_mouse_haptic = SDL_IsMouseHaptic() : bool
+  fun is_mouse_haptic = SDL_IsMouseHaptic() : Bool
   fun open_haptic_from_mouse = SDL_OpenHapticFromMouse() : Haptic*
-  fun is_joystick_haptic = SDL_IsJoystickHaptic(joystick : Joystick*) : bool
+  fun is_joystick_haptic = SDL_IsJoystickHaptic(joystick : Joystick*) : Bool
   fun open_haptic_from_joystick = SDL_OpenHapticFromJoystick(joystick : Joystick*) : Haptic*
   fun close_haptic = SDL_CloseHaptic(haptic : Haptic*) : Void
   fun get_max_haptic_effects = SDL_GetMaxHapticEffects(haptic : Haptic*) : LibC::Int
   fun get_max_haptic_effects_playing = SDL_GetMaxHapticEffectsPlaying(haptic : Haptic*) : LibC::Int
   fun get_haptic_features = SDL_GetHapticFeatures(haptic : Haptic*) : UInt32
   fun get_num_haptic_axes = SDL_GetNumHapticAxes(haptic : Haptic*) : LibC::Int
-  fun haptic_effect_supported = SDL_HapticEffectSupported(haptic : Haptic*, effect : HapticEffect*) : bool
+  fun haptic_effect_supported = SDL_HapticEffectSupported(haptic : Haptic*, effect : HapticEffect*) : Bool
   fun create_haptic_effect = SDL_CreateHapticEffect(haptic : Haptic*, effect : HapticEffect*) : LibC::Int
-  fun update_haptic_effect = SDL_UpdateHapticEffect(haptic : Haptic*, effect : LibC::Int, data : HapticEffect*) : bool
-  fun run_haptic_effect = SDL_RunHapticEffect(haptic : Haptic*, effect : LibC::Int, iterations : UInt32) : bool
-  fun stop_haptic_effect = SDL_StopHapticEffect(haptic : Haptic*, effect : LibC::Int) : bool
+  fun update_haptic_effect = SDL_UpdateHapticEffect(haptic : Haptic*, effect : LibC::Int, data : HapticEffect*) : Bool
+  fun run_haptic_effect = SDL_RunHapticEffect(haptic : Haptic*, effect : LibC::Int, iterations : UInt32) : Bool
+  fun stop_haptic_effect = SDL_StopHapticEffect(haptic : Haptic*, effect : LibC::Int) : Bool
   fun destroy_haptic_effect = SDL_DestroyHapticEffect(haptic : Haptic*, effect : LibC::Int) : Void
-  fun get_haptic_effect_status = SDL_GetHapticEffectStatus(haptic : Haptic*, effect : LibC::Int) : bool
-  fun set_haptic_gain = SDL_SetHapticGain(haptic : Haptic*, gain : LibC::Int) : bool
-  fun set_haptic_autocenter = SDL_SetHapticAutocenter(haptic : Haptic*, autocenter : LibC::Int) : bool
-  fun pause_haptic = SDL_PauseHaptic(haptic : Haptic*) : bool
-  fun resume_haptic = SDL_ResumeHaptic(haptic : Haptic*) : bool
-  fun stop_haptic_effects = SDL_StopHapticEffects(haptic : Haptic*) : bool
-  fun haptic_rumble_supported = SDL_HapticRumbleSupported(haptic : Haptic*) : bool
-  fun init_haptic_rumble = SDL_InitHapticRumble(haptic : Haptic*) : bool
-  fun play_haptic_rumble = SDL_PlayHapticRumble(haptic : Haptic*, strength : LibC::Float, length : UInt32) : bool
-  fun stop_haptic_rumble = SDL_StopHapticRumble(haptic : Haptic*) : bool
+  fun get_haptic_effect_status = SDL_GetHapticEffectStatus(haptic : Haptic*, effect : LibC::Int) : Bool
+  fun set_haptic_gain = SDL_SetHapticGain(haptic : Haptic*, gain : LibC::Int) : Bool
+  fun set_haptic_autocenter = SDL_SetHapticAutocenter(haptic : Haptic*, autocenter : LibC::Int) : Bool
+  fun pause_haptic = SDL_PauseHaptic(haptic : Haptic*) : Bool
+  fun resume_haptic = SDL_ResumeHaptic(haptic : Haptic*) : Bool
+  fun stop_haptic_effects = SDL_StopHapticEffects(haptic : Haptic*) : Bool
+  fun haptic_rumble_supported = SDL_HapticRumbleSupported(haptic : Haptic*) : Bool
+  fun init_haptic_rumble = SDL_InitHapticRumble(haptic : Haptic*) : Bool
+  fun play_haptic_rumble = SDL_PlayHapticRumble(haptic : Haptic*, strength : LibC::Float, length : UInt32) : Bool
+  fun stop_haptic_rumble = SDL_StopHapticRumble(haptic : Haptic*) : Bool
 
   # additions/helper_haptic.cr
 
@@ -1492,19 +2508,167 @@ lib LibSDL
     HINT_OVERRIDE
   end
 
-  fun set_hint_with_priority = SDL_SetHintWithPriority(name : LibC::Char*, value : LibC::Char*, priority : HintPriority) : bool
-  fun set_hint = SDL_SetHint(name : LibC::Char*, value : LibC::Char*) : bool
-  fun reset_hint = SDL_ResetHint(name : LibC::Char*) : bool
+  fun set_hint_with_priority = SDL_SetHintWithPriority(name : LibC::Char*, value : LibC::Char*, priority : HintPriority) : Bool
+  fun set_hint = SDL_SetHint(name : LibC::Char*, value : LibC::Char*) : Bool
+  fun reset_hint = SDL_ResetHint(name : LibC::Char*) : Bool
   fun reset_hints = SDL_ResetHints() : Void
   fun get_hint = SDL_GetHint(name : LibC::Char*) : LibC::Char*
-  fun get_hint_boolean = SDL_GetHintBoolean(name : LibC::Char*, default_value : bool) : bool
-  fun add_hint_callback = SDL_AddHintCallback(name : LibC::Char*, callback : HintCallback, userdata : Void*) : bool
+  fun get_hint_boolean = SDL_GetHintBoolean(name : LibC::Char*, default_value : Bool) : Bool
+  fun add_hint_callback = SDL_AddHintCallback(name : LibC::Char*, callback : HintCallback, userdata : Void*) : Bool
   fun remove_hint_callback = SDL_RemoveHintCallback(name : LibC::Char*, callback : HintCallback, userdata : Void*) : Void
 
   # additions/helper_hints.cr
 
   # (void* userdata, const char* name, const char* oldValue, const char* newValue)
   alias HintCallback = (Void*, LibC::Char*, LibC::Char*, LibC::Char*) -> Void
+
+  # SDL_init
+
+  INIT_AUDIO = 0x00000010
+  INIT_VIDEO = 0x00000020
+  INIT_JOYSTICK = 0x00000200
+  INIT_HAPTIC = 0x00001000
+  INIT_GAMEPAD = 0x00002000
+  INIT_EVENTS = 0x00004000
+  INIT_SENSOR = 0x00008000
+  INIT_CAMERA = 0x00010000
+  PROP_APP_METADATA_NAME_STRING = "SDL.app.metadata.name"
+  PROP_APP_METADATA_VERSION_STRING = "SDL.app.metadata.version"
+  PROP_APP_METADATA_IDENTIFIER_STRING = "SDL.app.metadata.identifier"
+  PROP_APP_METADATA_CREATOR_STRING = "SDL.app.metadata.creator"
+  PROP_APP_METADATA_COPYRIGHT_STRING = "SDL.app.metadata.copyright"
+  PROP_APP_METADATA_URL_STRING = "SDL.app.metadata.url"
+  PROP_APP_METADATA_TYPE_STRING = "SDL.app.metadata.type"
+
+  alias InitFlags = UInt32
+
+  enum AppResult
+    APP_CONTINUE
+    APP_SUCCESS
+    APP_FAILURE
+  end
+
+  fun init = SDL_Init(flags : InitFlags) : Bool
+  fun init_sub_system = SDL_InitSubSystem(flags : InitFlags) : Bool
+  fun quit_sub_system = SDL_QuitSubSystem(flags : InitFlags) : Void
+  fun was_init = SDL_WasInit(flags : InitFlags) : InitFlags
+  fun quit = SDL_Quit() : Void
+  fun is_main_thread = SDL_IsMainThread() : Bool
+  fun run_on_main_thread = SDL_RunOnMainThread(callback : MainThreadCallback, userdata : Void*, wait_complete : Bool) : Bool
+  fun set_app_metadata = SDL_SetAppMetadata(appname : LibC::Char*, appversion : LibC::Char*, appidentifier : LibC::Char*) : Bool
+  fun set_app_metadata_property = SDL_SetAppMetadataProperty(name : LibC::Char*, value : LibC::Char*) : Bool
+  fun get_app_metadata_property = SDL_GetAppMetadataProperty(name : LibC::Char*) : LibC::Char*
+
+  # SDL_iostream
+
+  PROP_IOSTREAM_WINDOWS_HANDLE_POINTER = "SDL.iostream.windows.handle"
+  PROP_IOSTREAM_STDIO_FILE_POINTER = "SDL.iostream.stdio.file"
+  PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER = "SDL.iostream.file_descriptor"
+  PROP_IOSTREAM_ANDROID_AASSET_POINTER = "SDL.iostream.android.aasset"
+  PROP_IOSTREAM_MEMORY_POINTER = "SDL.iostream.memory.base"
+  PROP_IOSTREAM_MEMORY_SIZE_NUMBER = "SDL.iostream.memory.size"
+  PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER = "SDL.iostream.dynamic.memory"
+  PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER = "SDL.iostream.dynamic.chunksize"
+
+  alias IOStream = Void
+
+  enum IOStatus
+    IO_STATUS_READY
+    IO_STATUS_ERROR
+    IO_STATUS_EOF
+    IO_STATUS_NOT_READY
+    IO_STATUS_READONLY
+    IO_STATUS_WRITEONLY
+  end
+
+  enum IOWhence
+    IO_SEEK_SET
+    IO_SEEK_CUR
+    IO_SEEK_END
+  end
+
+  struct IOStreamInterface
+    version : UInt32
+    size)(void* : Int64(SDLCALL*
+    userdata) : Int64(SDLCALL*
+    seek)(void* : Int64(SDLCALL*
+    userdata : Int64(SDLCALL*
+    sint64 : Int64(SDLCALL*
+    offset : Int64(SDLCALL*
+    iowhence : Int64(SDLCALL*
+    whence) : Int64(SDLCALL*
+    read)(void* : LibC::SizeT(SDLCALL*
+    userdata : LibC::SizeT(SDLCALL*
+    void* : LibC::SizeT(SDLCALL*
+    ptr : LibC::SizeT(SDLCALL*
+    size_t : LibC::SizeT(SDLCALL*
+    size : LibC::SizeT(SDLCALL*
+    iostatus* : LibC::SizeT(SDLCALL*
+    status) : LibC::SizeT(SDLCALL*
+    write)(void* : LibC::SizeT(SDLCALL*
+    userdata : LibC::SizeT(SDLCALL*
+    void* : LibC::SizeT(SDLCALL*
+    ptr : LibC::SizeT(SDLCALL*
+    size_t : LibC::SizeT(SDLCALL*
+    size : LibC::SizeT(SDLCALL*
+    iostatus* : LibC::SizeT(SDLCALL*
+    status) : LibC::SizeT(SDLCALL*
+    flush)(void* : Bool(SDLCALL*
+    userdata : Bool(SDLCALL*
+    iostatus* : Bool(SDLCALL*
+    status) : Bool(SDLCALL*
+    close)(void* : Bool(SDLCALL*
+    userdata) : Bool(SDLCALL*
+  end
+
+  fun iofrom_file = SDL_IOFromFile(file : LibC::Char*, mode : LibC::Char*) : IOStream*
+  fun iofrom_mem = SDL_IOFromMem(mem : Void*, size : LibC::SizeT) : IOStream*
+  fun iofrom_const_mem = SDL_IOFromConstMem(mem : Void*, size : LibC::SizeT) : IOStream*
+  fun iofrom_dynamic_mem = SDL_IOFromDynamicMem() : IOStream*
+  fun open_io = SDL_OpenIO(iface : IOStreamInterface*, userdata : Void*) : IOStream*
+  fun close_io = SDL_CloseIO(context : IOStream*) : Bool
+  fun get_ioproperties = SDL_GetIOProperties(context : IOStream*) : PropertiesID
+  fun get_iostatus = SDL_GetIOStatus(context : IOStream*) : IOStatus
+  fun get_iosize = SDL_GetIOSize(context : IOStream*) : Int64
+  fun seek_io = SDL_SeekIO(context : IOStream*, offset : Int64, whence : IOWhence) : Int64
+  fun tell_io = SDL_TellIO(context : IOStream*) : Int64
+  fun read_io = SDL_ReadIO(context : IOStream*, ptr : Void*, size : LibC::SizeT) : LibC::SizeT
+  fun write_io = SDL_WriteIO(context : IOStream*, ptr : Void*, size : LibC::SizeT) : LibC::SizeT
+  fun ioprintf = SDL_IOprintf(context : IOStream*, fmt : LibC::Char*, ...) : LibC::SizeT
+  fun iovprintf = SDL_IOvprintf(context : IOStream*, fmt : LibC::Char*, sdl_printf_vararg_funcv(2 : vaList ap)) : LibC::SizeT
+  fun flush_io = SDL_FlushIO(context : IOStream*) : Bool
+  fun load_file_io = SDL_LoadFile_IO(src : IOStream*, datasize : LibC::SizeT*, closeio : Bool) : Void*
+  fun load_file = SDL_LoadFile(file : LibC::Char*, datasize : LibC::SizeT*) : Void*
+  fun save_file_io = SDL_SaveFile_IO(src : IOStream*, data : Void*, datasize : LibC::SizeT, closeio : Bool) : Bool
+  fun save_file = SDL_SaveFile(file : LibC::Char*, data : Void*, datasize : LibC::SizeT) : Bool
+  fun read_u8 = SDL_ReadU8(src : IOStream*, value : UInt8*) : Bool
+  fun read_s8 = SDL_ReadS8(src : IOStream*, value : Int8*) : Bool
+  fun read_u16_le = SDL_ReadU16LE(src : IOStream*, value : UInt16*) : Bool
+  fun read_s16_le = SDL_ReadS16LE(src : IOStream*, value : Int16*) : Bool
+  fun read_u16_be = SDL_ReadU16BE(src : IOStream*, value : UInt16*) : Bool
+  fun read_s16_be = SDL_ReadS16BE(src : IOStream*, value : Int16*) : Bool
+  fun read_u32_le = SDL_ReadU32LE(src : IOStream*, value : UInt32*) : Bool
+  fun read_s32_le = SDL_ReadS32LE(src : IOStream*, value : Int32*) : Bool
+  fun read_u32_be = SDL_ReadU32BE(src : IOStream*, value : UInt32*) : Bool
+  fun read_s32_be = SDL_ReadS32BE(src : IOStream*, value : Int32*) : Bool
+  fun read_u64_le = SDL_ReadU64LE(src : IOStream*, value : UInt64*) : Bool
+  fun read_s64_le = SDL_ReadS64LE(src : IOStream*, value : Int64*) : Bool
+  fun read_u64_be = SDL_ReadU64BE(src : IOStream*, value : UInt64*) : Bool
+  fun read_s64_be = SDL_ReadS64BE(src : IOStream*, value : Int64*) : Bool
+  fun write_u8 = SDL_WriteU8(dst : IOStream*, value : UInt8) : Bool
+  fun write_s8 = SDL_WriteS8(dst : IOStream*, value : Int8) : Bool
+  fun write_u16_le = SDL_WriteU16LE(dst : IOStream*, value : UInt16) : Bool
+  fun write_s16_le = SDL_WriteS16LE(dst : IOStream*, value : Int16) : Bool
+  fun write_u16_be = SDL_WriteU16BE(dst : IOStream*, value : UInt16) : Bool
+  fun write_s16_be = SDL_WriteS16BE(dst : IOStream*, value : Int16) : Bool
+  fun write_u32_le = SDL_WriteU32LE(dst : IOStream*, value : UInt32) : Bool
+  fun write_s32_le = SDL_WriteS32LE(dst : IOStream*, value : Int32) : Bool
+  fun write_u32_be = SDL_WriteU32BE(dst : IOStream*, value : UInt32) : Bool
+  fun write_s32_be = SDL_WriteS32BE(dst : IOStream*, value : Int32) : Bool
+  fun write_u64_le = SDL_WriteU64LE(dst : IOStream*, value : UInt64) : Bool
+  fun write_s64_le = SDL_WriteS64LE(dst : IOStream*, value : Int64) : Bool
+  fun write_u64_be = SDL_WriteU64BE(dst : IOStream*, value : UInt64) : Bool
+  fun write_s64_be = SDL_WriteS64BE(dst : IOStream*, value : Int64) : Bool
 
   # SDL_joystick
 
@@ -1561,7 +2725,7 @@ lib LibSDL
 
   fun lock_joysticks = SDL_LockJoysticks() : Void
   fun unlock_joysticks = SDL_UnlockJoysticks() : Void
-  fun has_joystick = SDL_HasJoystick() : bool
+  fun has_joystick = SDL_HasJoystick() : Bool
   fun get_joysticks = SDL_GetJoysticks(count : LibC::Int*) : JoystickID*
   fun get_joystick_name_for_id = SDL_GetJoystickNameForID(instance_id : JoystickID) : LibC::Char*
   fun get_joystick_path_for_id = SDL_GetJoystickPathForID(instance_id : JoystickID) : LibC::Char*
@@ -1575,19 +2739,19 @@ lib LibSDL
   fun get_joystick_from_id = SDL_GetJoystickFromID(instance_id : JoystickID) : Joystick*
   fun get_joystick_from_player_index = SDL_GetJoystickFromPlayerIndex(player_index : LibC::Int) : Joystick*
   fun attach_virtual_joystick = SDL_AttachVirtualJoystick(desc : VirtualJoystickDesc*) : JoystickID
-  fun detach_virtual_joystick = SDL_DetachVirtualJoystick(instance_id : JoystickID) : bool
-  fun is_joystick_virtual = SDL_IsJoystickVirtual(instance_id : JoystickID) : bool
-  fun set_joystick_virtual_axis = SDL_SetJoystickVirtualAxis(joystick : Joystick*, axis : LibC::Int, value : Int16) : bool
-  fun set_joystick_virtual_ball = SDL_SetJoystickVirtualBall(joystick : Joystick*, ball : LibC::Int, xrel : Int16, yrel : Int16) : bool
-  fun set_joystick_virtual_button = SDL_SetJoystickVirtualButton(joystick : Joystick*, button : LibC::Int, down : bool) : bool
-  fun set_joystick_virtual_hat = SDL_SetJoystickVirtualHat(joystick : Joystick*, hat : LibC::Int, value : UInt8) : bool
-  fun set_joystick_virtual_touchpad = SDL_SetJoystickVirtualTouchpad(joystick : Joystick*, touchpad : LibC::Int, finger : LibC::Int, down : bool, x : LibC::Float, y : LibC::Float, pressure : LibC::Float) : bool
-  fun send_joystick_virtual_sensor_data = SDL_SendJoystickVirtualSensorData(joystick : Joystick*, type : SensorType, sensor_timestamp : UInt64, data : LibC::Float*, num_values : LibC::Int) : bool
+  fun detach_virtual_joystick = SDL_DetachVirtualJoystick(instance_id : JoystickID) : Bool
+  fun is_joystick_virtual = SDL_IsJoystickVirtual(instance_id : JoystickID) : Bool
+  fun set_joystick_virtual_axis = SDL_SetJoystickVirtualAxis(joystick : Joystick*, axis : LibC::Int, value : Int16) : Bool
+  fun set_joystick_virtual_ball = SDL_SetJoystickVirtualBall(joystick : Joystick*, ball : LibC::Int, xrel : Int16, yrel : Int16) : Bool
+  fun set_joystick_virtual_button = SDL_SetJoystickVirtualButton(joystick : Joystick*, button : LibC::Int, down : Bool) : Bool
+  fun set_joystick_virtual_hat = SDL_SetJoystickVirtualHat(joystick : Joystick*, hat : LibC::Int, value : UInt8) : Bool
+  fun set_joystick_virtual_touchpad = SDL_SetJoystickVirtualTouchpad(joystick : Joystick*, touchpad : LibC::Int, finger : LibC::Int, down : Bool, x : LibC::Float, y : LibC::Float, pressure : LibC::Float) : Bool
+  fun send_joystick_virtual_sensor_data = SDL_SendJoystickVirtualSensorData(joystick : Joystick*, type : SensorType, sensor_timestamp : UInt64, data : LibC::Float*, num_values : LibC::Int) : Bool
   fun get_joystick_properties = SDL_GetJoystickProperties(joystick : Joystick*) : PropertiesID
   fun get_joystick_name = SDL_GetJoystickName(joystick : Joystick*) : LibC::Char*
   fun get_joystick_path = SDL_GetJoystickPath(joystick : Joystick*) : LibC::Char*
   fun get_joystick_player_index = SDL_GetJoystickPlayerIndex(joystick : Joystick*) : LibC::Int
-  fun set_joystick_player_index = SDL_SetJoystickPlayerIndex(joystick : Joystick*, player_index : LibC::Int) : bool
+  fun set_joystick_player_index = SDL_SetJoystickPlayerIndex(joystick : Joystick*, player_index : LibC::Int) : Bool
   fun get_joystick_guid = SDL_GetJoystickGUID(joystick : Joystick*) : GUID
   fun get_joystick_vendor = SDL_GetJoystickVendor(joystick : Joystick*) : UInt16
   fun get_joystick_product = SDL_GetJoystickProduct(joystick : Joystick*) : UInt16
@@ -1596,24 +2760,24 @@ lib LibSDL
   fun get_joystick_serial = SDL_GetJoystickSerial(joystick : Joystick*) : LibC::Char*
   fun get_joystick_type = SDL_GetJoystickType(joystick : Joystick*) : JoystickType
   fun get_joystick_guidinfo = SDL_GetJoystickGUIDInfo(guid : GUID, vendor : UInt16*, product : UInt16*, version : UInt16*, crc16 : UInt16*) : Void
-  fun joystick_connected = SDL_JoystickConnected(joystick : Joystick*) : bool
+  fun joystick_connected = SDL_JoystickConnected(joystick : Joystick*) : Bool
   fun get_joystick_id = SDL_GetJoystickID(joystick : Joystick*) : JoystickID
   fun get_num_joystick_axes = SDL_GetNumJoystickAxes(joystick : Joystick*) : LibC::Int
   fun get_num_joystick_balls = SDL_GetNumJoystickBalls(joystick : Joystick*) : LibC::Int
   fun get_num_joystick_hats = SDL_GetNumJoystickHats(joystick : Joystick*) : LibC::Int
   fun get_num_joystick_buttons = SDL_GetNumJoystickButtons(joystick : Joystick*) : LibC::Int
-  fun set_joystick_events_enabled = SDL_SetJoystickEventsEnabled(enabled : bool) : Void
-  fun joystick_events_enabled = SDL_JoystickEventsEnabled() : bool
+  fun set_joystick_events_enabled = SDL_SetJoystickEventsEnabled(enabled : Bool) : Void
+  fun joystick_events_enabled = SDL_JoystickEventsEnabled() : Bool
   fun update_joysticks = SDL_UpdateJoysticks() : Void
   fun get_joystick_axis = SDL_GetJoystickAxis(joystick : Joystick*, axis : LibC::Int) : Int16
-  fun get_joystick_axis_initial_state = SDL_GetJoystickAxisInitialState(joystick : Joystick*, axis : LibC::Int, state : Int16*) : bool
-  fun get_joystick_ball = SDL_GetJoystickBall(joystick : Joystick*, ball : LibC::Int, dx : LibC::Int*, dy : LibC::Int*) : bool
+  fun get_joystick_axis_initial_state = SDL_GetJoystickAxisInitialState(joystick : Joystick*, axis : LibC::Int, state : Int16*) : Bool
+  fun get_joystick_ball = SDL_GetJoystickBall(joystick : Joystick*, ball : LibC::Int, dx : LibC::Int*, dy : LibC::Int*) : Bool
   fun get_joystick_hat = SDL_GetJoystickHat(joystick : Joystick*, hat : LibC::Int) : UInt8
-  fun get_joystick_button = SDL_GetJoystickButton(joystick : Joystick*, button : LibC::Int) : bool
-  fun rumble_joystick = SDL_RumbleJoystick(joystick : Joystick*, low_frequency_rumble : UInt16, high_frequency_rumble : UInt16, duration_ms : UInt32) : bool
-  fun rumble_joystick_triggers = SDL_RumbleJoystickTriggers(joystick : Joystick*, left_rumble : UInt16, right_rumble : UInt16, duration_ms : UInt32) : bool
-  fun set_joystick_led = SDL_SetJoystickLED(joystick : Joystick*, red : UInt8, green : UInt8, blue : UInt8) : bool
-  fun send_joystick_effect = SDL_SendJoystickEffect(joystick : Joystick*, data : Void*, size : LibC::Int) : bool
+  fun get_joystick_button = SDL_GetJoystickButton(joystick : Joystick*, button : LibC::Int) : Bool
+  fun rumble_joystick = SDL_RumbleJoystick(joystick : Joystick*, low_frequency_rumble : UInt16, high_frequency_rumble : UInt16, duration_ms : UInt32) : Bool
+  fun rumble_joystick_triggers = SDL_RumbleJoystickTriggers(joystick : Joystick*, left_rumble : UInt16, right_rumble : UInt16, duration_ms : UInt32) : Bool
+  fun set_joystick_led = SDL_SetJoystickLED(joystick : Joystick*, red : UInt8, green : UInt8, blue : UInt8) : Bool
+  fun send_joystick_effect = SDL_SendJoystickEffect(joystick : Joystick*, data : Void*, size : LibC::Int) : Bool
   fun close_joystick = SDL_CloseJoystick(joystick : Joystick*) : Void
   fun get_joystick_connection_state = SDL_GetJoystickConnectionState(joystick : Joystick*) : JoystickConnectionState
   fun get_joystick_power_info = SDL_GetJoystickPowerInfo(joystick : Joystick*, percent : LibC::Int*) : PowerState
@@ -1670,30 +2834,30 @@ lib LibSDL
     CAPITALIZE_LETTERS
   end
 
-  fun has_keyboard = SDL_HasKeyboard() : bool
+  fun has_keyboard = SDL_HasKeyboard() : Bool
   fun get_keyboards = SDL_GetKeyboards(count : LibC::Int*) : KeyboardID*
   fun get_keyboard_name_for_id = SDL_GetKeyboardNameForID(instance_id : KeyboardID) : LibC::Char*
   fun get_keyboard_focus = SDL_GetKeyboardFocus() : Window*
-  fun get_keyboard_state = SDL_GetKeyboardState(numkeys : LibC::Int*) : bool*
+  fun get_keyboard_state = SDL_GetKeyboardState(numkeys : LibC::Int*) : Bool*
   fun reset_keyboard = SDL_ResetKeyboard() : Void
   fun get_mod_state = SDL_GetModState() : Keymod
   fun set_mod_state = SDL_SetModState(modstate : Keymod) : Void
-  fun get_key_from_scancode = SDL_GetKeyFromScancode(scancode : Scancode, modstate : Keymod, key_event : bool) : Keycode
+  fun get_key_from_scancode = SDL_GetKeyFromScancode(scancode : Scancode, modstate : Keymod, key_event : Bool) : Keycode
   fun get_scancode_from_key = SDL_GetScancodeFromKey(key : Keycode, modstate : Keymod*) : Scancode
-  fun set_scancode_name = SDL_SetScancodeName(scancode : Scancode, name : LibC::Char*) : bool
+  fun set_scancode_name = SDL_SetScancodeName(scancode : Scancode, name : LibC::Char*) : Bool
   fun get_scancode_name = SDL_GetScancodeName(scancode : Scancode) : LibC::Char*
   fun get_scancode_from_name = SDL_GetScancodeFromName(name : LibC::Char*) : Scancode
   fun get_key_name = SDL_GetKeyName(key : Keycode) : LibC::Char*
   fun get_key_from_name = SDL_GetKeyFromName(name : LibC::Char*) : Keycode
-  fun start_text_input = SDL_StartTextInput(window : Window*) : bool
-  fun start_text_input_with_properties = SDL_StartTextInputWithProperties(window : Window*, props : PropertiesID) : bool
-  fun text_input_active = SDL_TextInputActive(window : Window*) : bool
-  fun stop_text_input = SDL_StopTextInput(window : Window*) : bool
-  fun clear_composition = SDL_ClearComposition(window : Window*) : bool
-  fun set_text_input_area = SDL_SetTextInputArea(window : Window*, rect : Rect*, cursor : LibC::Int) : bool
-  fun get_text_input_area = SDL_GetTextInputArea(window : Window*, rect : Rect*, cursor : LibC::Int*) : bool
-  fun has_screen_keyboard_support = SDL_HasScreenKeyboardSupport() : bool
-  fun screen_keyboard_shown = SDL_ScreenKeyboardShown(window : Window*) : bool
+  fun start_text_input = SDL_StartTextInput(window : Window*) : Bool
+  fun start_text_input_with_properties = SDL_StartTextInputWithProperties(window : Window*, props : PropertiesID) : Bool
+  fun text_input_active = SDL_TextInputActive(window : Window*) : Bool
+  fun stop_text_input = SDL_StopTextInput(window : Window*) : Bool
+  fun clear_composition = SDL_ClearComposition(window : Window*) : Bool
+  fun set_text_input_area = SDL_SetTextInputArea(window : Window*, rect : Rect*, cursor : LibC::Int) : Bool
+  fun get_text_input_area = SDL_GetTextInputArea(window : Window*, rect : Rect*, cursor : LibC::Int*) : Bool
+  fun has_screen_keyboard_support = SDL_HasScreenKeyboardSupport() : Bool
+  fun screen_keyboard_shown = SDL_ScreenKeyboardShown(window : Window*) : Bool
 
   # SDL_keycode
 
@@ -1968,6 +3132,142 @@ lib LibSDL
   alias Keycode = UInt32
   alias Keymod = UInt16
 
+  # SDL_loadso
+
+  alias SharedObject = Void
+
+  fun load_object = SDL_LoadObject(sofile : LibC::Char*) : SharedObject*
+  fun load_function = SDL_LoadFunction(handle : SharedObject*, name : LibC::Char*) : FunctionPointer
+  fun unload_object = SDL_UnloadObject(handle : SharedObject*) : Void
+
+  # SDL_locale
+
+  struct Locale
+    language : LibC::Char*
+    country : LibC::Char*
+  end
+
+  fun get_preferred_locales = SDL_GetPreferredLocales(count : LibC::Int*) : Locale**
+
+  # SDL_log
+
+  enum LogCategory
+    LOG_CATEGORY_APPLICATION
+    LOG_CATEGORY_ERROR
+    LOG_CATEGORY_ASSERT
+    LOG_CATEGORY_SYSTEM
+    LOG_CATEGORY_AUDIO
+    LOG_CATEGORY_VIDEO
+    LOG_CATEGORY_RENDER
+    LOG_CATEGORY_INPUT
+    LOG_CATEGORY_TEST
+    LOG_CATEGORY_GPU
+    LOG_CATEGORY_RESERVED2
+    LOG_CATEGORY_RESERVED3
+    LOG_CATEGORY_RESERVED4
+    LOG_CATEGORY_RESERVED5
+    LOG_CATEGORY_RESERVED6
+    LOG_CATEGORY_RESERVED7
+    LOG_CATEGORY_RESERVED8
+    LOG_CATEGORY_RESERVED9
+    LOG_CATEGORY_RESERVED10
+    LOG_CATEGORY_CUSTOM
+  end
+
+  enum LogPriority
+    LOG_PRIORITY_INVALID
+    LOG_PRIORITY_TRACE
+    LOG_PRIORITY_VERBOSE
+    LOG_PRIORITY_DEBUG
+    LOG_PRIORITY_INFO
+    LOG_PRIORITY_WARN
+    LOG_PRIORITY_ERROR
+    LOG_PRIORITY_CRITICAL
+    LOG_PRIORITY_COUNT
+  end
+
+  fun set_log_priorities = SDL_SetLogPriorities(priority : LogPriority) : Void
+  fun set_log_priority = SDL_SetLogPriority(category : LibC::Int, priority : LogPriority) : Void
+  fun get_log_priority = SDL_GetLogPriority(category : LibC::Int) : LogPriority
+  fun reset_log_priorities = SDL_ResetLogPriorities() : Void
+  fun set_log_priority_prefix = SDL_SetLogPriorityPrefix(priority : LogPriority, prefix : LibC::Char*) : Bool
+  fun log = SDL_Log(fmt : LibC::Char*, ...) : Void
+  fun log_trace = SDL_LogTrace(category : LibC::Int, fmt : LibC::Char*, ...) : Void
+  fun log_verbose = SDL_LogVerbose(category : LibC::Int, fmt : LibC::Char*, ...) : Void
+  fun log_debug = SDL_LogDebug(category : LibC::Int, fmt : LibC::Char*, ...) : Void
+  fun log_info = SDL_LogInfo(category : LibC::Int, fmt : LibC::Char*, ...) : Void
+  fun log_warn = SDL_LogWarn(category : LibC::Int, fmt : LibC::Char*, ...) : Void
+  fun log_error = SDL_LogError(category : LibC::Int, fmt : LibC::Char*, ...) : Void
+  fun log_critical = SDL_LogCritical(category : LibC::Int, fmt : LibC::Char*, ...) : Void
+  fun log_message = SDL_LogMessage(category : LibC::Int, priority : LogPriority, fmt : LibC::Char*, ...) : Void
+  fun log_message_v = SDL_LogMessageV(category : LibC::Int, priority : LogPriority, fmt : LibC::Char*, sdl_printf_vararg_funcv(3 : vaList ap)) : Void
+  fun get_default_log_output_function = SDL_GetDefaultLogOutputFunction() : LogOutputFunction
+  fun get_log_output_function = SDL_GetLogOutputFunction(callback : LogOutputFunction*, userdata : Void**) : Void
+  fun set_log_output_function = SDL_SetLogOutputFunction(callback : LogOutputFunction, userdata : Void*) : Void
+
+  # SDL_messagebox
+
+  MESSAGEBOX_ERROR = 0x00000010
+  MESSAGEBOX_WARNING = 0x00000020
+  MESSAGEBOX_INFORMATION = 0x00000040
+  MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT = 0x00000080
+  MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT = 0x00000100
+  MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT = 0x00000001
+  MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT = 0x00000002
+
+  alias MessageBoxFlags = UInt32
+  alias MessageBoxButtonFlags = UInt32
+
+  enum MessageBoxColorType
+    MESSAGEBOX_COLOR_BACKGROUND
+    MESSAGEBOX_COLOR_TEXT
+    MESSAGEBOX_COLOR_BUTTON_BORDER
+    MESSAGEBOX_COLOR_BUTTON_BACKGROUND
+    MESSAGEBOX_COLOR_BUTTON_SELECTED
+    MESSAGEBOX_COLOR_COUNT
+  end
+
+  struct MessageBoxButtonData
+    flags : MessageBoxButtonFlags
+    button_id : LibC::Int
+    text : LibC::Char*
+  end
+
+  struct MessageBoxColor
+    r : UInt8
+    g : UInt8
+    b : UInt8
+  end
+
+  struct MessageBoxColorScheme
+    colors : MessageBoxColor[MESSAGEBOX_COLOR_COUNT]
+  end
+
+  struct MessageBoxData
+    flags : MessageBoxFlags
+    window : Window*
+    title : LibC::Char*
+    message : LibC::Char*
+    numbuttons : LibC::Int
+    buttons : MessageBoxButtonData*
+    color_scheme : MessageBoxColorScheme*
+  end
+
+  fun show_message_box = SDL_ShowMessageBox(messageboxdata : MessageBoxData*, buttonid : LibC::Int*) : Bool
+  fun show_simple_message_box = SDL_ShowSimpleMessageBox(flags : MessageBoxFlags, title : LibC::Char*, message : LibC::Char*, window : Window*) : Bool
+
+  # SDL_metal
+
+  alias MetalView = Void*
+
+  fun metal_create_view = SDL_Metal_CreateView(window : Window*) : MetalView
+  fun metal_destroy_view = SDL_Metal_DestroyView(view : MetalView) : Void
+  fun metal_get_layer = SDL_Metal_GetLayer(view : MetalView) : Void*
+
+  # SDL_misc
+
+  fun open_url = SDL_OpenURL(url : LibC::Char*) : Bool
+
   # SDL_mouse
 
   BUTTON_LEFT = 1
@@ -2014,7 +3314,7 @@ lib LibSDL
     MOUSEWHEEL_FLIPPED
   end
 
-  fun has_mouse = SDL_HasMouse() : bool
+  fun has_mouse = SDL_HasMouse() : Bool
   fun get_mice = SDL_GetMice(count : LibC::Int*) : MouseID*
   fun get_mouse_name_for_id = SDL_GetMouseNameForID(instance_id : MouseID) : LibC::Char*
   fun get_mouse_focus = SDL_GetMouseFocus() : Window*
@@ -2022,20 +3322,44 @@ lib LibSDL
   fun get_global_mouse_state = SDL_GetGlobalMouseState(x : LibC::Float*, y : LibC::Float*) : MouseButtonFlags
   fun get_relative_mouse_state = SDL_GetRelativeMouseState(x : LibC::Float*, y : LibC::Float*) : MouseButtonFlags
   fun warp_mouse_in_window = SDL_WarpMouseInWindow(window : Window*, x : LibC::Float, y : LibC::Float) : Void
-  fun warp_mouse_global = SDL_WarpMouseGlobal(x : LibC::Float, y : LibC::Float) : bool
-  fun set_window_relative_mouse_mode = SDL_SetWindowRelativeMouseMode(window : Window*, enabled : bool) : bool
-  fun get_window_relative_mouse_mode = SDL_GetWindowRelativeMouseMode(window : Window*) : bool
-  fun capture_mouse = SDL_CaptureMouse(enabled : bool) : bool
+  fun warp_mouse_global = SDL_WarpMouseGlobal(x : LibC::Float, y : LibC::Float) : Bool
+  fun set_window_relative_mouse_mode = SDL_SetWindowRelativeMouseMode(window : Window*, enabled : Bool) : Bool
+  fun get_window_relative_mouse_mode = SDL_GetWindowRelativeMouseMode(window : Window*) : Bool
+  fun capture_mouse = SDL_CaptureMouse(enabled : Bool) : Bool
   fun create_cursor = SDL_CreateCursor(data : UInt8*, mask : UInt8*, w : LibC::Int, h : LibC::Int, hot_x : LibC::Int, hot_y : LibC::Int) : Cursor*
   fun create_color_cursor = SDL_CreateColorCursor(surface : Surface*, hot_x : LibC::Int, hot_y : LibC::Int) : Cursor*
   fun create_system_cursor = SDL_CreateSystemCursor(id : SystemCursor) : Cursor*
-  fun set_cursor = SDL_SetCursor(cursor : Cursor*) : bool
+  fun set_cursor = SDL_SetCursor(cursor : Cursor*) : Bool
   fun get_cursor = SDL_GetCursor() : Cursor*
   fun get_default_cursor = SDL_GetDefaultCursor() : Cursor*
   fun destroy_cursor = SDL_DestroyCursor(cursor : Cursor*) : Void
-  fun show_cursor = SDL_ShowCursor() : bool
-  fun hide_cursor = SDL_HideCursor() : bool
-  fun cursor_visible = SDL_CursorVisible() : bool
+  fun show_cursor = SDL_ShowCursor() : Bool
+  fun hide_cursor = SDL_HideCursor() : Bool
+  fun cursor_visible = SDL_CursorVisible() : Bool
+
+  # SDL_pen
+
+  PEN_INPUT_DOWN = (1 << 0)
+  PEN_INPUT_BUTTON_1 = (1 << 1)
+  PEN_INPUT_BUTTON_2 = (1 << 2)
+  PEN_INPUT_BUTTON_3 = (1 << 3)
+  PEN_INPUT_BUTTON_4 = (1 << 4)
+  PEN_INPUT_BUTTON_5 = (1 << 5)
+  PEN_INPUT_ERASER_TIP = (1 << 30)
+
+  alias PenID = UInt32
+  alias PenInputFlags = UInt32
+
+  enum PenAxis
+    PEN_AXIS_PRESSURE
+    PEN_AXIS_XTILT
+    PEN_AXIS_YTILT
+    PEN_AXIS_DISTANCE
+    PEN_AXIS_ROTATION
+    PEN_AXIS_SLIDER
+    PEN_AXIS_TANGENTIAL_PRESSURE
+    PEN_AXIS_COUNT
+  end
 
   # SDL_pixels
 
@@ -2233,11 +3557,11 @@ lib LibSDL
   end
 
   fun get_pixel_format_name = SDL_GetPixelFormatName(format : PixelFormat) : LibC::Char*
-  fun get_masks_for_pixel_format = SDL_GetMasksForPixelFormat(format : PixelFormat, bpp : LibC::Int*, rmask : UInt32*, gmask : UInt32*, bmask : UInt32*, amask : UInt32*) : bool
+  fun get_masks_for_pixel_format = SDL_GetMasksForPixelFormat(format : PixelFormat, bpp : LibC::Int*, rmask : UInt32*, gmask : UInt32*, bmask : UInt32*, amask : UInt32*) : Bool
   fun get_pixel_format_for_masks = SDL_GetPixelFormatForMasks(bpp : LibC::Int, rmask : UInt32, gmask : UInt32, bmask : UInt32, amask : UInt32) : PixelFormat
   fun get_pixel_format_details = SDL_GetPixelFormatDetails(format : PixelFormat) : PixelFormatDetails*
   fun create_palette = SDL_CreatePalette(ncolors : LibC::Int) : Palette*
-  fun set_palette_colors = SDL_SetPaletteColors(palette : Palette*, colors : Color*, firstcolor : LibC::Int, ncolors : LibC::Int) : bool
+  fun set_palette_colors = SDL_SetPaletteColors(palette : Palette*, colors : Color*, firstcolor : LibC::Int, ncolors : LibC::Int) : Bool
   fun destroy_palette = SDL_DestroyPalette(palette : Palette*) : Void
   fun map_rgb = SDL_MapRGB(format : PixelFormatDetails*, palette : Palette*, r : UInt8, g : UInt8, b : UInt8) : UInt32
   fun map_rgba = SDL_MapRGBA(format : PixelFormatDetails*, palette : Palette*, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : UInt32
@@ -2247,6 +3571,95 @@ lib LibSDL
   # additions/helper_pixels.cr
 
   alias Colour = Color
+
+  # SDL_platform
+
+  fun get_platform = SDL_GetPlatform() : LibC::Char*
+
+  # SDL_power
+
+  enum PowerState
+    POWERSTATE_ERROR = -1
+    POWERSTATE_UNKNOWN
+    POWERSTATE_ON_BATTERY
+    POWERSTATE_NO_BATTERY
+    POWERSTATE_CHARGING
+    POWERSTATE_CHARGED
+  end
+
+  fun get_power_info = SDL_GetPowerInfo(seconds : LibC::Int*, percent : LibC::Int*) : PowerState
+
+  # SDL_process
+
+  PROP_PROCESS_CREATE_ARGS_POINTER = "SDL.process.create.args"
+  PROP_PROCESS_CREATE_ENVIRONMENT_POINTER = "SDL.process.create.environment"
+  PROP_PROCESS_CREATE_STDIN_NUMBER = "SDL.process.create.stdin_option"
+  PROP_PROCESS_CREATE_STDIN_POINTER = "SDL.process.create.stdin_source"
+  PROP_PROCESS_CREATE_STDOUT_NUMBER = "SDL.process.create.stdout_option"
+  PROP_PROCESS_CREATE_STDOUT_POINTER = "SDL.process.create.stdout_source"
+  PROP_PROCESS_CREATE_STDERR_NUMBER = "SDL.process.create.stderr_option"
+  PROP_PROCESS_CREATE_STDERR_POINTER = "SDL.process.create.stderr_source"
+  PROP_PROCESS_CREATE_STDERR_TO_STDOUT_BOOLEAN = "SDL.process.create.stderr_to_stdout"
+  PROP_PROCESS_CREATE_BACKGROUND_BOOLEAN = "SDL.process.create.background"
+  PROP_PROCESS_PID_NUMBER = "SDL.process.pid"
+  PROP_PROCESS_STDIN_POINTER = "SDL.process.stdin"
+  PROP_PROCESS_STDOUT_POINTER = "SDL.process.stdout"
+  PROP_PROCESS_STDERR_POINTER = "SDL.process.stderr"
+  PROP_PROCESS_BACKGROUND_BOOLEAN = "SDL.process.background"
+
+  alias Process = Void
+
+  enum ProcessIO
+    PROCESS_STDIO_INHERITED
+    PROCESS_STDIO_NULL
+    PROCESS_STDIO_APP
+    PROCESS_STDIO_REDIRECT
+  end
+
+  fun create_process = SDL_CreateProcess(args : LibC::Char* const*, pipe_stdio : Bool) : Process*
+  fun create_process_with_properties = SDL_CreateProcessWithProperties(props : PropertiesID) : Process*
+  fun get_process_properties = SDL_GetProcessProperties(process : Process*) : PropertiesID
+  fun read_process = SDL_ReadProcess(process : Process*, datasize : LibC::SizeT*, exitcode : LibC::Int*) : Void*
+  fun get_process_input = SDL_GetProcessInput(process : Process*) : IOStream*
+  fun get_process_output = SDL_GetProcessOutput(process : Process*) : IOStream*
+  fun kill_process = SDL_KillProcess(process : Process*, force : Bool) : Bool
+  fun wait_process = SDL_WaitProcess(process : Process*, block : Bool, exitcode : LibC::Int*) : Bool
+  fun destroy_process = SDL_DestroyProcess(process : Process*) : Void
+
+  # SDL_properties
+
+  alias PropertiesID = UInt32
+
+  enum PropertyType
+    PROPERTY_TYPE_INVALID
+    PROPERTY_TYPE_POINTER
+    PROPERTY_TYPE_STRING
+    PROPERTY_TYPE_NUMBER
+    PROPERTY_TYPE_FLOAT
+    PROPERTY_TYPE_BOOLEAN
+  end
+
+  fun get_global_properties = SDL_GetGlobalProperties() : PropertiesID
+  fun create_properties = SDL_CreateProperties() : PropertiesID
+  fun copy_properties = SDL_CopyProperties(src : PropertiesID, dst : PropertiesID) : Bool
+  fun lock_properties = SDL_LockProperties(props : PropertiesID) : Bool
+  fun unlock_properties = SDL_UnlockProperties(props : PropertiesID) : Void
+  fun set_pointer_property_with_cleanup = SDL_SetPointerPropertyWithCleanup(props : PropertiesID, name : LibC::Char*, value : Void*, cleanup : CleanupPropertyCallback, userdata : Void*) : Bool
+  fun set_pointer_property = SDL_SetPointerProperty(props : PropertiesID, name : LibC::Char*, value : Void*) : Bool
+  fun set_string_property = SDL_SetStringProperty(props : PropertiesID, name : LibC::Char*, value : LibC::Char*) : Bool
+  fun set_number_property = SDL_SetNumberProperty(props : PropertiesID, name : LibC::Char*, value : Int64) : Bool
+  fun set_float_property = SDL_SetFloatProperty(props : PropertiesID, name : LibC::Char*, value : LibC::Float) : Bool
+  fun set_boolean_property = SDL_SetBooleanProperty(props : PropertiesID, name : LibC::Char*, value : Bool) : Bool
+  fun has_property = SDL_HasProperty(props : PropertiesID, name : LibC::Char*) : Bool
+  fun get_property_type = SDL_GetPropertyType(props : PropertiesID, name : LibC::Char*) : PropertyType
+  fun get_pointer_property = SDL_GetPointerProperty(props : PropertiesID, name : LibC::Char*, default_value : Void*) : Void*
+  fun get_string_property = SDL_GetStringProperty(props : PropertiesID, name : LibC::Char*, default_value : LibC::Char*) : LibC::Char*
+  fun get_number_property = SDL_GetNumberProperty(props : PropertiesID, name : LibC::Char*, default_value : Int64) : Int64
+  fun get_float_property = SDL_GetFloatProperty(props : PropertiesID, name : LibC::Char*, default_value : LibC::Float) : LibC::Float
+  fun get_boolean_property = SDL_GetBooleanProperty(props : PropertiesID, name : LibC::Char*, default_value : Bool) : Bool
+  fun clear_property = SDL_ClearProperty(props : PropertiesID, name : LibC::Char*) : Bool
+  fun enumerate_properties = SDL_EnumerateProperties(props : PropertiesID, callback : EnumeratePropertiesCallback, userdata : Void*) : Bool
+  fun destroy_properties = SDL_DestroyProperties(props : PropertiesID) : Void
 
   # SDL_rect
 
@@ -2274,16 +3687,16 @@ lib LibSDL
     h : LibC::Float
   end
 
-  fun has_rect_intersection = SDL_HasRectIntersection(a : Rect*, b : Rect*) : bool
-  fun get_rect_intersection = SDL_GetRectIntersection(a : Rect*, b : Rect*, result : Rect*) : bool
-  fun get_rect_union = SDL_GetRectUnion(a : Rect*, b : Rect*, result : Rect*) : bool
-  fun get_rect_enclosing_points = SDL_GetRectEnclosingPoints(points : Point*, count : LibC::Int, clip : Rect*, result : Rect*) : bool
-  fun get_rect_and_line_intersection = SDL_GetRectAndLineIntersection(rect : Rect*, x1 : LibC::Int*, y1 : LibC::Int*, x2 : LibC::Int*, y2 : LibC::Int*) : bool
-  fun has_rect_intersection_float = SDL_HasRectIntersectionFloat(a : FRect*, b : FRect*) : bool
-  fun get_rect_intersection_float = SDL_GetRectIntersectionFloat(a : FRect*, b : FRect*, result : FRect*) : bool
-  fun get_rect_union_float = SDL_GetRectUnionFloat(a : FRect*, b : FRect*, result : FRect*) : bool
-  fun get_rect_enclosing_points_float = SDL_GetRectEnclosingPointsFloat(points : FPoint*, count : LibC::Int, clip : FRect*, result : FRect*) : bool
-  fun get_rect_and_line_intersection_float = SDL_GetRectAndLineIntersectionFloat(rect : FRect*, x1 : LibC::Float*, y1 : LibC::Float*, x2 : LibC::Float*, y2 : LibC::Float*) : bool
+  fun has_rect_intersection = SDL_HasRectIntersection(a : Rect*, b : Rect*) : Bool
+  fun get_rect_intersection = SDL_GetRectIntersection(a : Rect*, b : Rect*, result : Rect*) : Bool
+  fun get_rect_union = SDL_GetRectUnion(a : Rect*, b : Rect*, result : Rect*) : Bool
+  fun get_rect_enclosing_points = SDL_GetRectEnclosingPoints(points : Point*, count : LibC::Int, clip : Rect*, result : Rect*) : Bool
+  fun get_rect_and_line_intersection = SDL_GetRectAndLineIntersection(rect : Rect*, x1 : LibC::Int*, y1 : LibC::Int*, x2 : LibC::Int*, y2 : LibC::Int*) : Bool
+  fun has_rect_intersection_float = SDL_HasRectIntersectionFloat(a : FRect*, b : FRect*) : Bool
+  fun get_rect_intersection_float = SDL_GetRectIntersectionFloat(a : FRect*, b : FRect*, result : FRect*) : Bool
+  fun get_rect_union_float = SDL_GetRectUnionFloat(a : FRect*, b : FRect*, result : FRect*) : Bool
+  fun get_rect_enclosing_points_float = SDL_GetRectEnclosingPointsFloat(points : FPoint*, count : LibC::Int, clip : FRect*, result : FRect*) : Bool
+  fun get_rect_and_line_intersection_float = SDL_GetRectAndLineIntersectionFloat(rect : FRect*, x1 : LibC::Float*, y1 : LibC::Float*, x2 : LibC::Float*, y2 : LibC::Float*) : Bool
 
   # SDL_render
 
@@ -2401,7 +3814,7 @@ lib LibSDL
 
   fun get_num_render_drivers = SDL_GetNumRenderDrivers() : LibC::Int
   fun get_render_driver = SDL_GetRenderDriver(index : LibC::Int) : LibC::Char*
-  fun create_window_and_renderer = SDL_CreateWindowAndRenderer(title : LibC::Char*, width : LibC::Int, height : LibC::Int, window_flags : WindowFlags, window : Window**, renderer : Renderer**) : bool
+  fun create_window_and_renderer = SDL_CreateWindowAndRenderer(title : LibC::Char*, width : LibC::Int, height : LibC::Int, window_flags : WindowFlags, window : Window**, renderer : Renderer**) : Bool
   fun create_renderer = SDL_CreateRenderer(window : Window*, name : LibC::Char*) : Renderer*
   fun create_renderer_with_properties = SDL_CreateRendererWithProperties(props : PropertiesID) : Renderer*
   fun create_software_renderer = SDL_CreateSoftwareRenderer(surface : Surface*) : Renderer*
@@ -2409,91 +3822,85 @@ lib LibSDL
   fun get_render_window = SDL_GetRenderWindow(renderer : Renderer*) : Window*
   fun get_renderer_name = SDL_GetRendererName(renderer : Renderer*) : LibC::Char*
   fun get_renderer_properties = SDL_GetRendererProperties(renderer : Renderer*) : PropertiesID
-  fun get_render_output_size = SDL_GetRenderOutputSize(renderer : Renderer*, w : LibC::Int*, h : LibC::Int*) : bool
-  fun get_current_render_output_size = SDL_GetCurrentRenderOutputSize(renderer : Renderer*, w : LibC::Int*, h : LibC::Int*) : bool
+  fun get_render_output_size = SDL_GetRenderOutputSize(renderer : Renderer*, w : LibC::Int*, h : LibC::Int*) : Bool
+  fun get_current_render_output_size = SDL_GetCurrentRenderOutputSize(renderer : Renderer*, w : LibC::Int*, h : LibC::Int*) : Bool
   fun create_texture = SDL_CreateTexture(renderer : Renderer*, format : PixelFormat, access : TextureAccess, w : LibC::Int, h : LibC::Int) : Texture*
   fun create_texture_from_surface = SDL_CreateTextureFromSurface(renderer : Renderer*, surface : Surface*) : Texture*
   fun create_texture_with_properties = SDL_CreateTextureWithProperties(renderer : Renderer*, props : PropertiesID) : Texture*
   fun get_texture_properties = SDL_GetTextureProperties(texture : Texture*) : PropertiesID
   fun get_renderer_from_texture = SDL_GetRendererFromTexture(texture : Texture*) : Renderer*
-  fun get_texture_size = SDL_GetTextureSize(texture : Texture*, w : LibC::Float*, h : LibC::Float*) : bool
-  fun set_texture_color_mod = SDL_SetTextureColorMod(texture : Texture*, r : UInt8, g : UInt8, b : UInt8) : bool
-  fun set_texture_color_mod_float = SDL_SetTextureColorModFloat(texture : Texture*, r : LibC::Float, g : LibC::Float, b : LibC::Float) : bool
-  fun get_texture_color_mod = SDL_GetTextureColorMod(texture : Texture*, r : UInt8*, g : UInt8*, b : UInt8*) : bool
-  fun get_texture_color_mod_float = SDL_GetTextureColorModFloat(texture : Texture*, r : LibC::Float*, g : LibC::Float*, b : LibC::Float*) : bool
-  fun set_texture_alpha_mod = SDL_SetTextureAlphaMod(texture : Texture*, alpha : UInt8) : bool
-  fun set_texture_alpha_mod_float = SDL_SetTextureAlphaModFloat(texture : Texture*, alpha : LibC::Float) : bool
-  fun get_texture_alpha_mod = SDL_GetTextureAlphaMod(texture : Texture*, alpha : UInt8*) : bool
-  fun get_texture_alpha_mod_float = SDL_GetTextureAlphaModFloat(texture : Texture*, alpha : LibC::Float*) : bool
-  fun set_texture_blend_mode = SDL_SetTextureBlendMode(texture : Texture*, blend_mode : BlendMode) : bool
-  fun get_texture_blend_mode = SDL_GetTextureBlendMode(texture : Texture*, blend_mode : BlendMode*) : bool
-  fun set_texture_scale_mode = SDL_SetTextureScaleMode(texture : Texture*, scale_mode : ScaleMode) : bool
-  fun get_texture_scale_mode = SDL_GetTextureScaleMode(texture : Texture*, scale_mode : ScaleMode*) : bool
-  fun update_texture = SDL_UpdateTexture(texture : Texture*, rect : Rect*, pixels : Void*, pitch : LibC::Int) : bool
-  fun update_yuvtexture = SDL_UpdateYUVTexture(texture : Texture*, rect : Rect*, yplane : UInt8*, ypitch : LibC::Int, uplane : UInt8*, upitch : LibC::Int, vplane : UInt8*, vpitch : LibC::Int) : bool
-  fun update_nvtexture = SDL_UpdateNVTexture(texture : Texture*, rect : Rect*, yplane : UInt8*, ypitch : LibC::Int, uvplane : UInt8*, uvpitch : LibC::Int) : bool
-  fun lock_texture = SDL_LockTexture(texture : Texture*, rect : Rect*, pixels : Void**, pitch : LibC::Int*) : bool
-  fun lock_texture_to_surface = SDL_LockTextureToSurface(texture : Texture*, rect : Rect*, surface : Surface**) : bool
+  fun get_texture_size = SDL_GetTextureSize(texture : Texture*, w : LibC::Float*, h : LibC::Float*) : Bool
+  fun set_texture_color_mod = SDL_SetTextureColorMod(texture : Texture*, r : UInt8, g : UInt8, b : UInt8) : Bool
+  fun set_texture_color_mod_float = SDL_SetTextureColorModFloat(texture : Texture*, r : LibC::Float, g : LibC::Float, b : LibC::Float) : Bool
+  fun get_texture_color_mod = SDL_GetTextureColorMod(texture : Texture*, r : UInt8*, g : UInt8*, b : UInt8*) : Bool
+  fun get_texture_color_mod_float = SDL_GetTextureColorModFloat(texture : Texture*, r : LibC::Float*, g : LibC::Float*, b : LibC::Float*) : Bool
+  fun set_texture_alpha_mod = SDL_SetTextureAlphaMod(texture : Texture*, alpha : UInt8) : Bool
+  fun set_texture_alpha_mod_float = SDL_SetTextureAlphaModFloat(texture : Texture*, alpha : LibC::Float) : Bool
+  fun get_texture_alpha_mod = SDL_GetTextureAlphaMod(texture : Texture*, alpha : UInt8*) : Bool
+  fun get_texture_alpha_mod_float = SDL_GetTextureAlphaModFloat(texture : Texture*, alpha : LibC::Float*) : Bool
+  fun set_texture_blend_mode = SDL_SetTextureBlendMode(texture : Texture*, blend_mode : BlendMode) : Bool
+  fun get_texture_blend_mode = SDL_GetTextureBlendMode(texture : Texture*, blend_mode : BlendMode*) : Bool
+  fun set_texture_scale_mode = SDL_SetTextureScaleMode(texture : Texture*, scale_mode : ScaleMode) : Bool
+  fun get_texture_scale_mode = SDL_GetTextureScaleMode(texture : Texture*, scale_mode : ScaleMode*) : Bool
+  fun update_texture = SDL_UpdateTexture(texture : Texture*, rect : Rect*, pixels : Void*, pitch : LibC::Int) : Bool
+  fun update_yuvtexture = SDL_UpdateYUVTexture(texture : Texture*, rect : Rect*, yplane : UInt8*, ypitch : LibC::Int, uplane : UInt8*, upitch : LibC::Int, vplane : UInt8*, vpitch : LibC::Int) : Bool
+  fun update_nvtexture = SDL_UpdateNVTexture(texture : Texture*, rect : Rect*, yplane : UInt8*, ypitch : LibC::Int, uvplane : UInt8*, uvpitch : LibC::Int) : Bool
+  fun lock_texture = SDL_LockTexture(texture : Texture*, rect : Rect*, pixels : Void**, pitch : LibC::Int*) : Bool
+  fun lock_texture_to_surface = SDL_LockTextureToSurface(texture : Texture*, rect : Rect*, surface : Surface**) : Bool
   fun unlock_texture = SDL_UnlockTexture(texture : Texture*) : Void
-  fun set_render_target = SDL_SetRenderTarget(renderer : Renderer*, texture : Texture*) : bool
+  fun set_render_target = SDL_SetRenderTarget(renderer : Renderer*, texture : Texture*) : Bool
   fun get_render_target = SDL_GetRenderTarget(renderer : Renderer*) : Texture*
-  fun set_render_logical_presentation = SDL_SetRenderLogicalPresentation(renderer : Renderer*, w : LibC::Int, h : LibC::Int, mode : RendererLogicalPresentation) : bool
-  fun get_render_logical_presentation = SDL_GetRenderLogicalPresentation(renderer : Renderer*, w : LibC::Int*, h : LibC::Int*, mode : RendererLogicalPresentation*) : bool
-  fun get_render_logical_presentation_rect = SDL_GetRenderLogicalPresentationRect(renderer : Renderer*, rect : FRect*) : bool
-  fun render_coordinates_from_window = SDL_RenderCoordinatesFromWindow(renderer : Renderer*, window_x : LibC::Float, window_y : LibC::Float, x : LibC::Float*, y : LibC::Float*) : bool
-  fun render_coordinates_to_window = SDL_RenderCoordinatesToWindow(renderer : Renderer*, x : LibC::Float, y : LibC::Float, window_x : LibC::Float*, window_y : LibC::Float*) : bool
-  fun convert_event_to_render_coordinates = SDL_ConvertEventToRenderCoordinates(renderer : Renderer*, event : Event*) : bool
-  fun set_render_viewport = SDL_SetRenderViewport(renderer : Renderer*, rect : Rect*) : bool
-  fun get_render_viewport = SDL_GetRenderViewport(renderer : Renderer*, rect : Rect*) : bool
-  fun render_viewport_set = SDL_RenderViewportSet(renderer : Renderer*) : bool
-  fun get_render_safe_area = SDL_GetRenderSafeArea(renderer : Renderer*, rect : Rect*) : bool
-  fun set_render_clip_rect = SDL_SetRenderClipRect(renderer : Renderer*, rect : Rect*) : bool
-  fun get_render_clip_rect = SDL_GetRenderClipRect(renderer : Renderer*, rect : Rect*) : bool
-  fun render_clip_enabled = SDL_RenderClipEnabled(renderer : Renderer*) : bool
-  fun set_render_scale = SDL_SetRenderScale(renderer : Renderer*, scale_x : LibC::Float, scale_y : LibC::Float) : bool
-  fun get_render_scale = SDL_GetRenderScale(renderer : Renderer*, scale_x : LibC::Float*, scale_y : LibC::Float*) : bool
-  fun set_render_draw_color = SDL_SetRenderDrawColor(renderer : Renderer*, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : bool
-  fun set_render_draw_color_float = SDL_SetRenderDrawColorFloat(renderer : Renderer*, r : LibC::Float, g : LibC::Float, b : LibC::Float, a : LibC::Float) : bool
-  fun get_render_draw_color = SDL_GetRenderDrawColor(renderer : Renderer*, r : UInt8*, g : UInt8*, b : UInt8*, a : UInt8*) : bool
-  fun get_render_draw_color_float = SDL_GetRenderDrawColorFloat(renderer : Renderer*, r : LibC::Float*, g : LibC::Float*, b : LibC::Float*, a : LibC::Float*) : bool
-  fun set_render_color_scale = SDL_SetRenderColorScale(renderer : Renderer*, scale : LibC::Float) : bool
-  fun get_render_color_scale = SDL_GetRenderColorScale(renderer : Renderer*, scale : LibC::Float*) : bool
-  fun set_render_draw_blend_mode = SDL_SetRenderDrawBlendMode(renderer : Renderer*, blend_mode : BlendMode) : bool
-  fun get_render_draw_blend_mode = SDL_GetRenderDrawBlendMode(renderer : Renderer*, blend_mode : BlendMode*) : bool
-  fun render_clear = SDL_RenderClear(renderer : Renderer*) : bool
-  fun render_point = SDL_RenderPoint(renderer : Renderer*, x : LibC::Float, y : LibC::Float) : bool
-  fun render_points = SDL_RenderPoints(renderer : Renderer*, points : FPoint*, count : LibC::Int) : bool
-  fun render_line = SDL_RenderLine(renderer : Renderer*, x1 : LibC::Float, y1 : LibC::Float, x2 : LibC::Float, y2 : LibC::Float) : bool
-  fun render_lines = SDL_RenderLines(renderer : Renderer*, points : FPoint*, count : LibC::Int) : bool
-  fun render_rect = SDL_RenderRect(renderer : Renderer*, rect : FRect*) : bool
-  fun render_rects = SDL_RenderRects(renderer : Renderer*, rects : FRect*, count : LibC::Int) : bool
-  fun render_fill_rect = SDL_RenderFillRect(renderer : Renderer*, rect : FRect*) : bool
-  fun render_fill_rects = SDL_RenderFillRects(renderer : Renderer*, rects : FRect*, count : LibC::Int) : bool
-  fun render_texture = SDL_RenderTexture(renderer : Renderer*, texture : Texture*, srcrect : FRect*, dstrect : FRect*) : bool
-  fun render_texture_rotated = SDL_RenderTextureRotated(renderer : Renderer*, texture : Texture*, srcrect : FRect*, dstrect : FRect*, angle : LibC::Double, center : FPoint*, flip : FlipMode) : bool
-  fun render_texture_affine = SDL_RenderTextureAffine(renderer : Renderer*, texture : Texture*, srcrect : FRect*, origin : FPoint*, right : FPoint*, down : FPoint*) : bool
-  fun render_texture_tiled = SDL_RenderTextureTiled(renderer : Renderer*, texture : Texture*, srcrect : FRect*, scale : LibC::Float, dstrect : FRect*) : bool
-  fun render_texture9_grid = SDL_RenderTexture9Grid(renderer : Renderer*, texture : Texture*, srcrect : FRect*, left_width : LibC::Float, right_width : LibC::Float, top_height : LibC::Float, bottom_height : LibC::Float, scale : LibC::Float, dstrect : FRect*) : bool
-  fun render_geometry = SDL_RenderGeometry(renderer : Renderer*, texture : Texture*, vertices : Vertex*, num_vertices : LibC::Int, indices : LibC::Int*, num_indices : LibC::Int) : bool
-  fun render_geometry_raw = SDL_RenderGeometryRaw(renderer : Renderer*, texture : Texture*, xy : LibC::Float*, xy_stride : LibC::Int, color : FColor*, color_stride : LibC::Int, uv : LibC::Float*, uv_stride : LibC::Int, num_vertices : LibC::Int, indices : Void*, num_indices : LibC::Int, size_indices : LibC::Int) : bool
+  fun set_render_logical_presentation = SDL_SetRenderLogicalPresentation(renderer : Renderer*, w : LibC::Int, h : LibC::Int, mode : RendererLogicalPresentation) : Bool
+  fun get_render_logical_presentation = SDL_GetRenderLogicalPresentation(renderer : Renderer*, w : LibC::Int*, h : LibC::Int*, mode : RendererLogicalPresentation*) : Bool
+  fun get_render_logical_presentation_rect = SDL_GetRenderLogicalPresentationRect(renderer : Renderer*, rect : FRect*) : Bool
+  fun render_coordinates_from_window = SDL_RenderCoordinatesFromWindow(renderer : Renderer*, window_x : LibC::Float, window_y : LibC::Float, x : LibC::Float*, y : LibC::Float*) : Bool
+  fun render_coordinates_to_window = SDL_RenderCoordinatesToWindow(renderer : Renderer*, x : LibC::Float, y : LibC::Float, window_x : LibC::Float*, window_y : LibC::Float*) : Bool
+  fun convert_event_to_render_coordinates = SDL_ConvertEventToRenderCoordinates(renderer : Renderer*, event : Event*) : Bool
+  fun set_render_viewport = SDL_SetRenderViewport(renderer : Renderer*, rect : Rect*) : Bool
+  fun get_render_viewport = SDL_GetRenderViewport(renderer : Renderer*, rect : Rect*) : Bool
+  fun render_viewport_set = SDL_RenderViewportSet(renderer : Renderer*) : Bool
+  fun get_render_safe_area = SDL_GetRenderSafeArea(renderer : Renderer*, rect : Rect*) : Bool
+  fun set_render_clip_rect = SDL_SetRenderClipRect(renderer : Renderer*, rect : Rect*) : Bool
+  fun get_render_clip_rect = SDL_GetRenderClipRect(renderer : Renderer*, rect : Rect*) : Bool
+  fun render_clip_enabled = SDL_RenderClipEnabled(renderer : Renderer*) : Bool
+  fun set_render_scale = SDL_SetRenderScale(renderer : Renderer*, scale_x : LibC::Float, scale_y : LibC::Float) : Bool
+  fun get_render_scale = SDL_GetRenderScale(renderer : Renderer*, scale_x : LibC::Float*, scale_y : LibC::Float*) : Bool
+  fun set_render_draw_color = SDL_SetRenderDrawColor(renderer : Renderer*, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : Bool
+  fun set_render_draw_color_float = SDL_SetRenderDrawColorFloat(renderer : Renderer*, r : LibC::Float, g : LibC::Float, b : LibC::Float, a : LibC::Float) : Bool
+  fun get_render_draw_color = SDL_GetRenderDrawColor(renderer : Renderer*, r : UInt8*, g : UInt8*, b : UInt8*, a : UInt8*) : Bool
+  fun get_render_draw_color_float = SDL_GetRenderDrawColorFloat(renderer : Renderer*, r : LibC::Float*, g : LibC::Float*, b : LibC::Float*, a : LibC::Float*) : Bool
+  fun set_render_color_scale = SDL_SetRenderColorScale(renderer : Renderer*, scale : LibC::Float) : Bool
+  fun get_render_color_scale = SDL_GetRenderColorScale(renderer : Renderer*, scale : LibC::Float*) : Bool
+  fun set_render_draw_blend_mode = SDL_SetRenderDrawBlendMode(renderer : Renderer*, blend_mode : BlendMode) : Bool
+  fun get_render_draw_blend_mode = SDL_GetRenderDrawBlendMode(renderer : Renderer*, blend_mode : BlendMode*) : Bool
+  fun render_clear = SDL_RenderClear(renderer : Renderer*) : Bool
+  fun render_point = SDL_RenderPoint(renderer : Renderer*, x : LibC::Float, y : LibC::Float) : Bool
+  fun render_points = SDL_RenderPoints(renderer : Renderer*, points : FPoint*, count : LibC::Int) : Bool
+  fun render_line = SDL_RenderLine(renderer : Renderer*, x1 : LibC::Float, y1 : LibC::Float, x2 : LibC::Float, y2 : LibC::Float) : Bool
+  fun render_lines = SDL_RenderLines(renderer : Renderer*, points : FPoint*, count : LibC::Int) : Bool
+  fun render_rect = SDL_RenderRect(renderer : Renderer*, rect : FRect*) : Bool
+  fun render_rects = SDL_RenderRects(renderer : Renderer*, rects : FRect*, count : LibC::Int) : Bool
+  fun render_fill_rect = SDL_RenderFillRect(renderer : Renderer*, rect : FRect*) : Bool
+  fun render_fill_rects = SDL_RenderFillRects(renderer : Renderer*, rects : FRect*, count : LibC::Int) : Bool
+  fun render_texture = SDL_RenderTexture(renderer : Renderer*, texture : Texture*, srcrect : FRect*, dstrect : FRect*) : Bool
+  fun render_texture_rotated = SDL_RenderTextureRotated(renderer : Renderer*, texture : Texture*, srcrect : FRect*, dstrect : FRect*, angle : LibC::Double, center : FPoint*, flip : FlipMode) : Bool
+  fun render_texture_affine = SDL_RenderTextureAffine(renderer : Renderer*, texture : Texture*, srcrect : FRect*, origin : FPoint*, right : FPoint*, down : FPoint*) : Bool
+  fun render_texture_tiled = SDL_RenderTextureTiled(renderer : Renderer*, texture : Texture*, srcrect : FRect*, scale : LibC::Float, dstrect : FRect*) : Bool
+  fun render_texture9_grid = SDL_RenderTexture9Grid(renderer : Renderer*, texture : Texture*, srcrect : FRect*, left_width : LibC::Float, right_width : LibC::Float, top_height : LibC::Float, bottom_height : LibC::Float, scale : LibC::Float, dstrect : FRect*) : Bool
+  fun render_geometry = SDL_RenderGeometry(renderer : Renderer*, texture : Texture*, vertices : Vertex*, num_vertices : LibC::Int, indices : LibC::Int*, num_indices : LibC::Int) : Bool
+  fun render_geometry_raw = SDL_RenderGeometryRaw(renderer : Renderer*, texture : Texture*, xy : LibC::Float*, xy_stride : LibC::Int, color : FColor*, color_stride : LibC::Int, uv : LibC::Float*, uv_stride : LibC::Int, num_vertices : LibC::Int, indices : Void*, num_indices : LibC::Int, size_indices : LibC::Int) : Bool
   fun render_read_pixels = SDL_RenderReadPixels(renderer : Renderer*, rect : Rect*) : Surface*
-  fun render_present = SDL_RenderPresent(renderer : Renderer*) : bool
+  fun render_present = SDL_RenderPresent(renderer : Renderer*) : Bool
   fun destroy_texture = SDL_DestroyTexture(texture : Texture*) : Void
   fun destroy_renderer = SDL_DestroyRenderer(renderer : Renderer*) : Void
-  fun flush_renderer = SDL_FlushRenderer(renderer : Renderer*) : bool
+  fun flush_renderer = SDL_FlushRenderer(renderer : Renderer*) : Bool
   fun get_render_metal_layer = SDL_GetRenderMetalLayer(renderer : Renderer*) : Void*
   fun get_render_metal_command_encoder = SDL_GetRenderMetalCommandEncoder(renderer : Renderer*) : Void*
-  fun add_vulkan_render_semaphores = SDL_AddVulkanRenderSemaphores(renderer : Renderer*, wait_stage_mask : UInt32, wait_semaphore : Int64, signal_semaphore : Int64) : bool
-  fun set_render_vsync = SDL_SetRenderVSync(renderer : Renderer*, vsync : LibC::Int) : bool
-  fun get_render_vsync = SDL_GetRenderVSync(renderer : Renderer*, vsync : LibC::Int*) : bool
-  fun render_debug_text = SDL_RenderDebugText(renderer : Renderer*, x : LibC::Float, y : LibC::Float, str : LibC::Char*) : bool
-  fun render_debug_text_format = SDL_RenderDebugTextFormat(renderer : Renderer*, x : LibC::Float, y : LibC::Float, fmt : LibC::Char*, ...) : bool
-
-  # additions/helper_rwops.cr
-
-  type RWops = Void # This works as long as we're dealing with pointers only
-
-  # SDL_rwops
+  fun add_vulkan_render_semaphores = SDL_AddVulkanRenderSemaphores(renderer : Renderer*, wait_stage_mask : UInt32, wait_semaphore : Int64, signal_semaphore : Int64) : Bool
+  fun set_render_vsync = SDL_SetRenderVSync(renderer : Renderer*, vsync : LibC::Int) : Bool
+  fun get_render_vsync = SDL_GetRenderVSync(renderer : Renderer*, vsync : LibC::Int*) : Bool
+  fun render_debug_text = SDL_RenderDebugText(renderer : Renderer*, x : LibC::Float, y : LibC::Float, str : LibC::Char*) : Bool
+  fun render_debug_text_format = SDL_RenderDebugTextFormat(renderer : Renderer*, x : LibC::Float, y : LibC::Float, fmt : LibC::Char*, ...) : Bool
 
   # SDL_sensor
 
@@ -2524,30 +3931,9 @@ lib LibSDL
   fun get_sensor_type = SDL_GetSensorType(sensor : Sensor*) : SensorType
   fun get_sensor_non_portable_type = SDL_GetSensorNonPortableType(sensor : Sensor*) : LibC::Int
   fun get_sensor_id = SDL_GetSensorID(sensor : Sensor*) : SensorID
-  fun get_sensor_data = SDL_GetSensorData(sensor : Sensor*, data : LibC::Float*, num_values : LibC::Int) : bool
+  fun get_sensor_data = SDL_GetSensorData(sensor : Sensor*, data : LibC::Float*, num_values : LibC::Int) : Bool
   fun close_sensor = SDL_CloseSensor(sensor : Sensor*) : Void
   fun update_sensors = SDL_UpdateSensors() : Void
-
-  # additions/helper_shape.cr
-
-  union WindowShapeParams
-    binarization_cutoff : UInt8
-    color_key : Color
-  end
-
-  enum ShapeMode
-    ShapeModeDefault
-    ShapeModeBinarizeAlpha
-    ShapeModeReverseBinarizeAlpha
-    ShapeModeColorKey
-  end
-
-  struct WindowShapeMode
-    mode : ShapeMode
-    parameters : WindowShapeParams
-  end
-
-  # SDL_shape
 
   # SDL_surface
 
@@ -2577,59 +3963,94 @@ lib LibSDL
   fun create_surface_from = SDL_CreateSurfaceFrom(width : LibC::Int, height : LibC::Int, format : PixelFormat, pixels : Void*, pitch : LibC::Int) : Surface*
   fun destroy_surface = SDL_DestroySurface(surface : Surface*) : Void
   fun get_surface_properties = SDL_GetSurfaceProperties(surface : Surface*) : PropertiesID
-  fun set_surface_colorspace = SDL_SetSurfaceColorspace(surface : Surface*, colorspace : Colorspace) : bool
+  fun set_surface_colorspace = SDL_SetSurfaceColorspace(surface : Surface*, colorspace : Colorspace) : Bool
   fun get_surface_colorspace = SDL_GetSurfaceColorspace(surface : Surface*) : Colorspace
   fun create_surface_palette = SDL_CreateSurfacePalette(surface : Surface*) : Palette*
-  fun set_surface_palette = SDL_SetSurfacePalette(surface : Surface*, palette : Palette*) : bool
+  fun set_surface_palette = SDL_SetSurfacePalette(surface : Surface*, palette : Palette*) : Bool
   fun get_surface_palette = SDL_GetSurfacePalette(surface : Surface*) : Palette*
-  fun add_surface_alternate_image = SDL_AddSurfaceAlternateImage(surface : Surface*, image : Surface*) : bool
-  fun surface_has_alternate_images = SDL_SurfaceHasAlternateImages(surface : Surface*) : bool
+  fun add_surface_alternate_image = SDL_AddSurfaceAlternateImage(surface : Surface*, image : Surface*) : Bool
+  fun surface_has_alternate_images = SDL_SurfaceHasAlternateImages(surface : Surface*) : Bool
   fun get_surface_images = SDL_GetSurfaceImages(surface : Surface*, count : LibC::Int*) : Surface**
   fun remove_surface_alternate_images = SDL_RemoveSurfaceAlternateImages(surface : Surface*) : Void
-  fun lock_surface = SDL_LockSurface(surface : Surface*) : bool
+  fun lock_surface = SDL_LockSurface(surface : Surface*) : Bool
   fun unlock_surface = SDL_UnlockSurface(surface : Surface*) : Void
-  fun load_bmp_io = SDL_LoadBMP_IO(src : IOStream*, closeio : bool) : Surface*
+  fun load_bmp_io = SDL_LoadBMP_IO(src : IOStream*, closeio : Bool) : Surface*
   fun load_bmp = SDL_LoadBMP(file : LibC::Char*) : Surface*
-  fun save_bmp_io = SDL_SaveBMP_IO(surface : Surface*, dst : IOStream*, closeio : bool) : bool
-  fun save_bmp = SDL_SaveBMP(surface : Surface*, file : LibC::Char*) : bool
-  fun set_surface_rle = SDL_SetSurfaceRLE(surface : Surface*, enabled : bool) : bool
-  fun surface_has_rle = SDL_SurfaceHasRLE(surface : Surface*) : bool
-  fun set_surface_color_key = SDL_SetSurfaceColorKey(surface : Surface*, enabled : bool, key : UInt32) : bool
-  fun surface_has_color_key = SDL_SurfaceHasColorKey(surface : Surface*) : bool
-  fun get_surface_color_key = SDL_GetSurfaceColorKey(surface : Surface*, key : UInt32*) : bool
-  fun set_surface_color_mod = SDL_SetSurfaceColorMod(surface : Surface*, r : UInt8, g : UInt8, b : UInt8) : bool
-  fun get_surface_color_mod = SDL_GetSurfaceColorMod(surface : Surface*, r : UInt8*, g : UInt8*, b : UInt8*) : bool
-  fun set_surface_alpha_mod = SDL_SetSurfaceAlphaMod(surface : Surface*, alpha : UInt8) : bool
-  fun get_surface_alpha_mod = SDL_GetSurfaceAlphaMod(surface : Surface*, alpha : UInt8*) : bool
-  fun set_surface_blend_mode = SDL_SetSurfaceBlendMode(surface : Surface*, blend_mode : BlendMode) : bool
-  fun get_surface_blend_mode = SDL_GetSurfaceBlendMode(surface : Surface*, blend_mode : BlendMode*) : bool
-  fun set_surface_clip_rect = SDL_SetSurfaceClipRect(surface : Surface*, rect : Rect*) : bool
-  fun get_surface_clip_rect = SDL_GetSurfaceClipRect(surface : Surface*, rect : Rect*) : bool
-  fun flip_surface = SDL_FlipSurface(surface : Surface*, flip : FlipMode) : bool
+  fun save_bmp_io = SDL_SaveBMP_IO(surface : Surface*, dst : IOStream*, closeio : Bool) : Bool
+  fun save_bmp = SDL_SaveBMP(surface : Surface*, file : LibC::Char*) : Bool
+  fun set_surface_rle = SDL_SetSurfaceRLE(surface : Surface*, enabled : Bool) : Bool
+  fun surface_has_rle = SDL_SurfaceHasRLE(surface : Surface*) : Bool
+  fun set_surface_color_key = SDL_SetSurfaceColorKey(surface : Surface*, enabled : Bool, key : UInt32) : Bool
+  fun surface_has_color_key = SDL_SurfaceHasColorKey(surface : Surface*) : Bool
+  fun get_surface_color_key = SDL_GetSurfaceColorKey(surface : Surface*, key : UInt32*) : Bool
+  fun set_surface_color_mod = SDL_SetSurfaceColorMod(surface : Surface*, r : UInt8, g : UInt8, b : UInt8) : Bool
+  fun get_surface_color_mod = SDL_GetSurfaceColorMod(surface : Surface*, r : UInt8*, g : UInt8*, b : UInt8*) : Bool
+  fun set_surface_alpha_mod = SDL_SetSurfaceAlphaMod(surface : Surface*, alpha : UInt8) : Bool
+  fun get_surface_alpha_mod = SDL_GetSurfaceAlphaMod(surface : Surface*, alpha : UInt8*) : Bool
+  fun set_surface_blend_mode = SDL_SetSurfaceBlendMode(surface : Surface*, blend_mode : BlendMode) : Bool
+  fun get_surface_blend_mode = SDL_GetSurfaceBlendMode(surface : Surface*, blend_mode : BlendMode*) : Bool
+  fun set_surface_clip_rect = SDL_SetSurfaceClipRect(surface : Surface*, rect : Rect*) : Bool
+  fun get_surface_clip_rect = SDL_GetSurfaceClipRect(surface : Surface*, rect : Rect*) : Bool
+  fun flip_surface = SDL_FlipSurface(surface : Surface*, flip : FlipMode) : Bool
   fun duplicate_surface = SDL_DuplicateSurface(surface : Surface*) : Surface*
   fun scale_surface = SDL_ScaleSurface(surface : Surface*, width : LibC::Int, height : LibC::Int, scale_mode : ScaleMode) : Surface*
   fun convert_surface = SDL_ConvertSurface(surface : Surface*, format : PixelFormat) : Surface*
   fun convert_surface_and_colorspace = SDL_ConvertSurfaceAndColorspace(surface : Surface*, format : PixelFormat, palette : Palette*, colorspace : Colorspace, props : PropertiesID) : Surface*
-  fun convert_pixels = SDL_ConvertPixels(width : LibC::Int, height : LibC::Int, src_format : PixelFormat, src : Void*, src_pitch : LibC::Int, dst_format : PixelFormat, dst : Void*, dst_pitch : LibC::Int) : bool
-  fun convert_pixels_and_colorspace = SDL_ConvertPixelsAndColorspace(width : LibC::Int, height : LibC::Int, src_format : PixelFormat, src_colorspace : Colorspace, src_properties : PropertiesID, src : Void*, src_pitch : LibC::Int, dst_format : PixelFormat, dst_colorspace : Colorspace, dst_properties : PropertiesID, dst : Void*, dst_pitch : LibC::Int) : bool
-  fun premultiply_alpha = SDL_PremultiplyAlpha(width : LibC::Int, height : LibC::Int, src_format : PixelFormat, src : Void*, src_pitch : LibC::Int, dst_format : PixelFormat, dst : Void*, dst_pitch : LibC::Int, linear : bool) : bool
-  fun premultiply_surface_alpha = SDL_PremultiplySurfaceAlpha(surface : Surface*, linear : bool) : bool
-  fun clear_surface = SDL_ClearSurface(surface : Surface*, r : LibC::Float, g : LibC::Float, b : LibC::Float, a : LibC::Float) : bool
-  fun fill_surface_rect = SDL_FillSurfaceRect(dst : Surface*, rect : Rect*, color : UInt32) : bool
-  fun fill_surface_rects = SDL_FillSurfaceRects(dst : Surface*, rects : Rect*, count : LibC::Int, color : UInt32) : bool
-  fun blit_surface = SDL_BlitSurface(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*) : bool
-  fun blit_surface_unchecked = SDL_BlitSurfaceUnchecked(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*) : bool
-  fun blit_surface_scaled = SDL_BlitSurfaceScaled(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*, scale_mode : ScaleMode) : bool
-  fun blit_surface_unchecked_scaled = SDL_BlitSurfaceUncheckedScaled(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*, scale_mode : ScaleMode) : bool
-  fun blit_surface_tiled = SDL_BlitSurfaceTiled(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*) : bool
-  fun blit_surface_tiled_with_scale = SDL_BlitSurfaceTiledWithScale(src : Surface*, srcrect : Rect*, scale : LibC::Float, scale_mode : ScaleMode, dst : Surface*, dstrect : Rect*) : bool
-  fun blit_surface9_grid = SDL_BlitSurface9Grid(src : Surface*, srcrect : Rect*, left_width : LibC::Int, right_width : LibC::Int, top_height : LibC::Int, bottom_height : LibC::Int, scale : LibC::Float, scale_mode : ScaleMode, dst : Surface*, dstrect : Rect*) : bool
+  fun convert_pixels = SDL_ConvertPixels(width : LibC::Int, height : LibC::Int, src_format : PixelFormat, src : Void*, src_pitch : LibC::Int, dst_format : PixelFormat, dst : Void*, dst_pitch : LibC::Int) : Bool
+  fun convert_pixels_and_colorspace = SDL_ConvertPixelsAndColorspace(width : LibC::Int, height : LibC::Int, src_format : PixelFormat, src_colorspace : Colorspace, src_properties : PropertiesID, src : Void*, src_pitch : LibC::Int, dst_format : PixelFormat, dst_colorspace : Colorspace, dst_properties : PropertiesID, dst : Void*, dst_pitch : LibC::Int) : Bool
+  fun premultiply_alpha = SDL_PremultiplyAlpha(width : LibC::Int, height : LibC::Int, src_format : PixelFormat, src : Void*, src_pitch : LibC::Int, dst_format : PixelFormat, dst : Void*, dst_pitch : LibC::Int, linear : Bool) : Bool
+  fun premultiply_surface_alpha = SDL_PremultiplySurfaceAlpha(surface : Surface*, linear : Bool) : Bool
+  fun clear_surface = SDL_ClearSurface(surface : Surface*, r : LibC::Float, g : LibC::Float, b : LibC::Float, a : LibC::Float) : Bool
+  fun fill_surface_rect = SDL_FillSurfaceRect(dst : Surface*, rect : Rect*, color : UInt32) : Bool
+  fun fill_surface_rects = SDL_FillSurfaceRects(dst : Surface*, rects : Rect*, count : LibC::Int, color : UInt32) : Bool
+  fun blit_surface = SDL_BlitSurface(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*) : Bool
+  fun blit_surface_unchecked = SDL_BlitSurfaceUnchecked(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*) : Bool
+  fun blit_surface_scaled = SDL_BlitSurfaceScaled(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*, scale_mode : ScaleMode) : Bool
+  fun blit_surface_unchecked_scaled = SDL_BlitSurfaceUncheckedScaled(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*, scale_mode : ScaleMode) : Bool
+  fun blit_surface_tiled = SDL_BlitSurfaceTiled(src : Surface*, srcrect : Rect*, dst : Surface*, dstrect : Rect*) : Bool
+  fun blit_surface_tiled_with_scale = SDL_BlitSurfaceTiledWithScale(src : Surface*, srcrect : Rect*, scale : LibC::Float, scale_mode : ScaleMode, dst : Surface*, dstrect : Rect*) : Bool
+  fun blit_surface9_grid = SDL_BlitSurface9Grid(src : Surface*, srcrect : Rect*, left_width : LibC::Int, right_width : LibC::Int, top_height : LibC::Int, bottom_height : LibC::Int, scale : LibC::Float, scale_mode : ScaleMode, dst : Surface*, dstrect : Rect*) : Bool
   fun map_surface_rgb = SDL_MapSurfaceRGB(surface : Surface*, r : UInt8, g : UInt8, b : UInt8) : UInt32
   fun map_surface_rgba = SDL_MapSurfaceRGBA(surface : Surface*, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : UInt32
-  fun read_surface_pixel = SDL_ReadSurfacePixel(surface : Surface*, x : LibC::Int, y : LibC::Int, r : UInt8*, g : UInt8*, b : UInt8*, a : UInt8*) : bool
-  fun read_surface_pixel_float = SDL_ReadSurfacePixelFloat(surface : Surface*, x : LibC::Int, y : LibC::Int, r : LibC::Float*, g : LibC::Float*, b : LibC::Float*, a : LibC::Float*) : bool
-  fun write_surface_pixel = SDL_WriteSurfacePixel(surface : Surface*, x : LibC::Int, y : LibC::Int, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : bool
-  fun write_surface_pixel_float = SDL_WriteSurfacePixelFloat(surface : Surface*, x : LibC::Int, y : LibC::Int, r : LibC::Float, g : LibC::Float, b : LibC::Float, a : LibC::Float) : bool
+  fun read_surface_pixel = SDL_ReadSurfacePixel(surface : Surface*, x : LibC::Int, y : LibC::Int, r : UInt8*, g : UInt8*, b : UInt8*, a : UInt8*) : Bool
+  fun read_surface_pixel_float = SDL_ReadSurfacePixelFloat(surface : Surface*, x : LibC::Int, y : LibC::Int, r : LibC::Float*, g : LibC::Float*, b : LibC::Float*, a : LibC::Float*) : Bool
+  fun write_surface_pixel = SDL_WriteSurfacePixel(surface : Surface*, x : LibC::Int, y : LibC::Int, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : Bool
+  fun write_surface_pixel_float = SDL_WriteSurfacePixelFloat(surface : Surface*, x : LibC::Int, y : LibC::Int, r : LibC::Float, g : LibC::Float, b : LibC::Float, a : LibC::Float) : Bool
+
+  # SDL_tray
+
+  TRAYENTRY_BUTTON = 0x00000001
+  TRAYENTRY_CHECKBOX = 0x00000002
+  TRAYENTRY_SUBMENU = 0x00000004
+  TRAYENTRY_DISABLED = 0x80000000
+  TRAYENTRY_CHECKED = 0x40000000
+
+  alias Tray = Void
+  alias TrayMenu = Void
+  alias TrayEntry = Void
+  alias TrayEntryFlags = UInt32
+
+  fun create_tray = SDL_CreateTray(icon : Surface*, tooltip : LibC::Char*) : Tray*
+  fun set_tray_icon = SDL_SetTrayIcon(tray : Tray*, icon : Surface*) : Void
+  fun set_tray_tooltip = SDL_SetTrayTooltip(tray : Tray*, tooltip : LibC::Char*) : Void
+  fun create_tray_menu = SDL_CreateTrayMenu(tray : Tray*) : TrayMenu*
+  fun create_tray_submenu = SDL_CreateTraySubmenu(entry : TrayEntry*) : TrayMenu*
+  fun get_tray_menu = SDL_GetTrayMenu(tray : Tray*) : TrayMenu*
+  fun get_tray_submenu = SDL_GetTraySubmenu(entry : TrayEntry*) : TrayMenu*
+  fun get_tray_entries = SDL_GetTrayEntries(menu : TrayMenu*, size : LibC::Int*) : TrayEntry**
+  fun remove_tray_entry = SDL_RemoveTrayEntry(entry : TrayEntry*) : Void
+  fun insert_tray_entry_at = SDL_InsertTrayEntryAt(menu : TrayMenu*, pos : LibC::Int, label : LibC::Char*, flags : TrayEntryFlags) : TrayEntry*
+  fun set_tray_entry_label = SDL_SetTrayEntryLabel(entry : TrayEntry*, label : LibC::Char*) : Void
+  fun get_tray_entry_label = SDL_GetTrayEntryLabel(entry : TrayEntry*) : LibC::Char*
+  fun set_tray_entry_checked = SDL_SetTrayEntryChecked(entry : TrayEntry*, checked : Bool) : Void
+  fun get_tray_entry_checked = SDL_GetTrayEntryChecked(entry : TrayEntry*) : Bool
+  fun set_tray_entry_enabled = SDL_SetTrayEntryEnabled(entry : TrayEntry*, enabled : Bool) : Void
+  fun get_tray_entry_enabled = SDL_GetTrayEntryEnabled(entry : TrayEntry*) : Bool
+  fun set_tray_entry_callback = SDL_SetTrayEntryCallback(entry : TrayEntry*, callback : TrayCallback, userdata : Void*) : Void
+  fun destroy_tray = SDL_DestroyTray(tray : Tray*) : Void
+  fun get_tray_entry_parent = SDL_GetTrayEntryParent(entry : TrayEntry*) : TrayMenu*
+  fun get_tray_menu_parent_entry = SDL_GetTrayMenuParentEntry(menu : TrayMenu*) : TrayEntry*
+  fun get_tray_menu_parent_tray = SDL_GetTrayMenuParentTray(menu : TrayMenu*) : Tray*
 
   # SDL_touch
 
@@ -2880,13 +4301,13 @@ lib LibSDL
   fun get_primary_display = SDL_GetPrimaryDisplay() : DisplayID
   fun get_display_properties = SDL_GetDisplayProperties(display_id : DisplayID) : PropertiesID
   fun get_display_name = SDL_GetDisplayName(display_id : DisplayID) : LibC::Char*
-  fun get_display_bounds = SDL_GetDisplayBounds(display_id : DisplayID, rect : Rect*) : bool
-  fun get_display_usable_bounds = SDL_GetDisplayUsableBounds(display_id : DisplayID, rect : Rect*) : bool
+  fun get_display_bounds = SDL_GetDisplayBounds(display_id : DisplayID, rect : Rect*) : Bool
+  fun get_display_usable_bounds = SDL_GetDisplayUsableBounds(display_id : DisplayID, rect : Rect*) : Bool
   fun get_natural_display_orientation = SDL_GetNaturalDisplayOrientation(display_id : DisplayID) : DisplayOrientation
   fun get_current_display_orientation = SDL_GetCurrentDisplayOrientation(display_id : DisplayID) : DisplayOrientation
   fun get_display_content_scale = SDL_GetDisplayContentScale(display_id : DisplayID) : LibC::Float
   fun get_fullscreen_display_modes = SDL_GetFullscreenDisplayModes(display_id : DisplayID, count : LibC::Int*) : DisplayMode**
-  fun get_closest_fullscreen_display_mode = SDL_GetClosestFullscreenDisplayMode(display_id : DisplayID, w : LibC::Int, h : LibC::Int, refresh_rate : LibC::Float, include_high_density_modes : bool, closest : DisplayMode*) : bool
+  fun get_closest_fullscreen_display_mode = SDL_GetClosestFullscreenDisplayMode(display_id : DisplayID, w : LibC::Int, h : LibC::Int, refresh_rate : LibC::Float, include_high_density_modes : Bool, closest : DisplayMode*) : Bool
   fun get_desktop_display_mode = SDL_GetDesktopDisplayMode(display_id : DisplayID) : DisplayMode*
   fun get_current_display_mode = SDL_GetCurrentDisplayMode(display_id : DisplayID) : DisplayMode*
   fun get_display_for_point = SDL_GetDisplayForPoint(point : Point*) : DisplayID
@@ -2894,7 +4315,7 @@ lib LibSDL
   fun get_display_for_window = SDL_GetDisplayForWindow(window : Window*) : DisplayID
   fun get_window_pixel_density = SDL_GetWindowPixelDensity(window : Window*) : LibC::Float
   fun get_window_display_scale = SDL_GetWindowDisplayScale(window : Window*) : LibC::Float
-  fun set_window_fullscreen_mode = SDL_SetWindowFullscreenMode(window : Window*, mode : DisplayMode*) : bool
+  fun set_window_fullscreen_mode = SDL_SetWindowFullscreenMode(window : Window*, mode : DisplayMode*) : Bool
   fun get_window_fullscreen_mode = SDL_GetWindowFullscreenMode(window : Window*) : DisplayMode*
   fun get_window_iccprofile = SDL_GetWindowICCProfile(window : Window*, size : LibC::SizeT*) : Void*
   fun get_window_pixel_format = SDL_GetWindowPixelFormat(window : Window*) : PixelFormat
@@ -2907,80 +4328,80 @@ lib LibSDL
   fun get_window_parent = SDL_GetWindowParent(window : Window*) : Window*
   fun get_window_properties = SDL_GetWindowProperties(window : Window*) : PropertiesID
   fun get_window_flags = SDL_GetWindowFlags(window : Window*) : WindowFlags
-  fun set_window_title = SDL_SetWindowTitle(window : Window*, title : LibC::Char*) : bool
+  fun set_window_title = SDL_SetWindowTitle(window : Window*, title : LibC::Char*) : Bool
   fun get_window_title = SDL_GetWindowTitle(window : Window*) : LibC::Char*
-  fun set_window_icon = SDL_SetWindowIcon(window : Window*, icon : Surface*) : bool
-  fun set_window_position = SDL_SetWindowPosition(window : Window*, x : LibC::Int, y : LibC::Int) : bool
-  fun get_window_position = SDL_GetWindowPosition(window : Window*, x : LibC::Int*, y : LibC::Int*) : bool
-  fun set_window_size = SDL_SetWindowSize(window : Window*, w : LibC::Int, h : LibC::Int) : bool
-  fun get_window_size = SDL_GetWindowSize(window : Window*, w : LibC::Int*, h : LibC::Int*) : bool
-  fun get_window_safe_area = SDL_GetWindowSafeArea(window : Window*, rect : Rect*) : bool
-  fun set_window_aspect_ratio = SDL_SetWindowAspectRatio(window : Window*, min_aspect : LibC::Float, max_aspect : LibC::Float) : bool
-  fun get_window_aspect_ratio = SDL_GetWindowAspectRatio(window : Window*, min_aspect : LibC::Float*, max_aspect : LibC::Float*) : bool
-  fun get_window_borders_size = SDL_GetWindowBordersSize(window : Window*, top : LibC::Int*, left : LibC::Int*, bottom : LibC::Int*, right : LibC::Int*) : bool
-  fun get_window_size_in_pixels = SDL_GetWindowSizeInPixels(window : Window*, w : LibC::Int*, h : LibC::Int*) : bool
-  fun set_window_minimum_size = SDL_SetWindowMinimumSize(window : Window*, min_w : LibC::Int, min_h : LibC::Int) : bool
-  fun get_window_minimum_size = SDL_GetWindowMinimumSize(window : Window*, w : LibC::Int*, h : LibC::Int*) : bool
-  fun set_window_maximum_size = SDL_SetWindowMaximumSize(window : Window*, max_w : LibC::Int, max_h : LibC::Int) : bool
-  fun get_window_maximum_size = SDL_GetWindowMaximumSize(window : Window*, w : LibC::Int*, h : LibC::Int*) : bool
-  fun set_window_bordered = SDL_SetWindowBordered(window : Window*, bordered : bool) : bool
-  fun set_window_resizable = SDL_SetWindowResizable(window : Window*, resizable : bool) : bool
-  fun set_window_always_on_top = SDL_SetWindowAlwaysOnTop(window : Window*, on_top : bool) : bool
-  fun show_window = SDL_ShowWindow(window : Window*) : bool
-  fun hide_window = SDL_HideWindow(window : Window*) : bool
-  fun raise_window = SDL_RaiseWindow(window : Window*) : bool
-  fun maximize_window = SDL_MaximizeWindow(window : Window*) : bool
-  fun minimize_window = SDL_MinimizeWindow(window : Window*) : bool
-  fun restore_window = SDL_RestoreWindow(window : Window*) : bool
-  fun set_window_fullscreen = SDL_SetWindowFullscreen(window : Window*, fullscreen : bool) : bool
-  fun sync_window = SDL_SyncWindow(window : Window*) : bool
-  fun window_has_surface = SDL_WindowHasSurface(window : Window*) : bool
+  fun set_window_icon = SDL_SetWindowIcon(window : Window*, icon : Surface*) : Bool
+  fun set_window_position = SDL_SetWindowPosition(window : Window*, x : LibC::Int, y : LibC::Int) : Bool
+  fun get_window_position = SDL_GetWindowPosition(window : Window*, x : LibC::Int*, y : LibC::Int*) : Bool
+  fun set_window_size = SDL_SetWindowSize(window : Window*, w : LibC::Int, h : LibC::Int) : Bool
+  fun get_window_size = SDL_GetWindowSize(window : Window*, w : LibC::Int*, h : LibC::Int*) : Bool
+  fun get_window_safe_area = SDL_GetWindowSafeArea(window : Window*, rect : Rect*) : Bool
+  fun set_window_aspect_ratio = SDL_SetWindowAspectRatio(window : Window*, min_aspect : LibC::Float, max_aspect : LibC::Float) : Bool
+  fun get_window_aspect_ratio = SDL_GetWindowAspectRatio(window : Window*, min_aspect : LibC::Float*, max_aspect : LibC::Float*) : Bool
+  fun get_window_borders_size = SDL_GetWindowBordersSize(window : Window*, top : LibC::Int*, left : LibC::Int*, bottom : LibC::Int*, right : LibC::Int*) : Bool
+  fun get_window_size_in_pixels = SDL_GetWindowSizeInPixels(window : Window*, w : LibC::Int*, h : LibC::Int*) : Bool
+  fun set_window_minimum_size = SDL_SetWindowMinimumSize(window : Window*, min_w : LibC::Int, min_h : LibC::Int) : Bool
+  fun get_window_minimum_size = SDL_GetWindowMinimumSize(window : Window*, w : LibC::Int*, h : LibC::Int*) : Bool
+  fun set_window_maximum_size = SDL_SetWindowMaximumSize(window : Window*, max_w : LibC::Int, max_h : LibC::Int) : Bool
+  fun get_window_maximum_size = SDL_GetWindowMaximumSize(window : Window*, w : LibC::Int*, h : LibC::Int*) : Bool
+  fun set_window_bordered = SDL_SetWindowBordered(window : Window*, bordered : Bool) : Bool
+  fun set_window_resizable = SDL_SetWindowResizable(window : Window*, resizable : Bool) : Bool
+  fun set_window_always_on_top = SDL_SetWindowAlwaysOnTop(window : Window*, on_top : Bool) : Bool
+  fun show_window = SDL_ShowWindow(window : Window*) : Bool
+  fun hide_window = SDL_HideWindow(window : Window*) : Bool
+  fun raise_window = SDL_RaiseWindow(window : Window*) : Bool
+  fun maximize_window = SDL_MaximizeWindow(window : Window*) : Bool
+  fun minimize_window = SDL_MinimizeWindow(window : Window*) : Bool
+  fun restore_window = SDL_RestoreWindow(window : Window*) : Bool
+  fun set_window_fullscreen = SDL_SetWindowFullscreen(window : Window*, fullscreen : Bool) : Bool
+  fun sync_window = SDL_SyncWindow(window : Window*) : Bool
+  fun window_has_surface = SDL_WindowHasSurface(window : Window*) : Bool
   fun get_window_surface = SDL_GetWindowSurface(window : Window*) : Surface*
-  fun set_window_surface_vsync = SDL_SetWindowSurfaceVSync(window : Window*, vsync : LibC::Int) : bool
-  fun get_window_surface_vsync = SDL_GetWindowSurfaceVSync(window : Window*, vsync : LibC::Int*) : bool
-  fun update_window_surface = SDL_UpdateWindowSurface(window : Window*) : bool
-  fun update_window_surface_rects = SDL_UpdateWindowSurfaceRects(window : Window*, rects : Rect*, numrects : LibC::Int) : bool
-  fun destroy_window_surface = SDL_DestroyWindowSurface(window : Window*) : bool
-  fun set_window_keyboard_grab = SDL_SetWindowKeyboardGrab(window : Window*, grabbed : bool) : bool
-  fun set_window_mouse_grab = SDL_SetWindowMouseGrab(window : Window*, grabbed : bool) : bool
-  fun get_window_keyboard_grab = SDL_GetWindowKeyboardGrab(window : Window*) : bool
-  fun get_window_mouse_grab = SDL_GetWindowMouseGrab(window : Window*) : bool
+  fun set_window_surface_vsync = SDL_SetWindowSurfaceVSync(window : Window*, vsync : LibC::Int) : Bool
+  fun get_window_surface_vsync = SDL_GetWindowSurfaceVSync(window : Window*, vsync : LibC::Int*) : Bool
+  fun update_window_surface = SDL_UpdateWindowSurface(window : Window*) : Bool
+  fun update_window_surface_rects = SDL_UpdateWindowSurfaceRects(window : Window*, rects : Rect*, numrects : LibC::Int) : Bool
+  fun destroy_window_surface = SDL_DestroyWindowSurface(window : Window*) : Bool
+  fun set_window_keyboard_grab = SDL_SetWindowKeyboardGrab(window : Window*, grabbed : Bool) : Bool
+  fun set_window_mouse_grab = SDL_SetWindowMouseGrab(window : Window*, grabbed : Bool) : Bool
+  fun get_window_keyboard_grab = SDL_GetWindowKeyboardGrab(window : Window*) : Bool
+  fun get_window_mouse_grab = SDL_GetWindowMouseGrab(window : Window*) : Bool
   fun get_grabbed_window = SDL_GetGrabbedWindow() : Window*
-  fun set_window_mouse_rect = SDL_SetWindowMouseRect(window : Window*, rect : Rect*) : bool
+  fun set_window_mouse_rect = SDL_SetWindowMouseRect(window : Window*, rect : Rect*) : Bool
   fun get_window_mouse_rect = SDL_GetWindowMouseRect(window : Window*) : Rect*
-  fun set_window_opacity = SDL_SetWindowOpacity(window : Window*, opacity : LibC::Float) : bool
+  fun set_window_opacity = SDL_SetWindowOpacity(window : Window*, opacity : LibC::Float) : Bool
   fun get_window_opacity = SDL_GetWindowOpacity(window : Window*) : LibC::Float
-  fun set_window_parent = SDL_SetWindowParent(window : Window*, parent : Window*) : bool
-  fun set_window_modal = SDL_SetWindowModal(window : Window*, modal : bool) : bool
-  fun set_window_focusable = SDL_SetWindowFocusable(window : Window*, focusable : bool) : bool
-  fun show_window_system_menu = SDL_ShowWindowSystemMenu(window : Window*, x : LibC::Int, y : LibC::Int) : bool
-  fun set_window_hit_test = SDL_SetWindowHitTest(window : Window*, callback : HitTest, callback_data : Void*) : bool
-  fun set_window_shape = SDL_SetWindowShape(window : Window*, shape : Surface*) : bool
-  fun flash_window = SDL_FlashWindow(window : Window*, operation : FlashOperation) : bool
+  fun set_window_parent = SDL_SetWindowParent(window : Window*, parent : Window*) : Bool
+  fun set_window_modal = SDL_SetWindowModal(window : Window*, modal : Bool) : Bool
+  fun set_window_focusable = SDL_SetWindowFocusable(window : Window*, focusable : Bool) : Bool
+  fun show_window_system_menu = SDL_ShowWindowSystemMenu(window : Window*, x : LibC::Int, y : LibC::Int) : Bool
+  fun set_window_hit_test = SDL_SetWindowHitTest(window : Window*, callback : HitTest, callback_data : Void*) : Bool
+  fun set_window_shape = SDL_SetWindowShape(window : Window*, shape : Surface*) : Bool
+  fun flash_window = SDL_FlashWindow(window : Window*, operation : FlashOperation) : Bool
   fun destroy_window = SDL_DestroyWindow(window : Window*) : Void
-  fun screen_saver_enabled = SDL_ScreenSaverEnabled() : bool
-  fun enable_screen_saver = SDL_EnableScreenSaver() : bool
-  fun disable_screen_saver = SDL_DisableScreenSaver() : bool
-  fun gl_load_library = SDL_GL_LoadLibrary(path : LibC::Char*) : bool
+  fun screen_saver_enabled = SDL_ScreenSaverEnabled() : Bool
+  fun enable_screen_saver = SDL_EnableScreenSaver() : Bool
+  fun disable_screen_saver = SDL_DisableScreenSaver() : Bool
+  fun gl_load_library = SDL_GL_LoadLibrary(path : LibC::Char*) : Bool
   fun gl_get_proc_address = SDL_GL_GetProcAddress(proc : LibC::Char*) : FunctionPointer
   fun egl_get_proc_address = SDL_EGL_GetProcAddress(proc : LibC::Char*) : FunctionPointer
   fun gl_unload_library = SDL_GL_UnloadLibrary() : Void
-  fun gl_extension_supported = SDL_GL_ExtensionSupported(extension : LibC::Char*) : bool
+  fun gl_extension_supported = SDL_GL_ExtensionSupported(extension : LibC::Char*) : Bool
   fun gl_reset_attributes = SDL_GL_ResetAttributes() : Void
-  fun gl_set_attribute = SDL_GL_SetAttribute(attr : GLAttr, value : LibC::Int) : bool
-  fun gl_get_attribute = SDL_GL_GetAttribute(attr : GLAttr, value : LibC::Int*) : bool
+  fun gl_set_attribute = SDL_GL_SetAttribute(attr : GLAttr, value : LibC::Int) : Bool
+  fun gl_get_attribute = SDL_GL_GetAttribute(attr : GLAttr, value : LibC::Int*) : Bool
   fun gl_create_context = SDL_GL_CreateContext(window : Window*) : GLContext
-  fun gl_make_current = SDL_GL_MakeCurrent(window : Window*, context : GLContext) : bool
+  fun gl_make_current = SDL_GL_MakeCurrent(window : Window*, context : GLContext) : Bool
   fun gl_get_current_window = SDL_GL_GetCurrentWindow() : Window*
   fun gl_get_current_context = SDL_GL_GetCurrentContext() : GLContext
   fun egl_get_current_display = SDL_EGL_GetCurrentDisplay() : EGLDisplay
   fun egl_get_current_config = SDL_EGL_GetCurrentConfig() : EGLConfig
   fun egl_get_window_surface = SDL_EGL_GetWindowSurface(window : Window*) : EGLSurface
   fun egl_set_attribute_callbacks = SDL_EGL_SetAttributeCallbacks(platform_attrib_callback : EGLAttribArrayCallback, surface_attrib_callback : EGLIntArrayCallback, context_attrib_callback : EGLIntArrayCallback, userdata : Void*) : Void
-  fun gl_set_swap_interval = SDL_GL_SetSwapInterval(interval : LibC::Int) : bool
-  fun gl_get_swap_interval = SDL_GL_GetSwapInterval(interval : LibC::Int*) : bool
-  fun gl_swap_window = SDL_GL_SwapWindow(window : Window*) : bool
-  fun gl_destroy_context = SDL_GL_DestroyContext(context : GLContext) : bool
+  fun gl_set_swap_interval = SDL_GL_SetSwapInterval(interval : LibC::Int) : Bool
+  fun gl_get_swap_interval = SDL_GL_GetSwapInterval(interval : LibC::Int*) : Bool
+  fun gl_swap_window = SDL_GL_SwapWindow(window : Window*) : Bool
+  fun gl_destroy_context = SDL_GL_DestroyContext(context : GLContext) : Bool
 
 end
 

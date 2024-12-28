@@ -84,7 +84,7 @@ def type_filter(name)
     ["int8", "Int8"],
     ["int", "LibC::Int"],
     ["char", "LibC::Char"],
-    ["SDL_bool", "SBool"],
+    ["bool", "Bool"],
     ["FILE", "Void"], # It is a bit of cheating, but you should rarely use this anyway
 
     ["§1", "Point"], # Now we can demask it again
@@ -333,39 +333,53 @@ end
 headers = [
   ["SDL"],
   ["SDL_version"],
-  ["additions/helper_types.cr"],
   ["SDL_scancode"],
   ["SDL_audio"],
   ["additions/helper_audio.cr"],
   ["SDL_blendmode"],
+  ["SDL_camera"],
   ["SDL_clipboard"],
+  ["SDL_cpuinfo"],
+  ["SDL_dialog"],
   ["SDL_error"],
   ["additions/helper_event.cr"],
   ["SDL_events"],
   ["SDL_filesystem"],
-  ["additions/helper_gamecontroller.cr"],
-  ["SDL_gamecontroller"],
-  ["SDL_gesture"],
+  #["additions/helper_gamecontroller.cr"],
+  ["SDL_gamepad"],
+  ["SDL_gpu"],
   ["SDL_guid"],
   ["SDL_haptic"],
   ["additions/helper_haptic.cr"],
   ["SDL_hints"],
   ["additions/helper_hints.cr"],
+  ["SDL_init"],
+  ["SDL_iostream"],
   ["SDL_joystick"],
   ["additions/helper_joystick.cr"],
   ["SDL_keyboard"],
   ["SDL_keycode"],
+  ["SDL_loadso"],
+  ["SDL_locale"],
+  ["SDL_log"],
+  ["SDL_messagebox"],
+  ["SDL_metal"],
+  ["SDL_misc"],
   ["SDL_mouse"],
+  ["SDL_pen"],
   ["SDL_pixels"],
   ["additions/helper_pixels.cr"],
+  ["SDL_platform"],
+  ["SDL_power"],
+  ["SDL_process"],
+  ["SDL_properties"],
   ["SDL_rect"],
   ["SDL_render"],
-  ["additions/helper_rwops.cr"],
-  ["SDL_rwops"],
+  #["additions/helper_rwops.cr"],
   ["SDL_sensor"],
-  ["additions/helper_shape.cr"],
-  ["SDL_shape"],
+  #["additions/helper_shape.cr"],
   ["SDL_surface"],
+  ["SDL_tray"],
   ["SDL_touch"],
   ["additions/helper_video.cr"],
   ["SDL_video"]
@@ -448,6 +462,21 @@ write_bindings_to_file("src/sdl-image-bindings.cr", img_headers, "SDL3_image", "
 write_bindings_to_file("src/sdl-mixer-bindings.cr", mix_headers, "SDL3_mixer", "additions/macros_mix.cr")
 write_bindings_to_file("src/sdl-ttf-bindings.cr", ttf_headers, "SDL3_ttf", "additions/macros_ttf.cr")
 
-# TODO: Inspect differences between SDL2 and SDL3 (missing: gamecontroller, gesture, rwops, shape)
+# TODO: Remove old headers: gamecontroller, gesture, rwops, shape
+
+# TODO: Add missing headers: camera, cpuinfo, dialog, 
+#   gamepad, gpu, init,
+#   iostream, loadso, locale, log, messagebox,
+#   metal, misc, pen, platform,
+#   power, process, properties,
+#   tray
+
+# TODO: Potentially problematic headers: asyncio, atomic, bits, endian, hidapi, mutex, storage, system, thread, time, timer, oldnames
+
+# TODO: Fix weird const* function arguments
+# TODO: Convert callbacks in some way (manually is okay)
+# TODO: Manually convert complex structs like gamepad axis
+
 # TODO: Check macros for SDL3 (and remove obsolete functions)
+
 # TODO: Finalize and think about how to use different versions
