@@ -340,30 +340,6 @@ lib LibSDL
   fun get_audio_format_name = SDL_GetAudioFormatName(format : AudioFormat) : LibC::Char*
   fun get_silence_value_for_format = SDL_GetSilenceValueForFormat(format : AudioFormat) : LibC::Int
 
-  # additions/helper_audio.cr
-
-  # (void* userdata, Uint8* stream, int len)
-  alias AudioCallback = (Void*, UInt8*, LibC::Int) -> Void
-  # (struct SDL_AudioCVT* cvt, SDL_AudioFormat format)
-  alias AudioFilter = (AudioCVT*, AudioFormat) -> Void
-
-  AUDIOCVT_MAX_POINTERS = AUDIOCVT_MAX_FILTERS + 1
-
-  @[Packed]
-  struct AudioCVT
-    needed : LibC::Int
-    src_format : AudioFormat
-    dst_format : AudioFormat
-    rate_incr : LibC::Double
-    buf : UInt8*
-    len : LibC::Int
-    len_cvt : LibC::Int
-    len_mult : LibC::Int
-    len_ratio : LibC::Double
-    filters : AudioFilter[AUDIOCVT_MAX_POINTERS]
-    filter_index : LibC::Int
-  end
-
   # SDL_blendmode
 
   BLENDMODE_NONE = 0x00000000
@@ -507,46 +483,6 @@ lib LibSDL
   fun out_of_memory = SDL_OutOfMemory() : Bool
   fun get_error = SDL_GetError() : LibC::Char*
   fun clear_error = SDL_ClearError() : Bool
-
-  # additions/helper_event.cr
-
-  union Event
-    type : UInt32
-    common : CommonEvent
-    display : DisplayEvent
-    window : WindowEvent
-    key : KeyboardEvent
-    edit : TextEditingEvent
-    edit_ext : TextEditingExtEvent
-    text : TextInputEvent
-    motion : MouseMotionEvent
-    button : MouseButtonEvent
-    wheel : MouseWheelEvent
-    jaxis : JoyAxisEvent
-    jball : JoyBallEvent
-    jhat : JoyHatEvent
-    jbutton : JoyButtonEvent
-    jdevice : JoyDeviceEvent
-    jbattery : JoyBatteryEvent
-    caxis : ControllerAxisEvent
-    cbutton : ControllerButtonEvent
-    cdevice : ControllerDeviceEvent
-    ctouchpad : ControllerTouchpadEvent
-    csensor : ControllerSensorEvent
-    adevice : AudioDeviceEvent
-    sensor : SensorEvent
-    quit : QuitEvent
-    user : UserEvent
-    syswm : SysWMEvent
-    tfinger : TouchFingerEvent
-    mgesture : MultiGestureEvent
-    dgesture : DollarGestureEvent
-    drop : DropEvent
-    padding : UInt8[56] # NOTE: This might become difficult on certain architectures
-  end
-
-  # (void* userdata, SDL_Event* event)
-  alias EventFilter = (Void*, Event*) -> LibC::Int
 
   # SDL_events
 
@@ -2254,18 +2190,6 @@ lib LibSDL
   fun play_haptic_rumble = SDL_PlayHapticRumble(haptic : Haptic*, strength : LibC::Float, length : UInt32) : Bool
   fun stop_haptic_rumble = SDL_StopHapticRumble(haptic : Haptic*) : Bool
 
-  # additions/helper_haptic.cr
-
-  union HapticEffect
-    type : UInt16
-    constant : HapticConstant
-    periodic : HapticPeriodic
-    condition : HapticCondition
-    ramp : HapticRamp
-    leftright : HapticLeftRight
-    custom : HapticCustom
-  end
-
   # SDL_hints
 
   HINT_ALLOW_ALT_TAB_WHILE_GRABBED = "ALLOW_ALT_TAB_WHILE_GRABBED"
@@ -2515,11 +2439,6 @@ lib LibSDL
   fun get_hint_boolean = SDL_GetHintBoolean(name : LibC::Char*, default_value : Bool) : Bool
   fun add_hint_callback = SDL_AddHintCallback(name : LibC::Char*, callback : HintCallback, userdata : Void*) : Bool
   fun remove_hint_callback = SDL_RemoveHintCallback(name : LibC::Char*, callback : HintCallback, userdata : Void*) : Void
-
-  # additions/helper_hints.cr
-
-  # (void* userdata, const char* name, const char* oldValue, const char* newValue)
-  alias HintCallback = (Void*, LibC::Char*, LibC::Char*, LibC::Char*) -> Void
 
   # SDL_init
 
@@ -2780,29 +2699,6 @@ lib LibSDL
   fun close_joystick = SDL_CloseJoystick(joystick : Joystick*) : Void
   fun get_joystick_connection_state = SDL_GetJoystickConnectionState(joystick : Joystick*) : JoystickConnectionState
   fun get_joystick_power_info = SDL_GetJoystickPowerInfo(joystick : Joystick*, percent : LibC::Int*) : PowerState
-
-  # additions/helper_joystick.cr
-
-  struct VirtualJoystickDesc
-    version : UInt16
-    type : UInt16
-    naxes : UInt16
-    nbuttons : UInt16
-    nhats : UInt16
-    vendor_id : UInt16
-    product_id : UInt16
-    padding : UInt16
-    button_mask : UInt32
-    axis_mask : UInt32
-    name : LibC::Char*
-    userdata : Void*
-    update : (Void*) -> Void  # (void* userdata)
-    set_player_index : (Void*, LibC::Int) -> Void # (void* userdata, int player_index)
-    rumble : (Void*, UInt16, UInt16) -> LibC::Int # (void* userdata, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble)
-    rumble_triggers : (Void*, UInt16, UInt16) -> LibC::Int  # (void* userdata, Uint16 left_rumble, Uint16 right_rumble)
-    set_led : (Void*, UInt8, UInt8, UInt8) -> LibC::Int # (void* userdata, Uint8 red, Uint8 green, Uint8 blue)
-    send_effect : (Void*, Void*, LibC::Int) -> LibC::Int  # (void* userdata, const void* data, int size)
-  end
 
   # SDL_keyboard
 
@@ -3567,10 +3463,6 @@ lib LibSDL
   fun get_rgb = SDL_GetRGB(pixel : UInt32, format : PixelFormatDetails*, palette : Palette*, r : UInt8*, g : UInt8*, b : UInt8*) : Void
   fun get_rgba = SDL_GetRGBA(pixel : UInt32, format : PixelFormatDetails*, palette : Palette*, r : UInt8*, g : UInt8*, b : UInt8*, a : UInt8*) : Void
 
-  # additions/helper_pixels.cr
-
-  alias Colour = Color
-
   # SDL_platform
 
   fun get_platform = SDL_GetPlatform() : LibC::Char*
@@ -4077,11 +3969,6 @@ lib LibSDL
   fun get_touch_device_name = SDL_GetTouchDeviceName(touch_id : TouchID) : LibC::Char*
   fun get_touch_device_type = SDL_GetTouchDeviceType(touch_id : TouchID) : TouchDeviceType
   fun get_touch_fingers = SDL_GetTouchFingers(touch_id : TouchID, count : LibC::Int*) : Finger**
-
-  # additions/helper_video.cr
-
-  # (SDL_Window* win, const SDL_Point* area, void* data)
-  alias HitTest = (Window*, Point*, Void*) -> HitTestResult
 
   # SDL_video
 
