@@ -301,9 +301,9 @@ lib LibSDL
   fun get_audio_device_gain = SDL_GetAudioDeviceGain(devid : AudioDeviceID) : LibC::Float
   fun set_audio_device_gain = SDL_SetAudioDeviceGain(devid : AudioDeviceID, gain : LibC::Float) : Bool
   fun close_audio_device = SDL_CloseAudioDevice(devid : AudioDeviceID) : Void
-  fun bind_audio_streams = SDL_BindAudioStreams(devid : AudioDeviceID, streams : AudioStream* const*, num_streams : LibC::Int) : Bool
+  fun bind_audio_streams = SDL_BindAudioStreams(devid : AudioDeviceID, streams : AudioStream**, num_streams : LibC::Int) : Bool
   fun bind_audio_stream = SDL_BindAudioStream(devid : AudioDeviceID, stream : AudioStream*) : Bool
-  fun unbind_audio_streams = SDL_UnbindAudioStreams(streams : AudioStream* const*, num_streams : LibC::Int) : Void
+  fun unbind_audio_streams = SDL_UnbindAudioStreams(streams : AudioStream**, num_streams : LibC::Int) : Void
   fun unbind_audio_stream = SDL_UnbindAudioStream(stream : AudioStream*) : Void
   fun get_audio_stream_device = SDL_GetAudioStreamDevice(stream : AudioStream*) : AudioDeviceID
   fun create_audio_stream = SDL_CreateAudioStream(src_spec : AudioSpec*, dst_spec : AudioSpec*) : AudioStream*
@@ -736,8 +736,7 @@ lib LibSDL
     reserved : UInt32
     timestamp : UInt64
     window_id : WindowID
-    const* : LibC::Char*
-    candidates : LibC::Char*
+    candidates : LibC::Char**
     num_candidates : Int32
     selected_candidate : Int32
     horizontal : Bool
@@ -2039,11 +2038,11 @@ lib LibSDL
   fun bind_gpuvertex_buffers = SDL_BindGPUVertexBuffers(render_pass : GPURenderPass*, first_slot : UInt32, bindings : GPUBufferBinding*, num_bindings : UInt32) : Void
   fun bind_gpuindex_buffer = SDL_BindGPUIndexBuffer(render_pass : GPURenderPass*, binding : GPUBufferBinding*, index_element_size : GPUIndexElementSize) : Void
   fun bind_gpuvertex_samplers = SDL_BindGPUVertexSamplers(render_pass : GPURenderPass*, first_slot : UInt32, texture_sampler_bindings : GPUTextureSamplerBinding*, num_bindings : UInt32) : Void
-  fun bind_gpuvertex_storage_textures = SDL_BindGPUVertexStorageTextures(render_pass : GPURenderPass*, first_slot : UInt32, storage_textures : GPUTexture* const*, num_bindings : UInt32) : Void
-  fun bind_gpuvertex_storage_buffers = SDL_BindGPUVertexStorageBuffers(render_pass : GPURenderPass*, first_slot : UInt32, storage_buffers : GPUBuffer* const*, num_bindings : UInt32) : Void
+  fun bind_gpuvertex_storage_textures = SDL_BindGPUVertexStorageTextures(render_pass : GPURenderPass*, first_slot : UInt32, storage_textures : GPUTexture**, num_bindings : UInt32) : Void
+  fun bind_gpuvertex_storage_buffers = SDL_BindGPUVertexStorageBuffers(render_pass : GPURenderPass*, first_slot : UInt32, storage_buffers : GPUBuffer**, num_bindings : UInt32) : Void
   fun bind_gpufragment_samplers = SDL_BindGPUFragmentSamplers(render_pass : GPURenderPass*, first_slot : UInt32, texture_sampler_bindings : GPUTextureSamplerBinding*, num_bindings : UInt32) : Void
-  fun bind_gpufragment_storage_textures = SDL_BindGPUFragmentStorageTextures(render_pass : GPURenderPass*, first_slot : UInt32, storage_textures : GPUTexture* const*, num_bindings : UInt32) : Void
-  fun bind_gpufragment_storage_buffers = SDL_BindGPUFragmentStorageBuffers(render_pass : GPURenderPass*, first_slot : UInt32, storage_buffers : GPUBuffer* const*, num_bindings : UInt32) : Void
+  fun bind_gpufragment_storage_textures = SDL_BindGPUFragmentStorageTextures(render_pass : GPURenderPass*, first_slot : UInt32, storage_textures : GPUTexture**, num_bindings : UInt32) : Void
+  fun bind_gpufragment_storage_buffers = SDL_BindGPUFragmentStorageBuffers(render_pass : GPURenderPass*, first_slot : UInt32, storage_buffers : GPUBuffer**, num_bindings : UInt32) : Void
   fun draw_gpuindexed_primitives = SDL_DrawGPUIndexedPrimitives(render_pass : GPURenderPass*, num_indices : UInt32, num_instances : UInt32, first_index : UInt32, vertex_offset : Int32, first_instance : UInt32) : Void
   fun draw_gpuprimitives = SDL_DrawGPUPrimitives(render_pass : GPURenderPass*, num_vertices : UInt32, num_instances : UInt32, first_vertex : UInt32, first_instance : UInt32) : Void
   fun draw_gpuprimitives_indirect = SDL_DrawGPUPrimitivesIndirect(render_pass : GPURenderPass*, buffer : GPUBuffer*, offset : UInt32, draw_count : UInt32) : Void
@@ -2052,8 +2051,8 @@ lib LibSDL
   fun begin_gpucompute_pass = SDL_BeginGPUComputePass(command_buffer : GPUCommandBuffer*, storage_texture_bindings : GPUStorageTextureReadWriteBinding*, num_storage_texture_bindings : UInt32, storage_buffer_bindings : GPUStorageBufferReadWriteBinding*, num_storage_buffer_bindings : UInt32) : GPUComputePass*
   fun bind_gpucompute_pipeline = SDL_BindGPUComputePipeline(compute_pass : GPUComputePass*, compute_pipeline : GPUComputePipeline*) : Void
   fun bind_gpucompute_samplers = SDL_BindGPUComputeSamplers(compute_pass : GPUComputePass*, first_slot : UInt32, texture_sampler_bindings : GPUTextureSamplerBinding*, num_bindings : UInt32) : Void
-  fun bind_gpucompute_storage_textures = SDL_BindGPUComputeStorageTextures(compute_pass : GPUComputePass*, first_slot : UInt32, storage_textures : GPUTexture* const*, num_bindings : UInt32) : Void
-  fun bind_gpucompute_storage_buffers = SDL_BindGPUComputeStorageBuffers(compute_pass : GPUComputePass*, first_slot : UInt32, storage_buffers : GPUBuffer* const*, num_bindings : UInt32) : Void
+  fun bind_gpucompute_storage_textures = SDL_BindGPUComputeStorageTextures(compute_pass : GPUComputePass*, first_slot : UInt32, storage_textures : GPUTexture**, num_bindings : UInt32) : Void
+  fun bind_gpucompute_storage_buffers = SDL_BindGPUComputeStorageBuffers(compute_pass : GPUComputePass*, first_slot : UInt32, storage_buffers : GPUBuffer**, num_bindings : UInt32) : Void
   fun dispatch_gpucompute = SDL_DispatchGPUCompute(compute_pass : GPUComputePass*, groupcount_x : UInt32, groupcount_y : UInt32, groupcount_z : UInt32) : Void
   fun dispatch_gpucompute_indirect = SDL_DispatchGPUComputeIndirect(compute_pass : GPUComputePass*, buffer : GPUBuffer*, offset : UInt32) : Void
   fun end_gpucompute_pass = SDL_EndGPUComputePass(compute_pass : GPUComputePass*) : Void
@@ -2083,7 +2082,7 @@ lib LibSDL
   fun submit_gpucommand_buffer_and_acquire_fence = SDL_SubmitGPUCommandBufferAndAcquireFence(command_buffer : GPUCommandBuffer*) : GPUFence*
   fun cancel_gpucommand_buffer = SDL_CancelGPUCommandBuffer(command_buffer : GPUCommandBuffer*) : Bool
   fun wait_for_gpuidle = SDL_WaitForGPUIdle(device : GPUDevice*) : Bool
-  fun wait_for_gpufences = SDL_WaitForGPUFences(device : GPUDevice*, wait_all : Bool, fences : GPUFence* const*, num_fences : UInt32) : Bool
+  fun wait_for_gpufences = SDL_WaitForGPUFences(device : GPUDevice*, wait_all : Bool, fences : GPUFence**, num_fences : UInt32) : Bool
   fun query_gpufence = SDL_QueryGPUFence(device : GPUDevice*, fence : GPUFence*) : Bool
   fun release_gpufence = SDL_ReleaseGPUFence(device : GPUDevice*, fence : GPUFence*) : Void
   fun gputexture_format_texel_block_size = SDL_GPUTextureFormatTexelBlockSize(format : GPUTextureFormat) : UInt32
@@ -3616,7 +3615,7 @@ lib LibSDL
     PROCESS_STDIO_REDIRECT
   end
 
-  fun create_process = SDL_CreateProcess(args : LibC::Char* const*, pipe_stdio : Bool) : Process*
+  fun create_process = SDL_CreateProcess(args : LibC::Char**, pipe_stdio : Bool) : Process*
   fun create_process_with_properties = SDL_CreateProcessWithProperties(props : PropertiesID) : Process*
   fun get_process_properties = SDL_GetProcessProperties(process : Process*) : PropertiesID
   fun read_process = SDL_ReadProcess(process : Process*, datasize : LibC::SizeT*, exitcode : LibC::Int*) : Void*

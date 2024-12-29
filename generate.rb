@@ -62,6 +62,7 @@ def type_filter(name)
     ["Point", "§1"],  # The 'int' in 'Point' would be parsed, so we want to mask it for now
     ["Hint", "§2"],
 
+    [" const*", "*"],
     ["const ", ""],
     ["char*", "LibC::Char*"],
     ["void", "Void"],
@@ -296,7 +297,7 @@ def transform_structs(structs)
     struct_str += "  @[Packed]\n" if struct[1].end_with? "_PACKED"  # TODO: Add Crystal guards for platforms where this is not required
     struct_str += "  struct #{soft_filter(struct[0])}\n"
 
-    struct[2].gsub("const ", "").gsub("struct ", "").split(/[\n]+/).each do |struct_part|
+    struct[2].gsub(" const*", "*").gsub("const ", "").gsub("struct ", "").split(/[\n]+/).each do |struct_part|
       array_part = struct_part.match(/\[(.+)\]/)
       filtered_part = array_part ? struct_part.gsub(array_part[0], "") : struct_part
       reduced_part = filtered_part.strip.gsub(";", "")
@@ -473,10 +474,11 @@ write_bindings_to_file("src/sdl-ttf-bindings.cr", ttf_headers, "SDL3_ttf", "addi
 
 # TODO: Potentially problematic headers: asyncio, atomic, bits, endian, hidapi, mutex, storage, system, thread, time, timer, oldnames
 
-# TODO: Fix weird const* function arguments
 # TODO: Convert callbacks in some way (manually is okay)
 # TODO: Manually convert complex structs like gamepad axis
 
 # TODO: Check macros for SDL3 (and remove obsolete functions)
+
+# TODO: Update examples
 
 # TODO: Finalize and think about how to use different versions
