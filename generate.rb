@@ -83,13 +83,16 @@ def type_filter(name)
     ["int32", "Int32"],
     ["int16", "Int16"],
     ["int8", "Int8"],
+    ["intptr_t", "LibC::Int*"], # NOTE: This might lead to issues
+    ["GLint", "§3"],
     ["int", "LibC::Int"],
     ["char", "LibC::Char"],
     ["bool", "Bool"],
     ["FILE", "Void"], # It is a bit of cheating, but you should rarely use this anyway
 
     ["§1", "Point"], # Now we can demask it again
-    ["§2", "Hint"]
+    ["§2", "Hint"],
+    ["§3", "GLint"]
   ]
 
   soft_filter(filters.inject(name) {|text, filter| text.gsub(filter[0], filter[1])})
@@ -102,19 +105,11 @@ end
 
 def should_struct_be_excluded?(name)
   filters = [
-    #"SDL_AudioCVT",
-    #"SDL_GameControllerButtonBind",
     "SDL_VirtualJoystickDesc",  # Contains too many callbacks
-    #"hat",
-    #"SDL_RWops",
-    #"mem",
-    #"hidden",
-    #"androidio",
-    #"SDL_WindowShapeMode",
-    #"WindowShapeMode",
     "Mix_MusicFinishedCallback)(void)",  # TODO: A bit cheaty due to the way the Regexes work, but it does the job for now
-    "axis", # Structure is too complex for the parser, so better do it manually
-    "SDL_IOStreamInterface" # Contains too many callbacks
+    "axis", # Structure should not actually be used
+    "SDL_IOStreamInterface", # Contains too many callbacks
+    "SDL_MessageBoxColorScheme" # Contains reference to other enum
   ]
 
   filters.index(name)
@@ -122,10 +117,6 @@ end
 
 def should_constant_be_excluded?(name)
   filters = [
-    #"SDL_AUDIOCVT_PACKED",
-    #"TTF_MAJOR_VERSION",
-    #"TTF_MINOR_VERSION",
-    #"TTF_PATCHLEVEL"
   ]
 
   filters.index(name)
@@ -149,6 +140,7 @@ def process_constant(constant)
     .gsub("\\x7F", "\\u007F")
     .gsub(/\(\((\S+)\)([0xabcdefABCDEF\d]+)\)/, "\\1.new(\\2)")
     .gsub("SDL_", "")
+    .gsub(/UINT64_C\(([0xabcdefABCDEF\d]+)\)/, "UInt64.new(\\1)")
     .gsub("WINDOWPOS_UNDEFINED_DISPLAY(0)", "(LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)")
     .gsub("WINDOWPOS_CENTERED_DISPLAY(0)", "(LibSDL::WINDOWPOS_CENTERED_MASK | 0)")
     .gsub(/VERSIONNUM(([\S]+), ([\S]+), ([\S]+))/, "((\\2)*1000 + (\\3)*100 + (\\4))")
@@ -206,7 +198,11 @@ def get_all_structs(filename)
 
   single_line_struct_matches.each do |match|
     next if should_struct_be_excluded?(match[1])
-    final_typedefs.push [match[1], "void"]
+    if match[1] == match[0]
+      final_typedefs.push [match[1], "void"]
+    else
+      final_typedefs.push [match[1], match[0]]
+    end
   end
 
   typedefs.each do |match|
@@ -356,6 +352,7 @@ def transform_constants(constants)
 end
 
 headers = [
+  ["additions/helper.cr"],
   ["SDL"],
   ["SDL_version"],
   ["SDL_scancode"],
@@ -371,24 +368,27 @@ headers = [
   ["SDL_error"],
   ["additions/helper_event.cr"],
   ["SDL_events"],
-  ["SDL_filesystem"],
-  ###["additions/helper_gamecontroller.cr"],
+  ["additions/helper_gamepad.cr"],
   ["SDL_gamepad"],
   ["SDL_gpu"],
   ["SDL_guid"],
-  #["additions/helper_haptic.cr"],
+  ["additions/helper_haptic.cr"],
   ["SDL_haptic"],
-  #["additions/helper_hints.cr"],
+  ["additions/helper_hints.cr"],
   ["SDL_hints"],
+  ["additions/helper_init.cr"],
   ["SDL_init"],
+  ["additions/helper_iostream.cr"],
   ["SDL_iostream"],
-  #["additions/helper_joystick.cr"],
+  ["additions/helper_joystick.cr"],
   ["SDL_joystick"],
   ["SDL_keyboard"],
   ["SDL_keycode"],
   ["SDL_loadso"],
   ["SDL_locale"],
+  ["additions/helper_log.cr"],
   ["SDL_log"],
+  ["additions/helper_messagebox.cr"],
   ["SDL_messagebox"],
   ["SDL_metal"],
   ["SDL_misc"],
@@ -399,16 +399,16 @@ headers = [
   ["SDL_platform"],
   ["SDL_power"],
   ["SDL_process"],
+  ["additions/helper_properties.cr"],
   ["SDL_properties"],
   ["SDL_rect"],
   ["SDL_render"],
-  ###["additions/helper_rwops.cr"],
   ["SDL_sensor"],
-  ###["additions/helper_shape.cr"],
   ["SDL_surface"],
+  ["additions/helper_tray.cr"],
   ["SDL_tray"],
   ["SDL_touch"],
-  #["additions/helper_video.cr"],
+  ["additions/helper_video.cr"],
   ["SDL_video"]
 ]
 
@@ -489,19 +489,12 @@ write_bindings_to_file("src/sdl-image-bindings.cr", img_headers, "SDL3_image", "
 write_bindings_to_file("src/sdl-mixer-bindings.cr", mix_headers, "SDL3_mixer", "additions/macros_mix.cr")
 write_bindings_to_file("src/sdl-ttf-bindings.cr", ttf_headers, "SDL3_ttf", "additions/macros_ttf.cr")
 
-# TODO: Remove old headers: gamecontroller, gesture, rwops, shape
-
-# TODO: Add missing headers: camera, cpuinfo, dialog, 
-#   gamepad, gpu, init,
-#   iostream, loadso, locale, log, messagebox,
-#   metal, misc, pen, platform,
-#   power, process, properties,
-#   tray
-
-# TODO: Potentially problematic headers: asyncio, atomic, bits, endian, hidapi, mutex, storage, system, thread, time, timer, oldnames
+# TODO: Potentially problematic headers: asyncio, atomic, bits, endian, filesystem, hidapi, mutex, storage, system, thread, time, timer, oldnames
 
 # TODO: Manually convert complex structs like gamepad axis (and callbacks)
+# TODO: Manually add inline functions from SDL_rect etc. (as macros?)
 # TODO: Fix version macros and constants
+# TODO: Look into macros like TOUCH_MOUSEID
 # TODO: Test whether the conversion from bool to Bool causes any issues
 
 # TODO: Update examples

@@ -1,5 +1,10 @@
 @[Link("SDL3")]
 lib LibSDL
+  # additions/helper.cr
+
+  # (void)
+  alias FunctionPointer = (Void) -> Void
+
   # SDL
 
   # SDL_version
@@ -1095,59 +1100,47 @@ lib LibSDL
   fun register_events = SDL_RegisterEvents(numevents : LibC::Int) : UInt32
   fun get_window_from_event = SDL_GetWindowFromEvent(event : Event*) : Window*
 
-  # SDL_filesystem
+  # additions/helper_gamepad.cr
 
-  GLOB_CASEINSENSITIVE = (1 << 0)
-
-  alias GlobFlags = UInt32
-
-  enum Folder
-    FOLDER_HOME
-    FOLDER_DESKTOP
-    FOLDER_DOCUMENTS
-    FOLDER_DOWNLOADS
-    FOLDER_MUSIC
-    FOLDER_PICTURES
-    FOLDER_PUBLICSHARE
-    FOLDER_SAVEDGAMES
-    FOLDER_SCREENSHOTS
-    FOLDER_TEMPLATES
-    FOLDER_VIDEOS
-    FOLDER_COUNT
+  # NOTE: Helper struct, not named in original SDL
+  struct GamepadBindingInputAxis
+    axis : LibC::Int
+    axis_min : LibC::Int
+    axis_max : LibC::Int
   end
 
-  enum PathType
-    PATHTYPE_NONE
-    PATHTYPE_FILE
-    PATHTYPE_DIRECTORY
-    PATHTYPE_OTHER
+  # NOTE: Helper struct, not named in original SDL
+  struct GamepadBindingInputHat
+    hat : LibC::Int
+    hat_mask : LibC::Int
   end
 
-  enum EnumerationResult
-    ENUM_CONTINUE
-    ENUM_SUCCESS
-    ENUM_FAILURE
+  # NOTE: Helper struct, not named in original SDL
+  struct GamepadBindingOutputAxis
+    axis : GamepadAxis
+    axis_min : LibC::Int
+    axis_max : LibC::Int
+  end
+  
+  # NOTE: Helper struct, not named in original SDL
+  union GamepadBindingInput
+    button : LibC::Int
+    axis : GamepadBindingInputAxis
+    hat : GamepadBindingInputHat
   end
 
-  struct PathInfo
-    type : PathType
-    size : UInt64
-    create_time : Time
-    modify_time : Time
-    access_time : Time
+  # NOTE: Helper struct, not named in original SDL
+  union GamepadBindingOutput
+    button : GamepadButton
+    axis : GamepadBindingOutputAxis
   end
 
-  fun get_base_path = SDL_GetBasePath() : LibC::Char*
-  fun get_pref_path = SDL_GetPrefPath(org : LibC::Char*, app : LibC::Char*) : LibC::Char*
-  fun get_user_folder = SDL_GetUserFolder(folder : Folder) : LibC::Char*
-  fun create_directory = SDL_CreateDirectory(path : LibC::Char*) : Bool
-  fun enumerate_directory = SDL_EnumerateDirectory(path : LibC::Char*, callback : EnumerateDirectoryCallback, userdata : Void*) : Bool
-  fun remove_path = SDL_RemovePath(path : LibC::Char*) : Bool
-  fun rename_path = SDL_RenamePath(oldpath : LibC::Char*, newpath : LibC::Char*) : Bool
-  fun copy_file = SDL_CopyFile(oldpath : LibC::Char*, newpath : LibC::Char*) : Bool
-  fun get_path_info = SDL_GetPathInfo(path : LibC::Char*, info : PathInfo*) : Bool
-  fun glob_directory = SDL_GlobDirectory(path : LibC::Char*, pattern : LibC::Char*, flags : GlobFlags, count : LibC::Int*) : LibC::Char**
-  fun get_current_directory = SDL_GetCurrentDirectory() : LibC::Char*
+  struct GamepadBinding
+    input_type : GamepadBindingType
+    input : GamepadBindingInput
+    output_type : GamepadBindingType
+    output : GamepadBindingOutput
+  end
 
   # SDL_gamepad
 
@@ -2108,6 +2101,18 @@ lib LibSDL
   fun guidto_string = SDL_GUIDToString(guid : GUID, psz_guid : LibC::Char*, cb_guid : LibC::Int) : Void
   fun string_to_guid = SDL_StringToGUID(pch_guid : LibC::Char*) : GUID
 
+  # additions/helper_haptic.cr
+
+  union HapticEffect
+    type : UInt16
+    constant : HapticConstant
+    periodic : HapticPeriodic
+    condition : HapticCondition
+    ramp : HapticRamp
+    leftright : HapticLeftRight
+    custom : HapticCustom
+  end
+
   # SDL_haptic
 
   HAPTIC_CONSTANT = (1 << 0)
@@ -2260,6 +2265,11 @@ lib LibSDL
   fun init_haptic_rumble = SDL_InitHapticRumble(haptic : Haptic*) : Bool
   fun play_haptic_rumble = SDL_PlayHapticRumble(haptic : Haptic*, strength : LibC::Float, length : UInt32) : Bool
   fun stop_haptic_rumble = SDL_StopHapticRumble(haptic : Haptic*) : Bool
+
+  # additions/helper_hints.cr
+
+  # (void* userdata, const char* name, const char* oldValue, const char* newValue)
+  alias HintCallback = (Void*, LibC::Char*, LibC::Char*, LibC::Char*) -> Void
 
   # SDL_hints
 
@@ -2511,6 +2521,14 @@ lib LibSDL
   fun add_hint_callback = SDL_AddHintCallback(name : LibC::Char*, callback : HintCallback, userdata : Void*) : Bool
   fun remove_hint_callback = SDL_RemoveHintCallback(name : LibC::Char*, callback : HintCallback, userdata : Void*) : Void
 
+  # additions/helper_init.cr
+
+  # (void* appstate, SDL_AppResult result)
+  alias AppQuitFunc = (Void*, AppResult) -> Void
+
+  # (void* userdata)
+  alias MainThreadCallback = (Void*) -> Void
+
   # SDL_init
 
   INIT_AUDIO = 0x00000010
@@ -2547,6 +2565,18 @@ lib LibSDL
   fun set_app_metadata = SDL_SetAppMetadata(appname : LibC::Char*, appversion : LibC::Char*, appidentifier : LibC::Char*) : Bool
   fun set_app_metadata_property = SDL_SetAppMetadataProperty(name : LibC::Char*, value : LibC::Char*) : Bool
   fun get_app_metadata_property = SDL_GetAppMetadataProperty(name : LibC::Char*) : LibC::Char*
+
+  # additions/helper_iostream.cr
+
+  struct IOStreamInterface
+    version : UInt32
+    size : (Void*) -> Int64 # (void* userdata)
+    seek : (Void*, Int64, IOWhence) -> Int64  # (void* userdata, Sint64 offset, SDL_IOWhence whence)
+    read : (Void*, Void*, LibC::SizeT, IOStatus*) -> LibC::SizeT # (void* userdata, void* ptr, size_t size, SDL_IOStatus* status)
+    write : (Void*, Void*, LibC::SizeT, IOStatus*) -> LibC::SizeT # (void* userdata, const void* ptr, size_t size, SDL_IOStatus* status)
+    flush : (Void*, IOStatus*) -> Bool  # (void* userdata, SDL_IOStatus* status)
+    close : (Void*) -> Bool  # (void* userdata)
+  end
 
   # SDL_iostream
 
@@ -2623,6 +2653,37 @@ lib LibSDL
   fun write_s64_le = SDL_WriteS64LE(dst : IOStream*, value : Int64) : Bool
   fun write_u64_be = SDL_WriteU64BE(dst : IOStream*, value : UInt64) : Bool
   fun write_s64_be = SDL_WriteS64BE(dst : IOStream*, value : Int64) : Bool
+
+  # additions/helper_joystick.cr
+
+  struct VirtualJoystickDesc
+    version : UInt32
+    type : UInt16
+    padding : UInt16
+    vendor_id : UInt16
+    product_id : UInt16
+    naxses : UInt16
+    nbuttons : UInt16
+    nballs : UInt16
+    nhats : UInt16
+    ntouchpads : UInt16
+    nsensors : UInt16
+    padding2 : UInt16[2]
+    button_mask : UInt32
+    axis_mask : UInt32
+    name : LibC::Char*
+    touchpads : VirtualJoystickTouchpadDesc*
+    sensors : VirtualJoystickSensorDesc*
+    userdata : Void*
+    update : (Void*) -> Void  # (void* userdata)
+    set_player_index : (Void*, LibC::Int) -> Void # (void* userdata, int player_index)
+    rumble : (Void*, UInt16, UInt16) -> LibC::Int # (void* userdata, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble)
+    rumble_triggers : (Void*, UInt16, UInt16) -> LibC::Int  # (void* userdata, Uint16 left_rumble, Uint16 right_rumble)
+    set_led : (Void*, UInt8, UInt8, UInt8) -> LibC::Int # (void* userdata, Uint8 red, Uint8 green, Uint8 blue)
+    send_effect : (Void*, Void*, LibC::Int) -> LibC::Int  # (void* userdata, const void* data, int size)
+    set_sensors_enabled : (Void*, Bool) -> Bool  # (void* userdata, bool enabled)
+    cleanup : (Void*) -> Void # (void* userdata)
+  end
 
   # SDL_joystick
 
@@ -3080,6 +3141,11 @@ lib LibSDL
 
   fun get_preferred_locales = SDL_GetPreferredLocales(count : LibC::Int*) : Locale**
 
+  # additions/helper_log.cr
+
+  # (void* userdata, int category, SDL_LogPriority priority, const char* message)
+  alias LogOutputFunction = (Void*, LibC::Int, LogPriority, LibC::Char*) -> Void
+
   # SDL_log
 
   enum LogCategory
@@ -3135,6 +3201,12 @@ lib LibSDL
   fun get_log_output_function = SDL_GetLogOutputFunction(callback : LogOutputFunction*, userdata : Void**) : Void
   fun set_log_output_function = SDL_SetLogOutputFunction(callback : LogOutputFunction, userdata : Void*) : Void
 
+  # additions/helper_messagebox.cr
+
+  struct MessageBoxColorScheme
+    colors : MessageBoxColor[MessageBoxColorType::MESSAGEBOX_COLOR_COUNT]
+  end
+
   # SDL_messagebox
 
   MESSAGEBOX_ERROR = 0x00000010
@@ -3167,10 +3239,6 @@ lib LibSDL
     r : UInt8
     g : UInt8
     b : UInt8
-  end
-
-  struct MessageBoxColorScheme
-    colors : MessageBoxColor[MESSAGEBOX_COLOR_COUNT]
   end
 
   struct MessageBoxData
@@ -3368,7 +3436,6 @@ lib LibSDL
     SDL_PIXELFORMAT_BGRX32 = SDL_PIXELFORMAT_XRGB8888
     SDL_PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_RGBX8888
   end
-  
 
   # SDL_pixels
 
@@ -3630,6 +3697,14 @@ lib LibSDL
   fun kill_process = SDL_KillProcess(process : Process*, force : Bool) : Bool
   fun wait_process = SDL_WaitProcess(process : Process*, block : Bool, exitcode : LibC::Int*) : Bool
   fun destroy_process = SDL_DestroyProcess(process : Process*) : Void
+
+  # additions/helper_properties.cr
+
+  # (void* userdata, void* value)
+  alias CleanupPropertyCallback = (Void*, Void*) -> Void
+
+  # (void* userdata, SDL_PropertiesID props, const char* name)
+  alias EnumeratePropertiesCallback = (Void*, PropertiesID, LibC::Char*) -> Void
 
   # SDL_properties
 
@@ -4022,6 +4097,11 @@ lib LibSDL
   fun write_surface_pixel = SDL_WriteSurfacePixel(surface : Surface*, x : LibC::Int, y : LibC::Int, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : Bool
   fun write_surface_pixel_float = SDL_WriteSurfacePixelFloat(surface : Surface*, x : LibC::Int, y : LibC::Int, r : LibC::Float, g : LibC::Float, b : LibC::Float, a : LibC::Float) : Bool
 
+  # additions/helper_tray.cr
+
+  # (void* userdata, SDL_TrayEntry* entry)
+  alias TrayCallback = (Void*, TrayEntry*) -> Void
+
   # SDL_tray
 
   TRAYENTRY_BUTTON = 0x00000001
@@ -4084,34 +4164,47 @@ lib LibSDL
   fun get_touch_device_type = SDL_GetTouchDeviceType(touch_id : TouchID) : TouchDeviceType
   fun get_touch_fingers = SDL_GetTouchFingers(touch_id : TouchID, count : LibC::Int*) : Finger**
 
+  # additions/helper_video.cr
+
+  # (void* userdata)
+  alias EGLAttribArrayCallback = (Void*) -> EGLAttrib*
+
+  # (void* userdata, SDL_EGLDisplay display, SDL_EGLConfig config)
+  alias EGLIntArrayCallback = (Void*, EGLDisplay, EGLConfig) -> EGLint*
+  
+  # (SDL_Window* win, const SDL_Point* area, void* data)
+  alias HitTest = (Window*, Point*, Void*) -> HitTestResult
+
+  alias GLContextState = Void
+
   # SDL_video
 
   PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER = "SDL.video.wayland.wl_display"
-  WINDOW_FULLSCREEN = UINT64_C(0x0000000000000001)
-  WINDOW_OPENGL = UINT64_C(0x0000000000000002)
-  WINDOW_OCCLUDED = UINT64_C(0x0000000000000004)
-  WINDOW_HIDDEN = UINT64_C(0x0000000000000008)
-  WINDOW_BORDERLESS = UINT64_C(0x0000000000000010)
-  WINDOW_RESIZABLE = UINT64_C(0x0000000000000020)
-  WINDOW_MINIMIZED = UINT64_C(0x0000000000000040)
-  WINDOW_MAXIMIZED = UINT64_C(0x0000000000000080)
-  WINDOW_MOUSE_GRABBED = UINT64_C(0x0000000000000100)
-  WINDOW_INPUT_FOCUS = UINT64_C(0x0000000000000200)
-  WINDOW_MOUSE_FOCUS = UINT64_C(0x0000000000000400)
-  WINDOW_EXTERNAL = UINT64_C(0x0000000000000800)
-  WINDOW_MODAL = UINT64_C(0x0000000000001000)
-  WINDOW_HIGH_PIXEL_DENSITY = UINT64_C(0x0000000000002000)
-  WINDOW_MOUSE_CAPTURE = UINT64_C(0x0000000000004000)
-  WINDOW_MOUSE_RELATIVE_MODE = UINT64_C(0x0000000000008000)
-  WINDOW_ALWAYS_ON_TOP = UINT64_C(0x0000000000010000)
-  WINDOW_UTILITY = UINT64_C(0x0000000000020000)
-  WINDOW_TOOLTIP = UINT64_C(0x0000000000040000)
-  WINDOW_POPUP_MENU = UINT64_C(0x0000000000080000)
-  WINDOW_KEYBOARD_GRABBED = UINT64_C(0x0000000000100000)
-  WINDOW_VULKAN = UINT64_C(0x0000000010000000)
-  WINDOW_METAL = UINT64_C(0x0000000020000000)
-  WINDOW_TRANSPARENT = UINT64_C(0x0000000040000000)
-  WINDOW_NOT_FOCUSABLE = UINT64_C(0x0000000080000000)
+  WINDOW_FULLSCREEN = UInt64.new(0x0000000000000001)
+  WINDOW_OPENGL = UInt64.new(0x0000000000000002)
+  WINDOW_OCCLUDED = UInt64.new(0x0000000000000004)
+  WINDOW_HIDDEN = UInt64.new(0x0000000000000008)
+  WINDOW_BORDERLESS = UInt64.new(0x0000000000000010)
+  WINDOW_RESIZABLE = UInt64.new(0x0000000000000020)
+  WINDOW_MINIMIZED = UInt64.new(0x0000000000000040)
+  WINDOW_MAXIMIZED = UInt64.new(0x0000000000000080)
+  WINDOW_MOUSE_GRABBED = UInt64.new(0x0000000000000100)
+  WINDOW_INPUT_FOCUS = UInt64.new(0x0000000000000200)
+  WINDOW_MOUSE_FOCUS = UInt64.new(0x0000000000000400)
+  WINDOW_EXTERNAL = UInt64.new(0x0000000000000800)
+  WINDOW_MODAL = UInt64.new(0x0000000000001000)
+  WINDOW_HIGH_PIXEL_DENSITY = UInt64.new(0x0000000000002000)
+  WINDOW_MOUSE_CAPTURE = UInt64.new(0x0000000000004000)
+  WINDOW_MOUSE_RELATIVE_MODE = UInt64.new(0x0000000000008000)
+  WINDOW_ALWAYS_ON_TOP = UInt64.new(0x0000000000010000)
+  WINDOW_UTILITY = UInt64.new(0x0000000000020000)
+  WINDOW_TOOLTIP = UInt64.new(0x0000000000040000)
+  WINDOW_POPUP_MENU = UInt64.new(0x0000000000080000)
+  WINDOW_KEYBOARD_GRABBED = UInt64.new(0x0000000000100000)
+  WINDOW_VULKAN = UInt64.new(0x0000000010000000)
+  WINDOW_METAL = UInt64.new(0x0000000020000000)
+  WINDOW_TRANSPARENT = UInt64.new(0x0000000040000000)
+  WINDOW_NOT_FOCUSABLE = UInt64.new(0x0000000080000000)
   WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000
   WINDOWPOS_UNDEFINED = (LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)
   WINDOWPOS_CENTERED_MASK = 0x2FFF0000
@@ -4203,14 +4296,14 @@ lib LibSDL
 
   alias DisplayModeData = Void
   alias Window = Void
-  alias GLContext = Void
+  alias GLContext = GLContextState*
   alias DisplayID = UInt32
   alias WindowID = UInt32
   alias WindowFlags = UInt64
   alias EGLDisplay = Void*
   alias EGLConfig = Void*
   alias EGLSurface = Void*
-  alias EGLAttrib = LibC::IntptrT
+  alias EGLAttrib = LibC::Int*
   alias EGLint = LibC::Int
   alias GLProfile = UInt32
   alias GLContextFlag = UInt32
