@@ -102,17 +102,19 @@ end
 
 def should_struct_be_excluded?(name)
   filters = [
-    "SDL_AudioCVT",
-    "SDL_GameControllerButtonBind",
-    "SDL_VirtualJoystickDesc",
-    "hat",
-    "SDL_RWops",
-    "mem",
-    "hidden",
-    "androidio",
-    "SDL_WindowShapeMode",
-    "WindowShapeMode",
-    "Mix_MusicFinishedCallback)(void)"  # TODO: A bit cheaty due to the way the Regexes work, but it does the job for now
+    #"SDL_AudioCVT",
+    #"SDL_GameControllerButtonBind",
+    "SDL_VirtualJoystickDesc",  # Contains too many callbacks
+    #"hat",
+    #"SDL_RWops",
+    #"mem",
+    #"hidden",
+    #"androidio",
+    #"SDL_WindowShapeMode",
+    #"WindowShapeMode",
+    "Mix_MusicFinishedCallback)(void)",  # TODO: A bit cheaty due to the way the Regexes work, but it does the job for now
+    "axis", # Structure is too complex for the parser, so better do it manually
+    "SDL_IOStreamInterface" # Contains too many callbacks
   ]
 
   filters.index(name)
@@ -120,10 +122,10 @@ end
 
 def should_constant_be_excluded?(name)
   filters = [
-    "SDL_AUDIOCVT_PACKED",
-    "TTF_MAJOR_VERSION",
-    "TTF_MINOR_VERSION",
-    "TTF_PATCHLEVEL"
+    #"SDL_AUDIOCVT_PACKED",
+    #"TTF_MAJOR_VERSION",
+    #"TTF_MINOR_VERSION",
+    #"TTF_PATCHLEVEL"
   ]
 
   filters.index(name)
@@ -131,13 +133,25 @@ end
 
 def should_function_be_excluded?(name)
   filters = [
+    "SDL_SetErrorV",  # Not really needed
+    "SDL_IOvprintf",  # Not really needed
+    "SDL_LogMessageV" # Not really needed
   ]
 
   filters.index(name)
 end
 
 def process_constant(constant)
-  constant.gsub(/(\d+)[uU]/, "\\1").gsub(/^([\d\.]+)[fF]$/, "\\1").gsub("\\x1B", "\\e").gsub("\\x7F", "\\u007F").gsub("SDL_", "").gsub("WINDOWPOS_UNDEFINED_DISPLAY(0)", "(LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)").gsub("WINDOWPOS_CENTERED_DISPLAY(0)", "(LibSDL::WINDOWPOS_CENTERED_MASK | 0)").gsub(/VERSIONNUM(([\S]+), ([\S]+), ([\S]+))/, "((\\2)*1000 + (\\3)*100 + (\\4))")
+  constant.gsub(/0x([abcdefABCDEF\d]+)[uU]/, "0x\\1")
+    .gsub(/(\d+)[uU]/, "\\1")
+    .gsub(/^([\d\.]+)[fF]$/, "\\1")
+    .gsub("\\x1B", "\\e")
+    .gsub("\\x7F", "\\u007F")
+    .gsub(/\(\((\S+)\)([0xabcdefABCDEF\d]+)\)/, "\\1.new(\\2)")
+    .gsub("SDL_", "")
+    .gsub("WINDOWPOS_UNDEFINED_DISPLAY(0)", "(LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)")
+    .gsub("WINDOWPOS_CENTERED_DISPLAY(0)", "(LibSDL::WINDOWPOS_CENTERED_MASK | 0)")
+    .gsub(/VERSIONNUM(([\S]+), ([\S]+), ([\S]+))/, "((\\2)*1000 + (\\3)*100 + (\\4))")
 end
 
 $constant_cache = {}
@@ -153,7 +167,10 @@ def get_all_functions(filename)
   lines.each do |line|
     function_matches = line.match(/extern SDL_DECLSPEC ([^;]*);/)
     if function_matches
-      function_part = function_matches[1].gsub("SDL_PRINTF_FORMAT_STRING", "").gsub(" SDL_ACQUIRE(SDL_joystick_lock)", "").gsub(" SDL_RELEASE(SDL_joystick_lock)", "").gsub(/SDL_PRINTF_VARARG_FUNC\([\d]+\)/, "")
+      function_part = function_matches[1].gsub("SDL_PRINTF_FORMAT_STRING", "")
+        .gsub(" SDL_ACQUIRE(SDL_joystick_lock)", "")
+        .gsub(" SDL_RELEASE(SDL_joystick_lock)", "")
+        .gsub(/SDL_PRINTF_VARARG_FUNC\([\d]+\)/, "")
 
       function_part_pieces = function_part.match(/([\S]+) (?:SDLCALL )*([\S]*)\(([\S ]+)\)/)
 
@@ -282,7 +299,14 @@ def transform_structs(structs)
       fixed_enum_values = enum_value.split("=")
       fixed_enum_values[0].upcase!
       fixed_enum_value = fixed_enum_values.join("=")
-      ord_val = filter_sdl(process_constant(fixed_enum_value.strip)).gsub("' '", ' '.ord.to_s).gsub(/'(\S)+'/) {|val| val[1..-2].gsub("\\r", "\r").gsub("\\e", "\e").gsub("\\b", "\b").gsub("\\t", "\t").gsub("\\u007F", "\u007F").gsub("\\'", "\'").ord}
+      ord_val = filter_sdl(process_constant(fixed_enum_value.strip)).gsub("' '", ' '.ord.to_s)
+        .gsub(/'(\S)+'/) {|val| val[1..-2]
+        .gsub("\\r", "\r")
+        .gsub("\\e", "\e")
+        .gsub("\\b", "\b")
+        .gsub("\\t", "\t")
+        .gsub("\\u007F", "\u007F")
+        .gsub("\\'", "\'").ord}
       processed_ord_val = ord_val.gsub(/SCANCODE_TO_KEYCODE\((\S+)\)/) { "Scancode::#{filter_sdl_const(Regexp.last_match[1])} | K_SCANCODE_MASK" }
       struct_str += "    #{processed_ord_val}\n"
     end
@@ -335,29 +359,31 @@ headers = [
   ["SDL"],
   ["SDL_version"],
   ["SDL_scancode"],
+  ["additions/helper_audio.cr"],
   ["SDL_audio"],
-  #["additions/helper_audio.cr"],
   ["SDL_blendmode"],
   ["SDL_camera"],
+  ["additions/helper_clipboard.cr"],
   ["SDL_clipboard"],
   ["SDL_cpuinfo"],
+  ["additions/helper_dialog.cr"],
   ["SDL_dialog"],
   ["SDL_error"],
-  #["additions/helper_event.cr"],
+  ["additions/helper_event.cr"],
   ["SDL_events"],
   ["SDL_filesystem"],
   ###["additions/helper_gamecontroller.cr"],
   ["SDL_gamepad"],
   ["SDL_gpu"],
   ["SDL_guid"],
-  ["SDL_haptic"],
   #["additions/helper_haptic.cr"],
-  ["SDL_hints"],
+  ["SDL_haptic"],
   #["additions/helper_hints.cr"],
+  ["SDL_hints"],
   ["SDL_init"],
   ["SDL_iostream"],
-  ["SDL_joystick"],
   #["additions/helper_joystick.cr"],
+  ["SDL_joystick"],
   ["SDL_keyboard"],
   ["SDL_keycode"],
   ["SDL_loadso"],
@@ -368,8 +394,8 @@ headers = [
   ["SDL_misc"],
   ["SDL_mouse"],
   ["SDL_pen"],
+  ["additions/helper_pixels.cr"],
   ["SDL_pixels"],
-  #["additions/helper_pixels.cr"],
   ["SDL_platform"],
   ["SDL_power"],
   ["SDL_process"],
@@ -474,10 +500,9 @@ write_bindings_to_file("src/sdl-ttf-bindings.cr", ttf_headers, "SDL3_ttf", "addi
 
 # TODO: Potentially problematic headers: asyncio, atomic, bits, endian, hidapi, mutex, storage, system, thread, time, timer, oldnames
 
-# TODO: Convert callbacks in some way (manually is okay)
-# TODO: Manually convert complex structs like gamepad axis
-
-# TODO: Check macros for SDL3 (and remove obsolete functions)
+# TODO: Manually convert complex structs like gamepad axis (and callbacks)
+# TODO: Fix version macros and constants
+# TODO: Test whether the conversion from bool to Bool causes any issues
 
 # TODO: Update examples
 

@@ -3,35 +3,42 @@
     common : CommonEvent
     display : DisplayEvent
     window : WindowEvent
+    kdevice : KeyboardDeviceEvent
     key : KeyboardEvent
     edit : TextEditingEvent
-    edit_ext : TextEditingExtEvent
+    edit_candidates : TextEditingCandidatesEvent
     text : TextInputEvent
+    mdevice : MouseDeviceEvent
     motion : MouseMotionEvent
     button : MouseButtonEvent
     wheel : MouseWheelEvent
+    jdevice : JoyDeviceEvent
     jaxis : JoyAxisEvent
     jball : JoyBallEvent
     jhat : JoyHatEvent
     jbutton : JoyButtonEvent
-    jdevice : JoyDeviceEvent
     jbattery : JoyBatteryEvent
-    caxis : ControllerAxisEvent
-    cbutton : ControllerButtonEvent
-    cdevice : ControllerDeviceEvent
-    ctouchpad : ControllerTouchpadEvent
-    csensor : ControllerSensorEvent
+    gdevice : GamepadDeviceEvent
+    gaxis : GamepadAxisEvent
+    gbutton : GamepadButtonEvent
+    gtouchpad : GamepadTouchpadEvent
+    gsensor : GamepadSensorEvent
     adevice : AudioDeviceEvent
+    cdevice : CameraDeviceEvent
     sensor : SensorEvent
     quit : QuitEvent
     user : UserEvent
-    syswm : SysWMEvent
     tfinger : TouchFingerEvent
-    mgesture : MultiGestureEvent
-    dgesture : DollarGestureEvent
+    pproximity : PenProximityEvent
+    ptouch : PenTouchEvent
+    pmotion: PenMotionEvent
+    pbutton : PenButtonEvent
+    paxis : PenAxisEvent
+    render : RenderEvent
     drop : DropEvent
-    padding : UInt8[56] # NOTE: This might become difficult on certain architectures
+    clipboard : ClipboardEvent
+    padding : UInt8[128] # NOTE: This might become difficult on certain architectures
   end
 
   # (void* userdata, SDL_Event* event)
-  alias EventFilter = (Void*, Event*) -> LibC::Int
+  alias EventFilter = (Void*, Event*) -> Bool

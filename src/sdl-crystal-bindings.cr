@@ -266,14 +266,36 @@ lib LibSDL
     SCANCODE_COUNT = 512
   end
 
+  # additions/helper_audio.cr
+
+  enum AudioFormat
+    SDL_AUDIO_UNKNOWN = 0x0000
+    SDL_AUDIO_U8 = 0x0008
+    SDL_AUDIO_S8 = 0x8008
+    SDL_AUDIO_S16LE = 0x8010
+    SDL_AUDIO_S16BE = 0x9010
+    SDL_AUDIO_S32LE = 0x8020
+    SDL_AUDIO_S32BE = 0x9020
+    SDL_AUDIO_F32LE = 0x8120
+    # NOTE: The following definitions ONLY hold for little endian - if you are using big endian (why), please open an issue report
+    SDL_AUDIO_S16 = SDL_AUDIO_S16LE
+    SDL_AUDIO_S32 = SDL_AUDIO_S32LE
+    SDL_AUDIO_F32 = SDL_AUDIO_F32LE
+  end
+  
+  # (void* userdata, SDL_AudioStream* stream, int additional_amount, int total_amount)
+  alias AudioStreamCallback = (Void*, AudioStream*, LibC::Int, LibC::Int) -> Void
+  # (void* userdata, const SDL_AudioSpec* spec, float* buffer, int buflen)
+  alias AudioPostmixCallback = (Void*, AudioSpec, LibC::Float*, LibC::Int) -> Void
+
   # SDL_audio
 
-  AUDIO_MASK_BITSIZE = (0xFFu)
+  AUDIO_MASK_BITSIZE = (0xFF)
   AUDIO_MASK_FLOAT = (1 << 8)
   AUDIO_MASK_BIG_ENDIAN = (1 << 12)
   AUDIO_MASK_SIGNED = (1 << 15)
-  AUDIO_DEVICE_DEFAULT_PLAYBACK = ((AudioDeviceID)0xFFFFFFFFu)
-  AUDIO_DEVICE_DEFAULT_RECORDING = ((AudioDeviceID)0xFFFFFFFEu)
+  AUDIO_DEVICE_DEFAULT_PLAYBACK = AudioDeviceID.new(0xFFFFFFFF)
+  AUDIO_DEVICE_DEFAULT_RECORDING = AudioDeviceID.new(0xFFFFFFFE)
 
   alias AudioStream = Void
   alias AudioDeviceID = UInt32
@@ -349,7 +371,7 @@ lib LibSDL
   BLENDMODE_ADD_PREMULTIPLIED = 0x00000020
   BLENDMODE_MOD = 0x00000004
   BLENDMODE_MUL = 0x00000008
-  BLENDMODE_INVALID = 0x7FFFFFFFu
+  BLENDMODE_INVALID = 0x7FFFFFFF
 
   alias BlendMode = UInt32
 
@@ -412,6 +434,13 @@ lib LibSDL
   fun release_camera_frame = SDL_ReleaseCameraFrame(camera : Camera*, frame : Surface*) : Void
   fun close_camera = SDL_CloseCamera(camera : Camera*) : Void
 
+  # additions/helper_clipboard.cr
+
+  # (void* userdata, const char* mime_type, size_t* size)
+  alias ClipboardDataCallback = (Void*, LibC::Char*, LibC::SizeT*) -> Void*
+  # (void* userdata)
+  alias ClipboardCleanupCallback = (Void*) -> Void
+
   # SDL_clipboard
 
   fun set_clipboard_text = SDL_SetClipboardText(text : LibC::Char*) : Bool
@@ -449,6 +478,11 @@ lib LibSDL
   fun get_system_ram = SDL_GetSystemRAM() : LibC::Int
   fun get_simdalignment = SDL_GetSIMDAlignment() : LibC::SizeT
 
+  # additions/helper_dialog.cr
+
+  # (void* userdata, const char* const* filelist, int filter)
+  alias DialogFileCallback = (Void*, LibC::Char*, LibC::Int) -> Void
+
   # SDL_dialog
 
   PROP_FILE_DIALOG_FILTERS_POINTER = "SDL.filedialog.filters"
@@ -479,10 +513,56 @@ lib LibSDL
   # SDL_error
 
   fun set_error = SDL_SetError(fmt : LibC::Char*, ...) : Bool
-  fun set_error_v = SDL_SetErrorV(fmt : LibC::Char*, sdl_printf_vararg_funcv(1 : vaList ap)) : Bool
   fun out_of_memory = SDL_OutOfMemory() : Bool
   fun get_error = SDL_GetError() : LibC::Char*
   fun clear_error = SDL_ClearError() : Bool
+
+  # additions/helper_event.cr
+
+  union Event
+    type : UInt32
+    common : CommonEvent
+    display : DisplayEvent
+    window : WindowEvent
+    kdevice : KeyboardDeviceEvent
+    key : KeyboardEvent
+    edit : TextEditingEvent
+    edit_candidates : TextEditingCandidatesEvent
+    text : TextInputEvent
+    mdevice : MouseDeviceEvent
+    motion : MouseMotionEvent
+    button : MouseButtonEvent
+    wheel : MouseWheelEvent
+    jdevice : JoyDeviceEvent
+    jaxis : JoyAxisEvent
+    jball : JoyBallEvent
+    jhat : JoyHatEvent
+    jbutton : JoyButtonEvent
+    jbattery : JoyBatteryEvent
+    gdevice : GamepadDeviceEvent
+    gaxis : GamepadAxisEvent
+    gbutton : GamepadButtonEvent
+    gtouchpad : GamepadTouchpadEvent
+    gsensor : GamepadSensorEvent
+    adevice : AudioDeviceEvent
+    cdevice : CameraDeviceEvent
+    sensor : SensorEvent
+    quit : QuitEvent
+    user : UserEvent
+    tfinger : TouchFingerEvent
+    pproximity : PenProximityEvent
+    ptouch : PenTouchEvent
+    pmotion: PenMotionEvent
+    pbutton : PenButtonEvent
+    paxis : PenAxisEvent
+    render : RenderEvent
+    drop : DropEvent
+    clipboard : ClipboardEvent
+    padding : UInt8[128] # NOTE: This might become difficult on certain architectures
+  end
+
+  # (void* userdata, SDL_Event* event)
+  alias EventFilter = (Void*, Event*) -> Bool
 
   # SDL_events
 
@@ -1153,15 +1233,6 @@ lib LibSDL
     GAMEPAD_BINDTYPE_BUTTON
     GAMEPAD_BINDTYPE_AXIS
     GAMEPAD_BINDTYPE_HAT
-  end
-
-  struct axis
-    input_type : GamepadBindingType
-    { : union
-    button : LibC::Int
-    axis : LibC::Int
-    axis_min : LibC::Int
-    axis_max : LibC::Int
   end
 
   fun add_gamepad_mapping = SDL_AddGamepadMapping(mapping : LibC::Char*) : LibC::Int
@@ -2505,40 +2576,6 @@ lib LibSDL
     IO_SEEK_END
   end
 
-  struct IOStreamInterface
-    version : UInt32
-    size)(void* : Int64(SDLCALL*
-    userdata) : Int64(SDLCALL*
-    seek)(void* : Int64(SDLCALL*
-    userdata : Int64(SDLCALL*
-    sint64 : Int64(SDLCALL*
-    offset : Int64(SDLCALL*
-    iowhence : Int64(SDLCALL*
-    whence) : Int64(SDLCALL*
-    read)(void* : LibC::SizeT(SDLCALL*
-    userdata : LibC::SizeT(SDLCALL*
-    void* : LibC::SizeT(SDLCALL*
-    ptr : LibC::SizeT(SDLCALL*
-    size_t : LibC::SizeT(SDLCALL*
-    size : LibC::SizeT(SDLCALL*
-    iostatus* : LibC::SizeT(SDLCALL*
-    status) : LibC::SizeT(SDLCALL*
-    write)(void* : LibC::SizeT(SDLCALL*
-    userdata : LibC::SizeT(SDLCALL*
-    void* : LibC::SizeT(SDLCALL*
-    ptr : LibC::SizeT(SDLCALL*
-    size_t : LibC::SizeT(SDLCALL*
-    size : LibC::SizeT(SDLCALL*
-    iostatus* : LibC::SizeT(SDLCALL*
-    status) : LibC::SizeT(SDLCALL*
-    flush)(void* : Bool(SDLCALL*
-    userdata : Bool(SDLCALL*
-    iostatus* : Bool(SDLCALL*
-    status) : Bool(SDLCALL*
-    close)(void* : Bool(SDLCALL*
-    userdata) : Bool(SDLCALL*
-  end
-
   fun iofrom_file = SDL_IOFromFile(file : LibC::Char*, mode : LibC::Char*) : IOStream*
   fun iofrom_mem = SDL_IOFromMem(mem : Void*, size : LibC::SizeT) : IOStream*
   fun iofrom_const_mem = SDL_IOFromConstMem(mem : Void*, size : LibC::SizeT) : IOStream*
@@ -2553,7 +2590,6 @@ lib LibSDL
   fun read_io = SDL_ReadIO(context : IOStream*, ptr : Void*, size : LibC::SizeT) : LibC::SizeT
   fun write_io = SDL_WriteIO(context : IOStream*, ptr : Void*, size : LibC::SizeT) : LibC::SizeT
   fun ioprintf = SDL_IOprintf(context : IOStream*, fmt : LibC::Char*, ...) : LibC::SizeT
-  fun iovprintf = SDL_IOvprintf(context : IOStream*, fmt : LibC::Char*, sdl_printf_vararg_funcv(2 : vaList ap)) : LibC::SizeT
   fun flush_io = SDL_FlushIO(context : IOStream*) : Bool
   fun load_file_io = SDL_LoadFile_IO(src : IOStream*, datasize : LibC::SizeT*, closeio : Bool) : Void*
   fun load_file = SDL_LoadFile(file : LibC::Char*, datasize : LibC::SizeT*) : Void*
@@ -2758,8 +2794,8 @@ lib LibSDL
 
   K_SCANCODE_MASK = (1 << 30)
   K_UNKNOWN = 0x00000000
-  K_RETURN = 0x0000000du
-  K_ESCAPE = 0x0000001bu
+  K_RETURN = 0x0000000d
+  K_ESCAPE = 0x0000001b
   K_BACKSPACE = 0x00000008
   K_TAB = 0x00000009
   K_SPACE = 0x00000020
@@ -2772,12 +2808,12 @@ lib LibSDL
   K_APOSTROPHE = 0x00000027
   K_LEFTPAREN = 0x00000028
   K_RIGHTPAREN = 0x00000029
-  K_ASTERISK = 0x0000002au
-  K_PLUS = 0x0000002bu
-  K_COMMA = 0x0000002cu
-  K_MINUS = 0x0000002du
-  K_PERIOD = 0x0000002eu
-  K_SLASH = 0x0000002fu
+  K_ASTERISK = 0x0000002a
+  K_PLUS = 0x0000002b
+  K_COMMA = 0x0000002c
+  K_MINUS = 0x0000002d
+  K_PERIOD = 0x0000002e
+  K_SLASH = 0x0000002f
   K_0 = 0x00000030
   K_1 = 0x00000031
   K_2 = 0x00000032
@@ -2788,18 +2824,18 @@ lib LibSDL
   K_7 = 0x00000037
   K_8 = 0x00000038
   K_9 = 0x00000039
-  K_COLON = 0x0000003au
-  K_SEMICOLON = 0x0000003bu
-  K_LESS = 0x0000003cu
-  K_EQUALS = 0x0000003du
-  K_GREATER = 0x0000003eu
-  K_QUESTION = 0x0000003fu
+  K_COLON = 0x0000003a
+  K_SEMICOLON = 0x0000003b
+  K_LESS = 0x0000003c
+  K_EQUALS = 0x0000003d
+  K_GREATER = 0x0000003e
+  K_QUESTION = 0x0000003f
   K_AT = 0x00000040
-  K_LEFTBRACKET = 0x0000005bu
-  K_BACKSLASH = 0x0000005cu
-  K_RIGHTBRACKET = 0x0000005du
-  K_CARET = 0x0000005eu
-  K_UNDERSCORE = 0x0000005fu
+  K_LEFTBRACKET = 0x0000005b
+  K_BACKSLASH = 0x0000005c
+  K_RIGHTBRACKET = 0x0000005d
+  K_CARET = 0x0000005e
+  K_UNDERSCORE = 0x0000005f
   K_GRAVE = 0x00000060
   K_A = 0x00000061
   K_B = 0x00000062
@@ -2810,12 +2846,12 @@ lib LibSDL
   K_G = 0x00000067
   K_H = 0x00000068
   K_I = 0x00000069
-  K_J = 0x0000006au
-  K_K = 0x0000006bu
-  K_L = 0x0000006cu
-  K_M = 0x0000006du
-  K_N = 0x0000006eu
-  K_O = 0x0000006fu
+  K_J = 0x0000006a
+  K_K = 0x0000006b
+  K_L = 0x0000006c
+  K_M = 0x0000006d
+  K_N = 0x0000006e
+  K_O = 0x0000006f
   K_P = 0x00000070
   K_Q = 0x00000071
   K_R = 0x00000072
@@ -2826,20 +2862,20 @@ lib LibSDL
   K_W = 0x00000077
   K_X = 0x00000078
   K_Y = 0x00000079
-  K_Z = 0x0000007au
-  K_LEFTBRACE = 0x0000007bu
-  K_PIPE = 0x0000007cu
-  K_RIGHTBRACE = 0x0000007du
-  K_TILDE = 0x0000007eu
-  K_DELETE = 0x0000007fu
+  K_Z = 0x0000007a
+  K_LEFTBRACE = 0x0000007b
+  K_PIPE = 0x0000007c
+  K_RIGHTBRACE = 0x0000007d
+  K_TILDE = 0x0000007e
+  K_DELETE = 0x0000007f
   K_PLUSMINUS = 0x000000b1
   K_CAPSLOCK = 0x40000039
-  K_F1 = 0x4000003au
-  K_F2 = 0x4000003bu
-  K_F3 = 0x4000003cu
-  K_F4 = 0x4000003du
-  K_F5 = 0x4000003eu
-  K_F6 = 0x4000003fu
+  K_F1 = 0x4000003a
+  K_F2 = 0x4000003b
+  K_F3 = 0x4000003c
+  K_F4 = 0x4000003d
+  K_F5 = 0x4000003e
+  K_F6 = 0x4000003f
   K_F7 = 0x40000040
   K_F8 = 0x40000041
   K_F9 = 0x40000042
@@ -2850,11 +2886,11 @@ lib LibSDL
   K_SCROLLLOCK = 0x40000047
   K_PAUSE = 0x40000048
   K_INSERT = 0x40000049
-  K_HOME = 0x4000004au
-  K_PAGEUP = 0x4000004bu
-  K_END = 0x4000004du
-  K_PAGEDOWN = 0x4000004eu
-  K_RIGHT = 0x4000004fu
+  K_HOME = 0x4000004a
+  K_PAGEUP = 0x4000004b
+  K_END = 0x4000004d
+  K_PAGEDOWN = 0x4000004e
+  K_RIGHT = 0x4000004f
   K_LEFT = 0x40000050
   K_DOWN = 0x40000051
   K_UP = 0x40000052
@@ -2865,12 +2901,12 @@ lib LibSDL
   K_KP_PLUS = 0x40000057
   K_KP_ENTER = 0x40000058
   K_KP_1 = 0x40000059
-  K_KP_2 = 0x4000005au
-  K_KP_3 = 0x4000005bu
-  K_KP_4 = 0x4000005cu
-  K_KP_5 = 0x4000005du
-  K_KP_6 = 0x4000005eu
-  K_KP_7 = 0x4000005fu
+  K_KP_2 = 0x4000005a
+  K_KP_3 = 0x4000005b
+  K_KP_4 = 0x4000005c
+  K_KP_5 = 0x4000005d
+  K_KP_6 = 0x4000005e
+  K_KP_7 = 0x4000005f
   K_KP_8 = 0x40000060
   K_KP_9 = 0x40000061
   K_KP_0 = 0x40000062
@@ -2880,12 +2916,12 @@ lib LibSDL
   K_KP_EQUALS = 0x40000067
   K_F13 = 0x40000068
   K_F14 = 0x40000069
-  K_F15 = 0x4000006au
-  K_F16 = 0x4000006bu
-  K_F17 = 0x4000006cu
-  K_F18 = 0x4000006du
-  K_F19 = 0x4000006eu
-  K_F20 = 0x4000006fu
+  K_F15 = 0x4000006a
+  K_F16 = 0x4000006b
+  K_F17 = 0x4000006c
+  K_F18 = 0x4000006d
+  K_F19 = 0x4000006e
+  K_F20 = 0x4000006f
   K_F21 = 0x40000070
   K_F22 = 0x40000071
   K_F23 = 0x40000072
@@ -2896,23 +2932,23 @@ lib LibSDL
   K_SELECT = 0x40000077
   K_STOP = 0x40000078
   K_AGAIN = 0x40000079
-  K_UNDO = 0x4000007au
-  K_CUT = 0x4000007bu
-  K_COPY = 0x4000007cu
-  K_PASTE = 0x4000007du
-  K_FIND = 0x4000007eu
-  K_MUTE = 0x4000007fu
+  K_UNDO = 0x4000007a
+  K_CUT = 0x4000007b
+  K_COPY = 0x4000007c
+  K_PASTE = 0x4000007d
+  K_FIND = 0x4000007e
+  K_MUTE = 0x4000007f
   K_VOLUMEUP = 0x40000080
   K_VOLUMEDOWN = 0x40000081
   K_KP_COMMA = 0x40000085
   K_KP_EQUALSAS400 = 0x40000086
   K_ALTERASE = 0x40000099
-  K_SYSREQ = 0x4000009au
-  K_CANCEL = 0x4000009bu
-  K_CLEAR = 0x4000009cu
-  K_PRIOR = 0x4000009du
-  K_RETURN2 = 0x4000009eu
-  K_SEPARATOR = 0x4000009fu
+  K_SYSREQ = 0x4000009a
+  K_CANCEL = 0x4000009b
+  K_CLEAR = 0x4000009c
+  K_PRIOR = 0x4000009d
+  K_RETURN2 = 0x4000009e
+  K_SEPARATOR = 0x4000009f
   K_OUT = 0x400000a0
   K_OPER = 0x400000a1
   K_CLEARAGAIN = 0x400000a2
@@ -2928,12 +2964,12 @@ lib LibSDL
   K_KP_RIGHTPAREN = 0x400000b7
   K_KP_LEFTBRACE = 0x400000b8
   K_KP_RIGHTBRACE = 0x400000b9
-  K_KP_TAB = 0x400000bau
-  K_KP_BACKSPACE = 0x400000bbu
-  K_KP_A = 0x400000bcu
-  K_KP_B = 0x400000bdu
-  K_KP_C = 0x400000beu
-  K_KP_D = 0x400000bfu
+  K_KP_TAB = 0x400000ba
+  K_KP_BACKSPACE = 0x400000bb
+  K_KP_A = 0x400000bc
+  K_KP_B = 0x400000bd
+  K_KP_C = 0x400000be
+  K_KP_D = 0x400000bf
   K_KP_E = 0x400000c0
   K_KP_F = 0x400000c1
   K_KP_XOR = 0x400000c2
@@ -2944,12 +2980,12 @@ lib LibSDL
   K_KP_AMPERSAND = 0x400000c7
   K_KP_DBLAMPERSAND = 0x400000c8
   K_KP_VERTICALBAR = 0x400000c9
-  K_KP_DBLVERTICALBAR = 0x400000cau
-  K_KP_COLON = 0x400000cbu
-  K_KP_HASH = 0x400000ccu
-  K_KP_SPACE = 0x400000cdu
-  K_KP_AT = 0x400000ceu
-  K_KP_EXCLAM = 0x400000cfu
+  K_KP_DBLVERTICALBAR = 0x400000ca
+  K_KP_COLON = 0x400000cb
+  K_KP_HASH = 0x400000cc
+  K_KP_SPACE = 0x400000cd
+  K_KP_AT = 0x400000ce
+  K_KP_EXCLAM = 0x400000cf
   K_KP_MEMSTORE = 0x400000d0
   K_KP_MEMRECALL = 0x400000d1
   K_KP_MEMCLEAR = 0x400000d2
@@ -2960,10 +2996,10 @@ lib LibSDL
   K_KP_PLUSMINUS = 0x400000d7
   K_KP_CLEAR = 0x400000d8
   K_KP_CLEARENTRY = 0x400000d9
-  K_KP_BINARY = 0x400000dau
-  K_KP_OCTAL = 0x400000dbu
-  K_KP_DECIMAL = 0x400000dcu
-  K_KP_HEXADECIMAL = 0x400000ddu
+  K_KP_BINARY = 0x400000da
+  K_KP_OCTAL = 0x400000db
+  K_KP_DECIMAL = 0x400000dc
+  K_KP_HEXADECIMAL = 0x400000dd
   K_LCTRL = 0x400000e0
   K_LSHIFT = 0x400000e1
   K_LALT = 0x400000e2
@@ -2981,12 +3017,12 @@ lib LibSDL
   K_MEDIA_PAUSE = 0x40000107
   K_MEDIA_RECORD = 0x40000108
   K_MEDIA_FAST_FORWARD = 0x40000109
-  K_MEDIA_REWIND = 0x4000010au
-  K_MEDIA_NEXT_TRACK = 0x4000010bu
-  K_MEDIA_PREVIOUS_TRACK = 0x4000010cu
-  K_MEDIA_STOP = 0x4000010du
-  K_MEDIA_EJECT = 0x4000010eu
-  K_MEDIA_PLAY_PAUSE = 0x4000010fu
+  K_MEDIA_REWIND = 0x4000010a
+  K_MEDIA_NEXT_TRACK = 0x4000010b
+  K_MEDIA_PREVIOUS_TRACK = 0x4000010c
+  K_MEDIA_STOP = 0x4000010d
+  K_MEDIA_EJECT = 0x4000010e
+  K_MEDIA_PLAY_PAUSE = 0x4000010f
   K_MEDIA_SELECT = 0x40000110
   K_AC_NEW = 0x40000111
   K_AC_OPEN = 0x40000112
@@ -2997,12 +3033,12 @@ lib LibSDL
   K_AC_PROPERTIES = 0x40000117
   K_AC_SEARCH = 0x40000118
   K_AC_HOME = 0x40000119
-  K_AC_BACK = 0x4000011au
-  K_AC_FORWARD = 0x4000011bu
-  K_AC_STOP = 0x4000011cu
-  K_AC_REFRESH = 0x4000011du
-  K_AC_BOOKMARKS = 0x4000011eu
-  K_SOFTLEFT = 0x4000011fu
+  K_AC_BACK = 0x4000011a
+  K_AC_FORWARD = 0x4000011b
+  K_AC_STOP = 0x4000011c
+  K_AC_REFRESH = 0x4000011d
+  K_AC_BOOKMARKS = 0x4000011e
+  K_SOFTLEFT = 0x4000011f
   K_SOFTRIGHT = 0x40000120
   K_CALL = 0x40000121
   K_ENDCALL = 0x40000122
@@ -3095,7 +3131,6 @@ lib LibSDL
   fun log_error = SDL_LogError(category : LibC::Int, fmt : LibC::Char*, ...) : Void
   fun log_critical = SDL_LogCritical(category : LibC::Int, fmt : LibC::Char*, ...) : Void
   fun log_message = SDL_LogMessage(category : LibC::Int, priority : LogPriority, fmt : LibC::Char*, ...) : Void
-  fun log_message_v = SDL_LogMessageV(category : LibC::Int, priority : LogPriority, fmt : LibC::Char*, sdl_printf_vararg_funcv(3 : vaList ap)) : Void
   fun get_default_log_output_function = SDL_GetDefaultLogOutputFunction() : LogOutputFunction
   fun get_log_output_function = SDL_GetLogOutputFunction(callback : LogOutputFunction*, userdata : Void**) : Void
   fun set_log_output_function = SDL_SetLogOutputFunction(callback : LogOutputFunction, userdata : Void*) : Void
@@ -3255,6 +3290,85 @@ lib LibSDL
     PEN_AXIS_TANGENTIAL_PRESSURE
     PEN_AXIS_COUNT
   end
+
+  # additions/helper_pixels.cr
+
+  enum PixelFormat
+    SDL_PIXELFORMAT_UNKNOWN = 0
+    SDL_PIXELFORMAT_INDEX1LSB = 0x11100100
+    SDL_PIXELFORMAT_INDEX1MSB = 0x11200100
+    SDL_PIXELFORMAT_INDEX2LSB = 0x1c100200
+    SDL_PIXELFORMAT_INDEX2MSB = 0x1c200200
+    SDL_PIXELFORMAT_INDEX4LSB = 0x12100400
+    SDL_PIXELFORMAT_INDEX4MSB = 0x12200400
+    SDL_PIXELFORMAT_INDEX8 = 0x13000801
+    SDL_PIXELFORMAT_RGB332 = 0x14110801
+    SDL_PIXELFORMAT_XRGB4444 = 0x15120c02
+    SDL_PIXELFORMAT_XBGR4444 = 0x15520c02
+    SDL_PIXELFORMAT_XRGB1555 = 0x15130f02
+    SDL_PIXELFORMAT_XBGR1555 = 0x15530f02
+    SDL_PIXELFORMAT_ARGB4444 = 0x15321002
+    SDL_PIXELFORMAT_RGBA4444 = 0x15421002
+    SDL_PIXELFORMAT_ABGR4444 = 0x15721002
+    SDL_PIXELFORMAT_BGRA4444 = 0x15821002
+    SDL_PIXELFORMAT_ARGB1555 = 0x15331002
+    SDL_PIXELFORMAT_RGBA5551 = 0x15441002
+    SDL_PIXELFORMAT_ABGR1555 = 0x15731002
+    SDL_PIXELFORMAT_BGRA5551 = 0x15841002
+    SDL_PIXELFORMAT_RGB565 = 0x15151002
+    SDL_PIXELFORMAT_BGR565 = 0x15551002
+    SDL_PIXELFORMAT_RGB24 = 0x17101803
+    SDL_PIXELFORMAT_BGR24 = 0x17401803
+    SDL_PIXELFORMAT_XRGB8888 = 0x16161804
+    SDL_PIXELFORMAT_RGBX8888 = 0x16261804
+    SDL_PIXELFORMAT_XBGR8888 = 0x16561804
+    SDL_PIXELFORMAT_BGRX8888 = 0x16661804
+    SDL_PIXELFORMAT_ARGB8888 = 0x16362004
+    SDL_PIXELFORMAT_RGBA8888 = 0x16462004
+    SDL_PIXELFORMAT_ABGR8888 = 0x16762004
+    SDL_PIXELFORMAT_BGRA8888 = 0x16862004
+    SDL_PIXELFORMAT_XRGB2101010 = 0x16172004
+    SDL_PIXELFORMAT_XBGR2101010 = 0x16572004
+    SDL_PIXELFORMAT_ARGB2101010 = 0x16372004
+    SDL_PIXELFORMAT_ABGR2101010 = 0x16772004
+    SDL_PIXELFORMAT_RGB48 = 0x18103006
+    SDL_PIXELFORMAT_BGR48 = 0x18403006
+    SDL_PIXELFORMAT_RGBA64 = 0x18204008
+    SDL_PIXELFORMAT_ARGB64 = 0x18304008
+    SDL_PIXELFORMAT_BGRA64 = 0x18504008
+    SDL_PIXELFORMAT_ABGR64 = 0x18604008
+    SDL_PIXELFORMAT_RGB48_FLOAT = 0x1a103006
+    SDL_PIXELFORMAT_BGR48_FLOAT = 0x1a403006
+    SDL_PIXELFORMAT_RGBA64_FLOAT = 0x1a204008
+    SDL_PIXELFORMAT_ARGB64_FLOAT = 0x1a304008
+    SDL_PIXELFORMAT_BGRA64_FLOAT = 0x1a504008
+    SDL_PIXELFORMAT_ABGR64_FLOAT = 0x1a604008
+    SDL_PIXELFORMAT_RGB96_FLOAT = 0x1b10600c
+    SDL_PIXELFORMAT_BGR96_FLOAT = 0x1b40600c
+    SDL_PIXELFORMAT_RGBA128_FLOAT = 0x1b208010
+    SDL_PIXELFORMAT_ARGB128_FLOAT = 0x1b308010
+    SDL_PIXELFORMAT_BGRA128_FLOAT = 0x1b508010
+    SDL_PIXELFORMAT_ABGR128_FLOAT = 0x1b608010
+    SDL_PIXELFORMAT_YV12 = 0x32315659
+    SDL_PIXELFORMAT_IYUV = 0x56555949
+    SDL_PIXELFORMAT_YUY2 = 0x32595559
+    SDL_PIXELFORMAT_UYVY = 0x59565955
+    SDL_PIXELFORMAT_YVYU = 0x55595659
+    SDL_PIXELFORMAT_NV12 = 0x3231564e
+    SDL_PIXELFORMAT_NV21 = 0x3132564e
+    SDL_PIXELFORMAT_P010 = 0x30313050
+    SDL_PIXELFORMAT_EXTERNAL_OES = 0x2053454f
+    # NOTE: The following definitions ONLY hold for little endian - if you are using big endian (why), please open an issue report
+    SDL_PIXELFORMAT_RGBA32 = SDL_PIXELFORMAT_ABGR8888
+    SDL_PIXELFORMAT_ARGB32 = SDL_PIXELFORMAT_BGRA8888
+    SDL_PIXELFORMAT_BGRA32 = SDL_PIXELFORMAT_ARGB8888
+    SDL_PIXELFORMAT_ABGR32 = SDL_PIXELFORMAT_RGBA8888
+    SDL_PIXELFORMAT_RGBX32 = SDL_PIXELFORMAT_XBGR8888
+    SDL_PIXELFORMAT_XRGB32 = SDL_PIXELFORMAT_BGRX8888
+    SDL_PIXELFORMAT_BGRX32 = SDL_PIXELFORMAT_XRGB8888
+    SDL_PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_RGBX8888
+  end
+  
 
   # SDL_pixels
 
