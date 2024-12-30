@@ -12,6 +12,8 @@ You need to have SDL installed or the SDL library files accessible by Crystal fo
 
 For the other SDL library bindings, you also need to have SDL_image, SDL_mixer and SDL_ttf available.
 
+Depending on the SDL version, you should use either the main branch (for SDL 2) or the sdl3 branch (for SDL 3).
+
 ## Usage
 
 Simply add this shard (`sdl-crystal-bindings`) to your `shard.yml`.
@@ -94,7 +96,7 @@ If you encounter any problems while generating the bindings, please open an issu
 * [ ] Merging of all functions and macros into one single module (if possible and helpful)
 * [ ] Even more examples
 * [ ] Documentation
-* [ ] Support for SDL3
+* [X] Support for SDL3
 
 #### Usability
 
