@@ -25,7 +25,7 @@ lib LibSDL
   MIXER_MAJOR_VERSION = 3
   MIXER_MINOR_VERSION = 0
   MIXER_MICRO_VERSION = 0
-  MIXER_VERSION = (((MIXER_MAJOR_VERSION)*1000 + (MIXER_MINOR_VERSION)*100 + (MIXER_MICRO_VERSION)))
+  MIXER_VERSION = (((MIXER_MAJOR_VERSION)*1000000 + (MIXER_MINOR_VERSION)*1000 + (MIXER_MICRO_VERSION)))
   MIX_INIT_FLAC = 0x00000001
   MIX_INIT_MOD = 0x00000002
   MIX_INIT_MP3 = 0x00000008
@@ -172,34 +172,7 @@ end
 
 module LibSDLMacro
   # SDL_mixer
-
-  def self.mixer_version(x)
-    (x).value.major = LibSDL::MIXER_MAJOR_VERSION
-    (x).value.minor = LibSDL::MIXER_MINOR_VERSION
-    (x).value.patch = LibSDL::MIXER_PATCHLEVEL
-  end
-
-  def self.mix_version(x)
-    self.mixer_version(x)
-  end
-
-  def self.mixer_version_atleast
-    ((LibSDL::MIXER_MAJOR_VERSION >= x) && (LibSDL::MIXER_MAJOR_VERSION > x || LibSDL::MIXER_MINOR_VERSION >= y) && (LibSDL::MIXER_MAJOR_VERSION > x || LibSDL::MIXER_MINOR_VERSION > y || LibSDL::MIXER_PATCHLEVEL >= z))
-  end
-
-  def self.mix_set_error(*args)
-    LibSDL.set_error(*args)
-  end
-
-  def self.mix_get_error
-    LibSDL.get_error
-  end
-
-  def self.mix_clear_error
-    LibSDL.clear_error
-  end
-
-  def self.mix_out_of_memory
-    LibSDL.out_of_memory
+  macro image_version_atleast(x, y, z)
+    (LibSDL::MIXER_MAJOR_VERSION >= x) && (LibSDL::MIXER_MAJOR_VERSION > x || LibSDL::MIXER_MINOR_VERSION >= y) && (LibSDL::MIXER_MAJOR_VERSION > x || LibSDL::MIXER_MINOR_VERSION > y || LibSDL::MIXER_PATCHLEVEL >= z)
   end
 end

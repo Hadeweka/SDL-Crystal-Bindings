@@ -61,6 +61,7 @@ def type_filter(name)
   filters = [
     ["Point", "§1"],  # The 'int' in 'Point' would be parsed, so we want to mask it for now
     ["Hint", "§2"],
+    ["GLint", "§3"],
 
     [" const*", "*"],
     ["const ", ""],
@@ -84,7 +85,6 @@ def type_filter(name)
     ["int16", "Int16"],
     ["int8", "Int8"],
     ["intptr_t", "LibC::Int*"], # NOTE: This might lead to issues
-    ["GLint", "§3"],
     ["int", "LibC::Int"],
     ["char", "LibC::Char"],
     ["bool", "LibC::Char"], # NOTE: This should be the safest variant
@@ -143,7 +143,7 @@ def process_constant(constant)
     .gsub("SDL_", "")
     .gsub("WINDOWPOS_UNDEFINED_DISPLAY(0)", "(LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)")
     .gsub("WINDOWPOS_CENTERED_DISPLAY(0)", "(LibSDL::WINDOWPOS_CENTERED_MASK | 0)")
-    .gsub(/VERSIONNUM(([\S]+), ([\S]+), ([\S]+))/, "((\\2)*1000 + (\\3)*100 + (\\4))")
+    .gsub(/VERSIONNUM(([\S]+), ([\S]+), ([\S]+))/, "((\\2)*1000000 + (\\3)*1000 + (\\4))")
 end
 
 $constant_cache = {}
@@ -351,9 +351,10 @@ def transform_constants(constants)
   transformed_constants
 end
 
+# NOTE: Potentially problematic (and therefore not included) headers: 
+#   asyncio, atomic, bits, endian, filesystem, hidapi, mutex, storage, system, thread, time, timer, oldnames
 headers = [
   ["additions/helper.cr"],
-  ["SDL"],
   ["SDL_version"],
   ["SDL_scancode"],
   ["additions/helper_audio.cr"],
@@ -489,12 +490,5 @@ write_bindings_to_file("src/sdl-image-bindings.cr", img_headers, "SDL3_image", "
 write_bindings_to_file("src/sdl-mixer-bindings.cr", mix_headers, "SDL3_mixer", "additions/macros_mix.cr")
 write_bindings_to_file("src/sdl-ttf-bindings.cr", ttf_headers, "SDL3_ttf", "additions/macros_ttf.cr")
 
-# TODO: Potentially problematic headers: asyncio, atomic, bits, endian, filesystem, hidapi, mutex, storage, system, thread, time, timer, oldnames
-
-# TODO: Manually add inline functions from SDL_rect etc. (as macros?)
-# TODO: Fix version macros and constants
-# TODO: Add remaining macros
-
 # TODO: Update examples
-
 # TODO: Finalize and think about how to use different versions
