@@ -87,7 +87,7 @@ def type_filter(name)
     ["GLint", "§3"],
     ["int", "LibC::Int"],
     ["char", "LibC::Char"],
-    ["bool", "Bool"],
+    ["bool", "LibC::Char"], # NOTE: This should be the safest variant
     ["FILE", "Void"], # It is a bit of cheating, but you should rarely use this anyway
 
     ["§1", "Point"], # Now we can demask it again
@@ -138,9 +138,9 @@ def process_constant(constant)
     .gsub(/^([\d\.]+)[fF]$/, "\\1")
     .gsub("\\x1B", "\\e")
     .gsub("\\x7F", "\\u007F")
-    .gsub(/\(\((\S+)\)([0xabcdefABCDEF\d]+)\)/, "\\1.new(\\2)")
+    .gsub(/\(\((\S+)\)([-0xabcdefABCDEF\d]+)\)/, "\\1.new(\\2)")
+    .gsub(/SDL_UINT64_C\(([0xabcdefABCDEF\d]+)\)/, "UInt64.new(\\1)")
     .gsub("SDL_", "")
-    .gsub(/UINT64_C\(([0xabcdefABCDEF\d]+)\)/, "UInt64.new(\\1)")
     .gsub("WINDOWPOS_UNDEFINED_DISPLAY(0)", "(LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)")
     .gsub("WINDOWPOS_CENTERED_DISPLAY(0)", "(LibSDL::WINDOWPOS_CENTERED_MASK | 0)")
     .gsub(/VERSIONNUM(([\S]+), ([\S]+), ([\S]+))/, "((\\2)*1000 + (\\3)*100 + (\\4))")
@@ -417,7 +417,7 @@ img_headers = [
 ]
 
 mix_headers = [
-  #["additions/helper_mixer.cr"],
+  ["additions/helper_mixer.cr"],
   ["SDL_mixer", "SDL_mixer/refs/heads/main/include/SDL3_mixer"]
 ]
 
@@ -491,11 +491,9 @@ write_bindings_to_file("src/sdl-ttf-bindings.cr", ttf_headers, "SDL3_ttf", "addi
 
 # TODO: Potentially problematic headers: asyncio, atomic, bits, endian, filesystem, hidapi, mutex, storage, system, thread, time, timer, oldnames
 
-# TODO: Manually convert complex structs like gamepad axis (and callbacks)
 # TODO: Manually add inline functions from SDL_rect etc. (as macros?)
 # TODO: Fix version macros and constants
-# TODO: Look into macros like TOUCH_MOUSEID
-# TODO: Test whether the conversion from bool to Bool causes any issues
+# TODO: Add remaining macros
 
 # TODO: Update examples
 

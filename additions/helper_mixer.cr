@@ -7,11 +7,11 @@
   # (int channel)
   alias MixChannelFinishedCallback = (LibC::Int) -> Void
 
-  # (const char*, void*)
-  alias MixEachSoundFontCallback = (LibC::Char*, Void*) -> LibC::Int
-
   # (int chan, void *stream, int len, void *udata)
   alias MixEffectFuncT = (LibC::Int, Void*, LibC::Int, Void*) -> Void
 
   # (int chan, void *udata)
   alias MixEffectDoneT = (LibC::Int, Void*) -> Void
+
+  # (const char*, void*)
+  alias MixEachSoundFontCallback = (LibC::Char*, Void*) -> LibC::Char

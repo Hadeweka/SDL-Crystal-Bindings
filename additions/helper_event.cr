@@ -41,4 +41,4 @@
   end
 
   # (void* userdata, SDL_Event* event)
-  alias EventFilter = (Void*, Event*) -> Bool
+  alias EventFilter = (Void*, Event*) -> LibC::Char
