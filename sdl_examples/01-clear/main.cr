@@ -38,7 +38,7 @@ def app_iterate_func(appdata : Void*)
 end
 
 def app_event_func(appdata : Void*, event : LibSDL::Event*)
-  if event.value.type == LibSDL::EventType::EVENT_QUIT
+  if event.value.type == LibSDL::EventType::EVENT_QUIT.to_u32
     return LibSDL::AppResult::APP_SUCCESS
   end
 
@@ -46,7 +46,7 @@ def app_event_func(appdata : Void*, event : LibSDL::Event*)
 end
 
 def app_quit_func(appstate : Void*, result : LibSDL::AppResult)
-  puts "Quitting"
 end
 
-LibSDL.enter_app_main_callbacks(1, nil, ->app_init_func, ->app_iterate_func, ->app_event_func, ->app_quit_func)
+# NOTE: This is not a very elegant way to enable these callbacks, but it works for now
+LibSDL.enter_app_main_callbacks(0, nil, ->app_init_func, ->app_iterate_func, ->app_event_func, ->app_quit_func)

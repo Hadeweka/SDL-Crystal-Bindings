@@ -2,6 +2,7 @@ output/
 output3/
 lib/
 *.exe
+*.lib
 *.dll
 *.ll
 *.s
