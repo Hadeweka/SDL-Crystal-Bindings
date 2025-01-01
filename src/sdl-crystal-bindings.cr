@@ -656,6 +656,7 @@ lib LibSDL
     EVENT_FINGER_DOWN = 0x700
     EVENT_FINGER_UP
     EVENT_FINGER_MOTION
+    EVENT_FINGER_CANCELED
     EVENT_CLIPBOARD_UPDATE = 0x900
     EVENT_DROP_FILE = 0x1000
     EVENT_DROP_TEXT
@@ -1051,7 +1052,7 @@ lib LibSDL
     reserved : UInt32
     timestamp : UInt64
     owner : LibC::Char
-    n_mime_types : Int32
+    num_mime_types : Int32
     mime_types : LibC::Char**
   end
 
@@ -2523,6 +2524,15 @@ lib LibSDL
 
   # additions/helper_init.cr
 
+  # (void** appstate, int argc, char* argv[])
+  alias AppInitFunc = (Void**, LibC::Int, LibC::Char**) -> AppResult
+
+  # (void* appstate)
+  alias AppIterateFunc = (Void*) -> AppResult
+
+  # (void* appstate, SDL_Event* event)
+  alias AppEventFunc = (Void*, Event*) -> AppResult
+  
   # (void* appstate, SDL_AppResult result)
   alias AppQuitFunc = (Void*, AppResult) -> Void
 
@@ -3200,6 +3210,20 @@ lib LibSDL
   fun get_default_log_output_function = SDL_GetDefaultLogOutputFunction() : LogOutputFunction
   fun get_log_output_function = SDL_GetLogOutputFunction(callback : LogOutputFunction*, userdata : Void**) : Void
   fun set_log_output_function = SDL_SetLogOutputFunction(callback : LogOutputFunction, userdata : Void*) : Void
+
+  # additions/helper_main.cr
+
+  # (int argc, char* argv[])
+  alias MainFunc = (LibC::Int, LibC::Char**) -> LibC::Int
+
+  # SDL_main
+
+  fun set_main_ready = SDL_SetMainReady() : Void
+  fun run_app = SDL_RunApp(argc : LibC::Int, argv : LibC::Char**, main_function : MainFunc, reserved : Void*) : LibC::Int
+  fun enter_app_main_callbacks = SDL_EnterAppMainCallbacks(argc : LibC::Int, argv : LibC::Char**, appinit : AppInitFunc, appiter : AppIterateFunc, appevent : AppEventFunc, appquit : AppQuitFunc) : LibC::Int
+  fun register_app = SDL_RegisterApp(name : LibC::Char*, style : UInt32, h_inst : Void*) : LibC::Char
+  fun unregister_app = SDL_UnregisterApp() : Void
+  fun gdksuspend_complete = SDL_GDKSuspendComplete() : Void
 
   # additions/helper_messagebox.cr
 

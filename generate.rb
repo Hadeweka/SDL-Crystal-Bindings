@@ -15,10 +15,10 @@ def compact_header(header)
   puts "Processing #{name}..."
   # Thanks to oprypin for the formatting commands! 
   # Source: https://gist.github.com/oprypin/62c1d428453e21952d31ca59560507c9
-  system("mkdir -p output")
-  system("wget -nc https://raw.githubusercontent.com/libsdl-org/#{external_path}/#{name}.h -O output/#{name}.h")
-  system("gcc -fpreprocessed -dD -E -P output/#{name}.h > output/#{name}1.h")
-  system("clang-format output/#{name}1.h -style=\"#{style}\" > output/#{name}2.h")
+  system("mkdir -p output3")
+  system("wget -nc https://raw.githubusercontent.com/libsdl-org/#{external_path}/#{name}.h -O output3/#{name}.h")
+  system("gcc -fpreprocessed -dD -E -P output3/#{name}.h > output3/#{name}1.h")
+  system("clang-format output3/#{name}1.h -style=\"#{style}\" > output3/#{name}2.h")
 end
 
 def underscore_string(str)
@@ -117,6 +117,9 @@ end
 
 def should_constant_be_excluded?(name)
   filters = [
+    "SDL_MAIN_HANDLED",  # Not an actual constant
+    "SDL_MAIN_USE_CALLBACKS",  # Not an actual constant
+    "SDLMAIN_DECLSPEC"  # Not an actual constant
   ]
 
   filters.index(name)
@@ -389,6 +392,8 @@ headers = [
   ["SDL_locale"],
   ["additions/helper_log.cr"],
   ["SDL_log"],
+  ["additions/helper_main.cr"],
+  ["SDL_main"],
   ["additions/helper_messagebox.cr"],
   ["SDL_messagebox"],
   ["SDL_metal"],
@@ -444,17 +449,17 @@ def process_header(f, header)
     cc = 0
     cs = 0
     cf = 0
-    transform_constants(get_all_constants("output/#{header[0]}2.h")).each do |transformed_constant|
+    transform_constants(get_all_constants("output3/#{header[0]}2.h")).each do |transformed_constant|
       next if !transformed_constant
       f.puts "#{transformed_constant}" 
       cc += 1
     end
-    transform_structs(get_all_structs("output/#{header[0]}2.h")).each do |transformed_struct|
+    transform_structs(get_all_structs("output3/#{header[0]}2.h")).each do |transformed_struct|
       next if !transformed_struct
       f.puts "#{transformed_struct}"
       cs += 1
     end
-    transform_functions(get_all_functions("output/#{header[0]}2.h")).each do |transformed_function|
+    transform_functions(get_all_functions("output3/#{header[0]}2.h")).each do |transformed_function|
       next if !transformed_function
       f.puts "#{transformed_function}"
       cf += 1
