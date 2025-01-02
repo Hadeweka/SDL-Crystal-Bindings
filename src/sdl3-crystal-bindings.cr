@@ -1,6 +1,6 @@
 @[Link("SDL3")]
 lib LibSDL
-  # additions/helper.cr
+  # additions3/helper.cr
 
   # (void)
   alias FunctionPointer = (Void) -> Void
@@ -271,7 +271,7 @@ lib LibSDL
     SCANCODE_COUNT = 512
   end
 
-  # additions/helper_audio.cr
+  # additions3/helper_audio.cr
 
   enum AudioFormat
     SDL_AUDIO_UNKNOWN = 0x0000
@@ -439,7 +439,7 @@ lib LibSDL
   fun release_camera_frame = SDL_ReleaseCameraFrame(camera : Camera*, frame : Surface*) : Void
   fun close_camera = SDL_CloseCamera(camera : Camera*) : Void
 
-  # additions/helper_clipboard.cr
+  # additions3/helper_clipboard.cr
 
   # (void* userdata, const char* mime_type, size_t* size)
   alias ClipboardDataCallback = (Void*, LibC::Char*, LibC::SizeT*) -> Void*
@@ -483,7 +483,7 @@ lib LibSDL
   fun get_system_ram = SDL_GetSystemRAM() : LibC::Int
   fun get_simdalignment = SDL_GetSIMDAlignment() : LibC::SizeT
 
-  # additions/helper_dialog.cr
+  # additions3/helper_dialog.cr
 
   # (void* userdata, const char* const* filelist, int filter)
   alias DialogFileCallback = (Void*, LibC::Char*, LibC::Int) -> Void
@@ -522,7 +522,7 @@ lib LibSDL
   fun get_error = SDL_GetError() : LibC::Char*
   fun clear_error = SDL_ClearError() : LibC::Char
 
-  # additions/helper_event.cr
+  # additions3/helper_event.cr
 
   union Event
     type : UInt32
@@ -1101,7 +1101,7 @@ lib LibSDL
   fun register_events = SDL_RegisterEvents(numevents : LibC::Int) : UInt32
   fun get_window_from_event = SDL_GetWindowFromEvent(event : Event*) : Window*
 
-  # additions/helper_gamepad.cr
+  # additions3/helper_gamepad.cr
 
   # NOTE: Helper struct, not named in original SDL
   struct GamepadBindingInputAxis
@@ -2102,7 +2102,7 @@ lib LibSDL
   fun guidto_string = SDL_GUIDToString(guid : GUID, psz_guid : LibC::Char*, cb_guid : LibC::Int) : Void
   fun string_to_guid = SDL_StringToGUID(pch_guid : LibC::Char*) : GUID
 
-  # additions/helper_haptic.cr
+  # additions3/helper_haptic.cr
 
   union HapticEffect
     type : UInt16
@@ -2267,7 +2267,7 @@ lib LibSDL
   fun play_haptic_rumble = SDL_PlayHapticRumble(haptic : Haptic*, strength : LibC::Float, length : UInt32) : LibC::Char
   fun stop_haptic_rumble = SDL_StopHapticRumble(haptic : Haptic*) : LibC::Char
 
-  # additions/helper_hints.cr
+  # additions3/helper_hints.cr
 
   # (void* userdata, const char* name, const char* oldValue, const char* newValue)
   alias HintCallback = (Void*, LibC::Char*, LibC::Char*, LibC::Char*) -> Void
@@ -2522,7 +2522,7 @@ lib LibSDL
   fun add_hint_callback = SDL_AddHintCallback(name : LibC::Char*, callback : HintCallback, userdata : Void*) : LibC::Char
   fun remove_hint_callback = SDL_RemoveHintCallback(name : LibC::Char*, callback : HintCallback, userdata : Void*) : Void
 
-  # additions/helper_init.cr
+  # additions3/helper_init.cr
 
   # (void** appstate, int argc, char* argv[])
   alias AppInitFunc = (Void**, LibC::Int, LibC::Char**) -> AppResult
@@ -2576,7 +2576,7 @@ lib LibSDL
   fun set_app_metadata_property = SDL_SetAppMetadataProperty(name : LibC::Char*, value : LibC::Char*) : LibC::Char
   fun get_app_metadata_property = SDL_GetAppMetadataProperty(name : LibC::Char*) : LibC::Char*
 
-  # additions/helper_iostream.cr
+  # additions3/helper_iostream.cr
 
   struct IOStreamInterface
     version : UInt32
@@ -2664,7 +2664,7 @@ lib LibSDL
   fun write_u64_be = SDL_WriteU64BE(dst : IOStream*, value : UInt64) : LibC::Char
   fun write_s64_be = SDL_WriteS64BE(dst : IOStream*, value : Int64) : LibC::Char
 
-  # additions/helper_joystick.cr
+  # additions3/helper_joystick.cr
 
   struct VirtualJoystickDesc
     version : UInt32
@@ -3151,7 +3151,7 @@ lib LibSDL
 
   fun get_preferred_locales = SDL_GetPreferredLocales(count : LibC::Int*) : Locale**
 
-  # additions/helper_log.cr
+  # additions3/helper_log.cr
 
   # (void* userdata, int category, SDL_LogPriority priority, const char* message)
   alias LogOutputFunction = (Void*, LibC::Int, LogPriority, LibC::Char*) -> Void
@@ -3211,7 +3211,7 @@ lib LibSDL
   fun get_log_output_function = SDL_GetLogOutputFunction(callback : LogOutputFunction*, userdata : Void**) : Void
   fun set_log_output_function = SDL_SetLogOutputFunction(callback : LogOutputFunction, userdata : Void*) : Void
 
-  # additions/helper_main.cr
+  # additions3/helper_main.cr
 
   # (int argc, char* argv[])
   alias MainFunc = (LibC::Int, LibC::Char**) -> LibC::Int
@@ -3226,7 +3226,7 @@ lib LibSDL
   fun unregister_app = SDL_UnregisterApp() : Void
   fun gdksuspend_complete = SDL_GDKSuspendComplete() : Void
 
-  # additions/helper_messagebox.cr
+  # additions3/helper_messagebox.cr
 
   struct MessageBoxColorScheme
     colors : MessageBoxColor[MessageBoxColorType::MESSAGEBOX_COLOR_COUNT]
@@ -3384,7 +3384,7 @@ lib LibSDL
     PEN_AXIS_COUNT
   end
 
-  # additions/helper_pixels.cr
+  # additions3/helper_pixels.cr
 
   enum PixelFormat
     SDL_PIXELFORMAT_UNKNOWN = 0
@@ -3723,7 +3723,7 @@ lib LibSDL
   fun wait_process = SDL_WaitProcess(process : Process*, block : LibC::Char, exitcode : LibC::Int*) : LibC::Char
   fun destroy_process = SDL_DestroyProcess(process : Process*) : Void
 
-  # additions/helper_properties.cr
+  # additions3/helper_properties.cr
 
   # (void* userdata, void* value)
   alias CleanupPropertyCallback = (Void*, Void*) -> Void
@@ -4040,6 +4040,19 @@ lib LibSDL
   fun close_sensor = SDL_CloseSensor(sensor : Sensor*) : Void
   fun update_sensors = SDL_UpdateSensors() : Void
 
+  # additions3/helper_surface.cr
+
+  struct Surface
+    flags : SurfaceFlags
+    format : PixelFormat
+    w : LibC::Int
+    h : LibC::Int
+    pitch : LibC::Int
+    pixels : Void*
+    refcount : LibC::Int
+    reserverd : Void*
+  end
+
   # SDL_surface
 
   SURFACE_PREALLOCATED = 0x00000001
@@ -4050,7 +4063,6 @@ lib LibSDL
   PROP_SURFACE_HDR_HEADROOM_FLOAT = "SDL.surface.HDR_headroom"
   PROP_SURFACE_TONEMAP_OPERATOR_STRING = "SDL.surface.tonemap"
 
-  alias Surface = Void
   alias SurfaceFlags = UInt32
 
   enum ScaleMode
@@ -4122,7 +4134,7 @@ lib LibSDL
   fun write_surface_pixel = SDL_WriteSurfacePixel(surface : Surface*, x : LibC::Int, y : LibC::Int, r : UInt8, g : UInt8, b : UInt8, a : UInt8) : LibC::Char
   fun write_surface_pixel_float = SDL_WriteSurfacePixelFloat(surface : Surface*, x : LibC::Int, y : LibC::Int, r : LibC::Float, g : LibC::Float, b : LibC::Float, a : LibC::Float) : LibC::Char
 
-  # additions/helper_tray.cr
+  # additions3/helper_tray.cr
 
   # (void* userdata, SDL_TrayEntry* entry)
   alias TrayCallback = (Void*, TrayEntry*) -> Void
@@ -4189,7 +4201,7 @@ lib LibSDL
   fun get_touch_device_type = SDL_GetTouchDeviceType(touch_id : TouchID) : TouchDeviceType
   fun get_touch_fingers = SDL_GetTouchFingers(touch_id : TouchID, count : LibC::Int*) : Finger**
 
-  # additions/helper_video.cr
+  # additions3/helper_video.cr
 
   # (void* userdata)
   alias EGLAttribArrayCallback = (Void*) -> EGLAttrib*

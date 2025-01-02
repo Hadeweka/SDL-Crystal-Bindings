@@ -1,7 +1,7 @@
 # Based on https://examples.libsdl.org/SDL3/renderer/01-clear/
 
 # NOTE: Replace this with the proper relative path.
-require "../../src/sdl3-crystal-bindings.cr"
+require "../../../src/sdl3-crystal-bindings.cr"
 
 # NOTE: This uses the main callbacks to stay as close to the original example as possible.
 #       In Crystal, our macros are more powerful than in C, so we can (and should) name the callbacks explicitely.

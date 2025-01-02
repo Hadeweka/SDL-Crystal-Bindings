@@ -1,6 +1,6 @@
 # Based on https://examples.libsdl.org/SDL3/renderer/02-primitives/
 
-require "../../src/sdl3-crystal-bindings.cr"
+require "../../../src/sdl3-crystal-bindings.cr"
 
 LibSDLMacro.main_use_callbacks(->app_init_func, ->app_iterate_func, ->app_event_func, ->app_quit_func)
 

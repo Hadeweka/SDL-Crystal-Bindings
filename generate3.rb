@@ -109,7 +109,8 @@ def should_struct_be_excluded?(name)
     "Mix_MusicFinishedCallback)(void)",  # TODO: A bit cheaty due to the way the Regexes work, but it does the job for now
     "axis", # Structure should not actually be used
     "SDL_IOStreamInterface", # Contains too many callbacks
-    "SDL_MessageBoxColorScheme" # Contains reference to other enum
+    "SDL_MessageBoxColorScheme", # Contains reference to other enum
+    "SDL_Surface" # A bit more complicated due to macros
   ]
 
   filters.index(name)
@@ -412,6 +413,7 @@ headers = [
   ["SDL_rect"],
   ["SDL_render"],
   ["SDL_sensor"],
+  ["additions3/helper_surface.cr"],
   ["SDL_surface"],
   ["additions3/helper_tray.cr"],
   ["SDL_tray"],
