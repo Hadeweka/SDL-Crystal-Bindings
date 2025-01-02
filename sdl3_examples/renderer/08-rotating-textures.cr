@@ -88,4 +88,5 @@ def app_event_func(appstate : Void*, event : LibSDL::Event*)
 end
 
 def app_quit_func(appstate : Void*, result : LibSDL::AppResult)
+  LibSDL.destroy_texture(Globals.texture)
 end

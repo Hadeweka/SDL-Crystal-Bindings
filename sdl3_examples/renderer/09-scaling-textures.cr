@@ -1,8 +1,7 @@
-# Based on https://examples.libsdl.org/SDL3/renderer/06-textures/
+# Based on https://examples.libsdl.org/SDL3/renderer/09-scaling-textures/
 
 require "../../src/sdl3-crystal-bindings.cr"
 
-# NOTE: We need this for the file path
 require "file_utils"
 
 LibSDLMacro.main_use_callbacks(->app_init_func, ->app_iterate_func, ->app_event_func, ->app_quit_func)
@@ -20,14 +19,14 @@ class Globals
 end
 
 def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
-  LibSDL.set_app_metadata("Example Renderer Textures", "1.0", "com.example.renderer-textures")
+  LibSDL.set_app_metadata("Example Renderer Scaling Textures", "1.0", "com.example.renderer-scaling-textures")
 
   if !LibSDL.init(LibSDL::INIT_VIDEO)
     LibSDL.log("Couldn't initialize SDL: %s", LibSDL.get_error)
     return LibSDL::AppResult::APP_FAILURE
   end
 
-  if !LibSDL.create_window_and_renderer("examples/renderer/textures", 640, 480, 0, out window, out renderer)
+  if !LibSDL.create_window_and_renderer("examples/renderer/scaling-textures", 640, 480, 0, out window, out renderer)
     LibSDL.log("Couldn't create window/renderer: %s", LibSDL.get_error)
     return LibSDL::AppResult::APP_FAILURE
   end
@@ -35,8 +34,6 @@ def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
   Globals.window = window
   Globals.renderer = renderer
 
-  # NOTE: Crystal has its own filesystem functions, so we also use them here.
-  #       Your path may differ, change this accordingly.
   bmp_path = Path.new(FileUtils.pwd, "sdl3_examples/resources/sample.bmp")
   surface = LibSDL.load_bmp(bmp_path.to_s)
   if !surface
@@ -68,22 +65,11 @@ def app_iterate_func(appstate : Void*)
   LibSDL.set_render_draw_color(Globals.renderer, 0, 0, 0, LibSDL::ALPHA_OPAQUE)
   LibSDL.render_clear(Globals.renderer)
 
-  dst_rect.x = 100.0 * scale
-  dst_rect.y = 0.0
-  dst_rect.w = Globals.texture_width
-  dst_rect.h = Globals.texture_height
-  LibSDL.render_texture(Globals.renderer, Globals.texture, nil, pointerof(dst_rect))
+  dst_rect.w = Globals.texture_width.to_f32 + (Globals.texture_width * scale)
+  dst_rect.h = Globals.texture_height.to_f32 + (Globals.texture_height * scale)
+  dst_rect.x = (WINDOW_WIDTH - dst_rect.w) / 2.0
+  dst_rect.y = (WINDOW_HEIGHT - dst_rect.h) / 2.0
 
-  dst_rect.x = (WINDOW_WIDTH - Globals.texture_width) / 2.0
-  dst_rect.y = (WINDOW_HEIGHT - Globals.texture_height) / 2.0
-  dst_rect.w = Globals.texture_width
-  dst_rect.h = Globals.texture_height
-  LibSDL.render_texture(Globals.renderer, Globals.texture, nil, pointerof(dst_rect))
-
-  dst_rect.x = (WINDOW_WIDTH - Globals.texture_width) - 100.0 * scale
-  dst_rect.y = WINDOW_HEIGHT - Globals.texture_height
-  dst_rect.w = Globals.texture_width
-  dst_rect.h = Globals.texture_height
   LibSDL.render_texture(Globals.renderer, Globals.texture, nil, pointerof(dst_rect))
 
   LibSDL.render_present(Globals.renderer)
