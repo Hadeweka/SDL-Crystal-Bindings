@@ -19,9 +19,9 @@ Depending on the SDL version, you should use either the main branch (for SDL 2) 
 Simply add this shard (`sdl-crystal-bindings`) to your `shard.yml`.
 This repository comes with pre-generated binding files.
 
-Then, use `require "sdl-crystal-bindings"` (or `"sdl3-crystal-bindings"` for SDL3).
+Then, use `require "sdl-crystal-bindings"` (or `"sdl-crystal-bindings/sdl3-crystal-bindings"` for SDL3).
 
-For the other SDL libraries, you can use `require "sdl-crystal-bindings/sdl-image-bindings"`, for example.
+For the other SDL libraries, you can use `require "sdl-crystal-bindings/sdl-image-bindings"`, for example (or `"sdl3-image-bindings"` for SDL3).
 Note that the examples use the relative paths to the respective files.
 
 Regular SDL functions, structs, enums, unions and constants are accessible using the `LibSDL` namespace, while
