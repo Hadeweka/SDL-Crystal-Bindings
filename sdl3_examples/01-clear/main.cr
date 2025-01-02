@@ -15,7 +15,7 @@ class Globals
   class_property initial_time = Time.utc
 end
 
-def app_init_func(appdata : Void**, argc : LibC::Int, argv : LibC::Char**)
+def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
   LibSDL.set_app_metadata("Example Renderer Clear", "1.0", "com.example.renderer-clear")
 
   if !LibSDL.init(LibSDL::INIT_VIDEO)
@@ -35,7 +35,7 @@ def app_init_func(appdata : Void**, argc : LibC::Int, argv : LibC::Char**)
   return LibSDL::AppResult::APP_CONTINUE
 end
 
-def app_iterate_func(appdata : Void*)
+def app_iterate_func(appstate : Void*)
   # NOTE: The time and timer functions from SDL are not included, as Crystal already provides a good API for these.
   now = (Time.utc - Globals.initial_time).total_milliseconds / 1000.0
 
@@ -51,7 +51,7 @@ def app_iterate_func(appdata : Void*)
   return LibSDL::AppResult::APP_CONTINUE
 end
 
-def app_event_func(appdata : Void*, event : LibSDL::Event*)
+def app_event_func(appstate : Void*, event : LibSDL::Event*)
   # NOTE: The necessity to cast to UInt32 comes from the way events are implemented in SDL.
   #       In fact, the general Event class has a UInt32 here, while EventType is an enum (which is a different class in Crystal).
   #       Since these are low level bindings, you have to be very careful with the types.

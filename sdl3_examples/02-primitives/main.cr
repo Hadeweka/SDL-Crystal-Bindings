@@ -11,7 +11,7 @@ class Globals
   class_property points = Array(LibSDL::FPoint).new(initial_capacity: 500)
 end
 
-def app_init_func(appdata : Void**, argc : LibC::Int, argv : LibC::Char**)
+def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
   LibSDL.set_app_metadata("Example Renderer Primitives", "1.0", "com.example.renderer-primitives")
 
   if !LibSDL.init(LibSDL::INIT_VIDEO)
@@ -33,6 +33,7 @@ def app_init_func(appdata : Void**, argc : LibC::Int, argv : LibC::Char**)
   #       This is one of the differences between C and Crystal you have to keep in mind.
   500.times do
     point = LibSDL::FPoint.new
+    # NOTE: Crystal has its own random function, so we don't need the one from SDL
     point.x = (rand * 440.0) + 100.0
     point.y = (rand * 280.0) + 100.0
     Globals.points.push point
@@ -41,7 +42,7 @@ def app_init_func(appdata : Void**, argc : LibC::Int, argv : LibC::Char**)
   return LibSDL::AppResult::APP_CONTINUE
 end
 
-def app_iterate_func(appdata : Void*)
+def app_iterate_func(appstate : Void*)
   rect = LibSDL::FRect.new
 
   LibSDL.set_render_draw_color(Globals.renderer, 33, 33, 33, LibSDL::ALPHA_OPAQUE)
@@ -72,7 +73,7 @@ def app_iterate_func(appdata : Void*)
   return LibSDL::AppResult::APP_CONTINUE
 end
 
-def app_event_func(appdata : Void*, event : LibSDL::Event*)
+def app_event_func(appstate : Void*, event : LibSDL::Event*)
   if event.value.type == LibSDL::EventType::EVENT_QUIT.to_u32
     return LibSDL::AppResult::APP_SUCCESS
   end
