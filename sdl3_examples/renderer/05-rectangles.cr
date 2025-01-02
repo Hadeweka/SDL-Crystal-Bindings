@@ -21,7 +21,7 @@ def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
     return LibSDL::AppResult::APP_FAILURE
   end
 
-  if !LibSDL.create_window_and_renderer("examples/renderer/rectangles", 640, 480, 0, out window, out renderer)
+  if !LibSDL.create_window_and_renderer("examples/renderer/rectangles", WINDOW_WIDTH, WINDOW_HEIGHT, 0, out window, out renderer)
     LibSDL.log("Couldn't create window/renderer: %s", LibSDL.get_error)
     return LibSDL::AppResult::APP_FAILURE
   end

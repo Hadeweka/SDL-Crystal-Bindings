@@ -1,4 +1,4 @@
-# Based on https://examples.libsdl.org/SDL3/renderer/09-scaling-textures/
+# Based on https://examples.libsdl.org/SDL3/renderer/10-geometry/
 
 require "../../src/sdl3-crystal-bindings.cr"
 
@@ -26,7 +26,7 @@ def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
     return LibSDL::AppResult::APP_FAILURE
   end
 
-  if !LibSDL.create_window_and_renderer("examples/renderer/geometry", 640, 480, 0, out window, out renderer)
+  if !LibSDL.create_window_and_renderer("examples/renderer/geometry", WINDOW_WIDTH, WINDOW_HEIGHT, 0, out window, out renderer)
     LibSDL.log("Couldn't create window/renderer: %s", LibSDL.get_error)
     return LibSDL::AppResult::APP_FAILURE
   end

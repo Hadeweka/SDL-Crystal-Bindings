@@ -1,33 +1,36 @@
-# Based on https://examples.libsdl.org/SDL3/renderer/06-textures/
+# Based on https://examples.libsdl.org/SDL3/renderer/15-cliprect/
 
 require "../../src/sdl3-crystal-bindings.cr"
 
-# NOTE: We need this for the file path
 require "file_utils"
 
 LibSDLMacro.main_use_callbacks(->app_init_func, ->app_iterate_func, ->app_event_func, ->app_quit_func)
 
 WINDOW_WIDTH = 640
 WINDOW_HEIGHT = 480
+CLIPRECT_SIZE = 250
+CLIPRECT_SPEED = 200
 
 class Globals
   class_property window = Pointer(LibSDL::Window).null
   class_property renderer = Pointer(LibSDL::Renderer).null
   class_property texture = Pointer(LibSDL::Texture).null
-  class_property texture_width = 0i32
-  class_property texture_height = 0i32
+  class_property cliprect_position = LibSDL::FPoint.new
+  # NOTE: We already initialize the direction variable here
+  class_property cliprect_direction = LibSDL::FPoint.new(x: 1.0, y: 1.0)
   class_property initial_time = Time.utc
+  class_property last_time = 0u64
 end
 
 def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
-  LibSDL.set_app_metadata("Example Renderer Textures", "1.0", "com.example.renderer-textures")
+  LibSDL.set_app_metadata("Example Renderer Clipping Rectangle", "1.0", "com.example.renderer-cliprect")
 
   if !LibSDL.init(LibSDL::INIT_VIDEO)
     LibSDL.log("Couldn't initialize SDL: %s", LibSDL.get_error)
     return LibSDL::AppResult::APP_FAILURE
   end
 
-  if !LibSDL.create_window_and_renderer("examples/renderer/textures", WINDOW_WIDTH, WINDOW_HEIGHT, 0, out window, out renderer)
+  if !LibSDL.create_window_and_renderer("examples/renderer/cliprect", WINDOW_WIDTH, WINDOW_HEIGHT, 0, out window, out renderer)
     LibSDL.log("Couldn't create window/renderer: %s", LibSDL.get_error)
     return LibSDL::AppResult::APP_FAILURE
   end
@@ -35,17 +38,14 @@ def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
   Globals.window = window
   Globals.renderer = renderer
 
-  # NOTE: Crystal has its own filesystem functions, so we also use them here.
-  #       Your path may differ, change this accordingly.
+  Globals.last_time = (Time.utc - Globals.initial_time).total_milliseconds.to_u64!
+
   bmp_path = Path.new(FileUtils.pwd, "sdl3_examples/resources/sample.bmp")
   surface = LibSDL.load_bmp(bmp_path.to_s)
   if !surface
     LibSDL.log("Couldn't load bitmap: %s", LibSDL.get_error)
     return LibSDL::AppResult::APP_FAILURE
   end
-
-  Globals.texture_width = surface.value.w
-  Globals.texture_height = surface.value.h
 
   Globals.texture = LibSDL.create_texture_from_surface(Globals.renderer, surface)
   if !Globals.texture
@@ -59,32 +59,42 @@ def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
 end
 
 def app_iterate_func(appstate : Void*)
-  dst_rect = LibSDL::FRect.new
+  cliprect = LibSDL::Rect.new(x: Globals.cliprect_position.x.round.to_i32, y: Globals.cliprect_position.y.round.to_i32, w: CLIPRECT_SIZE, h: CLIPRECT_SIZE)
   now = (Time.utc - Globals.initial_time).total_milliseconds.to_u64!
+  elapsed = (now &- Globals.last_time) / 1000.0
+  distance = elapsed * CLIPRECT_SPEED
 
-  direction = (now % 2000) >= 1000 ? 1.0 : -1.0
-  scale = ((now % 1000).to_i32 - 500) / 500.0 * direction
+  new_x = Globals.cliprect_position.x + distance * Globals.cliprect_direction.x
+  new_dir_x = Globals.cliprect_direction.x
+  if new_x < 0.0
+    new_x = 0.0
+    new_dir_x = 1.0
+  elsif new_x >= (WINDOW_WIDTH - CLIPRECT_SIZE)
+    new_x = (WINDOW_WIDTH - CLIPRECT_SIZE) - 1
+    new_dir_x = -1.0
+  end
 
-  LibSDL.set_render_draw_color(Globals.renderer, 0, 0, 0, LibSDL::ALPHA_OPAQUE)
+  new_y = Globals.cliprect_position.y + distance * Globals.cliprect_direction.y
+  new_dir_y = Globals.cliprect_direction.y
+  if new_y < 0.0
+    new_y = 0.0
+    new_dir_y = 1.0
+  elsif new_y >= (WINDOW_HEIGHT - CLIPRECT_SIZE)
+    new_y = (WINDOW_HEIGHT - CLIPRECT_SIZE) - 1
+    new_dir_y = -1.0
+  end
+
+  Globals.cliprect_position = LibSDL::FPoint.new(x: new_x, y: new_y)
+  Globals.cliprect_direction = LibSDL::FPoint.new(x: new_dir_x, y: new_dir_y)
+
+  LibSDL.set_render_clip_rect(Globals.renderer, pointerof(cliprect))
+
+  Globals.last_time = now
+
+  LibSDL.set_render_draw_color(Globals.renderer, 33, 33, 33, LibSDL::ALPHA_OPAQUE)
   LibSDL.render_clear(Globals.renderer)
 
-  dst_rect.x = 100.0 * scale
-  dst_rect.y = 0.0
-  dst_rect.w = Globals.texture_width
-  dst_rect.h = Globals.texture_height
-  LibSDL.render_texture(Globals.renderer, Globals.texture, nil, pointerof(dst_rect))
-
-  dst_rect.x = (WINDOW_WIDTH - Globals.texture_width) / 2.0
-  dst_rect.y = (WINDOW_HEIGHT - Globals.texture_height) / 2.0
-  dst_rect.w = Globals.texture_width
-  dst_rect.h = Globals.texture_height
-  LibSDL.render_texture(Globals.renderer, Globals.texture, nil, pointerof(dst_rect))
-
-  dst_rect.x = (WINDOW_WIDTH - Globals.texture_width) - 100.0 * scale
-  dst_rect.y = WINDOW_HEIGHT - Globals.texture_height
-  dst_rect.w = Globals.texture_width
-  dst_rect.h = Globals.texture_height
-  LibSDL.render_texture(Globals.renderer, Globals.texture, nil, pointerof(dst_rect))
+  LibSDL.render_texture(Globals.renderer, Globals.texture, nil, nil)
 
   LibSDL.render_present(Globals.renderer)
 
