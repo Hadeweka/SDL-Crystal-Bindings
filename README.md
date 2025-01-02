@@ -19,7 +19,7 @@ Depending on the SDL version, you should use either the main branch (for SDL 2) 
 Simply add this shard (`sdl-crystal-bindings`) to your `shard.yml`.
 This repository comes with pre-generated binding files.
 
-Then, use `require "sdl-crystal-bindings"`.
+Then, use `require "sdl-crystal-bindings"` (or `"sdl3-crystal-bindings"` for SDL3).
 
 For the other SDL libraries, you can use `require "sdl-crystal-bindings/sdl-image-bindings"`, for example.
 Note that the examples use the relative paths to the respective files.
@@ -97,6 +97,7 @@ If you encounter any problems while generating the bindings, please open an issu
 * [ ] Even more examples
 * [ ] Documentation
 * [X] Support for SDL3
+* [ ] Better branch handling between SDL2 and SDL3
 
 #### Usability
 
