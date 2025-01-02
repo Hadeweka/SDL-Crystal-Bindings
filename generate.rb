@@ -129,7 +129,9 @@ def should_function_be_excluded?(name)
   filters = [
     "SDL_SetErrorV",  # Not really needed
     "SDL_IOvprintf",  # Not really needed
-    "SDL_LogMessageV" # Not really needed
+    "SDL_LogMessageV", # Not really needed
+    "SDL_RunApp", # Definition is annoying to parse
+    "SDL_EnterAppMainCallbacks" # Definition is annoying to parse
   ]
 
   filters.index(name)

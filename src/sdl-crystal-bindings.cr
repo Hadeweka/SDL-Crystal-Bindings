@@ -3216,11 +3216,12 @@ lib LibSDL
   # (int argc, char* argv[])
   alias MainFunc = (LibC::Int, LibC::Char**) -> LibC::Int
 
+  fun run_app = SDL_RunApp(argc : LibC::Int, argv : LibC::Char**, main_function : MainFunc, reserved : Void*) : LibC::Int
+  fun enter_app_main_callbacks = SDL_EnterAppMainCallbacks(argc : LibC::Int, argv : LibC::Char**, appinit : AppInitFunc, appiter : AppIterateFunc, appevent : AppEventFunc, appquit : AppQuitFunc) : LibC::Int
+
   # SDL_main
 
   fun set_main_ready = SDL_SetMainReady() : Void
-  fun run_app = SDL_RunApp(argc : LibC::Int, argv : LibC::Char**, main_function : MainFunc, reserved : Void*) : LibC::Int
-  fun enter_app_main_callbacks = SDL_EnterAppMainCallbacks(argc : LibC::Int, argv : LibC::Char**, appinit : AppInitFunc, appiter : AppIterateFunc, appevent : AppEventFunc, appquit : AppQuitFunc) : LibC::Int
   fun register_app = SDL_RegisterApp(name : LibC::Char*, style : UInt32, h_inst : Void*) : LibC::Char
   fun unregister_app = SDL_UnregisterApp() : Void
   fun gdksuspend_complete = SDL_GDKSuspendComplete() : Void
