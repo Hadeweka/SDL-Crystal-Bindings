@@ -89,6 +89,17 @@ module LibSDLMacro
     x | LibSDL::K_SCANCODE_MASK
   end
 
+  # SDL_main
+  
+  macro main_use_callbacks(app_init_func, app_iterate_func, app_event_func, app_quit_func, sdl_main_func_name = libsdl_main)
+    def {{sdl_main_func_name}}(argc : Int32, argv : UInt8**)
+      LibSDL.enter_app_main_callbacks(argc, argv, {{app_init_func}}, {{app_iterate_func}}, {{app_event_func}}, {{app_quit_func}})
+    end
+
+    # TODO: Modify the main function to do this
+    LibSDL.run_app(ARGC_UNSAFE, ARGV_UNSAFE, ->{{sdl_main_func_name}}, nil)
+  end
+
   # SDL_mouse
 
   macro button_mask(x)

@@ -2,6 +2,9 @@
 
 require "../../src/sdl-crystal-bindings.cr"
 
+# NOTE: This uses the main callbacks to stay as close to the original example as possible
+LibSDLMacro.main_use_callbacks(->app_init_func, ->app_iterate_func, ->app_event_func, ->app_quit_func)
+
 # NOTE: We don't have static variables in Crystal, but class properties will do
 class Globals
   class_property window = Pointer(LibSDL::Window).null
@@ -54,11 +57,3 @@ end
 
 def app_quit_func(appstate : Void*, result : LibSDL::AppResult)
 end
-
-# NOTE: This is not a very elegant way to enable these callbacks, but it works for now
-# NOTE: This might change at a later point
-def sdl_main(argc : Int32, argv : UInt8**)
-  LibSDL.enter_app_main_callbacks(argc, argv, ->app_init_func, ->app_iterate_func, ->app_event_func, ->app_quit_func)
-end
-
-LibSDL.run_app(ARGC_UNSAFE, ARGV_UNSAFE, ->sdl_main, nil)
