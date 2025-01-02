@@ -6,5 +6,5 @@
     pitch : LibC::Int
     pixels : Void*
     refcount : LibC::Int
-    reserverd : Void*
+    reserved : Void*
   end
