@@ -34,9 +34,8 @@ functions are in snake_case, while structs are in CamelCase).
 
 ## Examples
 
-To test the examples, you need to add the contents of the `examples` submodule.
-
-Then, run `crystal run examples/XX/main.cr` to start the example with number `XX`.
+There are some examples ported directly from https://examples.libsdl.org/SDL3/ to Crystal. You might have to
+change the relative paths in the examples for them to work if not started from this directory.
 
 ## Generating new bindings
 
@@ -59,13 +58,11 @@ If you encounter any problems while generating the bindings, please open an issu
 * Binding generator
 * Working bindings
 * Bindings for sdl_image, sdl_mixer and sdl_ttf
-* Basic set of examples
 
 ### Version 0.1.0
 
 #### Features
 
-* More examples
 * Continuous integration
 
 #### Breaking changes
