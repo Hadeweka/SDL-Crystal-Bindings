@@ -28,25 +28,4 @@ jobs:
         sdl2-config --version
     - name: Run tests
       run: |
-        crystal build examples/01/main.cr
-        crystal build examples/02/main.cr
-        crystal build examples/03/main.cr
-        crystal build examples/04/main.cr
-        crystal build examples/05/main.cr
-        crystal build examples/06/main.cr
-        crystal build examples/07/main.cr
-        crystal build examples/08/main.cr
-        crystal build examples/09/main.cr
-        crystal build examples/10/main.cr
-        crystal build examples/11/main.cr
-        crystal build examples/12/main.cr
-        crystal build examples/13/main.cr
-        crystal build examples/14/main.cr
-        crystal build examples/15/main.cr
-        crystal build examples/16/main.cr
-        crystal build examples/17/main.cr
-        crystal build examples/18/main.cr
-        crystal build examples/19/main.cr
-        # crystal build examples/20/main.cr -> The SDL version from Ubuntu is currently too old...
-        # crystal build examples/21/main.cr -> Same here
- 
+        crystal build sdl2_examples/test.cr

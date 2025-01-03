@@ -34,9 +34,13 @@ functions are in snake_case, while structs are in CamelCase).
 
 ## Examples
 
-To test the examples, you need to add the contents of the `examples` submodule.
+Currently, there is only one example for SDL2, as the previous examples were based on LazyFoo's tutorial (https://lazyfoo.net/tutorials/SDL/).
+However, they don't want their examples being used in foreign code (even if ported), so I decided to remove them in order to respect that questionable decision.
+See also (https://lazyfoo.net/faq.php) for details.
 
-Then, run `crystal run examples/XX/main.cr` to start the example with number `XX`.
+For SDL3, there are many examples from the official SDL website (with more to come).
+
+If you want to see a specific example or have questions regarding the bindings and their usage, feel free to open an issue or pull request.
 
 ## Generating new bindings
 
@@ -59,18 +63,15 @@ If you encounter any problems while generating the bindings, please open an issu
 * Binding generator
 * Working bindings
 * Bindings for sdl_image, sdl_mixer and sdl_ttf
-* Basic set of examples
 
 ### Version 0.1.0
 
 #### Features
 
-* More examples
 * Continuous integration
 
 #### Breaking changes
 
-* Examples in separate submodule
 * Decoupling of the different libraries
 
 #### Bugfixes
@@ -94,7 +95,7 @@ If you encounter any problems while generating the bindings, please open an issu
 #### Features
 
 * [ ] Merging of all functions and macros into one single module (if possible and helpful)
-* [ ] Even more examples
+* [ ] More examples
 * [ ] Documentation
 * [X] Support for SDL3
 * [ ] Better branch handling between SDL2 and SDL3
