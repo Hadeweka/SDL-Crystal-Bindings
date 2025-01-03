@@ -1,6 +1,6 @@
 @[Link("SDL3_mixer")]
 lib LibSDL
-  # additions/helper_mixer.cr
+  # additions3/helper_mixer.cr
 
   # (void *udata, Uint8 *stream, int len)
   alias MixMixCallback = (Void*, UInt8*, LibC::Int) -> Void
@@ -41,7 +41,7 @@ lib LibSDL
   MIX_CHANNEL_POST = (-2)
   MIX_EFFECTSMAXSPEED = "MIX_EFFECTSMAXSPEED"
 
-  alias MixMusic = Void
+  type MixMusic = Void
   alias MIXInitFlags = UInt32
 
   enum MixFading

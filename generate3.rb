@@ -284,7 +284,11 @@ def transform_structs(structs)
   struct_str = ""
 
   structs[1].each do |struct|
-     struct_str += "  alias #{soft_filter(struct[0])} = #{type_filter(struct[1])}\n"
+    if type_filter(struct[1]).start_with? "Void" 
+      struct_str += "  type #{soft_filter(struct[0])} = #{type_filter(struct[1])}\n"
+    else
+      struct_str += "  alias #{soft_filter(struct[0])} = #{type_filter(struct[1])}\n"
+    end
   end
 
   struct_str = "\n#{struct_str}\n" unless struct_str == ""
@@ -499,5 +503,6 @@ write_bindings_to_file("src/sdl3-image-bindings.cr", img_headers, "SDL3_image", 
 write_bindings_to_file("src/sdl3-mixer-bindings.cr", mix_headers, "SDL3_mixer", "additions3/macros_mix.cr")
 write_bindings_to_file("src/sdl3-ttf-bindings.cr", ttf_headers, "SDL3_ttf", "additions3/macros_ttf.cr")
 
-# TODO: Update examples
-# TODO: Finalize and think about how to use different versions
+# Types that should be enums or flag enums: BlendMode, GPUTextureUsageFlags, GPUBufferUsageFlags, GPUShaderFormat, GPUColorComponentFlags,
+#   InitFlags, Keycode, Keymod, MessageBoxFlags, MessageBoxButtonFlags, MouseButtonFlags, PenInputFlags, SurfaceFlags, TrayEntryFlags,
+#   WindowFlags, GLContextFlag, GLContextReleaseFlag, 

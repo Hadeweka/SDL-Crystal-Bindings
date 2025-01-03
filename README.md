@@ -95,6 +95,7 @@ If you encounter any problems while generating the bindings, please open an issu
 * [ ] Documentation
 * [X] Support for SDL3
 * [ ] Better branch handling between SDL2 and SDL3
+* [ ] Port flags into actual flag enums for consistency
 
 #### Usability
 

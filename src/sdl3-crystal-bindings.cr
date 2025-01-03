@@ -302,7 +302,7 @@ lib LibSDL
   AUDIO_DEVICE_DEFAULT_PLAYBACK = AudioDeviceID.new(0xFFFFFFFF)
   AUDIO_DEVICE_DEFAULT_RECORDING = AudioDeviceID.new(0xFFFFFFFE)
 
-  alias AudioStream = Void
+  type AudioStream = Void
   alias AudioDeviceID = UInt32
 
   struct AudioSpec
@@ -405,7 +405,7 @@ lib LibSDL
 
   # SDL_camera
 
-  alias Camera = Void
+  type Camera = Void
   alias CameraID = UInt32
 
   enum CameraPosition
@@ -1151,7 +1151,7 @@ lib LibSDL
   PROP_GAMEPAD_CAP_RUMBLE_BOOLEAN = PROP_JOYSTICK_CAP_RUMBLE_BOOLEAN
   PROP_GAMEPAD_CAP_TRIGGER_RUMBLE_BOOLEAN = PROP_JOYSTICK_CAP_TRIGGER_RUMBLE_BOOLEAN
 
-  alias Gamepad = Void
+  type Gamepad = Void
 
   enum GamepadType
     GAMEPAD_TYPE_UNKNOWN = 0
@@ -1346,19 +1346,19 @@ lib LibSDL
   PROP_GPU_CREATETEXTURE_D3D12_CLEAR_DEPTH_FLOAT = "SDL.gpu.createtexture.d3d12.clear.depth"
   PROP_GPU_CREATETEXTURE_D3D12_CLEAR_STENCIL_UINT8 = "SDL.gpu.createtexture.d3d12.clear.stencil"
 
-  alias GPUDevice = Void
-  alias GPUBuffer = Void
-  alias GPUTransferBuffer = Void
-  alias GPUTexture = Void
-  alias GPUSampler = Void
-  alias GPUShader = Void
-  alias GPUComputePipeline = Void
-  alias GPUGraphicsPipeline = Void
-  alias GPUCommandBuffer = Void
-  alias GPURenderPass = Void
-  alias GPUComputePass = Void
-  alias GPUCopyPass = Void
-  alias GPUFence = Void
+  type GPUDevice = Void
+  type GPUBuffer = Void
+  type GPUTransferBuffer = Void
+  type GPUTexture = Void
+  type GPUSampler = Void
+  type GPUShader = Void
+  type GPUComputePipeline = Void
+  type GPUGraphicsPipeline = Void
+  type GPUCommandBuffer = Void
+  type GPURenderPass = Void
+  type GPUComputePass = Void
+  type GPUCopyPass = Void
+  type GPUFence = Void
   alias GPUTextureUsageFlags = UInt32
   alias GPUBufferUsageFlags = UInt32
   alias GPUShaderFormat = UInt32
@@ -2142,7 +2142,7 @@ lib LibSDL
   HAPTIC_STEERING_AXIS = 3
   HAPTIC_INFINITY = 4294967295
 
-  alias Haptic = Void
+  type Haptic = Void
   alias HapticID = UInt32
 
   struct HapticDirection
@@ -2599,7 +2599,7 @@ lib LibSDL
   PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER = "SDL.iostream.dynamic.memory"
   PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER = "SDL.iostream.dynamic.chunksize"
 
-  alias IOStream = Void
+  type IOStream = Void
 
   enum IOStatus
     IO_STATUS_READY
@@ -2714,7 +2714,7 @@ lib LibSDL
   HAT_LEFTUP = (HAT_LEFT | HAT_UP)
   HAT_LEFTDOWN = (HAT_LEFT | HAT_DOWN)
 
-  alias Joystick = Void
+  type Joystick = Void
   alias JoystickID = UInt32
 
   enum JoystickType
@@ -3136,7 +3136,7 @@ lib LibSDL
 
   # SDL_loadso
 
-  alias SharedObject = Void
+  type SharedObject = Void
 
   fun load_object = SDL_LoadObject(sofile : LibC::Char*) : SharedObject*
   fun load_function = SDL_LoadFunction(handle : SharedObject*, name : LibC::Char*) : FunctionPointer
@@ -3281,7 +3281,7 @@ lib LibSDL
 
   # SDL_metal
 
-  alias MetalView = Void*
+  type MetalView = Void*
 
   fun metal_create_view = SDL_Metal_CreateView(window : Window*) : MetalView
   fun metal_destroy_view = SDL_Metal_DestroyView(view : MetalView) : Void
@@ -3304,7 +3304,7 @@ lib LibSDL
   BUTTON_X1MASK = BUTTON_MASK(BUTTON_X1)
   BUTTON_X2MASK = BUTTON_MASK(BUTTON_X2)
 
-  alias Cursor = Void
+  type Cursor = Void
   alias MouseID = UInt32
   alias MouseButtonFlags = UInt32
 
@@ -3704,7 +3704,7 @@ lib LibSDL
   PROP_PROCESS_STDERR_POINTER = "SDL.process.stderr"
   PROP_PROCESS_BACKGROUND_BOOLEAN = "SDL.process.background"
 
-  alias Process = Void
+  type Process = Void
 
   enum ProcessIO
     PROCESS_STDIO_INHERITED
@@ -3894,8 +3894,8 @@ lib LibSDL
   RENDERER_VSYNC_ADAPTIVE = (-1)
   DEBUG_TEXT_FONT_CHARACTER_SIZE = 8
 
-  alias Renderer = Void
-  alias Texture = Void
+  type Renderer = Void
+  type Texture = Void
 
   enum TextureAccess
     TEXTUREACCESS_STATIC
@@ -4011,7 +4011,7 @@ lib LibSDL
 
   STANDARD_GRAVITY = 9.80665
 
-  alias Sensor = Void
+  type Sensor = Void
   alias SensorID = UInt32
 
   enum SensorType
@@ -4147,9 +4147,9 @@ lib LibSDL
   TRAYENTRY_DISABLED = 0x80000000
   TRAYENTRY_CHECKED = 0x40000000
 
-  alias Tray = Void
-  alias TrayMenu = Void
-  alias TrayEntry = Void
+  type Tray = Void
+  type TrayMenu = Void
+  type TrayEntry = Void
   alias TrayEntryFlags = UInt32
 
   fun create_tray = SDL_CreateTray(icon : Surface*, tooltip : LibC::Char*) : Tray*
@@ -4331,15 +4331,15 @@ lib LibSDL
   WINDOW_SURFACE_VSYNC_DISABLED = 0
   WINDOW_SURFACE_VSYNC_ADAPTIVE = (-1)
 
-  alias DisplayModeData = Void
-  alias Window = Void
+  type DisplayModeData = Void
+  type Window = Void
   alias GLContext = GLContextState*
   alias DisplayID = UInt32
   alias WindowID = UInt32
   alias WindowFlags = UInt64
-  alias EGLDisplay = Void*
-  alias EGLConfig = Void*
-  alias EGLSurface = Void*
+  type EGLDisplay = Void*
+  type EGLConfig = Void*
+  type EGLSurface = Void*
   alias EGLAttrib = LibC::Int*
   alias EGLint = LibC::Int
   alias GLProfile = UInt32

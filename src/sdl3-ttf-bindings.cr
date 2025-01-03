@@ -27,9 +27,9 @@ lib LibSDL
   TTF_SUBSTRING_LINE_END = 0x00000004
   TTF_SUBSTRING_TEXT_END = 0x00000008
 
-  alias TTFFont = Void
-  alias TTFTextEngine = Void
-  alias TTFTextData = Void
+  type TTFFont = Void
+  type TTFTextEngine = Void
+  type TTFTextData = Void
   alias TTFFontStyleFlags = UInt32
   alias TTFSubStringFlags = UInt32
 
