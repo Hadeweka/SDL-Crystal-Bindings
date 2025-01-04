@@ -88,8 +88,6 @@ If you encounter any problems while generating the bindings, please open an issu
 
 * Build script now correctly raises error on Windows
 
-## Roadmap
-
 ### Version 0.2.1
 
 NOTE: This will be the last version with SDL2 alone. After that, release tags will be split into
@@ -101,11 +99,13 @@ get a separate branch).
 
 #### Usability
 
-* [X] Update to newer SDL2 version (with slightly different syntax)
+* Update to newer SDL2 version (with slightly different syntax)
 
 #### Bugfixes
 
-* [X] Minor bugfixes in version macros
+* Minor bugfixes in version macros
+
+## Roadmap
 
 ### Version 0.3.0
 
