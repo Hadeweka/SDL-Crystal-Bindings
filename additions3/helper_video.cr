@@ -8,3 +8,6 @@
   alias HitTest = (Window*, Point*, Void*) -> HitTestResult
 
   alias GLContextState = Void
+
+  WINDOW_SURFACE_VSYNC_DISABLED = 0
+  WINDOW_SURFACE_VSYNC_ADAPTIVE = (-1)

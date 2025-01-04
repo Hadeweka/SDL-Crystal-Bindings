@@ -8,8 +8,6 @@ def compact_header(header)
 
   external_path = header[1] ? header[1] : "SDL/refs/heads/main/include/SDL3"
 
-  puts "EX = #{external_path}"
-
   style = "{ColumnLimit: 100000, PointerAlignment: Left, SpacesBeforeTrailingComments: 2, AlignTrailingComments: false, AllowShortFunctionsOnASingleLine: None, ContinuationIndentWidth: 2, AlignOperands: DontAlign, AlignAfterOpenBracket: DontAlign}"
   
   puts "Processing #{name}..."
@@ -100,7 +98,7 @@ end
 
 # This filter ignores predefined types
 def soft_filter(name)
-  filter_sdl(camelcase_string(name))
+  filter_sdl(camelcase_string(name)).gsub("MIXInitFlags", "MixInitFlags") # Special case
 end
 
 def should_struct_be_excluded?(name)
@@ -120,7 +118,9 @@ def should_constant_be_excluded?(name)
   filters = [
     "SDL_MAIN_HANDLED",  # Not an actual constant
     "SDL_MAIN_USE_CALLBACKS",  # Not an actual constant
-    "SDLMAIN_DECLSPEC"  # Not an actual constant
+    "SDLMAIN_DECLSPEC",  # Not an actual constant,
+    "SDL_WINDOW_SURFACE_VSYNC_DISABLED",  # Causing issues with automated enums
+    "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE"  # Causing issues with automated enums
   ]
 
   filters.index(name)
@@ -145,7 +145,7 @@ def process_constant(constant)
     .gsub("\\x1B", "\\e")
     .gsub("\\x7F", "\\u007F")
     .gsub(/\(\((\S+)\)([-0xabcdefABCDEF\d]+)\)/, "\\1.new(\\2)")
-    .gsub(/SDL_UINT64_C\(([0xabcdefABCDEF\d]+)\)/, "UInt64.new(\\1)")
+    .gsub(/SDL_UINT64_C\(([0xabcdefABCDEF\d]+)\)/, "\\1_u64")
     .gsub("SDL_", "")
     .gsub("WINDOWPOS_UNDEFINED_DISPLAY(0)", "(LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)")
     .gsub("WINDOWPOS_CENTERED_DISPLAY(0)", "(LibSDL::WINDOWPOS_CENTERED_MASK | 0)")
@@ -153,6 +153,33 @@ def process_constant(constant)
 end
 
 $constant_cache = {}
+
+# NOTE: The order is very important here, especially for cases like SDL_MESSAGEBOX_BUTTON !
+PSEUDO_ENUM_NAMES = {
+  "SDL_BLENDMODE" => "SDL_BlendMode",
+  "SDL_GPU_TEXTUREUSAGE" => "SDL_GPUTextureUsageFlags",
+  "SDL_GPU_BUFFERUSAGE" => "SDL_GPUBufferUsageFlags",
+  "SDL_GPU_SHADERFORMAT" => "SDL_GPUShaderFormat",
+  "SDL_GPU_COLORCOMPONENT" => "SDL_GPUColorComponentFlags",
+  "SDL_INIT" => "SDL_InitFlags",
+  "SDLK" => "SDL_Keycode",
+  "SDL_KMOD" => "SDL_Keymod",
+  "SDL_MESSAGEBOX_BUTTON" => "SDL_MessageBoxButtonFlags",
+  "SDL_MESSAGEBOX" => "SDL_MessageBoxFlags",
+  "SDL_BUTTON" => "SDL_MouseButtonFlags",
+  "SDL_PEN_INPUT" => "SDL_PenInputFlags",
+  "SDL_SURFACE" => "SDL_SurfaceFlags",
+  "SDL_TRAYENTRY" => "SDL_TrayEntryFlags",
+  "SDL_WINDOW" => "SDL_WindowFlags",
+  "SDL_GL_CONTEXT_RELEASE" => "SDL_GLContextReleaseFlag",
+  "SDL_GL_CONTEXT" => "SDL_GLContextFlag",
+  "MIX_INIT" => "MIX_InitFlags"
+}
+
+$pseudo_enums = {}
+PSEUDO_ENUM_NAMES.each {|constant_prefix, struct_name| $pseudo_enums[constant_prefix] = []}
+
+puts $pseudo_enums
 
 def get_all_functions(filename)
   lines = nil
@@ -204,6 +231,7 @@ def get_all_structs(filename)
 
   single_line_struct_matches.each do |match|
     next if should_struct_be_excluded?(match[1])
+
     if match[1] == match[0]
       final_typedefs.push [match[1], "void"]
     else
@@ -213,6 +241,12 @@ def get_all_structs(filename)
 
   typedefs.each do |match|
     next if should_struct_be_excluded?(match[1])
+
+    if PSEUDO_ENUM_NAMES.has_value?(match[1])
+      final_enums.push [match[1], nil, match[0]]
+      next
+    end
+    
     final_typedefs.push [match[1], match[0]]
   end
 
@@ -257,8 +291,22 @@ def get_all_constants(filename)
       puts "> Skipping macro function: #{match[0]}"
       next
     end
+
     next if should_constant_be_excluded?(match[0])
     next if $constant_cache[match[0]]
+
+    found_pseudo_enum = false
+
+    PSEUDO_ENUM_NAMES.each do |constant_prefix, struct_name|
+      if match[0].start_with?(constant_prefix + "_")
+        $pseudo_enums[constant_prefix].push "#{match[0]} = #{match[2]}"
+        found_pseudo_enum = true
+        break
+      end
+    end
+
+    next if found_pseudo_enum
+
     $constant_cache[match[0]] = true
     final_constants.push [match[0], match[2]]
   end
@@ -298,9 +346,20 @@ def transform_structs(structs)
   struct_str = ""
 
   structs[2].each do |enum|
-    struct_str += "  enum #{soft_filter(enum[0])}\n"
-    
-    enum_values = enum[1].split(", ")
+    # TODO: Look for other enums that require this annotation to work properly
+    struct_str += "  @[Flags]\n" if soft_filter(enum[0]).end_with?("Flags") || soft_filter(enum[0]).end_with?("Flag")
+
+    if !enum[1]
+      enum_values = $pseudo_enums[PSEUDO_ENUM_NAMES.key(enum[0])]
+    else
+      enum_values = enum[1].split(", ")
+    end
+
+    if enum[2]
+      struct_str += "  enum #{soft_filter(enum[0])} : #{type_filter(enum[2])}\n"
+    else
+      struct_str += "  enum #{soft_filter(enum[0])}\n"
+    end
 
     enum_prefix_arr = enum_values[0].split("=")[0].split("_")
 
@@ -320,6 +379,7 @@ def transform_structs(structs)
       name_without_prefix = (fixed_enum_values[0].split("_") - enum_prefix_arr).join("_")
       fixed_enum_values[0].upcase!
       fixed_enum_value = fixed_enum_values.join("=")
+      fixed_enum_value.gsub!(/SDL_BUTTON_MASK\((\S+)\)/) { "1u << (#{Regexp.last_match[1]} - 1)" }
       if name_without_prefix.start_with?(/\d/)
         # TODO: This is currently not very elegant, but prevents expressions like GPUTextureType::2D .
         #       If ever allowed, GPUTextureType::_2D would be the optimal solution, but this is currently not the case.
@@ -338,7 +398,7 @@ def transform_structs(structs)
         .gsub("\\t", "\t")
         .gsub("\\u007F", "\u007F")
         .gsub("\\'", "\'").ord}
-      processed_ord_val = ord_val.gsub(/SCANCODE_TO_KEYCODE\((\S+)\)/) { "Scancode::#{filter_sdl_const(Regexp.last_match[1])} | K_SCANCODE_MASK" }
+      processed_ord_val = ord_val
       struct_str += "    #{processed_ord_val}\n"
     end
 
@@ -527,7 +587,3 @@ write_bindings_to_file("src/sdl3-crystal-bindings.cr", headers, "SDL3", "additio
 write_bindings_to_file("src/sdl3-image-bindings.cr", img_headers, "SDL3_image", "additions3/macros_img.cr")
 write_bindings_to_file("src/sdl3-mixer-bindings.cr", mix_headers, "SDL3_mixer", "additions3/macros_mix.cr")
 write_bindings_to_file("src/sdl3-ttf-bindings.cr", ttf_headers, "SDL3_ttf", "additions3/macros_ttf.cr")
-
-# Types that should be enums or flag enums: BlendMode, GPUTextureUsageFlags, GPUBufferUsageFlags, GPUShaderFormat, GPUColorComponentFlags,
-#   InitFlags, Keycode, Keymod, MessageBoxFlags, MessageBoxButtonFlags, MouseButtonFlags, PenInputFlags, SurfaceFlags, TrayEntryFlags,
-#   WindowFlags, GLContextFlag, GLContextReleaseFlag, 

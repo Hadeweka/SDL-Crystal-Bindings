@@ -19,12 +19,12 @@ end
 def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
   LibSDL.set_app_metadata("Example Renderer Streaming Textures", "1.0", "com.example.renderer-streaming-textures")
 
-  if !LibSDL.init(LibSDL::INIT_VIDEO)
+  if !LibSDL.init(LibSDL::InitFlags::VIDEO)
     LibSDL.log("Couldn't initialize SDL: %s", LibSDL.get_error)
     return LibSDL::AppResult::FAILURE
   end
 
-  if !LibSDL.create_window_and_renderer("examples/renderer/streaming-textures", WINDOW_WIDTH, WINDOW_HEIGHT, 0, out window, out renderer)
+  if !LibSDL.create_window_and_renderer("examples/renderer/streaming-textures", WINDOW_WIDTH, WINDOW_HEIGHT, LibSDL::WindowFlags::None, out window, out renderer)
     LibSDL.log("Couldn't create window/renderer: %s", LibSDL.get_error)
     return LibSDL::AppResult::FAILURE
   end

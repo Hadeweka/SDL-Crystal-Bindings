@@ -16,7 +16,7 @@ Depending on the SDL version, you should use either the main branch (for SDL 2) 
 
 ## Usage
 
-Simply add this shard (`sdl-crystal-bindings`) to your `shard.yml`.
+Simply add this shard (`sdl-crystal-bindings`) to your `shard.yml`, with the `sdl3` branch, if you want to use SDL 3.
 This repository comes with pre-generated binding files.
 
 Then, use `require "sdl-crystal-bindings/sdl3-crystal-bindings"`.

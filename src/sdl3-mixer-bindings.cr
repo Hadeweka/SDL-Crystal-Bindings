@@ -26,13 +26,6 @@ lib LibSDL
   MIXER_MINOR_VERSION = 0
   MIXER_MICRO_VERSION = 0
   MIXER_VERSION = (((MIXER_MAJOR_VERSION)*1000000 + (MIXER_MINOR_VERSION)*1000 + (MIXER_MICRO_VERSION)))
-  MIX_INIT_FLAC = 0x00000001
-  MIX_INIT_MOD = 0x00000002
-  MIX_INIT_MP3 = 0x00000008
-  MIX_INIT_OGG = 0x00000010
-  MIX_INIT_MID = 0x00000020
-  MIX_INIT_OPUS = 0x00000040
-  MIX_INIT_WAVPACK = 0x00000080
   MIX_CHANNELS = 8
   MIX_DEFAULT_FREQUENCY = 44100
   MIX_DEFAULT_FORMAT = AUDIO_S16
@@ -42,7 +35,17 @@ lib LibSDL
   MIX_EFFECTSMAXSPEED = "MIX_EFFECTSMAXSPEED"
 
   type MixMusic = Void
-  alias MIXInitFlags = UInt32
+
+  @[Flags]
+  enum MixInitFlags : UInt32
+    FLAC = 0x00000001
+    MOD = 0x00000002
+    MP3 = 0x00000008
+    OGG = 0x00000010
+    MID = 0x00000020
+    OPUS = 0x00000040
+    WAVPACK = 0x00000080
+  end
 
   enum MixFading
     NO_FADING
@@ -73,7 +76,7 @@ lib LibSDL
   end
 
   fun mix_version = Mix_Version() : LibC::Int
-  fun mix_init = Mix_Init(flags : MIXInitFlags) : MIXInitFlags
+  fun mix_init = Mix_Init(flags : MixInitFlags) : MixInitFlags
   fun mix_quit = Mix_Quit() : Void
   fun mix_open_audio = Mix_OpenAudio(devid : AudioDeviceID, spec : AudioSpec*) : LibC::Char
   fun mix_pause_audio = Mix_PauseAudio(pause_on : LibC::Int) : Void

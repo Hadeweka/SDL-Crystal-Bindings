@@ -369,16 +369,16 @@ lib LibSDL
 
   # SDL_blendmode
 
-  BLENDMODE_NONE = 0x00000000
-  BLENDMODE_BLEND = 0x00000001
-  BLENDMODE_BLEND_PREMULTIPLIED = 0x00000010
-  BLENDMODE_ADD = 0x00000002
-  BLENDMODE_ADD_PREMULTIPLIED = 0x00000020
-  BLENDMODE_MOD = 0x00000004
-  BLENDMODE_MUL = 0x00000008
-  BLENDMODE_INVALID = 0x7FFFFFFF
-
-  alias BlendMode = UInt32
+  enum BlendMode : UInt32
+    NONE = 0x00000000
+    BLEND = 0x00000001
+    BLEND_PREMULTIPLIED = 0x00000010
+    ADD = 0x00000002
+    ADD_PREMULTIPLIED = 0x00000020
+    MOD = 0x00000004
+    MUL = 0x00000008
+    INVALID = 0x7FFFFFFF
+  end
 
   enum BlendOperation
     ADD = 0x1
@@ -1305,30 +1305,6 @@ lib LibSDL
 
   # SDL_gpu
 
-  GPU_TEXTUREUSAGE_SAMPLER = (1 << 0)
-  GPU_TEXTUREUSAGE_COLOR_TARGET = (1 << 1)
-  GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET = (1 << 2)
-  GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ = (1 << 3)
-  GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ = (1 << 4)
-  GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE = (1 << 5)
-  GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE = (1 << 6)
-  GPU_BUFFERUSAGE_VERTEX = (1 << 0)
-  GPU_BUFFERUSAGE_INDEX = (1 << 1)
-  GPU_BUFFERUSAGE_INDIRECT = (1 << 2)
-  GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ = (1 << 3)
-  GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ = (1 << 4)
-  GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE = (1 << 5)
-  GPU_SHADERFORMAT_INVALID = 0
-  GPU_SHADERFORMAT_PRIVATE = (1 << 0)
-  GPU_SHADERFORMAT_SPIRV = (1 << 1)
-  GPU_SHADERFORMAT_DXBC = (1 << 2)
-  GPU_SHADERFORMAT_DXIL = (1 << 3)
-  GPU_SHADERFORMAT_MSL = (1 << 4)
-  GPU_SHADERFORMAT_METALLIB = (1 << 5)
-  GPU_COLORCOMPONENT_R = (1 << 0)
-  GPU_COLORCOMPONENT_G = (1 << 1)
-  GPU_COLORCOMPONENT_B = (1 << 2)
-  GPU_COLORCOMPONENT_A = (1 << 3)
   PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN = "SDL.gpu.device.create.debugmode"
   PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN = "SDL.gpu.device.create.preferlowpower"
   PROP_GPU_DEVICE_CREATE_NAME_STRING = "SDL.gpu.device.create.name"
@@ -1359,10 +1335,45 @@ lib LibSDL
   type GPUComputePass = Void
   type GPUCopyPass = Void
   type GPUFence = Void
-  alias GPUTextureUsageFlags = UInt32
-  alias GPUBufferUsageFlags = UInt32
-  alias GPUShaderFormat = UInt32
-  alias GPUColorComponentFlags = UInt8
+
+  @[Flags]
+  enum GPUTextureUsageFlags : UInt32
+    SAMPLER = (1 << 0)
+    COLOR_TARGET = (1 << 1)
+    DEPTH_STENCIL_TARGET = (1 << 2)
+    GRAPHICS_STORAGE_READ = (1 << 3)
+    COMPUTE_STORAGE_READ = (1 << 4)
+    COMPUTE_STORAGE_WRITE = (1 << 5)
+    COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE = (1 << 6)
+  end
+
+  @[Flags]
+  enum GPUBufferUsageFlags : UInt32
+    VERTEX = (1 << 0)
+    INDEX = (1 << 1)
+    INDIRECT = (1 << 2)
+    GRAPHICS_STORAGE_READ = (1 << 3)
+    COMPUTE_STORAGE_READ = (1 << 4)
+    COMPUTE_STORAGE_WRITE = (1 << 5)
+  end
+
+  enum GPUShaderFormat : UInt32
+    INVALID = 0
+    PRIVATE = (1 << 0)
+    SPIRV = (1 << 1)
+    DXBC = (1 << 2)
+    DXIL = (1 << 3)
+    MSL = (1 << 4)
+    METALLIB = (1 << 5)
+  end
+
+  @[Flags]
+  enum GPUColorComponentFlags : UInt8
+    R = (1 << 0)
+    G = (1 << 1)
+    B = (1 << 2)
+    A = (1 << 3)
+  end
 
   enum GPUPrimitiveType
     TRIANGLELIST
@@ -2541,14 +2552,6 @@ lib LibSDL
 
   # SDL_init
 
-  INIT_AUDIO = 0x00000010
-  INIT_VIDEO = 0x00000020
-  INIT_JOYSTICK = 0x00000200
-  INIT_HAPTIC = 0x00001000
-  INIT_GAMEPAD = 0x00002000
-  INIT_EVENTS = 0x00004000
-  INIT_SENSOR = 0x00008000
-  INIT_CAMERA = 0x00010000
   PROP_APP_METADATA_NAME_STRING = "SDL.app.metadata.name"
   PROP_APP_METADATA_VERSION_STRING = "SDL.app.metadata.version"
   PROP_APP_METADATA_IDENTIFIER_STRING = "SDL.app.metadata.identifier"
@@ -2557,7 +2560,17 @@ lib LibSDL
   PROP_APP_METADATA_URL_STRING = "SDL.app.metadata.url"
   PROP_APP_METADATA_TYPE_STRING = "SDL.app.metadata.type"
 
-  alias InitFlags = UInt32
+  @[Flags]
+  enum InitFlags : UInt32
+    AUDIO = 0x00000010
+    VIDEO = 0x00000020
+    JOYSTICK = 0x00000200
+    HAPTIC = 0x00001000
+    GAMEPAD = 0x00002000
+    EVENTS = 0x00004000
+    SENSOR = 0x00008000
+    CAMERA = 0x00010000
+  end
 
   enum AppResult
     CONTINUE
@@ -2863,276 +2876,278 @@ lib LibSDL
 
   # SDL_keycode
 
-  K_SCANCODE_MASK = (1 << 30)
-  K_UNKNOWN = 0x00000000
-  K_RETURN = 0x0000000d
-  K_ESCAPE = 0x0000001b
-  K_BACKSPACE = 0x00000008
-  K_TAB = 0x00000009
-  K_SPACE = 0x00000020
-  K_EXCLAIM = 0x00000021
-  K_DBLAPOSTROPHE = 0x00000022
-  K_HASH = 0x00000023
-  K_DOLLAR = 0x00000024
-  K_PERCENT = 0x00000025
-  K_AMPERSAND = 0x00000026
-  K_APOSTROPHE = 0x00000027
-  K_LEFTPAREN = 0x00000028
-  K_RIGHTPAREN = 0x00000029
-  K_ASTERISK = 0x0000002a
-  K_PLUS = 0x0000002b
-  K_COMMA = 0x0000002c
-  K_MINUS = 0x0000002d
-  K_PERIOD = 0x0000002e
-  K_SLASH = 0x0000002f
-  K_0 = 0x00000030
-  K_1 = 0x00000031
-  K_2 = 0x00000032
-  K_3 = 0x00000033
-  K_4 = 0x00000034
-  K_5 = 0x00000035
-  K_6 = 0x00000036
-  K_7 = 0x00000037
-  K_8 = 0x00000038
-  K_9 = 0x00000039
-  K_COLON = 0x0000003a
-  K_SEMICOLON = 0x0000003b
-  K_LESS = 0x0000003c
-  K_EQUALS = 0x0000003d
-  K_GREATER = 0x0000003e
-  K_QUESTION = 0x0000003f
-  K_AT = 0x00000040
-  K_LEFTBRACKET = 0x0000005b
-  K_BACKSLASH = 0x0000005c
-  K_RIGHTBRACKET = 0x0000005d
-  K_CARET = 0x0000005e
-  K_UNDERSCORE = 0x0000005f
-  K_GRAVE = 0x00000060
-  K_A = 0x00000061
-  K_B = 0x00000062
-  K_C = 0x00000063
-  K_D = 0x00000064
-  K_E = 0x00000065
-  K_F = 0x00000066
-  K_G = 0x00000067
-  K_H = 0x00000068
-  K_I = 0x00000069
-  K_J = 0x0000006a
-  K_K = 0x0000006b
-  K_L = 0x0000006c
-  K_M = 0x0000006d
-  K_N = 0x0000006e
-  K_O = 0x0000006f
-  K_P = 0x00000070
-  K_Q = 0x00000071
-  K_R = 0x00000072
-  K_S = 0x00000073
-  K_T = 0x00000074
-  K_U = 0x00000075
-  K_V = 0x00000076
-  K_W = 0x00000077
-  K_X = 0x00000078
-  K_Y = 0x00000079
-  K_Z = 0x0000007a
-  K_LEFTBRACE = 0x0000007b
-  K_PIPE = 0x0000007c
-  K_RIGHTBRACE = 0x0000007d
-  K_TILDE = 0x0000007e
-  K_DELETE = 0x0000007f
-  K_PLUSMINUS = 0x000000b1
-  K_CAPSLOCK = 0x40000039
-  K_F1 = 0x4000003a
-  K_F2 = 0x4000003b
-  K_F3 = 0x4000003c
-  K_F4 = 0x4000003d
-  K_F5 = 0x4000003e
-  K_F6 = 0x4000003f
-  K_F7 = 0x40000040
-  K_F8 = 0x40000041
-  K_F9 = 0x40000042
-  K_F10 = 0x40000043
-  K_F11 = 0x40000044
-  K_F12 = 0x40000045
-  K_PRINTSCREEN = 0x40000046
-  K_SCROLLLOCK = 0x40000047
-  K_PAUSE = 0x40000048
-  K_INSERT = 0x40000049
-  K_HOME = 0x4000004a
-  K_PAGEUP = 0x4000004b
-  K_END = 0x4000004d
-  K_PAGEDOWN = 0x4000004e
-  K_RIGHT = 0x4000004f
-  K_LEFT = 0x40000050
-  K_DOWN = 0x40000051
-  K_UP = 0x40000052
-  K_NUMLOCKCLEAR = 0x40000053
-  K_KP_DIVIDE = 0x40000054
-  K_KP_MULTIPLY = 0x40000055
-  K_KP_MINUS = 0x40000056
-  K_KP_PLUS = 0x40000057
-  K_KP_ENTER = 0x40000058
-  K_KP_1 = 0x40000059
-  K_KP_2 = 0x4000005a
-  K_KP_3 = 0x4000005b
-  K_KP_4 = 0x4000005c
-  K_KP_5 = 0x4000005d
-  K_KP_6 = 0x4000005e
-  K_KP_7 = 0x4000005f
-  K_KP_8 = 0x40000060
-  K_KP_9 = 0x40000061
-  K_KP_0 = 0x40000062
-  K_KP_PERIOD = 0x40000063
-  K_APPLICATION = 0x40000065
-  K_POWER = 0x40000066
-  K_KP_EQUALS = 0x40000067
-  K_F13 = 0x40000068
-  K_F14 = 0x40000069
-  K_F15 = 0x4000006a
-  K_F16 = 0x4000006b
-  K_F17 = 0x4000006c
-  K_F18 = 0x4000006d
-  K_F19 = 0x4000006e
-  K_F20 = 0x4000006f
-  K_F21 = 0x40000070
-  K_F22 = 0x40000071
-  K_F23 = 0x40000072
-  K_F24 = 0x40000073
-  K_EXECUTE = 0x40000074
-  K_HELP = 0x40000075
-  K_MENU = 0x40000076
-  K_SELECT = 0x40000077
-  K_STOP = 0x40000078
-  K_AGAIN = 0x40000079
-  K_UNDO = 0x4000007a
-  K_CUT = 0x4000007b
-  K_COPY = 0x4000007c
-  K_PASTE = 0x4000007d
-  K_FIND = 0x4000007e
-  K_MUTE = 0x4000007f
-  K_VOLUMEUP = 0x40000080
-  K_VOLUMEDOWN = 0x40000081
-  K_KP_COMMA = 0x40000085
-  K_KP_EQUALSAS400 = 0x40000086
-  K_ALTERASE = 0x40000099
-  K_SYSREQ = 0x4000009a
-  K_CANCEL = 0x4000009b
-  K_CLEAR = 0x4000009c
-  K_PRIOR = 0x4000009d
-  K_RETURN2 = 0x4000009e
-  K_SEPARATOR = 0x4000009f
-  K_OUT = 0x400000a0
-  K_OPER = 0x400000a1
-  K_CLEARAGAIN = 0x400000a2
-  K_CRSEL = 0x400000a3
-  K_EXSEL = 0x400000a4
-  K_KP_00 = 0x400000b0
-  K_KP_000 = 0x400000b1
-  K_THOUSANDSSEPARATOR = 0x400000b2
-  K_DECIMALSEPARATOR = 0x400000b3
-  K_CURRENCYUNIT = 0x400000b4
-  K_CURRENCYSUBUNIT = 0x400000b5
-  K_KP_LEFTPAREN = 0x400000b6
-  K_KP_RIGHTPAREN = 0x400000b7
-  K_KP_LEFTBRACE = 0x400000b8
-  K_KP_RIGHTBRACE = 0x400000b9
-  K_KP_TAB = 0x400000ba
-  K_KP_BACKSPACE = 0x400000bb
-  K_KP_A = 0x400000bc
-  K_KP_B = 0x400000bd
-  K_KP_C = 0x400000be
-  K_KP_D = 0x400000bf
-  K_KP_E = 0x400000c0
-  K_KP_F = 0x400000c1
-  K_KP_XOR = 0x400000c2
-  K_KP_POWER = 0x400000c3
-  K_KP_PERCENT = 0x400000c4
-  K_KP_LESS = 0x400000c5
-  K_KP_GREATER = 0x400000c6
-  K_KP_AMPERSAND = 0x400000c7
-  K_KP_DBLAMPERSAND = 0x400000c8
-  K_KP_VERTICALBAR = 0x400000c9
-  K_KP_DBLVERTICALBAR = 0x400000ca
-  K_KP_COLON = 0x400000cb
-  K_KP_HASH = 0x400000cc
-  K_KP_SPACE = 0x400000cd
-  K_KP_AT = 0x400000ce
-  K_KP_EXCLAM = 0x400000cf
-  K_KP_MEMSTORE = 0x400000d0
-  K_KP_MEMRECALL = 0x400000d1
-  K_KP_MEMCLEAR = 0x400000d2
-  K_KP_MEMADD = 0x400000d3
-  K_KP_MEMSUBTRACT = 0x400000d4
-  K_KP_MEMMULTIPLY = 0x400000d5
-  K_KP_MEMDIVIDE = 0x400000d6
-  K_KP_PLUSMINUS = 0x400000d7
-  K_KP_CLEAR = 0x400000d8
-  K_KP_CLEARENTRY = 0x400000d9
-  K_KP_BINARY = 0x400000da
-  K_KP_OCTAL = 0x400000db
-  K_KP_DECIMAL = 0x400000dc
-  K_KP_HEXADECIMAL = 0x400000dd
-  K_LCTRL = 0x400000e0
-  K_LSHIFT = 0x400000e1
-  K_LALT = 0x400000e2
-  K_LGUI = 0x400000e3
-  K_RCTRL = 0x400000e4
-  K_RSHIFT = 0x400000e5
-  K_RALT = 0x400000e6
-  K_RGUI = 0x400000e7
-  K_MODE = 0x40000101
-  K_SLEEP = 0x40000102
-  K_WAKE = 0x40000103
-  K_CHANNEL_INCREMENT = 0x40000104
-  K_CHANNEL_DECREMENT = 0x40000105
-  K_MEDIA_PLAY = 0x40000106
-  K_MEDIA_PAUSE = 0x40000107
-  K_MEDIA_RECORD = 0x40000108
-  K_MEDIA_FAST_FORWARD = 0x40000109
-  K_MEDIA_REWIND = 0x4000010a
-  K_MEDIA_NEXT_TRACK = 0x4000010b
-  K_MEDIA_PREVIOUS_TRACK = 0x4000010c
-  K_MEDIA_STOP = 0x4000010d
-  K_MEDIA_EJECT = 0x4000010e
-  K_MEDIA_PLAY_PAUSE = 0x4000010f
-  K_MEDIA_SELECT = 0x40000110
-  K_AC_NEW = 0x40000111
-  K_AC_OPEN = 0x40000112
-  K_AC_CLOSE = 0x40000113
-  K_AC_EXIT = 0x40000114
-  K_AC_SAVE = 0x40000115
-  K_AC_PRINT = 0x40000116
-  K_AC_PROPERTIES = 0x40000117
-  K_AC_SEARCH = 0x40000118
-  K_AC_HOME = 0x40000119
-  K_AC_BACK = 0x4000011a
-  K_AC_FORWARD = 0x4000011b
-  K_AC_STOP = 0x4000011c
-  K_AC_REFRESH = 0x4000011d
-  K_AC_BOOKMARKS = 0x4000011e
-  K_SOFTLEFT = 0x4000011f
-  K_SOFTRIGHT = 0x40000120
-  K_CALL = 0x40000121
-  K_ENDCALL = 0x40000122
-  KMOD_NONE = 0x0000
-  KMOD_LSHIFT = 0x0001
-  KMOD_RSHIFT = 0x0002
-  KMOD_LCTRL = 0x0040
-  KMOD_RCTRL = 0x0080
-  KMOD_LALT = 0x0100
-  KMOD_RALT = 0x0200
-  KMOD_LGUI = 0x0400
-  KMOD_RGUI = 0x0800
-  KMOD_NUM = 0x1000
-  KMOD_CAPS = 0x2000
-  KMOD_MODE = 0x4000
-  KMOD_SCROLL = 0x8000
-  KMOD_CTRL = (KMOD_LCTRL | KMOD_RCTRL)
-  KMOD_SHIFT = (KMOD_LSHIFT | KMOD_RSHIFT)
-  KMOD_ALT = (KMOD_LALT | KMOD_RALT)
-  KMOD_GUI = (KMOD_LGUI | KMOD_RGUI)
+  enum Keycode : UInt32
+    SCANCODE_MASK = (1 << 30)
+    UNKNOWN = 0x00000000
+    RETURN = 0x0000000d
+    ESCAPE = 0x0000001b
+    BACKSPACE = 0x00000008
+    TAB = 0x00000009
+    SPACE = 0x00000020
+    EXCLAIM = 0x00000021
+    DBLAPOSTROPHE = 0x00000022
+    HASH = 0x00000023
+    DOLLAR = 0x00000024
+    PERCENT = 0x00000025
+    AMPERSAND = 0x00000026
+    APOSTROPHE = 0x00000027
+    LEFTPAREN = 0x00000028
+    RIGHTPAREN = 0x00000029
+    ASTERISK = 0x0000002a
+    PLUS = 0x0000002b
+    COMMA = 0x0000002c
+    MINUS = 0x0000002d
+    PERIOD = 0x0000002e
+    SLASH = 0x0000002f
+    K0 = 0x00000030
+    K1 = 0x00000031
+    K2 = 0x00000032
+    K3 = 0x00000033
+    K4 = 0x00000034
+    K5 = 0x00000035
+    K6 = 0x00000036
+    K7 = 0x00000037
+    K8 = 0x00000038
+    K9 = 0x00000039
+    COLON = 0x0000003a
+    SEMICOLON = 0x0000003b
+    LESS = 0x0000003c
+    EQUALS = 0x0000003d
+    GREATER = 0x0000003e
+    QUESTION = 0x0000003f
+    AT = 0x00000040
+    LEFTBRACKET = 0x0000005b
+    BACKSLASH = 0x0000005c
+    RIGHTBRACKET = 0x0000005d
+    CARET = 0x0000005e
+    UNDERSCORE = 0x0000005f
+    GRAVE = 0x00000060
+    A = 0x00000061
+    B = 0x00000062
+    C = 0x00000063
+    D = 0x00000064
+    E = 0x00000065
+    F = 0x00000066
+    G = 0x00000067
+    H = 0x00000068
+    I = 0x00000069
+    J = 0x0000006a
+    K = 0x0000006b
+    L = 0x0000006c
+    M = 0x0000006d
+    N = 0x0000006e
+    O = 0x0000006f
+    P = 0x00000070
+    Q = 0x00000071
+    R = 0x00000072
+    S = 0x00000073
+    T = 0x00000074
+    U = 0x00000075
+    V = 0x00000076
+    W = 0x00000077
+    X = 0x00000078
+    Y = 0x00000079
+    Z = 0x0000007a
+    LEFTBRACE = 0x0000007b
+    PIPE = 0x0000007c
+    RIGHTBRACE = 0x0000007d
+    TILDE = 0x0000007e
+    DELETE = 0x0000007f
+    PLUSMINUS = 0x000000b1
+    CAPSLOCK = 0x40000039
+    F1 = 0x4000003a
+    F2 = 0x4000003b
+    F3 = 0x4000003c
+    F4 = 0x4000003d
+    F5 = 0x4000003e
+    F6 = 0x4000003f
+    F7 = 0x40000040
+    F8 = 0x40000041
+    F9 = 0x40000042
+    F10 = 0x40000043
+    F11 = 0x40000044
+    F12 = 0x40000045
+    PRINTSCREEN = 0x40000046
+    SCROLLLOCK = 0x40000047
+    PAUSE = 0x40000048
+    INSERT = 0x40000049
+    HOME = 0x4000004a
+    PAGEUP = 0x4000004b
+    END = 0x4000004d
+    PAGEDOWN = 0x4000004e
+    RIGHT = 0x4000004f
+    LEFT = 0x40000050
+    DOWN = 0x40000051
+    UP = 0x40000052
+    NUMLOCKCLEAR = 0x40000053
+    KP_DIVIDE = 0x40000054
+    KP_MULTIPLY = 0x40000055
+    KP_MINUS = 0x40000056
+    KP_PLUS = 0x40000057
+    KP_ENTER = 0x40000058
+    KP_1 = 0x40000059
+    KP_2 = 0x4000005a
+    KP_3 = 0x4000005b
+    KP_4 = 0x4000005c
+    KP_5 = 0x4000005d
+    KP_6 = 0x4000005e
+    KP_7 = 0x4000005f
+    KP_8 = 0x40000060
+    KP_9 = 0x40000061
+    KP_0 = 0x40000062
+    KP_PERIOD = 0x40000063
+    APPLICATION = 0x40000065
+    POWER = 0x40000066
+    KP_EQUALS = 0x40000067
+    F13 = 0x40000068
+    F14 = 0x40000069
+    F15 = 0x4000006a
+    F16 = 0x4000006b
+    F17 = 0x4000006c
+    F18 = 0x4000006d
+    F19 = 0x4000006e
+    F20 = 0x4000006f
+    F21 = 0x40000070
+    F22 = 0x40000071
+    F23 = 0x40000072
+    F24 = 0x40000073
+    EXECUTE = 0x40000074
+    HELP = 0x40000075
+    MENU = 0x40000076
+    SELECT = 0x40000077
+    STOP = 0x40000078
+    AGAIN = 0x40000079
+    UNDO = 0x4000007a
+    CUT = 0x4000007b
+    COPY = 0x4000007c
+    PASTE = 0x4000007d
+    FIND = 0x4000007e
+    MUTE = 0x4000007f
+    VOLUMEUP = 0x40000080
+    VOLUMEDOWN = 0x40000081
+    KP_COMMA = 0x40000085
+    KP_EQUALSAS400 = 0x40000086
+    ALTERASE = 0x40000099
+    SYSREQ = 0x4000009a
+    CANCEL = 0x4000009b
+    CLEAR = 0x4000009c
+    PRIOR = 0x4000009d
+    RETURN2 = 0x4000009e
+    SEPARATOR = 0x4000009f
+    OUT = 0x400000a0
+    OPER = 0x400000a1
+    CLEARAGAIN = 0x400000a2
+    CRSEL = 0x400000a3
+    EXSEL = 0x400000a4
+    KP_00 = 0x400000b0
+    KP_000 = 0x400000b1
+    THOUSANDSSEPARATOR = 0x400000b2
+    DECIMALSEPARATOR = 0x400000b3
+    CURRENCYUNIT = 0x400000b4
+    CURRENCYSUBUNIT = 0x400000b5
+    KP_LEFTPAREN = 0x400000b6
+    KP_RIGHTPAREN = 0x400000b7
+    KP_LEFTBRACE = 0x400000b8
+    KP_RIGHTBRACE = 0x400000b9
+    KP_TAB = 0x400000ba
+    KP_BACKSPACE = 0x400000bb
+    KP_A = 0x400000bc
+    KP_B = 0x400000bd
+    KP_C = 0x400000be
+    KP_D = 0x400000bf
+    KP_E = 0x400000c0
+    KP_F = 0x400000c1
+    KP_XOR = 0x400000c2
+    KP_POWER = 0x400000c3
+    KP_PERCENT = 0x400000c4
+    KP_LESS = 0x400000c5
+    KP_GREATER = 0x400000c6
+    KP_AMPERSAND = 0x400000c7
+    KP_DBLAMPERSAND = 0x400000c8
+    KP_VERTICALBAR = 0x400000c9
+    KP_DBLVERTICALBAR = 0x400000ca
+    KP_COLON = 0x400000cb
+    KP_HASH = 0x400000cc
+    KP_SPACE = 0x400000cd
+    KP_AT = 0x400000ce
+    KP_EXCLAM = 0x400000cf
+    KP_MEMSTORE = 0x400000d0
+    KP_MEMRECALL = 0x400000d1
+    KP_MEMCLEAR = 0x400000d2
+    KP_MEMADD = 0x400000d3
+    KP_MEMSUBTRACT = 0x400000d4
+    KP_MEMMULTIPLY = 0x400000d5
+    KP_MEMDIVIDE = 0x400000d6
+    KP_PLUSMINUS = 0x400000d7
+    KP_CLEAR = 0x400000d8
+    KP_CLEARENTRY = 0x400000d9
+    KP_BINARY = 0x400000da
+    KP_OCTAL = 0x400000db
+    KP_DECIMAL = 0x400000dc
+    KP_HEXADECIMAL = 0x400000dd
+    LCTRL = 0x400000e0
+    LSHIFT = 0x400000e1
+    LALT = 0x400000e2
+    LGUI = 0x400000e3
+    RCTRL = 0x400000e4
+    RSHIFT = 0x400000e5
+    RALT = 0x400000e6
+    RGUI = 0x400000e7
+    MODE = 0x40000101
+    SLEEP = 0x40000102
+    WAKE = 0x40000103
+    CHANNEL_INCREMENT = 0x40000104
+    CHANNEL_DECREMENT = 0x40000105
+    MEDIA_PLAY = 0x40000106
+    MEDIA_PAUSE = 0x40000107
+    MEDIA_RECORD = 0x40000108
+    MEDIA_FAST_FORWARD = 0x40000109
+    MEDIA_REWIND = 0x4000010a
+    MEDIA_NEXT_TRACK = 0x4000010b
+    MEDIA_PREVIOUS_TRACK = 0x4000010c
+    MEDIA_STOP = 0x4000010d
+    MEDIA_EJECT = 0x4000010e
+    MEDIA_PLAY_PAUSE = 0x4000010f
+    MEDIA_SELECT = 0x40000110
+    AC_NEW = 0x40000111
+    AC_OPEN = 0x40000112
+    AC_CLOSE = 0x40000113
+    AC_EXIT = 0x40000114
+    AC_SAVE = 0x40000115
+    AC_PRINT = 0x40000116
+    AC_PROPERTIES = 0x40000117
+    AC_SEARCH = 0x40000118
+    AC_HOME = 0x40000119
+    AC_BACK = 0x4000011a
+    AC_FORWARD = 0x4000011b
+    AC_STOP = 0x4000011c
+    AC_REFRESH = 0x4000011d
+    AC_BOOKMARKS = 0x4000011e
+    SOFTLEFT = 0x4000011f
+    SOFTRIGHT = 0x40000120
+    CALL = 0x40000121
+    ENDCALL = 0x40000122
+  end
 
-  alias Keycode = UInt32
-  alias Keymod = UInt16
+  enum Keymod : UInt16
+    NONE = 0x0000
+    LSHIFT = 0x0001
+    RSHIFT = 0x0002
+    LCTRL = 0x0040
+    RCTRL = 0x0080
+    LALT = 0x0100
+    RALT = 0x0200
+    LGUI = 0x0400
+    RGUI = 0x0800
+    NUM = 0x1000
+    CAPS = 0x2000
+    MODE = 0x4000
+    SCROLL = 0x8000
+    CTRL = (LCTRL | RCTRL)
+    SHIFT = (LSHIFT | RSHIFT)
+    ALT = (LALT | RALT)
+    GUI = (LGUI | RGUI)
+  end
 
   # SDL_loadso
 
@@ -3234,16 +3249,20 @@ lib LibSDL
 
   # SDL_messagebox
 
-  MESSAGEBOX_ERROR = 0x00000010
-  MESSAGEBOX_WARNING = 0x00000020
-  MESSAGEBOX_INFORMATION = 0x00000040
-  MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT = 0x00000080
-  MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT = 0x00000100
-  MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT = 0x00000001
-  MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT = 0x00000002
+  @[Flags]
+  enum MessageBoxFlags : UInt32
+    ERROR = 0x00000010
+    WARNING = 0x00000020
+    INFORMATION = 0x00000040
+    BUTTONS_LEFT_TO_RIGHT = 0x00000080
+    BUTTONS_RIGHT_TO_LEFT = 0x00000100
+  end
 
-  alias MessageBoxFlags = UInt32
-  alias MessageBoxButtonFlags = UInt32
+  @[Flags]
+  enum MessageBoxButtonFlags : UInt32
+    RETURNKEY_DEFAULT = 0x00000001
+    ESCAPEKEY_DEFAULT = 0x00000002
+  end
 
   enum MessageBoxColorType
     BACKGROUND
@@ -3293,20 +3312,22 @@ lib LibSDL
 
   # SDL_mouse
 
-  BUTTON_LEFT = 1
-  BUTTON_MIDDLE = 2
-  BUTTON_RIGHT = 3
-  BUTTON_X1 = 4
-  BUTTON_X2 = 5
-  BUTTON_LMASK = BUTTON_MASK(BUTTON_LEFT)
-  BUTTON_MMASK = BUTTON_MASK(BUTTON_MIDDLE)
-  BUTTON_RMASK = BUTTON_MASK(BUTTON_RIGHT)
-  BUTTON_X1MASK = BUTTON_MASK(BUTTON_X1)
-  BUTTON_X2MASK = BUTTON_MASK(BUTTON_X2)
-
   type Cursor = Void
   alias MouseID = UInt32
-  alias MouseButtonFlags = UInt32
+
+  @[Flags]
+  enum MouseButtonFlags : UInt32
+    LEFT = 1
+    MIDDLE = 2
+    RIGHT = 3
+    X1 = 4
+    X2 = 5
+    LMASK = 1 << (LEFT - 1)
+    MMASK = 1 << (MIDDLE - 1)
+    RMASK = 1 << (RIGHT - 1)
+    X1MASK = 1 << (X1 - 1)
+    X2MASK = 1 << (X2 - 1)
+  end
 
   enum SystemCursor
     DEFAULT
@@ -3362,16 +3383,18 @@ lib LibSDL
 
   # SDL_pen
 
-  PEN_INPUT_DOWN = (1 << 0)
-  PEN_INPUT_BUTTON_1 = (1 << 1)
-  PEN_INPUT_BUTTON_2 = (1 << 2)
-  PEN_INPUT_BUTTON_3 = (1 << 3)
-  PEN_INPUT_BUTTON_4 = (1 << 4)
-  PEN_INPUT_BUTTON_5 = (1 << 5)
-  PEN_INPUT_ERASER_TIP = (1 << 30)
-
   alias PenID = UInt32
-  alias PenInputFlags = UInt32
+
+  @[Flags]
+  enum PenInputFlags : UInt32
+    DOWN = (1 << 0)
+    BUTTON_1 = (1 << 1)
+    BUTTON_2 = (1 << 2)
+    BUTTON_3 = (1 << 3)
+    BUTTON_4 = (1 << 4)
+    BUTTON_5 = (1 << 5)
+    ERASER_TIP = (1 << 30)
+  end
 
   enum PenAxis
     PRESSURE
@@ -4055,15 +4078,17 @@ lib LibSDL
 
   # SDL_surface
 
-  SURFACE_PREALLOCATED = 0x00000001
-  SURFACE_LOCK_NEEDED = 0x00000002
-  SURFACE_LOCKED = 0x00000004
-  SURFACE_SIMD_ALIGNED = 0x00000008
   PROP_SURFACE_SDR_WHITE_POINT_FLOAT = "SDL.surface.SDR_white_point"
   PROP_SURFACE_HDR_HEADROOM_FLOAT = "SDL.surface.HDR_headroom"
   PROP_SURFACE_TONEMAP_OPERATOR_STRING = "SDL.surface.tonemap"
 
-  alias SurfaceFlags = UInt32
+  @[Flags]
+  enum SurfaceFlags : UInt32
+    PREALLOCATED = 0x00000001
+    LOCK_NEEDED = 0x00000002
+    LOCKED = 0x00000004
+    SIMD_ALIGNED = 0x00000008
+  end
 
   enum ScaleMode
     NEAREST
@@ -4141,16 +4166,18 @@ lib LibSDL
 
   # SDL_tray
 
-  TRAYENTRY_BUTTON = 0x00000001
-  TRAYENTRY_CHECKBOX = 0x00000002
-  TRAYENTRY_SUBMENU = 0x00000004
-  TRAYENTRY_DISABLED = 0x80000000
-  TRAYENTRY_CHECKED = 0x40000000
-
   type Tray = Void
   type TrayMenu = Void
   type TrayEntry = Void
-  alias TrayEntryFlags = UInt32
+
+  @[Flags]
+  enum TrayEntryFlags : UInt32
+    BUTTON = 0x00000001
+    CHECKBOX = 0x00000002
+    SUBMENU = 0x00000004
+    DISABLED = 0x80000000
+    CHECKED = 0x40000000
+  end
 
   fun create_tray = SDL_CreateTray(icon : Surface*, tooltip : LibC::Char*) : Tray*
   fun set_tray_icon = SDL_SetTrayIcon(tray : Tray*, icon : Surface*) : Void
@@ -4214,49 +4241,16 @@ lib LibSDL
 
   alias GLContextState = Void
 
+  WINDOW_SURFACE_VSYNC_DISABLED = 0
+  WINDOW_SURFACE_VSYNC_ADAPTIVE = (-1)
+
   # SDL_video
 
   PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER = "SDL.video.wayland.wl_display"
-  WINDOW_FULLSCREEN = UInt64.new(0x0000000000000001)
-  WINDOW_OPENGL = UInt64.new(0x0000000000000002)
-  WINDOW_OCCLUDED = UInt64.new(0x0000000000000004)
-  WINDOW_HIDDEN = UInt64.new(0x0000000000000008)
-  WINDOW_BORDERLESS = UInt64.new(0x0000000000000010)
-  WINDOW_RESIZABLE = UInt64.new(0x0000000000000020)
-  WINDOW_MINIMIZED = UInt64.new(0x0000000000000040)
-  WINDOW_MAXIMIZED = UInt64.new(0x0000000000000080)
-  WINDOW_MOUSE_GRABBED = UInt64.new(0x0000000000000100)
-  WINDOW_INPUT_FOCUS = UInt64.new(0x0000000000000200)
-  WINDOW_MOUSE_FOCUS = UInt64.new(0x0000000000000400)
-  WINDOW_EXTERNAL = UInt64.new(0x0000000000000800)
-  WINDOW_MODAL = UInt64.new(0x0000000000001000)
-  WINDOW_HIGH_PIXEL_DENSITY = UInt64.new(0x0000000000002000)
-  WINDOW_MOUSE_CAPTURE = UInt64.new(0x0000000000004000)
-  WINDOW_MOUSE_RELATIVE_MODE = UInt64.new(0x0000000000008000)
-  WINDOW_ALWAYS_ON_TOP = UInt64.new(0x0000000000010000)
-  WINDOW_UTILITY = UInt64.new(0x0000000000020000)
-  WINDOW_TOOLTIP = UInt64.new(0x0000000000040000)
-  WINDOW_POPUP_MENU = UInt64.new(0x0000000000080000)
-  WINDOW_KEYBOARD_GRABBED = UInt64.new(0x0000000000100000)
-  WINDOW_VULKAN = UInt64.new(0x0000000010000000)
-  WINDOW_METAL = UInt64.new(0x0000000020000000)
-  WINDOW_TRANSPARENT = UInt64.new(0x0000000040000000)
-  WINDOW_NOT_FOCUSABLE = UInt64.new(0x0000000080000000)
   WINDOWPOS_UNDEFINED_MASK = 0x1FFF0000
   WINDOWPOS_UNDEFINED = (LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)
   WINDOWPOS_CENTERED_MASK = 0x2FFF0000
   WINDOWPOS_CENTERED = (LibSDL::WINDOWPOS_CENTERED_MASK | 0)
-  GL_CONTEXT_PROFILE_CORE = 0x0001
-  GL_CONTEXT_PROFILE_COMPATIBILITY = 0x0002
-  GL_CONTEXT_PROFILE_ES = 0x0004
-  GL_CONTEXT_DEBUG_FLAG = 0x0001
-  GL_CONTEXT_FORWARD_COMPATIBLE_FLAG = 0x0002
-  GL_CONTEXT_ROBUST_ACCESS_FLAG = 0x0004
-  GL_CONTEXT_RESET_ISOLATION_FLAG = 0x0008
-  GL_CONTEXT_RELEASE_BEHAVIOR_NONE = 0x0000
-  GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH = 0x0001
-  GL_CONTEXT_RESET_NO_NOTIFICATION = 0x0000
-  GL_CONTEXT_RESET_LOSE_CONTEXT = 0x0001
   PROP_DISPLAY_HDR_ENABLED_BOOLEAN = "SDL.display.HDR_enabled"
   PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER = "SDL.display.KMSDRM.panel_orientation"
   PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN = "SDL.window.create.always_on_top"
@@ -4328,24 +4322,67 @@ lib LibSDL
   PROP_WINDOW_X11_DISPLAY_POINTER = "SDL.window.x11.display"
   PROP_WINDOW_X11_SCREEN_NUMBER = "SDL.window.x11.screen"
   PROP_WINDOW_X11_WINDOW_NUMBER = "SDL.window.x11.window"
-  WINDOW_SURFACE_VSYNC_DISABLED = 0
-  WINDOW_SURFACE_VSYNC_ADAPTIVE = (-1)
 
   type DisplayModeData = Void
   type Window = Void
   alias GLContext = GLContextState*
   alias DisplayID = UInt32
   alias WindowID = UInt32
-  alias WindowFlags = UInt64
   type EGLDisplay = Void*
   type EGLConfig = Void*
   type EGLSurface = Void*
   alias EGLAttrib = LibC::Int*
   alias EGLint = LibC::Int
   alias GLProfile = UInt32
-  alias GLContextFlag = UInt32
-  alias GLContextReleaseFlag = UInt32
   alias GLContextResetNotification = UInt32
+
+  @[Flags]
+  enum WindowFlags : UInt64
+    FULLSCREEN = 0x0000000000000001_u64
+    OPENGL = 0x0000000000000002_u64
+    OCCLUDED = 0x0000000000000004_u64
+    HIDDEN = 0x0000000000000008_u64
+    BORDERLESS = 0x0000000000000010_u64
+    RESIZABLE = 0x0000000000000020_u64
+    MINIMIZED = 0x0000000000000040_u64
+    MAXIMIZED = 0x0000000000000080_u64
+    MOUSE_GRABBED = 0x0000000000000100_u64
+    INPUT_FOCUS = 0x0000000000000200_u64
+    MOUSE_FOCUS = 0x0000000000000400_u64
+    EXTERNAL = 0x0000000000000800_u64
+    MODAL = 0x0000000000001000_u64
+    HIGH_PIXEL_DENSITY = 0x0000000000002000_u64
+    MOUSE_CAPTURE = 0x0000000000004000_u64
+    MOUSE_RELATIVE_MODE = 0x0000000000008000_u64
+    ALWAYS_ON_TOP = 0x0000000000010000_u64
+    UTILITY = 0x0000000000020000_u64
+    TOOLTIP = 0x0000000000040000_u64
+    POPUP_MENU = 0x0000000000080000_u64
+    KEYBOARD_GRABBED = 0x0000000000100000_u64
+    VULKAN = 0x0000000010000000_u64
+    METAL = 0x0000000020000000_u64
+    TRANSPARENT = 0x0000000040000000_u64
+    NOT_FOCUSABLE = 0x0000000080000000_u64
+  end
+
+  @[Flags]
+  enum GLContextFlag : UInt32
+    PROFILE_CORE = 0x0001
+    PROFILE_COMPATIBILITY = 0x0002
+    PROFILE_ES = 0x0004
+    DEBUG_FLAG = 0x0001
+    FORWARD_COMPATIBLE_FLAG = 0x0002
+    ROBUST_ACCESS_FLAG = 0x0004
+    RESET_ISOLATION_FLAG = 0x0008
+    RESET_NO_NOTIFICATION = 0x0000
+    RESET_LOSE_CONTEXT = 0x0001
+  end
+
+  @[Flags]
+  enum GLContextReleaseFlag : UInt32
+    NONE = 0x0000
+    FLUSH = 0x0001
+  end
 
   enum SystemTheme
     UNKNOWN
@@ -4623,7 +4660,7 @@ module LibSDLMacro
   # SDL_keycode
 
   macro scancode_to_keycode(x)
-    x | LibSDL::K_SCANCODE_MASK
+    x | LibSDL::Keycode::SCANCODE_MASK
   end
 
   # SDL_main
@@ -4679,7 +4716,7 @@ module LibSDLMacro
 
   macro bytesperpixel(format)
     if LibSDLMacro.ispixelformat_fourcc(format)
-      if (format == LibSDL::PIXELFORMAT_YUY2) || (format == LibSDL::PIXELFORMAT_UYVY) || (format == LibSDL::PIXELFORMAT_YVYU) || (format == LibSDL::PIXELFORMAT_P010)
+      if (format == LibSDL::PixelFormat::YUY2) || (format == LibSDL::PixelFormat::UYVY) || (format == LibSDL::PixelFormat::YVYU) || (format == LibSDL::PixelFormat::P010)
         2
       else
         1
@@ -4690,27 +4727,27 @@ module LibSDLMacro
   end
 
   macro ispixelformat_indexed(format)
-    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_INDEX1) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_INDEX2) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_INDEX4) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_INDEX8))
+    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PixelType::INDEX1) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::INDEX2) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::INDEX4) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::INDEX8))
   end
 
   macro ispixelformat_packed(format)
-    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_PACKED8) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_PACKED16) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_PACKED32))
+    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PixelType::PACKED8) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::PACKED16) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::PACKED32))
   end
 
   macro ispixelformat_array(format)
-    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_ARRAYU8) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_ARRAYU16) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_ARRAYU32) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_ARRAYF16) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_ARRAYF32))
+    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYU8) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYU16) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYU32) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYF16) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYF32))
   end
 
   macro ispixelformat_10bit(format)
-    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_PACKED32) && (LibSDLMacro.pixeltype(format) == LibSDL::PACKEDLAYOUT_2101010))
+    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PixelType::PACKED32) && (LibSDLMacro.pixeltype(format) == LibSDL::PackedLayot::PACKEDLAYOUT_2101010))
   end
 
   macro ispixelformat_float(format)
-    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_ARRAYF16) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_ARRAYF32))
+    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYF16) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYF32))
   end
 
   macro ispixelformat_alpha(format)
-    (LibSDLMacro.ispixelformat_packed(format) && ((LibSDLMacro.pixelorder(format) == LibSDL::PACKEDORDER_ARGB) || (LibSDLMacro.pixelorder(format) == LibSDL::PACKEDORDER_RGBA) || (LibSDLMacro.pixelorder(format) == LibSDL::PACKEDORDER_ABGR) || (LibSDLMacro.pixelorder(format) == LibSDL::PACKEDORDER_BGRA))) || (LibSDLMacro.ispixelformat_array(format) && ((LibSDLMacro.pixelorder(format) == LibSDL::ARRAYORDER_ARGB) || (LibSDLMacro.pixelorder(format) == LibSDL::ARRAYORDER_RGBA) || (LibSDLMacro.pixelorder(format) == LibSDL::ARRAYORDER_ABGR) || (LibSDLMacro.pixelorder(format) == LibSDL::ARRAYORDER_BGRA)))
+    (LibSDLMacro.ispixelformat_packed(format) && ((LibSDLMacro.pixelorder(format) == LibSDL::PackedOrder::ARGB) || (LibSDLMacro.pixelorder(format) == LibSDL::PackedOrder::RGBA) || (LibSDLMacro.pixelorder(format) == LibSDL::PackedOrder::ABGR) || (LibSDLMacro.pixelorder(format) == LibSDL::PackedOrder::BGRA))) || (LibSDLMacro.ispixelformat_array(format) && ((LibSDLMacro.pixelorder(format) == LibSDL::ARRAYORDER_ARGB) || (LibSDLMacro.pixelorder(format) == LibSDL::ArrayOrder::RGBA) || (LibSDLMacro.pixelorder(format) == LibSDL::ArrayOrder::ABGR) || (LibSDLMacro.pixelorder(format) == LibSDL::ArrayOrder::BGRA)))
   end
 
   macro ispixelformat_fourcc(format)
@@ -4746,23 +4783,23 @@ module LibSDLMacro
   end
 
   macro iscolorspace_matrix_bt601(cspace)
-    LibSDLMacro.colorspacematrix(cspace) == LibSDL::MATRIX_COEFFICIENTS_BT601 || LibSDLMacro.colorspacematrix(cspace) == LibSDL::MATRIX_COEFFICIENTS_BT470BG
+    LibSDLMacro.colorspacematrix(cspace) == LibSDL::MatrixCoefficients::BT601 || LibSDLMacro.colorspacematrix(cspace) == LibSDL::MatrixCoefficients::BT470BG
   end
 
   macro iscolorspace_matrix_bt709(cspace)
-    LibSDLMacro.colorspacematrix(cspace) == LibSDL::MATRIX_COEFFICIENTS_BT709
+    LibSDLMacro.colorspacematrix(cspace) == LibSDL::MatrixCoefficients::BT709
   end
 
   macro iscolorspace_matrix_bt2020_ncl(cspace)
-    LibSDLMacro.colorspacematrix(cspace) == LibSDL::MATRIX_COEFFICIENTS_BT2020_NCL
+    LibSDLMacro.colorspacematrix(cspace) == LibSDL::MatrixCoefficients::BT2020_NCL
   end
 
   macro iscolorspace_limited_range(cspace)
-    LibSDLMacro.colorspacerange(cspace) != LibSDL::COLOR_RANGE_FULL
+    LibSDLMacro.colorspacerange(cspace) != LibSDL::ColorRange::FULL
   end
 
   macro iscolorspace_full_range(cspace)
-    LibSDLMacro.colorspacerange(cspace) == LibSDL::COLOR_RANGE_FULL
+    LibSDLMacro.colorspacerange(cspace) == LibSDL::ColorRange::FULL
   end
 
   # SDL_rect
@@ -4814,7 +4851,7 @@ module LibSDLMacro
   # SDL_surface
 
   macro mustlock(s)
-    (s.value.flags & LibSDL::SURFACE_LOCK_NEEDED) == LibSDL::SURFACE_LOCK_NEEDED
+    (s.value.flags & LibSDL::SurfaceFlags::LOCK_NEEDED) == LibSDL::SurfaceFlags::LOCK_NEEDED
   end
 
   # SDL_video

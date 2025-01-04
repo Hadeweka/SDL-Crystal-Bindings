@@ -33,6 +33,7 @@ lib LibSDL
   alias TTFFontStyleFlags = UInt32
   alias TTFSubStringFlags = UInt32
 
+  @[Flags]
   enum TTFHintingFlags
     NORMAL = 0
     LIGHT

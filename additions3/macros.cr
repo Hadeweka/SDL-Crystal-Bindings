@@ -86,7 +86,7 @@ module LibSDLMacro
   # SDL_keycode
 
   macro scancode_to_keycode(x)
-    x | LibSDL::K_SCANCODE_MASK
+    x | LibSDL::Keycode::SCANCODE_MASK
   end
 
   # SDL_main
@@ -142,7 +142,7 @@ module LibSDLMacro
 
   macro bytesperpixel(format)
     if LibSDLMacro.ispixelformat_fourcc(format)
-      if (format == LibSDL::PIXELFORMAT_YUY2) || (format == LibSDL::PIXELFORMAT_UYVY) || (format == LibSDL::PIXELFORMAT_YVYU) || (format == LibSDL::PIXELFORMAT_P010)
+      if (format == LibSDL::PixelFormat::YUY2) || (format == LibSDL::PixelFormat::UYVY) || (format == LibSDL::PixelFormat::YVYU) || (format == LibSDL::PixelFormat::P010)
         2
       else
         1
@@ -153,27 +153,27 @@ module LibSDLMacro
   end
 
   macro ispixelformat_indexed(format)
-    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_INDEX1) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_INDEX2) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_INDEX4) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_INDEX8))
+    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PixelType::INDEX1) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::INDEX2) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::INDEX4) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::INDEX8))
   end
 
   macro ispixelformat_packed(format)
-    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_PACKED8) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_PACKED16) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_PACKED32))
+    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PixelType::PACKED8) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::PACKED16) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::PACKED32))
   end
 
   macro ispixelformat_array(format)
-    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_ARRAYU8) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_ARRAYU16) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_ARRAYU32) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_ARRAYF16) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_ARRAYF32))
+    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYU8) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYU16) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYU32) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYF16) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYF32))
   end
 
   macro ispixelformat_10bit(format)
-    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_PACKED32) && (LibSDLMacro.pixeltype(format) == LibSDL::PACKEDLAYOUT_2101010))
+    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PixelType::PACKED32) && (LibSDLMacro.pixeltype(format) == LibSDL::PackedLayot::PACKEDLAYOUT_2101010))
   end
 
   macro ispixelformat_float(format)
-    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_ARRAYF16) || (LibSDLMacro.pixeltype(format) == LibSDL::PIXELTYPE_ARRAYF32))
+    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYF16) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYF32))
   end
 
   macro ispixelformat_alpha(format)
-    (LibSDLMacro.ispixelformat_packed(format) && ((LibSDLMacro.pixelorder(format) == LibSDL::PACKEDORDER_ARGB) || (LibSDLMacro.pixelorder(format) == LibSDL::PACKEDORDER_RGBA) || (LibSDLMacro.pixelorder(format) == LibSDL::PACKEDORDER_ABGR) || (LibSDLMacro.pixelorder(format) == LibSDL::PACKEDORDER_BGRA))) || (LibSDLMacro.ispixelformat_array(format) && ((LibSDLMacro.pixelorder(format) == LibSDL::ARRAYORDER_ARGB) || (LibSDLMacro.pixelorder(format) == LibSDL::ARRAYORDER_RGBA) || (LibSDLMacro.pixelorder(format) == LibSDL::ARRAYORDER_ABGR) || (LibSDLMacro.pixelorder(format) == LibSDL::ARRAYORDER_BGRA)))
+    (LibSDLMacro.ispixelformat_packed(format) && ((LibSDLMacro.pixelorder(format) == LibSDL::PackedOrder::ARGB) || (LibSDLMacro.pixelorder(format) == LibSDL::PackedOrder::RGBA) || (LibSDLMacro.pixelorder(format) == LibSDL::PackedOrder::ABGR) || (LibSDLMacro.pixelorder(format) == LibSDL::PackedOrder::BGRA))) || (LibSDLMacro.ispixelformat_array(format) && ((LibSDLMacro.pixelorder(format) == LibSDL::ARRAYORDER_ARGB) || (LibSDLMacro.pixelorder(format) == LibSDL::ArrayOrder::RGBA) || (LibSDLMacro.pixelorder(format) == LibSDL::ArrayOrder::ABGR) || (LibSDLMacro.pixelorder(format) == LibSDL::ArrayOrder::BGRA)))
   end
 
   macro ispixelformat_fourcc(format)
@@ -209,23 +209,23 @@ module LibSDLMacro
   end
 
   macro iscolorspace_matrix_bt601(cspace)
-    LibSDLMacro.colorspacematrix(cspace) == LibSDL::MATRIX_COEFFICIENTS_BT601 || LibSDLMacro.colorspacematrix(cspace) == LibSDL::MATRIX_COEFFICIENTS_BT470BG
+    LibSDLMacro.colorspacematrix(cspace) == LibSDL::MatrixCoefficients::BT601 || LibSDLMacro.colorspacematrix(cspace) == LibSDL::MatrixCoefficients::BT470BG
   end
 
   macro iscolorspace_matrix_bt709(cspace)
-    LibSDLMacro.colorspacematrix(cspace) == LibSDL::MATRIX_COEFFICIENTS_BT709
+    LibSDLMacro.colorspacematrix(cspace) == LibSDL::MatrixCoefficients::BT709
   end
 
   macro iscolorspace_matrix_bt2020_ncl(cspace)
-    LibSDLMacro.colorspacematrix(cspace) == LibSDL::MATRIX_COEFFICIENTS_BT2020_NCL
+    LibSDLMacro.colorspacematrix(cspace) == LibSDL::MatrixCoefficients::BT2020_NCL
   end
 
   macro iscolorspace_limited_range(cspace)
-    LibSDLMacro.colorspacerange(cspace) != LibSDL::COLOR_RANGE_FULL
+    LibSDLMacro.colorspacerange(cspace) != LibSDL::ColorRange::FULL
   end
 
   macro iscolorspace_full_range(cspace)
-    LibSDLMacro.colorspacerange(cspace) == LibSDL::COLOR_RANGE_FULL
+    LibSDLMacro.colorspacerange(cspace) == LibSDL::ColorRange::FULL
   end
 
   # SDL_rect
@@ -277,7 +277,7 @@ module LibSDLMacro
   # SDL_surface
 
   macro mustlock(s)
-    (s.value.flags & LibSDL::SURFACE_LOCK_NEEDED) == LibSDL::SURFACE_LOCK_NEEDED
+    (s.value.flags & LibSDL::SurfaceFlags::LOCK_NEEDED) == LibSDL::SurfaceFlags::LOCK_NEEDED
   end
 
   # SDL_video
