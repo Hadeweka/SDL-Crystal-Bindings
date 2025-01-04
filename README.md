@@ -90,15 +90,44 @@ If you encounter any problems while generating the bindings, please open an issu
 
 ## Roadmap
 
-### Future releases
+### Version 0.2.1
+
+NOTE: This will be the last version with SDL2 alone. After that, release tags will be split into
+SDL2 and SDL3.
+
+Furthermore, the syntax of the bindings will change in the newer versions to avoid some
+verbosity. If you want to maintain compatibility, you can still use the 0.2 version (which will also
+get a separate branch).
+
+#### Usability
+
+* [X] Update to newer SDL2 version (with slightly different syntax)
+
+#### Bugfixes
+
+* [X] Minor bugfixes in version macros
+
+### Version 0.3.0
+
+#### Features
+
+* [X] Support for SDL3
+* [X] Many examples for SDL3
+
+#### Breaking changes
+
+* [ ] Stronger typing for internal types (instead of a simple alias)
+* [ ] Enums get less verbose syntax (without redundant prefixes)
+* [ ] Pseudo-enums (like keycodes) become true enums
+
+### Wishlist for future releases
 
 #### Features
 
 * [ ] Merging of all functions and macros into one single module (if possible and helpful)
 * [ ] More examples
 * [ ] Documentation
-* [X] Support for SDL3
-* [ ] Better branch handling between SDL2 and SDL3
+* [ ] Automated binding generation via CI
 
 #### Usability
 
