@@ -19,9 +19,9 @@ Depending on the SDL version, you should use either the main branch (for SDL 2) 
 Simply add this shard (`sdl-crystal-bindings`) to your `shard.yml`.
 This repository comes with pre-generated binding files.
 
-Then, use `require "sdl-crystal-bindings"` (or `"sdl-crystal-bindings/sdl3-crystal-bindings"` for SDL3).
+Then, use `require "sdl-crystal-bindings/sdl3-crystal-bindings"`.
 
-For the other SDL libraries, you can use `require "sdl-crystal-bindings/sdl-image-bindings"`, for example (or `"sdl3-image-bindings"` for SDL3).
+For the other SDL libraries, you can use `require "sdl-crystal-bindings/sdl3-image-bindings"`, for example.
 Note that the examples use the relative paths to the respective files.
 
 Regular SDL functions, structs, enums, unions and constants are accessible using the `LibSDL` namespace, while
@@ -41,61 +41,35 @@ change the relative paths in the examples for them to work if not started from t
 
 To update the bindings, you need to have Ruby, gcc and clang installed on your system (ideally Linux or it might not work).
 
-Just call `ruby generate.rb` from the main directory of this shard and the files under `src/` will be generated or updated.
+Just call `ruby generate3.rb` from the main directory of this shard and the files under `src/` will be generated or updated.
 The script will download the newest SDL headers and generate automated bindings.
 
 If you need to add manual changes, please either use the filters from the script to exclude structs and/or modify the
-files in the `additions` directory to add specific bindings manually.
+files in the `additions3` directory to add specific bindings manually.
 
 If you encounter any problems while generating the bindings, please open an issue.
 
 ## Changelog
 
-### Version 0.0.1
-
-#### Features
-
-* Binding generator
-* Working bindings
-* Bindings for sdl_image, sdl_mixer and sdl_ttf
-
-### Version 0.1.0
-
-#### Features
-
-* Continuous integration
-
-#### Breaking changes
-
-* Examples in separate submodule
-* Decoupling of the different libraries
-
-#### Bugfixes
-
-* Fixed some binding inconsistencies
-
-### Version 0.2.0
-
-#### Features
-
-* Updated to recent SDL2 version
-
-#### Bugfixes
-
-* Build script now correctly raises error on Windows
+No release for SDL3 yet.
 
 ## Roadmap
 
-### Future releases
+### Version 0.3.0
+
+#### Features
+
+* [X] Support for SDL3
+* [X] Many examples for SDL3
+
+### Wishlist
 
 #### Features
 
 * [ ] Merging of all functions and macros into one single module (if possible and helpful)
 * [ ] Even more examples
 * [ ] Documentation
-* [X] Support for SDL3
-* [ ] Better branch handling between SDL2 and SDL3
-* [ ] Port flags into actual flag enums for consistency
+* [ ] Automated binding generation via CI
 
 #### Usability
 
