@@ -74,3 +74,4 @@ No release for SDL3 yet.
 #### Usability
 
 * [ ] Fix weird formatting in some header files
+* [ ] Add original C struct/function/constant/macro names as comments
