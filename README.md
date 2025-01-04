@@ -12,16 +12,14 @@ You need to have SDL installed or the SDL library files accessible by Crystal fo
 
 For the other SDL library bindings, you also need to have SDL_image, SDL_mixer and SDL_ttf available.
 
-Depending on the SDL version, you should use either the main branch (for SDL 2) or the sdl3 branch (for SDL 3).
-
 ## Usage
 
 Simply add this shard (`sdl-crystal-bindings`) to your `shard.yml`.
 This repository comes with pre-generated binding files.
 
-Then, use `require "sdl-crystal-bindings"` (or `"sdl-crystal-bindings/sdl3-crystal-bindings"` for SDL3).
+Then, use `require "sdl-crystal-bindings"`.
 
-For the other SDL libraries, you can use `require "sdl-crystal-bindings/sdl-image-bindings"`, for example (or `"sdl3-image-bindings"` for SDL3).
+For the other SDL libraries, you can use `require "sdl-crystal-bindings/sdl-image-bindings"`, for example.
 Note that the examples use the relative paths to the respective files.
 
 Regular SDL functions, structs, enums, unions and constants are accessible using the `LibSDL` namespace, while
@@ -37,8 +35,6 @@ functions are in snake_case, while structs are in CamelCase).
 Currently, there is only one example for SDL2, as the previous examples were based on LazyFoo's tutorial (https://lazyfoo.net/tutorials/SDL/).
 However, they don't want their examples being used in foreign code (even if ported), so I decided to remove them in order to respect that questionable decision.
 See also (https://lazyfoo.net/faq.php) for details.
-
-For SDL3, there are many examples from the official SDL website (with more to come).
 
 If you want to see a specific example or have questions regarding the bindings and their usage, feel free to open an issue or pull request.
 
@@ -88,8 +84,6 @@ If you encounter any problems while generating the bindings, please open an issu
 
 * Build script now correctly raises error on Windows
 
-## Roadmap
-
 ### Version 0.2.1
 
 NOTE: This will be the last version with SDL2 alone. After that, release tags will be split into
@@ -101,34 +95,8 @@ get a separate branch).
 
 #### Usability
 
-* [X] Update to newer SDL2 version (with slightly different syntax)
+* Update to newer SDL2 version (with slightly different syntax)
 
 #### Bugfixes
 
-* [X] Minor bugfixes in version macros
-
-### Version 0.3.0
-
-#### Features
-
-* [X] Support for SDL3
-* [X] Many examples for SDL3
-
-#### Breaking changes
-
-* [ ] Stronger typing for internal types (instead of a simple alias)
-* [ ] Enums get less verbose syntax (without redundant prefixes)
-* [ ] Pseudo-enums (like keycodes) become true enums
-
-### Wishlist for future releases
-
-#### Features
-
-* [ ] Merging of all functions and macros into one single module (if possible and helpful)
-* [ ] More examples
-* [ ] Documentation
-* [ ] Automated binding generation via CI
-
-#### Usability
-
-* [ ] Fix weird formatting in some header files
+* Minor bugfixes in version macros
