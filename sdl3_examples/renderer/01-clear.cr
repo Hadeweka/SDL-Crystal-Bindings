@@ -21,18 +21,18 @@ def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
   if !LibSDL.init(LibSDL::INIT_VIDEO)
     LibSDL.log("Couldn't initialize SDL: %s", LibSDL.get_error)
     # NOTE: We sacrifice some of the brevity of the original SDL to give us more type safety.
-    return LibSDL::AppResult::APP_FAILURE
+    return LibSDL::AppResult::FAILURE
   end
 
   if !LibSDL.create_window_and_renderer("examples/renderer/clear", 640, 480, 0, out window, out renderer)
     LibSDL.log("Couldn't create window/renderer: %s", LibSDL.get_error)
-    return LibSDL::AppResult::APP_FAILURE
+    return LibSDL::AppResult::FAILURE
   end
 
   Globals.window = window
   Globals.renderer = renderer
     
-  return LibSDL::AppResult::APP_CONTINUE
+  return LibSDL::AppResult::CONTINUE
 end
 
 def app_iterate_func(appstate : Void*)
@@ -48,7 +48,7 @@ def app_iterate_func(appstate : Void*)
   LibSDL.render_clear(Globals.renderer)
   LibSDL.render_present(Globals.renderer)
 
-  return LibSDL::AppResult::APP_CONTINUE
+  return LibSDL::AppResult::CONTINUE
 end
 
 def app_event_func(appstate : Void*, event : LibSDL::Event*)
@@ -56,11 +56,11 @@ def app_event_func(appstate : Void*, event : LibSDL::Event*)
   #       In fact, the general Event class has a UInt32 here, while EventType is an enum (which is a different class in Crystal).
   #       Since these are low level bindings, you have to be very careful with the types.
   #       If you want to build a game or an engine for yourself, a wrapper is recommended to avoid errors.
-  if event.value.type == LibSDL::EventType::EVENT_QUIT.to_u32
-    return LibSDL::AppResult::APP_SUCCESS
+  if event.value.type == LibSDL::EventType::QUIT.to_u32
+    return LibSDL::AppResult::SUCCESS
   end
 
-  return LibSDL::AppResult::APP_CONTINUE
+  return LibSDL::AppResult::CONTINUE
 end
 
 def app_quit_func(appstate : Void*, result : LibSDL::AppResult)

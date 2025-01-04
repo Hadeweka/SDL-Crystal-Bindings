@@ -301,11 +301,36 @@ def transform_structs(structs)
     struct_str += "  enum #{soft_filter(enum[0])}\n"
     
     enum_values = enum[1].split(", ")
+
+    enum_prefix_arr = enum_values[0].split("=")[0].split("_")
+
+    enum_values.each do |enum_value|
+      enum_value_name_arr = enum_value.split("=")[0].split("_")
+      enum_prefix_arr -= (enum_prefix_arr - enum_value_name_arr)
+    end
+
+    enum_values.each do |enum_value|
+      while !enum_value.split("=")[0].index(enum_prefix_arr.join("_") + "_")
+        enum_prefix_arr.pop
+      end
+    end
+
     enum_values.each do |enum_value|
       fixed_enum_values = enum_value.split("=")
+      name_without_prefix = (fixed_enum_values[0].split("_") - enum_prefix_arr).join("_")
       fixed_enum_values[0].upcase!
       fixed_enum_value = fixed_enum_values.join("=")
-      ord_val = filter_sdl(process_constant(fixed_enum_value.strip)).gsub("' '", ' '.ord.to_s)
+      if name_without_prefix.start_with?(/\d/)
+        # TODO: This is currently not very elegant, but prevents expressions like GPUTextureType::2D .
+        #       If ever allowed, GPUTextureType::_2D would be the optimal solution, but this is currently not the case.
+        #       See: https://github.com/crystal-lang/crystal/issues/15320 .
+        #       Therefore, for now the last part of the enum class name is used, like GPUTextureType::TextureType_2D .
+        fixed_enum_value.gsub!(enum_prefix_arr[0..-2].join("_").upcase + "_", "")
+      else
+        fixed_enum_value.gsub!(enum_prefix_arr.join("_").upcase + "_", "")
+      end
+      ord_val = filter_sdl(process_constant(fixed_enum_value.strip))
+        .gsub("' '", ' '.ord.to_s)
         .gsub(/'(\S)+'/) {|val| val[1..-2]
         .gsub("\\r", "\r")
         .gsub("\\e", "\e")

@@ -1,3 +1,3 @@
   struct MessageBoxColorScheme
-    colors : MessageBoxColor[MessageBoxColorType::MESSAGEBOX_COLOR_COUNT]
+    colors : MessageBoxColor[MessageBoxColorType::COUNT]
   end

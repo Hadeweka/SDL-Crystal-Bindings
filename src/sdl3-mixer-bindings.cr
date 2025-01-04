@@ -45,24 +45,24 @@ lib LibSDL
   alias MIXInitFlags = UInt32
 
   enum MixFading
-    MIX_NO_FADING
-    MIX_FADING_OUT
-    MIX_FADING_IN
+    NO_FADING
+    FADING_OUT
+    FADING_IN
   end
 
   enum MixMusicType
-    MUS_NONE
-    MUS_WAV
-    MUS_MOD
-    MUS_MID
-    MUS_OGG
-    MUS_MP3
-    MUS_MP3_MAD_UNUSED
-    MUS_FLAC
-    MUS_MODPLUG_UNUSED
-    MUS_OPUS
-    MUS_WAVPACK
-    MUS_GME
+    NONE
+    WAV
+    MOD
+    MID
+    OGG
+    MP3
+    MP3_MAD_UNUSED
+    FLAC
+    MODPLUG_UNUSED
+    OPUS
+    WAVPACK
+    GME
   end
 
   struct MixChunk

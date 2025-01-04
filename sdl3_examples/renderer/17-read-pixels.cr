@@ -26,12 +26,12 @@ def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
 
   if !LibSDL.init(LibSDL::INIT_VIDEO)
     LibSDL.log("Couldn't initialize SDL: %s", LibSDL.get_error)
-    return LibSDL::AppResult::APP_FAILURE
+    return LibSDL::AppResult::FAILURE
   end
 
   if !LibSDL.create_window_and_renderer("examples/renderer/read-pixels", WINDOW_WIDTH, WINDOW_HEIGHT, 0, out window, out renderer)
     LibSDL.log("Couldn't create window/renderer: %s", LibSDL.get_error)
-    return LibSDL::AppResult::APP_FAILURE
+    return LibSDL::AppResult::FAILURE
   end
 
   Globals.window = window
@@ -41,7 +41,7 @@ def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
   surface = LibSDL.load_bmp(bmp_path.to_s)
   if !surface
     LibSDL.log("Couldn't load bitmap: %s", LibSDL.get_error)
-    return LibSDL::AppResult::APP_FAILURE
+    return LibSDL::AppResult::FAILURE
   end
 
   Globals.texture_width = surface.value.w
@@ -50,12 +50,12 @@ def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
   Globals.texture = LibSDL.create_texture_from_surface(Globals.renderer, surface)
   if !Globals.texture
     LibSDL.log("Couldn't create static texture: %s", LibSDL.get_error)
-    return LibSDL::AppResult::APP_FAILURE
+    return LibSDL::AppResult::FAILURE
   end
 
   LibSDL.destroy_surface(surface)
 
-  return LibSDL::AppResult::APP_CONTINUE
+  return LibSDL::AppResult::CONTINUE
 end
 
 def app_iterate_func(appstate : Void*)
@@ -75,12 +75,12 @@ def app_iterate_func(appstate : Void*)
 
   center.x = Globals.texture_width / 2.0
   center.y = Globals.texture_height / 2.0
-  LibSDL.render_texture_rotated(Globals.renderer, Globals.texture, nil, pointerof(dst_rect), rotation, pointerof(center), LibSDL::FlipMode::FLIP_NONE)
+  LibSDL.render_texture_rotated(Globals.renderer, Globals.texture, nil, pointerof(dst_rect), rotation, pointerof(center), LibSDL::FlipMode::NONE)
 
   surface = LibSDL.render_read_pixels(Globals.renderer, nil)
 
-  if surface && surface.value.format != LibSDL::PixelFormat::PIXELFORMAT_RGBA8888 && surface.value.format != LibSDL::PixelFormat::PIXELFORMAT_BGRA8888
-    converted = LibSDL.convert_surface(surface, LibSDL::PixelFormat::PIXELFORMAT_RGBA8888)
+  if surface && surface.value.format != LibSDL::PixelFormat::RGBA8888 && surface.value.format != LibSDL::PixelFormat::BGRA8888
+    converted = LibSDL.convert_surface(surface, LibSDL::PixelFormat::RGBA8888)
     LibSDL.destroy_surface(surface)
     surface = converted
   end
@@ -89,13 +89,13 @@ def app_iterate_func(appstate : Void*)
     if surface.value.w != Globals.converted_texture_width || surface.value.h != Globals.converted_texture_height
       LibSDL.destroy_texture(Globals.converted_texture)
       Globals.converted_texture = LibSDL.create_texture(Globals.renderer, 
-        LibSDL::PixelFormat::PIXELFORMAT_RGBA8888,
-        LibSDL::TextureAccess::TEXTUREACCESS_STREAMING, 
+        LibSDL::PixelFormat::RGBA8888,
+        LibSDL::TextureAccess::STREAMING, 
       surface.value.w, surface.value.h)
 
       if !Globals.converted_texture
         LibSDL.log("Couldn't (re)create conversion texture: %s", LibSDL.get_error)
-        return LibSDL::AppResult::APP_FAILURE
+        return LibSDL::AppResult::FAILURE
       end
 
       Globals.converted_texture_width = surface.value.w
@@ -128,15 +128,15 @@ def app_iterate_func(appstate : Void*)
 
   LibSDL.render_present(Globals.renderer)
 
-  return LibSDL::AppResult::APP_CONTINUE
+  return LibSDL::AppResult::CONTINUE
 end
 
 def app_event_func(appstate : Void*, event : LibSDL::Event*)
-  if event.value.type == LibSDL::EventType::EVENT_QUIT.to_u32
-    return LibSDL::AppResult::APP_SUCCESS
+  if event.value.type == LibSDL::EventType::QUIT.to_u32
+    return LibSDL::AppResult::SUCCESS
   end
 
-  return LibSDL::AppResult::APP_CONTINUE
+  return LibSDL::AppResult::CONTINUE
 end
 
 def app_quit_func(appstate : Void*, result : LibSDL::AppResult)
