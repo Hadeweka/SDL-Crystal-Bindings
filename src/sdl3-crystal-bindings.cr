@@ -557,7 +557,7 @@ lib LibSDL
     tfinger : TouchFingerEvent
     pproximity : PenProximityEvent
     ptouch : PenTouchEvent
-    pmotion: PenMotionEvent
+    pmotion : PenMotionEvent
     pbutton : PenButtonEvent
     paxis : PenAxisEvent
     render : RenderEvent
