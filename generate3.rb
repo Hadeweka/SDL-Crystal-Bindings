@@ -85,7 +85,7 @@ def type_filter(name)
     ["intptr_t", "LibC::Int*"], # NOTE: This might lead to issues
     ["int", "LibC::Int"],
     ["char", "LibC::Char"],
-    ["bool", "LibC::Char"], # NOTE: This should be the safest variant
+    ["bool", "CBool"], # NOTE: This should be the safest variant
     ["FILE", "Void"], # It is a bit of cheating, but you should rarely use this anyway
 
     ["§1", "Point"], # Now we can demask it again
