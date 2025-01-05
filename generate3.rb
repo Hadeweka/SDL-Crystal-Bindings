@@ -150,6 +150,7 @@ def process_constant(constant)
     .gsub("WINDOWPOS_UNDEFINED_DISPLAY(0)", "(LibSDL::WINDOWPOS_UNDEFINED_MASK | 0)")
     .gsub("WINDOWPOS_CENTERED_DISPLAY(0)", "(LibSDL::WINDOWPOS_CENTERED_MASK | 0)")
     .gsub(/VERSIONNUM(([\S]+), ([\S]+), ([\S]+))/, "((\\2)*1000000 + (\\3)*1000 + (\\4))")
+    .gsub("AUDIO_S16", "LibSDL::AudioFormat::S16")
 end
 
 $constant_cache = {}
