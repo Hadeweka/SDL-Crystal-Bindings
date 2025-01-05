@@ -2,25 +2,25 @@ module LibSDLMacro
   # Other helper macros
 
   macro fourcc(a, b, c, d)
-    (a.to_u8 << 0).to_u32 | (b.to_u8 << 8).to_u32 | (c.to_u8 << 16).to_u32 | (d.to_u8 << 24).to_u32
+    ({{a}}.to_u8 << 0).to_u32 | ({{b}}.to_u8 << 8).to_u32 | ({{c}}.to_u8 << 16).to_u32 | ({{d}}.to_u8 << 24).to_u32
   end
 
   # SDL_version
   
   macro versionnum(major, minor, patch)
-    major*1000000 + minor*1000 + patch
+    {{major}}*1000000 + {{minor}}*1000 + {{patch}}
   end
 
   macro versionnum_major(version)
-    version // 1000000
+    {{version}} // 1000000
   end
 
   macro versionnum_minor(version)
-    (version // 1000) % 1000
+    ({{version}} // 1000) % 1000
   end
 
   macro versionnum_micro(version)
-    version % 1000
+    {{version}} % 1000
   end
 
   macro version
@@ -28,49 +28,49 @@ module LibSDLMacro
   end
 
   macro version_atleast(x, y, z)
-    LibSDL::VERSION >= LibSDLMacro.versionnum(X, Y, Z)
+    LibSDL::VERSION >= LibSDLMacro.versionnum({{x}}, {{y}}, {{z}})
   end
 
   # SDL_audio
 
   macro define_audio_format(signed, bigendian, flt, size)
-    (signed.to_u16 << 15) | (bigendian.to_u16 << 12) | (flt.to_u16 << 8) | (size & LibSDL::AUDIO_MASK_BITSIZE)
+    ({{signed}}.to_u16 << 15) | ({{bigendian}}.to_u16 << 12) | ({{flt}}.to_u16 << 8) | ({{size}} & LibSDL::AUDIO_MASK_BITSIZE)
   end
 
   macro audio_bitsize(x)
-    x & LibSDL::AUDIO_MASK_BITSIZE
+    {{x}} & LibSDL::AUDIO_MASK_BITSIZE
   end
 
   macro audio_bytesize(x)
-    LibSDLMacro.audio_bitsize(x) // 8
+    LibSDLMacro.audio_bitsize({{x}}) // 8
   end
 
   macro audio_isfloat(x)
-    (x & LibSDL::AUDIO_MASK_DATATYPE) != 0
+    ({{x}} & LibSDL::AUDIO_MASK_DATATYPE) != 0
   end
 
   macro audio_isbigendian(x)
-    (x & LibSDL::AUDIO_MASK_ENDIAN) != 0
+    ({{x}} & LibSDL::AUDIO_MASK_ENDIAN) != 0
   end
 
   macro audio_islittleendian(x)
-    !LibSDLMacro.audio_isbigendian(x)
+    !LibSDLMacro.audio_isbigendian({{x}})
   end
 
   macro audio_issigned(x)
-    (x & LibSDL::MASK_SIGNED) != 0
+    ({{x}} & LibSDL::MASK_SIGNED) != 0
   end
 
   macro audio_isint(x)
-    !LibSDLMacro.audio_isfloat(x)
+    !LibSDLMacro.audio_isfloat({{x}})
   end
 
   macro isunsigned(x)
-    !LibSDLMacro.audio_issigned(x)
+    !LibSDLMacro.audio_issigned({{x}})
   end
 
   macro audio_framesize(x)
-    LibSDLMacro.audio_bytesize(x.format) * x.channels
+    LibSDLMacro.audio_bytesize({{x}}.format) * {{x}}.channels
   end
 
   # SDL_error
@@ -80,13 +80,13 @@ module LibSDLMacro
   end
 
   macro invalid_param_error(param)
-    LibSDL.set_error("Parameter '%s' is invalid", param)
+    LibSDL.set_error("Parameter '%s' is invalid", {{param}})
   end
 
   # SDL_keycode
 
   macro scancode_to_keycode(x)
-    x | LibSDL::Keycode::SCANCODE_MASK
+    {{x}} | LibSDL::Keycode::SCANCODE_MASK
   end
 
   # SDL_main
@@ -103,129 +103,129 @@ module LibSDLMacro
   # SDL_mouse
 
   macro button_mask(x)
-    1 << (x-1)
+    1 << ({{x}}-1)
   end
 
   # SDL_pixels
 
   macro define_pixelfourcc(a, b, c, d)
-    LibSDLMacro.fourcc(a, b, c, d)
+    LibSDLMacro.fourcc({{a}}, {{b}}, {{c}}, {{d}})
   end
 
   macro define_pixelformat(type, order, layout, bits, bytes)
-    (1 << 28) | (type << 24) | (order << 20) | (layout << 16) | (bits << 8) | (bytes << 0)
+    (1 << 28) | ({{type}} << 24) | ({{order}} << 20) | ({{layout}} << 16) | ({{bits}} << 8) | ({{bytes}} << 0)
   end
 
   macro pixelflag(format)
-     (format >> 28) & 0x0F
+     ({{format}} >> 28) & 0x0F
   end
 
   macro pixeltype(format)
-    (format >> 24) & 0x0F
+    ({{format}} >> 24) & 0x0F
   end
 
   macro pixelorder(format)
-    (format >> 20) & 0x0F
+    ({{format}} >> 20) & 0x0F
   end
 
   macro pixellayout(format)
-    (format >> 16) & 0x0F
+    ({{format}} >> 16) & 0x0F
   end
 
   macro bitsperpixel(format)
-    if LibSDLMacro.ispixelformat_fourcc(format)
+    if LibSDLMacro.ispixelformat_fourcc({{format}})
       0
     else
-      (format >> 8) & 0xFF
+      ({{format}} >> 8) & 0xFF
     end
   end
 
   macro bytesperpixel(format)
-    if LibSDLMacro.ispixelformat_fourcc(format)
-      if (format == LibSDL::PixelFormat::YUY2) || (format == LibSDL::PixelFormat::UYVY) || (format == LibSDL::PixelFormat::YVYU) || (format == LibSDL::PixelFormat::P010)
+    if LibSDLMacro.ispixelformat_fourcc({{format}})
+      if ({{format}} == LibSDL::PixelFormat::YUY2) || ({{format}} == LibSDL::PixelFormat::UYVY) || ({{format}} == LibSDL::PixelFormat::YVYU) || ({{format}} == LibSDL::PixelFormat::P010)
         2
       else
         1
       end
     else
-      (format >> 0) & 0xFF
+      ({{format}} >> 0) & 0xFF
     end
   end
 
   macro ispixelformat_indexed(format)
-    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PixelType::INDEX1) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::INDEX2) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::INDEX4) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::INDEX8))
+    !LibSDLMacro.ispixelformat_fourcc({{format}}) && ((LibSDLMacro.pixeltype({{format}}) == LibSDL::PixelType::INDEX1) || (LibSDLMacro.pixeltype({{format}}) == LibSDL::PixelType::INDEX2) || (LibSDLMacro.pixeltype({{format}}) == LibSDL::PixelType::INDEX4) || (LibSDLMacro.pixeltype({{format}}) == LibSDL::PixelType::INDEX8))
   end
 
   macro ispixelformat_packed(format)
-    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PixelType::PACKED8) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::PACKED16) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::PACKED32))
+    !LibSDLMacro.ispixelformat_fourcc({{format}}) && ((LibSDLMacro.pixeltype({{format}}) == LibSDL::PixelType::PACKED8) || (LibSDLMacro.pixeltype({{format}}) == LibSDL::PixelType::PACKED16) || (LibSDLMacro.pixeltype({{format}}) == LibSDL::PixelType::PACKED32))
   end
 
   macro ispixelformat_array(format)
-    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYU8) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYU16) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYU32) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYF16) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYF32))
+    !LibSDLMacro.ispixelformat_fourcc({{format}}) && ((LibSDLMacro.pixeltype({{format}}) == LibSDL::PixelType::ARRAYU8) || (LibSDLMacro.pixeltype({{format}}) == LibSDL::PixelType::ARRAYU16) || (LibSDLMacro.pixeltype({{format}}) == LibSDL::PixelType::ARRAYU32) || (LibSDLMacro.pixeltype({{format}}) == LibSDL::PixelType::ARRAYF16) || (LibSDLMacro.pixeltype({{format}}) == LibSDL::PixelType::ARRAYF32))
   end
 
   macro ispixelformat_10bit(format)
-    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PixelType::PACKED32) && (LibSDLMacro.pixeltype(format) == LibSDL::PackedLayot::PACKEDLAYOUT_2101010))
+    !LibSDLMacro.ispixelformat_fourcc({{format}}) && ((LibSDLMacro.pixeltype({{format}}) == LibSDL::PixelType::PACKED32) && (LibSDLMacro.pixeltype({{format}}) == LibSDL::PackedLayot::PACKEDLAYOUT_2101010))
   end
 
   macro ispixelformat_float(format)
-    !LibSDLMacro.ispixelformat_fourcc(format) && ((LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYF16) || (LibSDLMacro.pixeltype(format) == LibSDL::PixelType::ARRAYF32))
+    !LibSDLMacro.ispixelformat_fourcc({{format}}) && ((LibSDLMacro.pixeltype({{format}}) == LibSDL::PixelType::ARRAYF16) || (LibSDLMacro.pixeltype({{format}}) == LibSDL::PixelType::ARRAYF32))
   end
 
   macro ispixelformat_alpha(format)
-    (LibSDLMacro.ispixelformat_packed(format) && ((LibSDLMacro.pixelorder(format) == LibSDL::PackedOrder::ARGB) || (LibSDLMacro.pixelorder(format) == LibSDL::PackedOrder::RGBA) || (LibSDLMacro.pixelorder(format) == LibSDL::PackedOrder::ABGR) || (LibSDLMacro.pixelorder(format) == LibSDL::PackedOrder::BGRA))) || (LibSDLMacro.ispixelformat_array(format) && ((LibSDLMacro.pixelorder(format) == LibSDL::ARRAYORDER_ARGB) || (LibSDLMacro.pixelorder(format) == LibSDL::ArrayOrder::RGBA) || (LibSDLMacro.pixelorder(format) == LibSDL::ArrayOrder::ABGR) || (LibSDLMacro.pixelorder(format) == LibSDL::ArrayOrder::BGRA)))
+    (LibSDLMacro.ispixelformat_packed({{format}}) && ((LibSDLMacro.pixelorder({{format}}) == LibSDL::PackedOrder::ARGB) || (LibSDLMacro.pixelorder({{format}}) == LibSDL::PackedOrder::RGBA) || (LibSDLMacro.pixelorder({{format}}) == LibSDL::PackedOrder::ABGR) || (LibSDLMacro.pixelorder({{format}}) == LibSDL::PackedOrder::BGRA))) || (LibSDLMacro.ispixelformat_array({{format}}) && ((LibSDLMacro.pixelorder({{format}}) == LibSDL::ARRAYORDER_ARGB) || (LibSDLMacro.pixelorder({{format}}) == LibSDL::ArrayOrder::RGBA) || (LibSDLMacro.pixelorder({{format}}) == LibSDL::ArrayOrder::ABGR) || (LibSDLMacro.pixelorder({{format}}) == LibSDL::ArrayOrder::BGRA)))
   end
 
   macro ispixelformat_fourcc(format)
-    (format != 0) && (LibSDLMacro.pixel_flag(format) != 1)
+    ({{format}} != 0) && (LibSDLMacro.pixel_flag({{format}}) != 1)
   end
 
   macro define_colorspace(type, range, primaries, transfer, matrix, chroma) 
-    (type.to_u32 << 28) | (range.to_u32 << 24) | (chroma.to_u32 << 20) | (primaries.to_u32 << 10) | (transfer.to_u32 << 5) | (matrix.to_u32 << 0)
+    ({{type}}.to_u32 << 28) | ({{range}}.to_u32 << 24) | ({{chroma}}.to_u32 << 20) | ({{primaries}}.to_u32 << 10) | ({{transfer}}.to_u32 << 5) | ({{matrix}}.to_u32 << 0)
   end
 
   macro colorspacetype(cspace)
-    LibSDL::ColorType.new((cspace >> 28) & 0x0F)
+    LibSDL::ColorType.new(({{cspace}} >> 28) & 0x0F)
   end
 
   macro colorspacerange(cspace)
-    LibSDL::ColorRange.new((cspace >> 24) & 0x0F)
+    LibSDL::ColorRange.new(({{cspace}} >> 24) & 0x0F)
   end
 
   macro colorspacechroma(cspace)
-    LibSDL::ChromaLocation.new((cspace >> 20) & 0x0F)
+    LibSDL::ChromaLocation.new(({{cspace}} >> 20) & 0x0F)
   end
 
   macro colorspaceprimaries(cspace)
-    LibSDL::ColorPrimaries.new((cspace >> 10) & 0x1F)
+    LibSDL::ColorPrimaries.new(({{cspace}} >> 10) & 0x1F)
   end
 
   macro colorspacetransfer(cspace)
-    LibSDL::TransferCharacteristics.new((cspace >> 5) & 0x1F)
+    LibSDL::TransferCharacteristics.new(({{cspace}} >> 5) & 0x1F)
   end
 
   macro colorspacematrix(cspace)
-    LibSDL::MatrixCoefficients.new(cspace & 0x1F)
+    LibSDL::MatrixCoefficients.new({{cspace}} & 0x1F)
   end
 
   macro iscolorspace_matrix_bt601(cspace)
-    LibSDLMacro.colorspacematrix(cspace) == LibSDL::MatrixCoefficients::BT601 || LibSDLMacro.colorspacematrix(cspace) == LibSDL::MatrixCoefficients::BT470BG
+    LibSDLMacro.colorspacematrix({{cspace}}) == LibSDL::MatrixCoefficients::BT601 || LibSDLMacro.colorspacematrix({{cspace}}) == LibSDL::MatrixCoefficients::BT470BG
   end
 
   macro iscolorspace_matrix_bt709(cspace)
-    LibSDLMacro.colorspacematrix(cspace) == LibSDL::MatrixCoefficients::BT709
+    LibSDLMacro.colorspacematrix({{cspace}}) == LibSDL::MatrixCoefficients::BT709
   end
 
   macro iscolorspace_matrix_bt2020_ncl(cspace)
-    LibSDLMacro.colorspacematrix(cspace) == LibSDL::MatrixCoefficients::BT2020_NCL
+    LibSDLMacro.colorspacematrix({{cspace}}) == LibSDL::MatrixCoefficients::BT2020_NCL
   end
 
   macro iscolorspace_limited_range(cspace)
-    LibSDLMacro.colorspacerange(cspace) != LibSDL::ColorRange::FULL
+    LibSDLMacro.colorspacerange({{cspace}}) != LibSDL::ColorRange::FULL
   end
 
   macro iscolorspace_full_range(cspace)
-    LibSDLMacro.colorspacerange(cspace) == LibSDL::ColorRange::FULL
+    LibSDLMacro.colorspacerange({{cspace}}) == LibSDL::ColorRange::FULL
   end
 
   # SDL_rect
@@ -277,24 +277,24 @@ module LibSDLMacro
   # SDL_surface
 
   macro mustlock(s)
-    (s.value.flags & LibSDL::SurfaceFlags::LOCK_NEEDED) == LibSDL::SurfaceFlags::LOCK_NEEDED
+    ({{s}}.value.flags & LibSDL::SurfaceFlags::LOCK_NEEDED) == LibSDL::SurfaceFlags::LOCK_NEEDED
   end
 
   # SDL_video
 
   macro windowpos_undefined_display(x)
-    LibSDL::WINDOWPOS_UNDEFINED_MASK | x
+    LibSDL::WINDOWPOS_UNDEFINED_MASK | {{x}}
   end
 
   macro windowpos_isundefined(x)
-    (x & 0xFFFF0000) == LibSDL::WINDOWPOS_UNDEFINED_MASK
+    ({{x}} & 0xFFFF0000) == LibSDL::WINDOWPOS_UNDEFINED_MASK
   end
 
   macro windowpos_centered_display(x)
-    LibSDL::WINDOWPOS_CENTERED_MASK | x
+    LibSDL::WINDOWPOS_CENTERED_MASK | {{x}}
   end
 
   macro windowpos_iscentered(x)
-    (x & 0xFFFF0000) == LibSDL::WINDOWPOS_CENTERED_MASK
+    ({{x}} & 0xFFFF0000) == LibSDL::WINDOWPOS_CENTERED_MASK
   end
 end
