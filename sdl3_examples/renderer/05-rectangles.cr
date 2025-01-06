@@ -16,12 +16,12 @@ end
 def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
   LibSDL.set_app_metadata("Example Renderer Rectangles", "1.0", "com.example.renderer-rectangles")
 
-  if !LibSDL.init(LibSDL::InitFlags::VIDEO)
+  if 0 == LibSDL.init(LibSDL::InitFlags::VIDEO)
     LibSDL.log("Couldn't initialize SDL: %s", LibSDL.get_error)
     return LibSDL::AppResult::FAILURE
   end
 
-  if !LibSDL.create_window_and_renderer("examples/renderer/rectangles", WINDOW_WIDTH, WINDOW_HEIGHT, LibSDL::WindowFlags::None, out window, out renderer)
+  if 0 == LibSDL.create_window_and_renderer("examples/renderer/rectangles", WINDOW_WIDTH, WINDOW_HEIGHT, LibSDL::WindowFlags::None, out window, out renderer)
     LibSDL.log("Couldn't create window/renderer: %s", LibSDL.get_error)
     return LibSDL::AppResult::FAILURE
   end

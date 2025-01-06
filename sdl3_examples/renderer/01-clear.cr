@@ -18,14 +18,15 @@ end
 def app_init_func(appstate : Void**, argc : LibC::Int, argv : LibC::Char**)
   LibSDL.set_app_metadata("Example Renderer Clear", "1.0", "com.example.renderer-clear")
 
-  if !LibSDL.init(LibSDL::InitFlags::VIDEO)
+  # NOTE: This function doesn't return a true Bool, ALWAYS keep this in mind!
+  if 0 == LibSDL.init(LibSDL::InitFlags::VIDEO)
     LibSDL.log("Couldn't initialize SDL: %s", LibSDL.get_error)
     # NOTE: This is an enum now, so the name differs a bit from the C name.
     return LibSDL::AppResult::FAILURE
   end
 
   # NOTE: The bindings require safer typings, so we can't pass 0 as a window flag anymore - we have to specify it explicitely.
-  if !LibSDL.create_window_and_renderer("examples/renderer/clear", 640, 480, LibSDL::WindowFlags::None, out window, out renderer)
+  if 0 == LibSDL.create_window_and_renderer("examples/renderer/clear", 640, 480, LibSDL::WindowFlags::None, out window, out renderer)
     LibSDL.log("Couldn't create window/renderer: %s", LibSDL.get_error)
     return LibSDL::AppResult::FAILURE
   end
