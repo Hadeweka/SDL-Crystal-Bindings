@@ -16,12 +16,12 @@ Depending on the SDL version, you should use either the main branch (for SDL 2) 
 
 ## Usage
 
-Simply add this shard (`sdl-crystal-bindings`) to your `shard.yml`.
+Simply add this shard (`sdl-crystal-bindings`) to your `shard.yml`, with the `sdl3` branch, if you want to use SDL 3.
 This repository comes with pre-generated binding files.
 
-Then, use `require "sdl-crystal-bindings"` (or `"sdl-crystal-bindings/sdl3-crystal-bindings"` for SDL3).
+Then, use `require "sdl-crystal-bindings/sdl3-crystal-bindings"`.
 
-For the other SDL libraries, you can use `require "sdl-crystal-bindings/sdl-image-bindings"`, for example (or `"sdl3-image-bindings"` for SDL3).
+For the other SDL libraries, you can use `require "sdl-crystal-bindings/sdl3-image-bindings"`, for example.
 Note that the examples use the relative paths to the respective files.
 
 Regular SDL functions, structs, enums, unions and constants are accessible using the `LibSDL` namespace, while
@@ -34,76 +34,24 @@ functions are in snake_case, while structs are in CamelCase).
 
 ## Examples
 
-Currently, there is only one example for SDL2, as the previous examples were based on LazyFoo's tutorial (https://lazyfoo.net/tutorials/SDL/).
-However, they don't want their examples being used in foreign code (even if ported), so I decided to remove them in order to respect that questionable decision.
-See also (https://lazyfoo.net/faq.php) for details.
-
-For SDL3, there are many examples from the official SDL website (with more to come).
-
-If you want to see a specific example or have questions regarding the bindings and their usage, feel free to open an issue or pull request.
+There are some examples ported directly from https://examples.libsdl.org/SDL3/ to Crystal. You might have to
+change the relative paths in the examples for them to work if not started from this directory.
 
 ## Generating new bindings
 
 To update the bindings, you need to have Ruby, gcc and clang installed on your system (ideally Linux or it might not work).
 
-Just call `ruby generate.rb` from the main directory of this shard and the files under `src/` will be generated or updated.
+Just call `ruby generate3.rb` from the main directory of this shard and the files under `src/` will be generated or updated.
 The script will download the newest SDL headers and generate automated bindings.
 
 If you need to add manual changes, please either use the filters from the script to exclude structs and/or modify the
-files in the `additions` directory to add specific bindings manually.
+files in the `additions3` directory to add specific bindings manually.
 
 If you encounter any problems while generating the bindings, please open an issue.
 
 ## Changelog
 
-### Version 0.0.1
-
-#### Features
-
-* Binding generator
-* Working bindings
-* Bindings for sdl_image, sdl_mixer and sdl_ttf
-
-### Version 0.1.0
-
-#### Features
-
-* Continuous integration
-
-#### Breaking changes
-
-* Decoupling of the different libraries
-
-#### Bugfixes
-
-* Fixed some binding inconsistencies
-
-### Version 0.2.0
-
-#### Features
-
-* Updated to recent SDL2 version
-
-#### Bugfixes
-
-* Build script now correctly raises error on Windows
-
-### Version 0.2.1
-
-NOTE: This will be the last version with SDL2 alone. After that, release tags will be split into
-SDL2 and SDL3.
-
-Furthermore, the syntax of the bindings will change in the newer versions to avoid some
-verbosity. If you want to maintain compatibility, you can still use the 0.2 version (which will also
-get a separate branch).
-
-#### Usability
-
-* Update to newer SDL2 version (with slightly different syntax)
-
-#### Bugfixes
-
-* Minor bugfixes in version macros
+No release for SDL3 yet.
 
 ## Roadmap
 
@@ -114,21 +62,16 @@ get a separate branch).
 * [X] Support for SDL3
 * [X] Many examples for SDL3
 
-#### Breaking changes
-
-* [ ] Stronger typing for internal types (instead of a simple alias)
-* [ ] Enums get less verbose syntax (without redundant prefixes)
-* [ ] Pseudo-enums (like keycodes) become true enums
-
-### Wishlist for future releases
+### Wishlist
 
 #### Features
 
 * [ ] Merging of all functions and macros into one single module (if possible and helpful)
-* [ ] More examples
+* [ ] Even more examples
 * [ ] Documentation
 * [ ] Automated binding generation via CI
 
 #### Usability
 
 * [ ] Fix weird formatting in some header files
+* [ ] Add original C struct/function/constant/macro names as comments

@@ -26,6 +26,5 @@ jobs:
         sudo apt update
         sudo apt install -y libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
         sdl2-config --version
-    - name: Run tests
-      run: |
-        crystal build sdl2_examples/test.cr
+
+ 

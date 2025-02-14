@@ -1,1 +1,0 @@
-  alias Colour = Color

@@ -2,8 +2,8 @@ output/
 output3/
 lib/
 *.exe
-*.dll
 *.lib
+*.dll
 *.ll
 *.s
 .vscode/
