@@ -1,0 +1,2 @@
+  # (void* userdata, Uint64 timestamp, SDL_Window* window, SDL_MouseID mouseID, float* x, float* y)
+  alias MouseMotionTransformCallback = (Void*, UInt64, Window*, MouseID, LibC::Float*, LibC::Float*) -> Void

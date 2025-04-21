@@ -106,6 +106,16 @@ module LibSDLMacro
     1 << ({{x}}-1)
   end
 
+  # SDL_pen
+
+  macro pen_mouse_id(x)
+    LibSDL::MouseID.new(x) - 2
+  end
+
+  macro pen_touch_id(x)
+    LibSDL::TouchID.new(x) - 2
+  end
+
   # SDL_pixels
 
   macro define_pixelfourcc(a, b, c, d)
@@ -278,6 +288,16 @@ module LibSDLMacro
 
   macro mustlock(s)
     ({{s}}.value.flags & LibSDL::SurfaceFlags::LOCK_NEEDED) == LibSDL::SurfaceFlags::LOCK_NEEDED
+  end
+
+  # SDL_touch
+
+  macro touch_mouse_id(x)
+    LibSDL::MouseID.new(x) - 1
+  end
+
+  macro mouse_touch_id(x)
+    LibSDL::TouchID.new(x) - 1
   end
 
   # SDL_video

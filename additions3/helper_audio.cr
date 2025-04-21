@@ -7,6 +7,7 @@
     S32LE = 0x8020
     S32BE = 0x9020
     F32LE = 0x8120
+    F32BE = 0x9120
     # NOTE: The following definitions ONLY hold for little endian - if you are using big endian (why), please open an issue report
     S16 = S16LE
     S32 = S32LE

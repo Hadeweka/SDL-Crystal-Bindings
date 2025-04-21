@@ -120,7 +120,11 @@ def should_constant_be_excluded?(name)
     "SDL_MAIN_USE_CALLBACKS",  # Not an actual constant
     "SDLMAIN_DECLSPEC",  # Not an actual constant,
     "SDL_WINDOW_SURFACE_VSYNC_DISABLED",  # Causing issues with automated enums
-    "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE"  # Causing issues with automated enums
+    "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE",  # Causing issues with automated enums,
+    "SDL_PEN_MOUSEID",  # Not an actual constant
+    "SDL_PEN_TOUCHID",  # Not an actual constant
+    "SDL_TOUCH_MOUSEID",  # Not an actual constant
+    "SDL_MOUSE_TOUCHID" # Not an actual constant
   ]
 
   filters.index(name)
@@ -492,6 +496,7 @@ headers = [
   ["SDL_metal"],
   ["SDL_misc"],
   ["SDL_mouse"],
+  ["additions3/helper_mouse.cr"],
   ["SDL_pen"],
   ["additions3/helper_pixels.cr"],
   ["SDL_pixels"],

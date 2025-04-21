@@ -63,6 +63,7 @@
     NV21 = 0x3132564e
     P010 = 0x30313050
     EXTERNAL_OES = 0x2053454f
+    MJPG = 0x47504a4d
     # NOTE: The following definitions ONLY hold for little endian - if you are using big endian (why), please open an issue report
     RGBA32 = ABGR8888
     ARGB32 = BGRA8888
