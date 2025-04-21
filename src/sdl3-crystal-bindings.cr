@@ -4100,6 +4100,15 @@ lib LibSDL
   fun set_render_gpustate = SDL_SetRenderGPUState(renderer : Renderer*, state : GPURenderState*) : CBool
   fun destroy_gpurender_state = SDL_DestroyGPURenderState(state : GPURenderState*) : Void
 
+  # additions3/helper_render.cr
+
+  enum TextureAddressMode
+    INVALID = -1
+    AUTO
+    CLAMP
+    WRAP
+  end
+
   # SDL_sensor
 
   STANDARD_GRAVITY = 9.80665

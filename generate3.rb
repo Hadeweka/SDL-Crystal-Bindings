@@ -507,6 +507,7 @@ headers = [
   ["SDL_properties"],
   ["SDL_rect"],
   ["SDL_render"],
+  ["additions3/helper_render.cr"],
   ["SDL_sensor"],
   ["additions3/helper_surface.cr"],
   ["SDL_surface"],
