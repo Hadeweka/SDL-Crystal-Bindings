@@ -528,6 +528,7 @@ mix_headers = [
 ]
 
 ttf_headers = [
+  ["additions3/helper_ttf.cr"],
   ["SDL_ttf", "SDL_ttf/refs/heads/main/include/SDL3_ttf"]
 ]
 

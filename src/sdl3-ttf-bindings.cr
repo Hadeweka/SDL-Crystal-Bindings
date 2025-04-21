@@ -1,5 +1,14 @@
 @[Link("SDL3_ttf")]
 lib LibSDL
+  # additions3/helper_ttf.cr
+
+  enum TTFImageType
+    INVALID
+    ALPHA
+    COLOR
+    SDF
+  end
+
   # SDL_ttf
 
   TTF_MAJOR_VERSION = 3
