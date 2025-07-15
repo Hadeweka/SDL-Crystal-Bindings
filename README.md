@@ -51,16 +51,16 @@ If you encounter any problems while generating the bindings, please open an issu
 
 ## Changelog
 
-No release for SDL3 yet.
-
-## Roadmap
-
 ### Version 0.3.0
 
 #### Features
 
-* [X] Support for SDL3
-* [X] Many examples for SDL3
+* Support for SDL3 (specifically 3.2 and in some parts 3.4)
+* Many examples for SDL3
+
+## Roadmap
+
+Currently no new releases planned
 
 ### Wishlist
 
