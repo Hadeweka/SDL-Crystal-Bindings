@@ -1,6 +1,1 @@
-  enum TTFImageType
-    INVALID
-    ALPHA
-    COLOR
-    SDF
-  end
+  # No additions in this version

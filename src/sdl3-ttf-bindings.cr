@@ -2,12 +2,7 @@
 lib LibSDL
   # additions3/helper_ttf.cr
 
-  enum TTFImageType
-    INVALID
-    ALPHA
-    COLOR
-    SDF
-  end
+  # No additions in this version
 
   # SDL_ttf
 
