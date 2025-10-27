@@ -15,7 +15,7 @@ lib LibSDL
 
   MAJOR_VERSION = 3
   MINOR_VERSION = 3
-  MICRO_VERSION = 0
+  MICRO_VERSION = 2
   VERSION = (((MAJOR_VERSION)*1000000 + (MINOR_VERSION)*1000 + (MICRO_VERSION)))
 
   fun get_version = SDL_GetVersion() : LibC::Int
@@ -306,6 +306,7 @@ lib LibSDL
   AUDIO_MASK_SIGNED = (1 << 15)
   AUDIO_DEVICE_DEFAULT_PLAYBACK = AudioDeviceID.new(0xFFFFFFFF)
   AUDIO_DEVICE_DEFAULT_RECORDING = AudioDeviceID.new(0xFFFFFFFE)
+  PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN = "SDL.audiostream.auto_cleanup"
 
   type AudioStream = Void
   alias AudioDeviceID = UInt32
@@ -351,6 +352,8 @@ lib LibSDL
   fun set_audio_stream_input_channel_map = SDL_SetAudioStreamInputChannelMap(stream : AudioStream*, chmap : LibC::Int*, count : LibC::Int) : CBool
   fun set_audio_stream_output_channel_map = SDL_SetAudioStreamOutputChannelMap(stream : AudioStream*, chmap : LibC::Int*, count : LibC::Int) : CBool
   fun put_audio_stream_data = SDL_PutAudioStreamData(stream : AudioStream*, buf : Void*, len : LibC::Int) : CBool
+  fun put_audio_stream_data_no_copy = SDL_PutAudioStreamDataNoCopy(stream : AudioStream*, buf : Void*, len : LibC::Int, callback : AudioStreamDataCompleteCallback, userdata : Void*) : CBool
+  fun put_audio_stream_planar_data = SDL_PutAudioStreamPlanarData(stream : AudioStream*, channel_buffers : Void**, num_channels : LibC::Int, num_samples : LibC::Int) : CBool
   fun get_audio_stream_data = SDL_GetAudioStreamData(stream : AudioStream*, buf : Void*, len : LibC::Int) : LibC::Int
   fun get_audio_stream_available = SDL_GetAudioStreamAvailable(stream : AudioStream*) : LibC::Int
   fun get_audio_stream_queued = SDL_GetAudioStreamQueued(stream : AudioStream*) : LibC::Int
@@ -437,7 +440,7 @@ lib LibSDL
   fun get_camera_name = SDL_GetCameraName(instance_id : CameraID) : LibC::Char*
   fun get_camera_position = SDL_GetCameraPosition(instance_id : CameraID) : CameraPosition
   fun open_camera = SDL_OpenCamera(instance_id : CameraID, spec : CameraSpec*) : Camera*
-  fun get_camera_permission_state = SDL_GetCameraPermissionState(camera : Camera*) : LibC::Int
+  fun get_camera_permission_state = SDL_GetCameraPermissionState(camera : Camera*) : CameraPermissionState
   fun get_camera_id = SDL_GetCameraID(camera : Camera*) : CameraID
   fun get_camera_properties = SDL_GetCameraProperties(camera : Camera*) : PropertiesID
   fun get_camera_format = SDL_GetCameraFormat(camera : Camera*, spec : CameraSpec*) : CBool
@@ -488,6 +491,7 @@ lib LibSDL
   fun has_lasx = SDL_HasLASX() : CBool
   fun get_system_ram = SDL_GetSystemRAM() : LibC::Int
   fun get_simdalignment = SDL_GetSIMDAlignment() : LibC::SizeT
+  fun get_system_page_size = SDL_GetSystemPageSize() : LibC::Int
 
   # additions3/helper_dialog.cr
 
@@ -595,8 +599,9 @@ lib LibSDL
     DISPLAY_DESKTOP_MODE_CHANGED
     DISPLAY_CURRENT_MODE_CHANGED
     DISPLAY_CONTENT_SCALE_CHANGED
+    DISPLAY_USABLE_BOUNDS_CHANGED
     DISPLAY_FIRST = DISPLAY_ORIENTATION
-    DISPLAY_LAST = DISPLAY_CONTENT_SCALE_CHANGED
+    DISPLAY_LAST = DISPLAY_USABLE_BOUNDS_CHANGED
     WINDOW_SHOWN = 0x202
     WINDOW_HIDDEN
     WINDOW_EXPOSED
@@ -632,6 +637,8 @@ lib LibSDL
     KEYBOARD_ADDED
     KEYBOARD_REMOVED
     TEXT_EDITING_CANDIDATES
+    SCREEN_KEYBOARD_SHOWN
+    SCREEN_KEYBOARD_HIDDEN
     MOUSE_MOTION = 0x400
     MOUSE_BUTTON_DOWN
     MOUSE_BUTTON_UP
@@ -663,6 +670,9 @@ lib LibSDL
     FINGER_UP
     FINGER_MOTION
     FINGER_CANCELED
+    PINCH_BEGIN = 0x710
+    PINCH_UPDATE
+    PINCH_END
     CLIPBOARD_UPDATE = 0x900
     DROP_FILE = 0x1000
     DROP_TEXT
@@ -826,6 +836,8 @@ lib LibSDL
     direction : MouseWheelDirection
     mouse_x : LibC::Float
     mouse_y : LibC::Float
+    integer_x : Int32
+    integer_y : Int32
   end
 
   struct JoyAxisEvent
@@ -984,6 +996,14 @@ lib LibSDL
     window_id : WindowID
   end
 
+  struct PinchFingerEvent
+    type : EventType
+    reserved : UInt32
+    timestamp : UInt64
+    scale : LibC::Float
+    window_id : WindowID
+  end
+
   struct PenProximityEvent
     type : EventType
     reserved : UInt32
@@ -1106,6 +1126,7 @@ lib LibSDL
   fun event_enabled = SDL_EventEnabled(type : UInt32) : CBool
   fun register_events = SDL_RegisterEvents(numevents : LibC::Int) : UInt32
   fun get_window_from_event = SDL_GetWindowFromEvent(event : Event*) : Window*
+  fun get_event_description = SDL_GetEventDescription(event : Event*, buf : LibC::Char*, buflen : LibC::Int) : LibC::Int
 
   # additions3/helper_gamepad.cr
 
@@ -1171,6 +1192,7 @@ lib LibSDL
     NINTENDO_SWITCH_JOYCON_LEFT
     NINTENDO_SWITCH_JOYCON_RIGHT
     NINTENDO_SWITCH_JOYCON_PAIR
+    GAMECUBE
     COUNT
   end
 
@@ -1315,12 +1337,17 @@ lib LibSDL
   PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN = "SDL.gpu.device.create.preferlowpower"
   PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN = "SDL.gpu.device.create.verbose"
   PROP_GPU_DEVICE_CREATE_NAME_STRING = "SDL.gpu.device.create.name"
+  PROP_GPU_DEVICE_CREATE_FEATURE_CLIP_DISTANCE_BOOLEAN = "SDL.gpu.device.create.feature.clip_distance"
+  PROP_GPU_DEVICE_CREATE_FEATURE_DEPTH_CLAMPING_BOOLEAN = "SDL.gpu.device.create.feature.depth_clamping"
+  PROP_GPU_DEVICE_CREATE_FEATURE_INDIRECT_DRAW_FIRST_INSTANCE_BOOLEAN = "SDL.gpu.device.create.feature.indirect_draw_first_instance"
+  PROP_GPU_DEVICE_CREATE_FEATURE_ANISOTROPY_BOOLEAN = "SDL.gpu.device.create.feature.anisotropy"
   PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN = "SDL.gpu.device.create.shaders.private"
   PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN = "SDL.gpu.device.create.shaders.spirv"
   PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN = "SDL.gpu.device.create.shaders.dxbc"
   PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN = "SDL.gpu.device.create.shaders.dxil"
   PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN = "SDL.gpu.device.create.shaders.msl"
   PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN = "SDL.gpu.device.create.shaders.metallib"
+  PROP_GPU_DEVICE_CREATE_D3D12_ALLOW_FEWER_RESOURCE_SLOTS_BOOLEAN = "SDL.gpu.device.create.d3d12.allowtier1resourcebinding"
   PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING = "SDL.gpu.device.create.d3d12.semantic"
   PROP_GPU_DEVICE_NAME_STRING = "SDL.gpu.device.name"
   PROP_GPU_DEVICE_DRIVER_NAME_STRING = "SDL.gpu.device.driver_name"
@@ -1335,7 +1362,7 @@ lib LibSDL
   PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT = "SDL.gpu.texture.create.d3d12.clear.b"
   PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT = "SDL.gpu.texture.create.d3d12.clear.a"
   PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT = "SDL.gpu.texture.create.d3d12.clear.depth"
-  PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_UINT8 = "SDL.gpu.texture.create.d3d12.clear.stencil"
+  PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER = "SDL.gpu.texture.create.d3d12.clear.stencil"
   PROP_GPU_TEXTURE_CREATE_NAME_STRING = "SDL.gpu.texture.create.name"
   PROP_GPU_BUFFER_CREATE_NAME_STRING = "SDL.gpu.buffer.create.name"
   PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING = "SDL.gpu.transferbuffer.create.name"
@@ -1982,8 +2009,8 @@ lib LibSDL
     stencil_store_op : GPUStoreOp
     cycle : CBool
     clear_stencil : UInt8
-    padding1 : UInt8
-    padding2 : UInt8
+    mip_level : UInt8
+    layer : UInt8
   end
 
   struct GPUBlitInfo
@@ -2120,6 +2147,8 @@ lib LibSDL
   fun gputexture_supports_format = SDL_GPUTextureSupportsFormat(device : GPUDevice*, format : GPUTextureFormat, type : GPUTextureType, usage : GPUTextureUsageFlags) : CBool
   fun gputexture_supports_sample_count = SDL_GPUTextureSupportsSampleCount(device : GPUDevice*, format : GPUTextureFormat, sample_count : GPUSampleCount) : CBool
   fun calculate_gputexture_format_size = SDL_CalculateGPUTextureFormatSize(format : GPUTextureFormat, width : UInt32, height : UInt32, depth_or_layer_count : UInt32) : UInt32
+  fun get_pixel_format_from_gputexture_format = SDL_GetPixelFormatFromGPUTextureFormat(format : GPUTextureFormat) : PixelFormat
+  fun get_gputexture_format_from_pixel_format = SDL_GetGPUTextureFormatFromPixelFormat(format : PixelFormat) : GPUTextureFormat
   fun gdksuspend_gpu = SDL_GDKSuspendGPU(device : GPUDevice*) : Void
   fun gdkresume_gpu = SDL_GDKResumeGPU(device : GPUDevice*) : Void
 
@@ -2146,6 +2175,7 @@ lib LibSDL
 
   # SDL_haptic
 
+  HAPTIC_INFINITY = 4294967295
   HAPTIC_CONSTANT = (1 << 0)
   HAPTIC_SINE = (1 << 1)
   HAPTIC_SQUARE = (1 << 2)
@@ -2170,18 +2200,20 @@ lib LibSDL
   HAPTIC_CARTESIAN = 1
   HAPTIC_SPHERICAL = 2
   HAPTIC_STEERING_AXIS = 3
-  HAPTIC_INFINITY = 4294967295
 
   type Haptic = Void
+  alias HapticEffectType = UInt16
+  alias HapticDirectionType = UInt8
+  alias HapticEffectID = LibC::Int
   alias HapticID = UInt32
 
   struct HapticDirection
-    type : UInt8
+    type : HapticDirectionType
     dir : Int32[3]
   end
 
   struct HapticConstant
-    type : UInt16
+    type : HapticEffectType
     direction : HapticDirection
     length : UInt32
     delay : UInt16
@@ -2195,7 +2227,7 @@ lib LibSDL
   end
 
   struct HapticPeriodic
-    type : UInt16
+    type : HapticEffectType
     direction : HapticDirection
     length : UInt32
     delay : UInt16
@@ -2212,7 +2244,7 @@ lib LibSDL
   end
 
   struct HapticCondition
-    type : UInt16
+    type : HapticEffectType
     direction : HapticDirection
     length : UInt32
     delay : UInt16
@@ -2227,7 +2259,7 @@ lib LibSDL
   end
 
   struct HapticRamp
-    type : UInt16
+    type : HapticEffectType
     direction : HapticDirection
     length : UInt32
     delay : UInt16
@@ -2242,14 +2274,14 @@ lib LibSDL
   end
 
   struct HapticLeftRight
-    type : UInt16
+    type : HapticEffectType
     length : UInt32
     large_magnitude : UInt16
     small_magnitude : UInt16
   end
 
   struct HapticCustom
-    type : UInt16
+    type : HapticEffectType
     direction : HapticDirection
     length : UInt32
     delay : UInt16
@@ -2281,12 +2313,12 @@ lib LibSDL
   fun get_haptic_features = SDL_GetHapticFeatures(haptic : Haptic*) : UInt32
   fun get_num_haptic_axes = SDL_GetNumHapticAxes(haptic : Haptic*) : LibC::Int
   fun haptic_effect_supported = SDL_HapticEffectSupported(haptic : Haptic*, effect : HapticEffect*) : CBool
-  fun create_haptic_effect = SDL_CreateHapticEffect(haptic : Haptic*, effect : HapticEffect*) : LibC::Int
-  fun update_haptic_effect = SDL_UpdateHapticEffect(haptic : Haptic*, effect : LibC::Int, data : HapticEffect*) : CBool
-  fun run_haptic_effect = SDL_RunHapticEffect(haptic : Haptic*, effect : LibC::Int, iterations : UInt32) : CBool
-  fun stop_haptic_effect = SDL_StopHapticEffect(haptic : Haptic*, effect : LibC::Int) : CBool
-  fun destroy_haptic_effect = SDL_DestroyHapticEffect(haptic : Haptic*, effect : LibC::Int) : Void
-  fun get_haptic_effect_status = SDL_GetHapticEffectStatus(haptic : Haptic*, effect : LibC::Int) : CBool
+  fun create_haptic_effect = SDL_CreateHapticEffect(haptic : Haptic*, effect : HapticEffect*) : HapticEffectID
+  fun update_haptic_effect = SDL_UpdateHapticEffect(haptic : Haptic*, effect : HapticEffectID, data : HapticEffect*) : CBool
+  fun run_haptic_effect = SDL_RunHapticEffect(haptic : Haptic*, effect : HapticEffectID, iterations : UInt32) : CBool
+  fun stop_haptic_effect = SDL_StopHapticEffect(haptic : Haptic*, effect : HapticEffectID) : CBool
+  fun destroy_haptic_effect = SDL_DestroyHapticEffect(haptic : Haptic*, effect : HapticEffectID) : Void
+  fun get_haptic_effect_status = SDL_GetHapticEffectStatus(haptic : Haptic*, effect : HapticEffectID) : CBool
   fun set_haptic_gain = SDL_SetHapticGain(haptic : Haptic*, gain : LibC::Int) : CBool
   fun set_haptic_autocenter = SDL_SetHapticAutocenter(haptic : Haptic*, autocenter : LibC::Int) : CBool
   fun pause_haptic = SDL_PauseHaptic(haptic : Haptic*) : CBool
@@ -2322,6 +2354,7 @@ lib LibSDL
   HINT_AUDIO_DEVICE_SAMPLE_FRAMES = "AUDIO_DEVICE_SAMPLE_FRAMES"
   HINT_AUDIO_DEVICE_STREAM_NAME = "AUDIO_DEVICE_STREAM_NAME"
   HINT_AUDIO_DEVICE_STREAM_ROLE = "AUDIO_DEVICE_STREAM_ROLE"
+  HINT_AUDIO_DEVICE_RAW_STREAM = "AUDIO_DEVICE_RAW_STREAM"
   HINT_AUDIO_DISK_INPUT_FILE = "AUDIO_DISK_INPUT_FILE"
   HINT_AUDIO_DISK_OUTPUT_FILE = "AUDIO_DISK_OUTPUT_FILE"
   HINT_AUDIO_DISK_TIMESCALE = "AUDIO_DISK_TIMESCALE"
@@ -2338,9 +2371,11 @@ lib LibSDL
   HINT_JOYSTICK_DIRECTINPUT = "JOYSTICK_DIRECTINPUT"
   HINT_FILE_DIALOG_DRIVER = "FILE_DIALOG_DRIVER"
   HINT_DISPLAY_USABLE_BOUNDS = "DISPLAY_USABLE_BOUNDS"
+  HINT_INVALID_PARAM_CHECKS = "INVALID_PARAM_CHECKS"
   HINT_EMSCRIPTEN_ASYNCIFY = "EMSCRIPTEN_ASYNCIFY"
   HINT_EMSCRIPTEN_CANVAS_SELECTOR = "EMSCRIPTEN_CANVAS_SELECTOR"
   HINT_EMSCRIPTEN_KEYBOARD_ELEMENT = "EMSCRIPTEN_KEYBOARD_ELEMENT"
+  HINT_EMSCRIPTEN_FILL_DOCUMENT = "EMSCRIPTEN_FILL_DOCUMENT"
   HINT_ENABLE_SCREEN_KEYBOARD = "ENABLE_SCREEN_KEYBOARD"
   HINT_EVDEV_DEVICES = "EVDEV_DEVICES"
   HINT_EVENT_LOGGING = "EVENT_LOGGING"
@@ -2399,9 +2434,13 @@ lib LibSDL
   HINT_JOYSTICK_HIDAPI_STEAM_HORI = "JOYSTICK_HIDAPI_STEAM_HORI"
   HINT_JOYSTICK_HIDAPI_LG4FF = "JOYSTICK_HIDAPI_LG4FF"
   HINT_JOYSTICK_HIDAPI_8BITDO = "JOYSTICK_HIDAPI_8BITDO"
+  HINT_JOYSTICK_HIDAPI_SINPUT = "JOYSTICK_HIDAPI_SINPUT"
+  HINT_JOYSTICK_HIDAPI_ZUIKI = "JOYSTICK_HIDAPI_ZUIKI"
+  HINT_JOYSTICK_HIDAPI_FLYDIGI = "JOYSTICK_HIDAPI_FLYDIGI"
   HINT_JOYSTICK_HIDAPI_SWITCH = "JOYSTICK_HIDAPI_SWITCH"
   HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED = "JOYSTICK_HIDAPI_SWITCH_HOME_LED"
   HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED = "JOYSTICK_HIDAPI_SWITCH_PLAYER_LED"
+  HINT_JOYSTICK_HIDAPI_SWITCH2 = "JOYSTICK_HIDAPI_SWITCH2"
   HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS = "JOYSTICK_HIDAPI_VERTICAL_JOY_CONS"
   HINT_JOYSTICK_HIDAPI_WII = "JOYSTICK_HIDAPI_WII"
   HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED = "JOYSTICK_HIDAPI_WII_PLAYER_LED"
@@ -2411,6 +2450,8 @@ lib LibSDL
   HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS = "JOYSTICK_HIDAPI_XBOX_360_WIRELESS"
   HINT_JOYSTICK_HIDAPI_XBOX_ONE = "JOYSTICK_HIDAPI_XBOX_ONE"
   HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED = "JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED"
+  HINT_JOYSTICK_HIDAPI_GIP = "JOYSTICK_HIDAPI_GIP"
+  HINT_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA = "JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA"
   HINT_JOYSTICK_IOKIT = "JOYSTICK_IOKIT"
   HINT_JOYSTICK_LINUX_CLASSIC = "JOYSTICK_LINUX_CLASSIC"
   HINT_JOYSTICK_LINUX_DEADZONES = "JOYSTICK_LINUX_DEADZONES"
@@ -2431,6 +2472,7 @@ lib LibSDL
   HINT_KEYCODE_OPTIONS = "KEYCODE_OPTIONS"
   HINT_KMSDRM_DEVICE_INDEX = "KMSDRM_DEVICE_INDEX"
   HINT_KMSDRM_REQUIRE_DRM_MASTER = "KMSDRM_REQUIRE_DRM_MASTER"
+  HINT_KMSDRM_ATOMIC = "KMSDRM_ATOMIC"
   HINT_LOGGING = "LOGGING"
   HINT_MAC_BACKGROUND_APP = "MAC_BACKGROUND_APP"
   HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK = "MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK"
@@ -2463,6 +2505,7 @@ lib LibSDL
   HINT_QUIT_ON_LAST_WINDOW_CLOSE = "QUIT_ON_LAST_WINDOW_CLOSE"
   HINT_RENDER_DIRECT3D_THREADSAFE = "RENDER_DIRECT3D_THREADSAFE"
   HINT_RENDER_DIRECT3D11_DEBUG = "RENDER_DIRECT3D11_DEBUG"
+  HINT_RENDER_DIRECT3D11_WARP = "RENDER_DIRECT3D11_WARP"
   HINT_RENDER_VULKAN_DEBUG = "RENDER_VULKAN_DEBUG"
   HINT_RENDER_GPU_DEBUG = "RENDER_GPU_DEBUG"
   HINT_RENDER_GPU_LOW_POWER = "RENDER_GPU_LOW_POWER"
@@ -2473,6 +2516,10 @@ lib LibSDL
   HINT_RETURN_KEY_HIDES_IME = "RETURN_KEY_HIDES_IME"
   HINT_ROG_GAMEPAD_MICE = "ROG_GAMEPAD_MICE"
   HINT_ROG_GAMEPAD_MICE_EXCLUDED = "ROG_GAMEPAD_MICE_EXCLUDED"
+  HINT_PS2_GS_WIDTH = "PS2_GS_WIDTH"
+  HINT_PS2_GS_HEIGHT = "PS2_GS_HEIGHT"
+  HINT_PS2_GS_PROGRESSIVE = "PS2_GS_PROGRESSIVE"
+  HINT_PS2_GS_MODE = "PS2_GS_MODE"
   HINT_RPI_VIDEO_LAYER = "RPI_VIDEO_LAYER"
   HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME = "SCREENSAVER_INHIBIT_ACTIVITY_NAME"
   HINT_SHUTDOWN_DBUS_ON_QUIT = "SHUTDOWN_DBUS_ON_QUIT"
@@ -2493,6 +2540,7 @@ lib LibSDL
   HINT_VIDEO_FORCE_EGL = "VIDEO_FORCE_EGL"
   HINT_VIDEO_MAC_FULLSCREEN_SPACES = "VIDEO_MAC_FULLSCREEN_SPACES"
   HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY = "VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY"
+  HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE = "VIDEO_METAL_AUTO_RESIZE_DRAWABLE"
   HINT_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE = "VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE"
   HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS = "VIDEO_MINIMIZE_ON_FOCUS_LOSS"
   HINT_VIDEO_OFFSCREEN_SAVE_FRAMES = "VIDEO_OFFSCREEN_SAVE_FRAMES"
@@ -2637,6 +2685,7 @@ lib LibSDL
   PROP_IOSTREAM_ANDROID_AASSET_POINTER = "SDL.iostream.android.aasset"
   PROP_IOSTREAM_MEMORY_POINTER = "SDL.iostream.memory.base"
   PROP_IOSTREAM_MEMORY_SIZE_NUMBER = "SDL.iostream.memory.size"
+  PROP_IOSTREAM_MEMORY_FREE_FUNC_POINTER = "SDL.iostream.memory.free"
   PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER = "SDL.iostream.dynamic.memory"
   PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER = "SDL.iostream.dynamic.chunksize"
 
@@ -3395,6 +3444,11 @@ lib LibSDL
     FLIPPED
   end
 
+  struct CursorFrameInfo
+    surface : Surface*
+    duration : UInt32
+  end
+
   fun has_mouse = SDL_HasMouse() : CBool
   fun get_mice = SDL_GetMice(count : LibC::Int*) : MouseID*
   fun get_mouse_name_for_id = SDL_GetMouseNameForID(instance_id : MouseID) : LibC::Char*
@@ -3410,6 +3464,7 @@ lib LibSDL
   fun capture_mouse = SDL_CaptureMouse(enabled : CBool) : CBool
   fun create_cursor = SDL_CreateCursor(data : UInt8*, mask : UInt8*, w : LibC::Int, h : LibC::Int, hot_x : LibC::Int, hot_y : LibC::Int) : Cursor*
   fun create_color_cursor = SDL_CreateColorCursor(surface : Surface*, hot_x : LibC::Int, hot_y : LibC::Int) : Cursor*
+  fun create_animated_cursor = SDL_CreateAnimatedCursor(frames : CursorFrameInfo*, frame_count : LibC::Int, hot_x : LibC::Int, hot_y : LibC::Int) : Cursor*
   fun create_system_cursor = SDL_CreateSystemCursor(id : SystemCursor) : Cursor*
   fun set_cursor = SDL_SetCursor(cursor : Cursor*) : CBool
   fun get_cursor = SDL_GetCursor() : Cursor*
@@ -3449,6 +3504,15 @@ lib LibSDL
     TANGENTIAL_PRESSURE
     COUNT
   end
+
+  enum PenDeviceType
+    INVALID = -1
+    UNKNOWN
+    DIRECT
+    INDIRECT
+  end
+
+  fun get_pen_device_type = SDL_GetPenDeviceType(instance_id : PenID) : PenDeviceType
 
   # additions3/helper_pixels.cr
 
@@ -3681,7 +3745,7 @@ lib LibSDL
     BT2020_LIMITED = 0x21102609
     BT2020_FULL = 0x22102609
     RGB_DEFAULT = SRGB
-    YUV_DEFAULT = JPEG
+    YUV_DEFAULT = BT601_LIMITED
   end
 
   struct Color
@@ -3766,6 +3830,7 @@ lib LibSDL
   PROP_PROCESS_CREATE_STDERR_POINTER = "SDL.process.create.stderr_source"
   PROP_PROCESS_CREATE_STDERR_TO_STDOUT_BOOLEAN = "SDL.process.create.stderr_to_stdout"
   PROP_PROCESS_CREATE_BACKGROUND_BOOLEAN = "SDL.process.create.background"
+  PROP_PROCESS_CREATE_CMDLINE_STRING = "SDL.process.create.cmdline"
   PROP_PROCESS_PID_NUMBER = "SDL.process.pid"
   PROP_PROCESS_STDIN_POINTER = "SDL.process.stdin"
   PROP_PROCESS_STDOUT_POINTER = "SDL.process.stdout"
@@ -3800,6 +3865,8 @@ lib LibSDL
   alias EnumeratePropertiesCallback = (Void*, PropertiesID, LibC::Char*) -> Void
 
   # SDL_properties
+
+  PROP_NAME_STRING = "SDL.name"
 
   alias PropertiesID = UInt32
 
@@ -3874,11 +3941,13 @@ lib LibSDL
   # SDL_render
 
   SOFTWARE_RENDERER = "software"
+  GPU_RENDERER = "gpu"
   PROP_RENDERER_CREATE_NAME_STRING = "SDL.renderer.create.name"
   PROP_RENDERER_CREATE_WINDOW_POINTER = "SDL.renderer.create.window"
   PROP_RENDERER_CREATE_SURFACE_POINTER = "SDL.renderer.create.surface"
   PROP_RENDERER_CREATE_OUTPUT_COLORSPACE_NUMBER = "SDL.renderer.create.output_colorspace"
   PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER = "SDL.renderer.create.present_vsync"
+  PROP_RENDERER_CREATE_GPU_DEVICE_POINTER = "SDL.renderer.create.gpu.device"
   PROP_RENDERER_CREATE_GPU_SHADERS_SPIRV_BOOLEAN = "SDL.renderer.create.gpu.shaders_spirv"
   PROP_RENDERER_CREATE_GPU_SHADERS_DXIL_BOOLEAN = "SDL.renderer.create.gpu.shaders_dxil"
   PROP_RENDERER_CREATE_GPU_SHADERS_MSL_BOOLEAN = "SDL.renderer.create.gpu.shaders_msl"
@@ -3894,6 +3963,7 @@ lib LibSDL
   PROP_RENDERER_VSYNC_NUMBER = "SDL.renderer.vsync"
   PROP_RENDERER_MAX_TEXTURE_SIZE_NUMBER = "SDL.renderer.max_texture_size"
   PROP_RENDERER_TEXTURE_FORMATS_POINTER = "SDL.renderer.texture_formats"
+  PROP_RENDERER_TEXTURE_WRAPPING_BOOLEAN = "SDL.renderer.texture_wrapping"
   PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER = "SDL.renderer.output_colorspace"
   PROP_RENDERER_HDR_ENABLED_BOOLEAN = "SDL.renderer.HDR_enabled"
   PROP_RENDERER_SDR_WHITE_POINT_FLOAT = "SDL.renderer.SDR_white_point"
@@ -3917,6 +3987,7 @@ lib LibSDL
   PROP_TEXTURE_CREATE_ACCESS_NUMBER = "SDL.texture.create.access"
   PROP_TEXTURE_CREATE_WIDTH_NUMBER = "SDL.texture.create.width"
   PROP_TEXTURE_CREATE_HEIGHT_NUMBER = "SDL.texture.create.height"
+  PROP_TEXTURE_CREATE_PALETTE_POINTER = "SDL.texture.create.palette"
   PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT = "SDL.texture.create.SDR_white_point"
   PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT = "SDL.texture.create.HDR_headroom"
   PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER = "SDL.texture.create.d3d11.texture"
@@ -3935,6 +4006,10 @@ lib LibSDL
   PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER = "SDL.texture.create.opengles2.texture_u"
   PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER = "SDL.texture.create.opengles2.texture_v"
   PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER = "SDL.texture.create.vulkan.texture"
+  PROP_TEXTURE_CREATE_GPU_TEXTURE_POINTER = "SDL.texture.create.gpu.texture"
+  PROP_TEXTURE_CREATE_GPU_TEXTURE_UV_POINTER = "SDL.texture.create.gpu.texture_uv"
+  PROP_TEXTURE_CREATE_GPU_TEXTURE_U_POINTER = "SDL.texture.create.gpu.texture_u"
+  PROP_TEXTURE_CREATE_GPU_TEXTURE_V_POINTER = "SDL.texture.create.gpu.texture_v"
   PROP_TEXTURE_COLORSPACE_NUMBER = "SDL.texture.colorspace"
   PROP_TEXTURE_FORMAT_NUMBER = "SDL.texture.format"
   PROP_TEXTURE_ACCESS_NUMBER = "SDL.texture.access"
@@ -3961,6 +4036,10 @@ lib LibSDL
   PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER = "SDL.texture.opengles2.texture_v"
   PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER = "SDL.texture.opengles2.target"
   PROP_TEXTURE_VULKAN_TEXTURE_NUMBER = "SDL.texture.vulkan.texture"
+  PROP_TEXTURE_GPU_TEXTURE_POINTER = "SDL.texture.gpu.texture"
+  PROP_TEXTURE_GPU_TEXTURE_UV_POINTER = "SDL.texture.gpu.texture_uv"
+  PROP_TEXTURE_GPU_TEXTURE_U_POINTER = "SDL.texture.gpu.texture_u"
+  PROP_TEXTURE_GPU_TEXTURE_V_POINTER = "SDL.texture.gpu.texture_v"
   RENDERER_VSYNC_DISABLED = 0
   RENDERER_VSYNC_ADAPTIVE = (-1)
   DEBUG_TEXT_FONT_CHARACTER_SIZE = 8
@@ -3973,6 +4052,13 @@ lib LibSDL
     STATIC
     STREAMING
     TARGET
+  end
+
+  enum TextureAddressMode
+    INVALID = -1
+    AUTO
+    CLAMP
+    WRAP
   end
 
   enum RendererLogicalPresentation
@@ -3989,8 +4075,7 @@ lib LibSDL
     tex_coord : FPoint
   end
 
-  struct GPURenderStateDesc
-    version : UInt32
+  struct GPURenderStateCreateInfo
     fragment_shader : GPUShader*
     num_sampler_bindings : Int32
     sampler_bindings : GPUTextureSamplerBinding*
@@ -3998,6 +4083,7 @@ lib LibSDL
     storage_textures : GPUTexture**
     num_storage_buffers : Int32
     storage_buffers : GPUBuffer**
+    props : PropertiesID
   end
 
   fun get_num_render_drivers = SDL_GetNumRenderDrivers() : LibC::Int
@@ -4005,7 +4091,8 @@ lib LibSDL
   fun create_window_and_renderer = SDL_CreateWindowAndRenderer(title : LibC::Char*, width : LibC::Int, height : LibC::Int, window_flags : WindowFlags, window : Window**, renderer : Renderer**) : CBool
   fun create_renderer = SDL_CreateRenderer(window : Window*, name : LibC::Char*) : Renderer*
   fun create_renderer_with_properties = SDL_CreateRendererWithProperties(props : PropertiesID) : Renderer*
-  fun create_gpurenderer = SDL_CreateGPURenderer(window : Window*, format_flags : GPUShaderFormat, device : GPUDevice**) : Renderer*
+  fun create_gpurenderer = SDL_CreateGPURenderer(device : GPUDevice*, window : Window*) : Renderer*
+  fun get_gpurenderer_device = SDL_GetGPURendererDevice(renderer : Renderer*) : GPUDevice*
   fun create_software_renderer = SDL_CreateSoftwareRenderer(surface : Surface*) : Renderer*
   fun get_renderer = SDL_GetRenderer(window : Window*) : Renderer*
   fun get_render_window = SDL_GetRenderWindow(renderer : Renderer*) : Window*
@@ -4019,6 +4106,8 @@ lib LibSDL
   fun get_texture_properties = SDL_GetTextureProperties(texture : Texture*) : PropertiesID
   fun get_renderer_from_texture = SDL_GetRendererFromTexture(texture : Texture*) : Renderer*
   fun get_texture_size = SDL_GetTextureSize(texture : Texture*, w : LibC::Float*, h : LibC::Float*) : CBool
+  fun set_texture_palette = SDL_SetTexturePalette(texture : Texture*, palette : Palette*) : CBool
+  fun get_texture_palette = SDL_GetTexturePalette(texture : Texture*) : Palette*
   fun set_texture_color_mod = SDL_SetTextureColorMod(texture : Texture*, r : UInt8, g : UInt8, b : UInt8) : CBool
   fun set_texture_color_mod_float = SDL_SetTextureColorModFloat(texture : Texture*, r : LibC::Float, g : LibC::Float, b : LibC::Float) : CBool
   fun get_texture_color_mod = SDL_GetTextureColorMod(texture : Texture*, r : UInt8*, g : UInt8*, b : UInt8*) : CBool
@@ -4095,9 +4184,9 @@ lib LibSDL
   fun render_debug_text_format = SDL_RenderDebugTextFormat(renderer : Renderer*, x : LibC::Float, y : LibC::Float, fmt : LibC::Char*, ...) : CBool
   fun set_default_texture_scale_mode = SDL_SetDefaultTextureScaleMode(renderer : Renderer*, scale_mode : ScaleMode) : CBool
   fun get_default_texture_scale_mode = SDL_GetDefaultTextureScaleMode(renderer : Renderer*, scale_mode : ScaleMode*) : CBool
-  fun create_gpurender_state = SDL_CreateGPURenderState(renderer : Renderer*, desc : GPURenderStateDesc*) : GPURenderState*
+  fun create_gpurender_state = SDL_CreateGPURenderState(renderer : Renderer*, createinfo : GPURenderStateCreateInfo*) : GPURenderState*
   fun set_gpurender_state_fragment_uniforms = SDL_SetGPURenderStateFragmentUniforms(state : GPURenderState*, slot_index : UInt32, data : Void*, length : UInt32) : CBool
-  fun set_render_gpustate = SDL_SetRenderGPUState(renderer : Renderer*, state : GPURenderState*) : CBool
+  fun set_gpurender_state = SDL_SetGPURenderState(renderer : Renderer*, state : GPURenderState*) : CBool
   fun destroy_gpurender_state = SDL_DestroyGPURenderState(state : GPURenderState*) : Void
 
   # additions3/helper_render.cr
@@ -4125,6 +4214,7 @@ lib LibSDL
     GYRO_L
     ACCEL_R
     GYRO_R
+    COUNT
   end
 
   fun get_sensors = SDL_GetSensors(count : LibC::Int*) : SensorID*
@@ -4182,6 +4272,7 @@ lib LibSDL
     NONE
     HORIZONTAL
     VERTICAL
+    HORIZONTAL_AND_VERTICAL = (HORIZONTAL | VERTICAL)
   end
 
   fun create_surface = SDL_CreateSurface(width : LibC::Int, height : LibC::Int, format : PixelFormat) : Surface*
@@ -4203,6 +4294,10 @@ lib LibSDL
   fun load_bmp = SDL_LoadBMP(file : LibC::Char*) : Surface*
   fun save_bmp_io = SDL_SaveBMP_IO(surface : Surface*, dst : IOStream*, closeio : CBool) : CBool
   fun save_bmp = SDL_SaveBMP(surface : Surface*, file : LibC::Char*) : CBool
+  fun load_png_io = SDL_LoadPNG_IO(src : IOStream*, closeio : CBool) : Surface*
+  fun load_png = SDL_LoadPNG(file : LibC::Char*) : Surface*
+  fun save_png_io = SDL_SavePNG_IO(surface : Surface*, dst : IOStream*, closeio : CBool) : CBool
+  fun save_png = SDL_SavePNG(surface : Surface*, file : LibC::Char*) : CBool
   fun set_surface_rle = SDL_SetSurfaceRLE(surface : Surface*, enabled : CBool) : CBool
   fun surface_has_rle = SDL_SurfaceHasRLE(surface : Surface*) : CBool
   fun set_surface_color_key = SDL_SetSurfaceColorKey(surface : Surface*, enabled : CBool, key : UInt32) : CBool
@@ -4217,6 +4312,7 @@ lib LibSDL
   fun set_surface_clip_rect = SDL_SetSurfaceClipRect(surface : Surface*, rect : Rect*) : CBool
   fun get_surface_clip_rect = SDL_GetSurfaceClipRect(surface : Surface*, rect : Rect*) : CBool
   fun flip_surface = SDL_FlipSurface(surface : Surface*, flip : FlipMode) : CBool
+  fun rotate_surface = SDL_RotateSurface(surface : Surface*, angle : LibC::Float) : Surface*
   fun duplicate_surface = SDL_DuplicateSurface(surface : Surface*) : Surface*
   fun scale_surface = SDL_ScaleSurface(surface : Surface*, width : LibC::Int, height : LibC::Int, scale_mode : ScaleMode) : Surface*
   fun convert_surface = SDL_ConvertSurface(surface : Surface*, format : PixelFormat) : Surface*
@@ -4339,6 +4435,7 @@ lib LibSDL
   PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER = "SDL.display.wayland.wl_output"
   PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN = "SDL.window.create.always_on_top"
   PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN = "SDL.window.create.borderless"
+  PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN = "SDL.window.create.constrain_popup"
   PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN = "SDL.window.create.focusable"
   PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN = "SDL.window.create.external_graphics_context"
   PROP_WINDOW_CREATE_FLAGS_NUMBER = "SDL.window.create.flags"
@@ -4372,6 +4469,7 @@ lib LibSDL
   PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER = "SDL.window.create.win32.pixel_format_hwnd"
   PROP_WINDOW_CREATE_X11_WINDOW_NUMBER = "SDL.window.create.x11.window"
   PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING = "SDL.window.create.emscripten.canvas_id"
+  PROP_WINDOW_CREATE_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN = "SDL.window.create.emscripten.fill_document"
   PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING = "SDL.window.create.emscripten.keyboard_element"
   PROP_WINDOW_SHAPE_POINTER = "SDL.window.shape"
   PROP_WINDOW_HDR_ENABLED_BOOLEAN = "SDL.window.HDR_enabled"
@@ -4389,7 +4487,7 @@ lib LibSDL
   PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER = "SDL.window.kmsdrm.gbm_dev"
   PROP_WINDOW_COCOA_WINDOW_POINTER = "SDL.window.cocoa.window"
   PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER = "SDL.window.cocoa.metal_view_tag"
-  PROP_WINDOW_OPENVR_OVERLAY_ID = "SDL.window.openvr.overlay_id"
+  PROP_WINDOW_OPENVR_OVERLAY_ID_NUMBER = "SDL.window.openvr.overlay_id"
   PROP_WINDOW_VIVANTE_DISPLAY_POINTER = "SDL.window.vivante.display"
   PROP_WINDOW_VIVANTE_WINDOW_POINTER = "SDL.window.vivante.window"
   PROP_WINDOW_VIVANTE_SURFACE_POINTER = "SDL.window.vivante.surface"
@@ -4409,6 +4507,7 @@ lib LibSDL
   PROP_WINDOW_X11_SCREEN_NUMBER = "SDL.window.x11.screen"
   PROP_WINDOW_X11_WINDOW_NUMBER = "SDL.window.x11.window"
   PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING = "SDL.window.emscripten.canvas_id"
+  PROP_WINDOW_EMSCRIPTEN_FILL_DOCUMENT_BOOLEAN = "SDL.window.emscripten.fill_document"
   PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING = "SDL.window.emscripten.keyboard_element"
 
   type DisplayModeData = Void

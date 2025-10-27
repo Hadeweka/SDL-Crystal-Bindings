@@ -2,11 +2,16 @@ if ENV['OS'] == 'Windows_NT'
   raise "This script does not work on Windows."
 end
 
+VERSION_SDL_MAIN = "tags/preview-3.3.2"
+VERSION_SDL_IMAGE = "tags/release-3.2.4"
+VERSION_SDL_MIXER = "heads/main"
+VERSION_SDL_TTF = "tags/release-3.2.2"
+
 def compact_header(header)
   name = header[0]
   return if name.start_with? "additions3/"
 
-  external_path = header[1] ? header[1] : "SDL/refs/heads/main/include/SDL3"
+  external_path = header[1] ? header[1] : "SDL/refs/" + VERSION_SDL_MAIN + "/include/SDL3"
 
   style = "{ColumnLimit: 100000, PointerAlignment: Left, SpacesBeforeTrailingComments: 2, AlignTrailingComments: false, AllowShortFunctionsOnASingleLine: None, ContinuationIndentWidth: 2, AlignOperands: DontAlign, AlignAfterOpenBracket: DontAlign}"
   
@@ -519,17 +524,17 @@ headers = [
 ]
 
 img_headers = [
-  ["SDL_image", "SDL_image/refs/heads/main/include/SDL3_image"]
+  ["SDL_image", "SDL_image/refs/" + VERSION_SDL_IMAGE + "/include/SDL3_image"]
 ]
 
 mix_headers = [
   ["additions3/helper_mixer.cr"],
-  ["SDL_mixer", "SDL_mixer/refs/heads/main/include/SDL3_mixer"]
+  ["SDL_mixer", "SDL_mixer/refs/" + VERSION_SDL_MIXER + "/include/SDL3_mixer"]
 ]
 
 ttf_headers = [
   ["additions3/helper_ttf.cr"],
-  ["SDL_ttf", "SDL_ttf/refs/heads/main/include/SDL3_ttf"]
+  ["SDL_ttf", "SDL_ttf/refs/" + VERSION_SDL_TTF + "/include/SDL3_ttf"]
 ]
 
 (headers + img_headers + mix_headers + ttf_headers).each {|header| compact_header(header)}
