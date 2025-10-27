@@ -67,6 +67,7 @@ If you encounter any problems while generating the bindings, please open an issu
 #### Bugfixes
 
 * Fixed typo in mixer version function
+* Fixed properties and hints not working properly
 
 ### Version 0.3.0
 
