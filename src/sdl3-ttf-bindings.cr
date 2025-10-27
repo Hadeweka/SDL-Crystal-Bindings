@@ -83,6 +83,13 @@ lib LibSDL
     BTT
   end
 
+  enum TTFImageType
+    INVALID
+    ALPHA
+    COLOR
+    SDF
+  end
+
   enum TTFGPUTextEngineWinding
     INVALID = -1
     CLOCKWISE

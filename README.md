@@ -60,6 +60,14 @@ If you encounter any problems while generating the bindings, please open an issu
 * SDL-mixer: main (3.0+, no official release yet)
 * SDL-ttf: release-3.2.2
 
+#### Usability
+
+* Kept old mixer bindings for compatibility
+
+#### Bugfixes
+
+* Fixed typo in mixer version function
+
 ### Version 0.3.0
 
 #### Features

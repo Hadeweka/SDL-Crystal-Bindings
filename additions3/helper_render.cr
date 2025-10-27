@@ -1,6 +1,1 @@
-  enum TextureAddressMode
-    INVALID = -1
-    AUTO
-    CLAMP
-    WRAP
-  end
+  # No additions in this version

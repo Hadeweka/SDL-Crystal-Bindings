@@ -18,3 +18,6 @@
   alias AudioStreamCallback = (Void*, AudioStream*, LibC::Int, LibC::Int) -> Void
   # (void* userdata, const SDL_AudioSpec* spec, float* buffer, int buflen)
   alias AudioPostmixCallback = (Void*, AudioSpec, LibC::Float*, LibC::Int) -> Void
+  # (void* userdata, const void* buf, int buflen)
+  alias AudioStreamDataCompleteCallback = (Void*, Void*, LibC::Int) -> Void
+  

@@ -103,7 +103,7 @@ end
 
 # This filter ignores predefined types
 def soft_filter(name)
-  filter_sdl(camelcase_string(name)).gsub("MIXInitFlags", "MixInitFlags") # Special case
+  filter_sdl(camelcase_string(name)).gsub("MIX", "Mix") # Doesn't look good otherwise
 end
 
 def should_struct_be_excluded?(name)
@@ -113,7 +113,9 @@ def should_struct_be_excluded?(name)
     "axis", # Structure should not actually be used
     "SDL_IOStreamInterface", # Contains too many callbacks
     "SDL_MessageBoxColorScheme", # Contains reference to other enum
-    "SDL_Surface" # A bit more complicated due to macros
+    "SDL_Surface", # A bit more complicated due to macros
+    "SDL_AudioFormat", # Contains preprocessor instructions
+    "SDL_PixelFormat" # Contains preprocessor instructions
   ]
 
   filters.index(name)
@@ -237,7 +239,7 @@ def get_all_structs(filename)
   single_line_struct_matches = total_str.scan(/typedef struct ([\S]+)[ ]*([\S]*);/)
   multi_line_struct_matches = total_str.scan(/typedef struct ([\S]*)[ ]*{((?>[^}])*)}([^;\}]*) ([\S]+);/)
   typedefs = total_str.scan(/typedef ((?!struct)\S*) (\S*);/)
-  enums = total_str.scan(/typedef enum [\S ]*{ ([\S, ]+) } (\S+);/)
+  enums = total_str.scan(/typedef enum [\S ]*{([^;]+)} (\S+);/)
 
   single_line_struct_matches.each do |match|
     next if should_struct_be_excluded?(match[1])
@@ -362,7 +364,7 @@ def transform_structs(structs)
     if !enum[1]
       enum_values = $pseudo_enums[PSEUDO_ENUM_NAMES.key(enum[0])]
     else
-      enum_values = enum[1].split(", ")
+      enum_values = enum[1].split(/,\s+/)
     end
 
     if enum[2]
@@ -371,21 +373,21 @@ def transform_structs(structs)
       struct_str += "  enum #{soft_filter(enum[0])}\n"
     end
 
-    enum_prefix_arr = enum_values[0].split("=")[0].split("_")
+    enum_prefix_arr = enum_values[0].strip.split("=")[0].split("_")
 
     enum_values.each do |enum_value|
-      enum_value_name_arr = enum_value.split("=")[0].split("_")
+      enum_value_name_arr = enum_value.strip.split("=")[0].split("_")
       enum_prefix_arr -= (enum_prefix_arr - enum_value_name_arr)
     end
 
     enum_values.each do |enum_value|
-      while !enum_value.split("=")[0].index(enum_prefix_arr.join("_") + "_")
+      while !enum_value.strip.split("=")[0].index(enum_prefix_arr.join("_") + "_")
         enum_prefix_arr.pop
       end
     end
 
     enum_values.each do |enum_value|
-      fixed_enum_values = enum_value.split("=")
+      fixed_enum_values = enum_value.strip.split("=")
       name_without_prefix = (fixed_enum_values[0].split("_") - enum_prefix_arr).join("_")
       fixed_enum_values[0].upcase!
       fixed_enum_value = fixed_enum_values.join("=")

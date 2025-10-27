@@ -1,17 +1,11 @@
-  # (void *udata, Uint8 *stream, int len)
-  alias MixMixCallback = (Void*, UInt8*, LibC::Int) -> Void
+  # (void* userdata, MIX_Track* track)
+  alias MixTrackStoppedCallback = (Void*, MixTrack*) -> Void
 
-  # (void)
-  alias MixMusicFinishedCallback = (Void) -> Void
+  # (void* userdata, MIX_Track* track, const SDL_AudioSpec* spec, float* pcm, int samples)
+  alias MixTrackMixCallback = (Void*, MixTrack*, AudioSpec*, LibC::Float*, LibC::Int) -> Void
 
-  # (int channel)
-  alias MixChannelFinishedCallback = (LibC::Int) -> Void
+  # (void* userdata, MIX_Group* group, const SDL_AudioSpec* spec, float* pcm, int samples)
+  alias MixGroupMixCallback = (Void*, MixGroup*, AudioSpec*, LibC::Float*, LibC::Int) -> Void
 
-  # (int chan, void *stream, int len, void *udata)
-  alias MixEffectFuncT = (LibC::Int, Void*, LibC::Int, Void*) -> Void
-
-  # (int chan, void *udata)
-  alias MixEffectDoneT = (LibC::Int, Void*) -> Void
-
-  # (const char*, void*)
-  alias MixEachSoundFontCallback = (LibC::Char*, Void*) -> LibC::Char
+  # (void* userdata, MIX_Mixer* mixer, const SDL_AudioSpec* spec, float* pcm, int samples)
+  alias MixPostMixCallback = (Void*, MixMixer*, AudioSpec*, LibC::Float*, LibC::Int) -> Void

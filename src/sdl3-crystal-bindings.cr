@@ -297,6 +297,9 @@ lib LibSDL
   alias AudioStreamCallback = (Void*, AudioStream*, LibC::Int, LibC::Int) -> Void
   # (void* userdata, const SDL_AudioSpec* spec, float* buffer, int buflen)
   alias AudioPostmixCallback = (Void*, AudioSpec, LibC::Float*, LibC::Int) -> Void
+  # (void* userdata, const void* buf, int buflen)
+  alias AudioStreamDataCompleteCallback = (Void*, Void*, LibC::Int) -> Void
+  
 
   # SDL_audio
 
@@ -421,6 +424,12 @@ lib LibSDL
     UNKNOWN
     FRONT_FACING
     BACK_FACING
+  end
+
+  enum CameraPermissionState
+    DENIED = -1
+    PENDING
+    APPROVED
   end
 
   struct CameraSpec
@@ -4191,12 +4200,7 @@ lib LibSDL
 
   # additions3/helper_render.cr
 
-  enum TextureAddressMode
-    INVALID = -1
-    AUTO
-    CLAMP
-    WRAP
-  end
+  # No additions in this version
 
   # SDL_sensor
 
