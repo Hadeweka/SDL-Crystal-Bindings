@@ -2,9 +2,9 @@ if ENV['OS'] == 'Windows_NT'
   raise "This script does not work on Windows."
 end
 
-VERSION_SDL_MAIN = "tags/release-3.4.0"
-VERSION_SDL_IMAGE = "tags/release-3.4.0"
-VERSION_SDL_MIXER = "tags/release-3.2.0"
+VERSION_SDL_MAIN = "tags/release-3.4.14"
+VERSION_SDL_IMAGE = "tags/release-3.4.4"
+VERSION_SDL_MIXER = "tags/release-3.2.4"
 VERSION_SDL_TTF = "tags/release-3.2.2"
 
 def compact_header(header)

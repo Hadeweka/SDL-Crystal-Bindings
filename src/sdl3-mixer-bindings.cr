@@ -18,7 +18,7 @@ lib LibSDL
 
   MIXER_MAJOR_VERSION = 3
   MIXER_MINOR_VERSION = 2
-  MIXER_MICRO_VERSION = 0
+  MIXER_MICRO_VERSION = 4
   MIXER_VERSION = (((MIXER_MAJOR_VERSION)*1000000 + (MIXER_MINOR_VERSION)*1000 + (MIXER_MICRO_VERSION)))
   MIX_PROP_MIXER_DEVICE_NUMBER = "SDL_mixer.mixer.device"
   MIX_PROP_AUDIO_LOAD_IOSTREAM_POINTER = "SDL_mixer.audio.load.iostream"
@@ -26,6 +26,7 @@ lib LibSDL
   MIX_PROP_AUDIO_LOAD_PREDECODE_BOOLEAN = "SDL_mixer.audio.load.predecode"
   MIX_PROP_AUDIO_LOAD_PREFERRED_MIXER_POINTER = "SDL_mixer.audio.load.preferred_mixer"
   MIX_PROP_AUDIO_LOAD_SKIP_METADATA_TAGS_BOOLEAN = "SDL_mixer.audio.load.skip_metadata_tags"
+  MIX_PROP_AUDIO_LOAD_IGNORE_LOOPS_BOOLEAN = "SDL_mixer.audio.load.ignore_loops"
   MIX_PROP_AUDIO_DECODER_STRING = "SDL_mixer.audio.decoder"
   MIX_PROP_METADATA_TITLE_STRING = "SDL_mixer.metadata.title"
   MIX_PROP_METADATA_ARTIST_STRING = "SDL_mixer.metadata.artist"
@@ -43,6 +44,7 @@ lib LibSDL
   MIX_PROP_PLAY_MAX_MILLISECONDS_NUMBER = "SDL_mixer.play.max_milliseconds"
   MIX_PROP_PLAY_START_FRAME_NUMBER = "SDL_mixer.play.start_frame"
   MIX_PROP_PLAY_START_MILLISECOND_NUMBER = "SDL_mixer.play.start_millisecond"
+  MIX_PROP_PLAY_START_ORDER_NUMBER = "SDL_mixer.play.start_order"
   MIX_PROP_PLAY_LOOP_START_FRAME_NUMBER = "SDL_mixer.play.loop_start_frame"
   MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER = "SDL_mixer.play.loop_start_millisecond"
   MIX_PROP_PLAY_FADE_IN_FRAMES_NUMBER = "SDL_mixer.play.fade_in_frames"

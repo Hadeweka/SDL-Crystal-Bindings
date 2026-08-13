@@ -51,6 +51,15 @@ If you encounter any problems while generating the bindings, please open an issu
 
 ## Changelog
 
+### Version 0.5.1
+
+#### SDL header versions
+
+* SDL: release-3.4.14
+* SDL-image: release-3.4.4
+* SDL-mixer: release-3.2.4
+* SDL-ttf: release-3.2.2
+
 ### Version 0.5.0
 
 NOTE: This version removes any compatibility to older SDL versions.
